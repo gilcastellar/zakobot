@@ -14,7 +14,7 @@ async def on_message(message):
     if message.author == client.user:
         return
     
-    if message.content.startswith(';;hello'):
-        await message.channel.send('Hello!')
+    if message.content.startswith(';;hi'):
+        await message.channel.send('Hi!')
 
 client.run('MTA2MzM1MTg3MjAwMzUxODQ5NQ.Ga729N.ZK5x4_eIsS3pQNT6iZ_I3VIPdRhCEdSu5-wGUE')
