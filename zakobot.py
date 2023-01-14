@@ -14,28 +14,46 @@ class MyClient(discord.Client):
         if message.author.id == self.user.id:
             return
 
-        if message.content.startswith(';;hi'):
-            await message.channel.send('Hi!' + message.content)
+        if message.content.startswith(';;salve'):
+            await message.channel.send('SALVE O CORINTHIANS!!')
 
         if message.content.startswith(';;anilist'):
             command, content = message.content.split(" ")
             await message.channel.send(content)
 
+        if message.content.startswith(';;shini'):
+            adjetivos = ['gay','viadao','homossexual','boiola','bicha','senta-fofo','morde-fronhas','maricas','pederasta','baitola']
+            await message.channel.send('O Shini eh muito ' + random.choice(adjetivos))
+
         if message.content.startswith(';;newr'):
             global roulette
+            global additions
             roulette = []
+            additions = []
             await message.channel.send('Roulette created!')
             #roulette.create_roulette()
 
         if message.content.startswith(';;radd'):
+            
             command, content = message.content.split(" ")
-            roulette.append(content)
+            additions = content.split(",")
+            for item in additions:
+                roulette.append(item)
+            #for name in roulette:
+                #roulette.append(content)
             await message.channel.send('New roulette member added!')
             #roulette.add_roulette_member(content)
 
         if message.content.startswith(';;rmembers'):
+            global members
+            members = ''
             for member in roulette:
-                await message.channel.send(member)
+                members += member + "\n"
+            await message.channel.send(members)
+
+        if message.content.startswith(';;rrng'):
+            random.shuffle(roulette)
+            await message.channel.send('Roulette shuffled!')
 
         if message.content.startswith(';;guess'):
             await message.channel.send('Guess a number between 1 and 10.')
