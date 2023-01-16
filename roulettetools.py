@@ -14,7 +14,7 @@ def shuffle_roulette(r):
     random.shuffle(r)
     return r
 
-def moformat(r):
+def format(r):
     index = 0
     result = ''
     for member in r:

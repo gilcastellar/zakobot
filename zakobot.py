@@ -13,22 +13,22 @@ class MyClient(discord.Client):
         if message.author.id == self.user.id:
             return
 
-        if message.content.startswith(';;salve'):
-            await message.channel.send('SALVE O CORINTHIANS!!')
+        #if message.content.startswith(';salve'):
+        #    await message.channel.send('SALVE O CORINTHIANS!!')
 
-        if message.content.startswith(';;hi'):
+        if message.content.startswith(';hi'):
             await message.channel.send('Hi ' + str(message.author))
 
 
-        if message.content.startswith(';;anilist'):
+        if message.content.startswith(';anilist'):
             command, content = message.content.split(" ")
             await message.channel.send(content)
 
-        if message.content.startswith(';;shini'):
+        if message.content.startswith(';shini'):
             adjetivos = ['gay','viadao','homossexual','boiola','bicha','senta-fofo','morde-fronhas','maricas','pederasta','baitola']
             await message.channel.send('O Shini eh muito ' + random.choice(adjetivos))
 
-        if message.content.startswith(';;radd'):
+        if message.content.startswith(';radd'):
             command, content = message.content.split(" ")
 
             if 'roulette' not in globals():
@@ -40,23 +40,30 @@ class MyClient(discord.Client):
             await message.channel.send('New roulette member added!')
             #roulette.add_roulette_member(content)
 
-        if message.content.startswith(';;rmembers'):
+        if message.content.startswith(';rmembers'):
             #global members
             members = ''
             for member in roulette:
                 members += member + "\n"
             await message.channel.send(members)
 
-        if message.content.startswith(';;shuffler'):
-            await message.channel.send(roulette)
+        if message.content.startswith(';shuffler'):
+            #await message.channel.send(roulette)
 
             shuffled = roulettetools.shuffle_roulette(roulette)
 
-            await message.channel.send(shuffled)
+            #await message.channel.send(shuffled)
 
             final_roulette = roulettetools.format(shuffled)
 
-            await message.channel.send('**Roulette shuffled!** \n' + final_roulette)
+            embed = discord.Embed(title='Roleta formada!', description=final_roulette)
+            await message.channel.send(embed=embed)
+
+            #await message.channel.send('**Roulette shuffled!** \n' + final_roulette)
+
+        #if message.content.startswith(';embed'):
+        #    embed = discord.Embed(title='Roleta formada!', description=)
+        #    await message.channel.send(embed=embed)
 
 intents = discord.Intents.default()
 intents.message_content = True
