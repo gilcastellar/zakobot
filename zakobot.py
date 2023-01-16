@@ -54,5 +54,4 @@ intents.message_content = True
 
 client = MyClient(intents=intents)
 
-
 client.run('MTA2MzM1MTg3MjAwMzUxODQ5NQ.Ga729N.ZK5x4_eIsS3pQNT6iZ_I3VIPdRhCEdSu5-wGUE')
