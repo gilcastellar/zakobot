@@ -1,7 +1,7 @@
 import discord
 import random
-import asyncio
 import roulettetools
+import configparser
 
 class MyClient(discord.Client):
     async def on_ready(self):
@@ -54,4 +54,8 @@ intents.message_content = True
 
 client = MyClient(intents=intents)
 
-client.run('MTA2MzM1MTg3MjAwMzUxODQ5NQ.Ga729N.ZK5x4_eIsS3pQNT6iZ_I3VIPdRhCEdSu5-wGUE')
+config = configparser.RawConfigParser()
+config.read('app.properties')
+token = config.get('Discord', 'token')
+
+client.run(token)
