@@ -42,7 +42,12 @@ class MyClient(discord.Client):
 
         if message.content.startswith(';shuffler'):
 
-            shuffled = roulettetools.shuffle_roulette(roulette)
+            global previous_roulette
+            previous_roulette = ['yoiti carvalho juan etanol kaiser underlinen nico perfumin samwell arakaki max biel shaolin over pc kare energy marcelo japz yoiti']
+
+            shuffled, previous_roulette = roulettetools.shuffle_roulette(roulette, previous_roulette)
+
+            print(previous_roulette)
             
             final_roulette = roulettetools.format(shuffled)
 
