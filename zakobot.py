@@ -1,7 +1,7 @@
 import discord
 import random
-import asyncio
 import roulettetools
+import configparser
 
 class MyClient(discord.Client):
     async def on_ready(self):
@@ -42,7 +42,14 @@ class MyClient(discord.Client):
 
         if message.content.startswith(';shuffler'):
 
-            shuffled = roulettetools.shuffle_roulette(roulette)
+            global previous_roulette
+            previous_roulette = ['yoiti carvalho juan etanol kaiser underlinen nico perfumin samwell arakaki max biel shaolin over pc kare energy marcelo japz yoiti']
+
+            shuffled, previous_roulette = roulettetools.shuffle_roulette(roulette, previous_roulette)
+
+            print(previous_roulette)
+            with open('previous_roulette.txt', 'w') as file:
+                file.write(previous_roulette)
             
             final_roulette = roulettetools.format(shuffled)
 
@@ -54,4 +61,8 @@ intents.message_content = True
 
 client = MyClient(intents=intents)
 
-client.run('MTA2MzM1MTg3MjAwMzUxODQ5NQ.Ga729N.ZK5x4_eIsS3pQNT6iZ_I3VIPdRhCEdSu5-wGUE')
+config = configparser.RawConfigParser()
+config.read('app.properties')
+token = config.get('Discord', 'token')
+
+client.run(token)

@@ -1,15 +1,3 @@
-from pickle import FALSE
-import random
-
-def create_roulette():
-    return []
-
-def add_roulette_member(list, members):
-    members = members.split(',')
-    for member in members:
-        if member not in list:
-            list.append(member)
-    return list
 
 def shuffle_roulette(r,z):
     compatible = 'not'
@@ -64,19 +52,3 @@ def compability_check(r,z):
         index += 1
 
     return 'yes', new_roulette
-def format(r):
-    result = ''
-
-    index = 0
-    
-    for member in r:
-        if index != len(r) - 1: # checks for last member
-            result += member.strip('+-.~') + ' -> ' + r[index + 1].strip('+-.~') + '\n'
-        else:
-            result += member.strip('+-.~') + ' -> ' + r[0].strip('+-.~') + '\n'
-        index += 1
-
-    return result
-
-
-
