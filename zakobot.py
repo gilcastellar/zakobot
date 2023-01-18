@@ -1,3 +1,6 @@
+﻿# encoding: utf-8
+
+from turtle import color
 import discord
 import random
 import roulettetools
@@ -16,17 +19,18 @@ async def on_ready():
 async def on_message(message):
     if message.author.id == client.user:
         return
+    
+    if message.content.startswith(';cadastro'):
+        embed = discord.Embed(title='Instruções:')
+        embed.add_field(name='',value='Para se cadastrar, utilize o comando ;novo seguido de seu @.',inline=False)
+        embed.add_field(name='Exemplo:',value=';novo @kaiser',inline=False)
+        embed.add_field(name='',value='Lembre-se: é preciso efetivamente se marcar para que possamos pegar seu ID!')
+        await message.channel.send(embed=embed)
 
-    if message.content.startswith(';hi'):
-        await message.channel.send('Hi ' + str(message.author))
-
-    if message.content.startswith(';anilist'):
+    if message.content.startswith(';novo'):
         command, content = message.content.split(" ")
-        await message.channel.send(content)
 
-    if message.content.startswith(';shini'):
-        adjetivos = ['gay','viadao','homossexual','boiola','bicha','senta-fofo','morde-fronhas','maricas','pederasta','baitola']
-        await message.channel.send('O Shini eh muito ' + random.choice(adjetivos))
+        print(content.strip('<>@')) 
 
     if message.content.startswith(';radd'):
         command, content = message.content.split(" ")

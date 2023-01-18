@@ -1,6 +1,8 @@
 from pickle import FALSE
 import random
 
+testing = 'testing'
+
 def create_roulette():
     return []
 
