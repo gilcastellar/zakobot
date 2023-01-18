@@ -11,6 +11,14 @@ def add_roulette_member(list, members):
             list.append(member)
     return list
 
+def remove_roulette_member(list, members):
+    members = members.split(',')
+    for member in members:
+        if member in list:
+            list.remove(member)
+    return list
+
+
 def shuffle_roulette(r,z):
     compatible = 'not'
 

@@ -34,6 +34,12 @@ class MyClient(discord.Client):
             roulette = roulettetools.add_roulette_member(roulette,content)
             await message.channel.send('New roulette member added!')
 
+        if message.content.startswith(';rremove'):
+            command, content = message.content.split(" ")
+
+            roulette = roulettetools.remove_roulette_member(roulette,content)
+            await message.channel.send('Roulette member removed!')
+
         if message.content.startswith(';rmembers'):
             members = ''
             for member in roulette:
@@ -43,7 +49,8 @@ class MyClient(discord.Client):
         if message.content.startswith(';shuffler'):
 
             global previous_roulette
-            previous_roulette = ['yoiti carvalho juan etanol kaiser underlinen nico perfumin samwell arakaki max biel shaolin over pc kare energy marcelo japz yoiti']
+            previous_roulette = open('original_roulette.txt')
+            print('original: ' + previous_roulette.read().replace(',',' ').title())
 
             shuffled, previous_roulette = roulettetools.shuffle_roulette(roulette, previous_roulette)
 
