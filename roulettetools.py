@@ -1,7 +1,7 @@
 from pickle import FALSE
 import random
 
-testing = 'testing'
+roulette_members = []
 
 def create_roulette():
     return []
@@ -19,7 +19,6 @@ def remove_roulette_member(list, members):
         if member in list:
             list.remove(member)
     return list
-
 
 def shuffle_roulette(r,z):
     compatible = 'not'
