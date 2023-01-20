@@ -21,25 +21,27 @@ async def on_message(message):
     if message.author.id == client.user:
         return
     
-    if message.content.startswith(';cadastro'):
+    if message.content.lower().startswith(';cadastro'):
 
         id = message.author.id
         name = message.author.name
         avatar = message.author.avatar
 
-        if message.content == ';cadastro':
+        if message.content.lower() == ';cadastro':
 
             embed = discord.Embed(title='Instruções:')
             embed.add_field(name='Para se cadastrar, utilize novamente o comando ;cadastro seguido do tipo de obra que aceita',value='',inline=False)
             embed.add_field(name='',value='Exemplos:',inline=False)
             embed.add_field(name='',value=';cadastro anime \n ;cadastro manga \n ;cadastro animanga',inline=False)
             embed.add_field(name='',value='\n \n \n \n',inline=False)
+            embed.add_field(name='Para participar das próximas roletas, digite ;ativar. Para se ausentar das próximas roletas, use ;desativar',value='',inline=False)
             embed.add_field(name='Para adicionar observações, como limite de cours ou volumes utilize o comando ;obs seguido de todas as observações em uma só mensagem',value='',inline=False)
             embed.add_field(name='',value='Exemplos:',inline=False)
-            embed.add_field(name='',value=';obs Aceito animes de até 26 episódios e mangás de até 10 volumes. Sem ecchi!',inline=False)            
+            embed.add_field(name='',value=';obs Aceito animes de até 26 episódios e mangás de até 10 volumes. Sem ecchi! Anilist: anilist.co/Kaiser',inline=False)            
             embed.add_field(name='',value='\n\n\n\n',inline=False)
-            embed.add_field(name='Finalmente, para checar o resultado, utilize o comando ;perfil',value='',inline=False)
+            embed.add_field(name='Finalmente, para checar seu perfil utilize o comando ;perfil (;perfil @kaiser ou ID exibirá o perfil de outro usuário)',value='',inline=False)
             await message.channel.send(embed=embed)
+
         else:
             while True:
                 try:
@@ -51,9 +53,7 @@ async def on_message(message):
                 
                 if content.lower() in ['anime','manga','animanga']:
 
-                    new_member = {'id': id, 'nome': name, 'tipo': content, 'obs': ''}
-
-                    print(new_member)
+                    new_member = {'id': id, 'nome': name, 'ativo': 'Não', 'pontos': '', 'tipo': content, 'obs': '', 'envioupara': '', 'recebeude': ''}
 
                     with open('roulette_members.json','r') as file:
                     
@@ -80,7 +80,7 @@ async def on_message(message):
                 break
 
            
-    if message.content.startswith(';obs'):
+    if message.content.lower().startswith(';obs'):
         id = message.author.id
 
         while True:
@@ -99,15 +99,44 @@ async def on_message(message):
                     if d['id'] == id:
                         d['obs'] = content
                         await message.channel.send('Observações atualizadas!')
-                    print(d)
 
                 with open('roulette_members.json', 'w') as file:
                     json.dump(roulettetools.roulette_members, file, indent=2)
             break
 
-    if message.content.startswith(';perfil'):
+    if message.content.lower().startswith(';ativar'):
+        id = message.author.id
+        with open('roulette_members.json','r') as file:
+                    
+            roulettetools.roulette_members = json.load(file)
 
-        if message.content == ';perfil':
+            for d in roulettetools.roulette_members:
+                if d['id'] == id:
+                    d['ativo'] = 'Sim'
+                    await message.channel.send('Cadastro atualizado!')
+
+            with open('roulette_members.json', 'w') as file:
+                json.dump(roulettetools.roulette_members, file, indent=2)
+
+
+    if message.content.lower().startswith(';desativar'):
+        id = message.author.id
+        with open('roulette_members.json','r') as file:
+                    
+            roulettetools.roulette_members = json.load(file)
+
+            for d in roulettetools.roulette_members:
+                if d['id'] == id:
+                    d['ativo'] = 'Não'
+                    await message.channel.send('Cadastro atualizado!')
+
+            with open('roulette_members.json', 'w') as file:
+                json.dump(roulettetools.roulette_members, file, indent=2)
+
+
+    if message.content.lower().startswith(';perfil'):
+
+        if message.content.lower() == ';perfil':
             id = message.author.id
             name = message.author.name
             avatar = message.author.avatar
@@ -115,8 +144,6 @@ async def on_message(message):
             command, content = message.content.split(" ")
             id = content.strip('<>@')
             user = await client.fetch_user(id)
-            print(user)
-            print(user.id)
             id = user.id
             name = user.name
             avatar = user.avatar
@@ -128,10 +155,9 @@ async def on_message(message):
             roulettetools.roulette_members = json.load(file)
 
             for d in roulettetools.roulette_members:
-                print(id)
                 if d['id'] == id:
-                    print('ok')
                     tipo = d['tipo']
+                    ativo = d['ativo']
                     if tipo.lower() == 'animanga':
                         tipo = 'Anime & Mangá'
                     elif tipo.lower() == 'manga':
@@ -140,8 +166,8 @@ async def on_message(message):
                         tipo = 'Anime'
 
                     obs = d['obs']
+                    embed.add_field(name='Ativo:',value=ativo,inline=False)
                     embed.add_field(name='Aceito:',value=tipo,inline=False)
-                    #embed.add_field(name='',value=tipo + '\n',inline=False)
                     embed.add_field(name='Obs:',value=obs,inline=False)
 
         await message.channel.send(embed=embed)
@@ -168,12 +194,6 @@ async def on_message(message):
         for member in roulette:
             members += member + "\n"
         await message.channel.send(members)
-
-    if message.content.startswith(';test'):
-        #command, content = message.content.split(" ")
-
-        #print(content.strip('<>@'))
-        await message.channel.send('I found you, <@249670889438838794>')
 
     if message.content.startswith(';shuffler'):
 
