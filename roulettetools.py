@@ -1,33 +1,88 @@
 from pickle import FALSE
 import random
+import json
+from xml.etree.ElementPath import find
 
 roulette_members = []
 
 def create_roulette():
     return []
 
-def add_roulette_member(list, members):
-    members = members.split(',')
+#def add_roulette_member(list, members):
+#    members = members.split(',')
+#    for member in members:
+#        if member not in list:
+#            list.append(member)
+#    return list
+
+#def remove_roulette_member(list, members):
+#    members = members.split(',')
+#    for member in members:
+#        if member in list:
+#            list.remove(member)
+#    return list
+
+def shuffle_roulette(previous_roulette):
+    members = []
+
+    fully_compatible = 'not'
+    
+    with open('roulette_members.json', 'r') as file:
+        roulette_members = json.load(file)
+
+        for d in roulette_members:
+            if d['ativo'].lower() == 'sim':
+                members.append(d['id'])
+    
+    while fully_compatible != 'yes':
+        random.shuffle(members)
+        fully_compatible, roulette = compatibility_check(members, previous_roulette)
+
+    return roulette, members
+
+def compatibility_check(members, previous_roulette):
+    roulette = ''
+    index = 0
+
     for member in members:
-        if member not in list:
-            list.append(member)
-    return list
+        if index != len(members) - 1: # checks for last member
+            n = find_member(members[index+1])
+        else:
+            n = find_member(members[0])
+        d = find_member(member)
+        if d['tipo'] == 'manga':
+            if n['tipo'].lower() == 'anime':
+                return 'not',''
+        elif d['tipo'].lower() == 'anime':
+            if n['tipo'].lower() == 'manga':
+                return 'not',''
 
-def remove_roulette_member(list, members):
-    members = members.split(',')
-    for member in members:
-        if member in list:
-            list.remove(member)
-    return list
+        # The below section creates a new string containing 
+        # the new roulette while checking if no one is paired together again
 
-def shuffle_roulette(r,z):
-    compatible = 'not'
+        with open('original_roulette.txt') as file:
+            file = file.read()
+            print(file)
+            print(str(d['id']) + ',' + str(n['id']))
+            if (str(d['id']) + ',' + str(n['id'])) in file:
+                return 'not',''
 
-    while compatible != 'yes':
-        random.shuffle(r)
-        compatible, new_roulette = compability_check(r,z)
+        roulette = roulette + ' ' + d['nome'] + ' -> ' + n['nome'] + '\n' 
 
-    return r, new_roulette
+        index += 1
+
+    return 'yes', roulette
+
+
+def find_member(id):
+
+    with open('roulette_members.json','r') as file:
+                    
+        roulette_members = json.load(file)
+        for d in roulette_members:
+            if d['id'] == id:
+                return d
+
 
 def compability_check(r,z):
     

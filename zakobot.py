@@ -1,5 +1,7 @@
 ﻿# encoding: utf-8
 
+from csv import reader
+from platform import python_revision
 from turtle import color
 import discord
 import random
@@ -53,7 +55,7 @@ async def on_message(message):
                 
                 if content.lower() in ['anime','manga','animanga']:
 
-                    new_member = {'id': id, 'nome': name, 'ativo': 'Não', 'pontos': '', 'tipo': content, 'obs': '', 'envioupara': '', 'recebeude': ''}
+                    new_member = {'id': id, 'nome': name, 'pontos': '', 'tipo': content, 'obs': ''}
 
                     with open('roulette_members.json','r') as file:
                     
@@ -118,7 +120,6 @@ async def on_message(message):
             with open('roulette_members.json', 'w') as file:
                 json.dump(roulettetools.roulette_members, file, indent=2)
 
-
     if message.content.lower().startswith(';desativar'):
         id = message.author.id
         with open('roulette_members.json','r') as file:
@@ -132,7 +133,6 @@ async def on_message(message):
 
             with open('roulette_members.json', 'w') as file:
                 json.dump(roulettetools.roulette_members, file, indent=2)
-
 
     if message.content.lower().startswith(';perfil'):
 
@@ -168,26 +168,26 @@ async def on_message(message):
                     obs = d['obs']
                     embed.add_field(name='Ativo:',value=ativo,inline=False)
                     embed.add_field(name='Aceito:',value=tipo,inline=False)
-                    embed.add_field(name='Obs:',value=obs,inline=False)
+                    embed.add_field(name='Observações:',value=obs,inline=False)
 
         await message.channel.send(embed=embed)
 
-    if message.content.startswith(';radd'):
-        command, content = message.content.split(" ")
+    #if message.content.startswith(';radd'):
+    #    command, content = message.content.split(" ")
 
-        if 'roulette' not in globals():
-            global roulette 
-            roulette = roulettetools.create_roulette()
-            await message.channel.send('Roulette created!')
+    #    if 'roulette' not in globals():
+    #        global roulette 
+    #        roulette = roulettetools.create_roulette()
+    #        await message.channel.send('Roulette created!')
 
-        roulette = roulettetools.add_roulette_member(roulette,content)
-        await message.channel.send('New roulette member added!')
+    #    roulette = roulettetools.add_roulette_member(roulette,content)
+    #    await message.channel.send('New roulette member added!')
 
-    if message.content.startswith(';rremove'):
-        command, content = message.content.split(" ")
+    #if message.content.startswith(';rremove'):
+    #    command, content = message.content.split(" ")
 
-        roulette = roulettetools.remove_roulette_member(roulette,content)
-        await message.channel.send('Roulette member removed!')
+    #    roulette = roulettetools.remove_roulette_member(roulette,content)
+    #    await message.channel.send('Roulette member removed!')
 
     if message.content.startswith(';rmembers'):
         members = ''
@@ -195,21 +195,27 @@ async def on_message(message):
             members += member + "\n"
         await message.channel.send(members)
 
-    if message.content.startswith(';shuffler'):
+    if message.content.startswith(';shuffle'):
 
-        global previous_roulette
-        previous_roulette = open('original_roulette.txt')
+        #global previous_roulette
+        with open('previous_roulette.txt') as file:
+            previous_roulette = file.read().split(',')
         #print('original: ' + previous_roulette.read().replace(',',' ').title())
 
-        shuffled, previous_roulette = roulettetools.shuffle_roulette(roulette, previous_roulette)
+        formatted, shuffled = roulettetools.shuffle_roulette(previous_roulette)
 
-        print(previous_roulette)
-        with open('previous_roulette.txt', 'w') as file:
-            file.write(previous_roulette)
-            
-        final_roulette = roulettetools.format(shuffled)
+        with open('roulette.txt', 'w') as file:
+            list = ''
+            i = 0
+            for member in shuffled:
+                if i != len(shuffled) - 1:
+                    list += str(member) + ','
+                else:
+                    list += str(member) + ',' + str(shuffled[0])
+                i += 1
+            file.write(list)
 
-        embed = discord.Embed(title='Roleta formada!', description=final_roulette)
+        embed = discord.Embed(title='Roleta formada!', description=formatted)
         await message.channel.send(embed=embed)
 
 
