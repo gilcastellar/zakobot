@@ -23,63 +23,71 @@ async def on_message(message):
     if message.author.id == client.user:
         return
     
+    if message.content.lower().startswith(';ajuda'):
+
+        embed = discord.Embed(title='Instruções:')
+        embed.add_field(name='Para se cadastrar ou alterar seu cadastro, utilize novamente o comando ;cadastro seguido do tipo de obra que aceita',value='',inline=False)
+        embed.add_field(name='',value='Exemplos:',inline=False)
+        embed.add_field(name='',value=';cadastro anime \n ;cadastro manga \n ;cadastro animanga',inline=False)
+        embed.add_field(name="", value="", inline=False)
+        embed.add_field(name="--", value="", inline=False)
+        embed.add_field(name="", value="", inline=False)
+        embed.add_field(name='Para participar da próxima roleta, digite ;ativar. Para se ausentar, use ;desativar',value='',inline=False)
+        embed.add_field(name="", value="", inline=False)
+        embed.add_field(name="--", value="", inline=False)
+        embed.add_field(name="", value="", inline=False)
+        embed.add_field(name='Para adicionar observações, como limite de cours ou volumes utilize o comando ;obs seguido de todas as observações em uma só mensagem',value='',inline=False)
+        embed.add_field(name='',value='Exemplo:',inline=False)
+        embed.add_field(name='',value=';obs Aceito animes de até 26 episódios e mangás de até 10 volumes. \n\n Sem ecchi! \n\nLista: anilist.co/Kaiser',inline=False)            
+        embed.add_field(name="", value="", inline=False)
+        embed.add_field(name="--", value="", inline=False)
+        embed.add_field(name="", value="", inline=False)
+        embed.add_field(name='Finalmente, para checar seu perfil utilize o comando ;perfil (para checar o perfil de outro usuário, use ;perfil @usuario ou ID)',value='',inline=False)
+        embed.add_field(name='',value='Exemplos:',inline=False)
+        embed.add_field(name='',value=';perfil @kaiser \n ;perfil 906937520254758973',inline=False)        
+        await message.channel.send(embed=embed)
+
     if message.content.lower().startswith(';cadastro'):
 
         id = message.author.id
         name = message.author.name
         avatar = message.author.avatar
 
-        if message.content.lower() == ';cadastro':
+        while True:
+            try:
+                command, content = message.content.split(" ")
 
-            embed = discord.Embed(title='Instruções:')
-            embed.add_field(name='Para se cadastrar, utilize novamente o comando ;cadastro seguido do tipo de obra que aceita',value='',inline=False)
-            embed.add_field(name='',value='Exemplos:',inline=False)
-            embed.add_field(name='',value=';cadastro anime \n ;cadastro manga \n ;cadastro animanga',inline=False)
-            embed.add_field(name='',value='\n \n \n \n',inline=False)
-            embed.add_field(name='Para participar das próximas roletas, digite ;ativar. Para se ausentar das próximas roletas, use ;desativar',value='',inline=False)
-            embed.add_field(name='Para adicionar observações, como limite de cours ou volumes utilize o comando ;obs seguido de todas as observações em uma só mensagem',value='',inline=False)
-            embed.add_field(name='',value='Exemplos:',inline=False)
-            embed.add_field(name='',value=';obs Aceito animes de até 26 episódios e mangás de até 10 volumes. Sem ecchi! Anilist: anilist.co/Kaiser',inline=False)            
-            embed.add_field(name='',value='\n\n\n\n',inline=False)
-            embed.add_field(name='Finalmente, para checar seu perfil utilize o comando ;perfil (;perfil @kaiser ou ID exibirá o perfil de outro usuário)',value='',inline=False)
-            await message.channel.send(embed=embed)
-
-        else:
-            while True:
-                try:
-                    command, content = message.content.split(" ")
-
-                except:
-                    await message.channel.send('Algo de errado não está certo. Tente novamente!')
-                    break
-                
-                if content.lower() in ['anime','manga','animanga']:
-
-                    new_member = {'id': id, 'nome': name, 'pontos': '', 'tipo': content, 'obs': ''}
-
-                    with open('roulette_members.json','r') as file:
-                    
-                        roulettetools.roulette_members = json.load(file)
-
-                        if any(d['id'] == id for d in roulettetools.roulette_members):
-                            for dict in roulettetools.roulette_members:
-                                if dict['id'] == id:
-                                    if dict['tipo'] == content.lower():
-                                        await message.channel.send('Usuário já existente!')
-                                    else:
-                                        dict['tipo'] = content.lower()
-                            with open('roulette_members.json','w') as file:
-                                json.dump(roulettetools.roulette_members, file, indent=2)
-                                
-                        else:
-                            roulettetools.roulette_members.append(new_member)
-
-                            with open('roulette_members.json', 'w') as file:
-                                print(new_member)
-                                json.dump(roulettetools.roulette_members, file, indent=2)
-
-                            await message.channel.send('Cadastro realizado!')
+            except:
+                await message.channel.send('Algo de errado não está certo. Tente novamente!')
                 break
+                
+            if content.lower() in ['anime','manga','animanga']:
+
+                new_member = {'id': id, 'nome': name, 'ativo': 'Sim', 'pontos': '', 'tipo': content, 'obs': ''}
+
+                with open('roulette_members.json','r') as file:
+                    
+                    roulettetools.roulette_members = json.load(file)
+
+                    if any(d['id'] == id for d in roulettetools.roulette_members):
+                        for dict in roulettetools.roulette_members:
+                            if dict['id'] == id:
+                                if dict['tipo'] == content.lower():
+                                    await message.channel.send('Cadastro atualizado!')
+                                else:
+                                    dict['tipo'] = content.lower()
+                        with open('roulette_members.json','w') as file:
+                            json.dump(roulettetools.roulette_members, file, indent=2)
+                                
+                    else:
+                        roulettetools.roulette_members.append(new_member)
+
+                        with open('roulette_members.json', 'w') as file:
+                            print(new_member)
+                            json.dump(roulettetools.roulette_members, file, indent=2)
+
+                        await message.channel.send('Cadastro realizado!')
+            break
 
            
     if message.content.lower().startswith(';obs'):
@@ -172,28 +180,16 @@ async def on_message(message):
 
         await message.channel.send(embed=embed)
 
-    #if message.content.startswith(';radd'):
-    #    command, content = message.content.split(" ")
+    if message.content.startswith(';membros'):
+        embed = discord.Embed(title='Membros ativos na roleta:')
 
-    #    if 'roulette' not in globals():
-    #        global roulette 
-    #        roulette = roulettetools.create_roulette()
-    #        await message.channel.send('Roulette created!')
-
-    #    roulette = roulettetools.add_roulette_member(roulette,content)
-    #    await message.channel.send('New roulette member added!')
-
-    #if message.content.startswith(';rremove'):
-    #    command, content = message.content.split(" ")
-
-    #    roulette = roulettetools.remove_roulette_member(roulette,content)
-    #    await message.channel.send('Roulette member removed!')
-
-    if message.content.startswith(';rmembers'):
-        members = ''
-        for member in roulette:
-            members += member + "\n"
-        await message.channel.send(members)
+        with open('roulette_members.json','r') as file:
+                    
+            roulettetools.roulette_members = json.load(file)
+            for member in roulettetools.roulette_members:
+                if member['ativo'].lower() == 'sim':
+                    embed.add_field(name='',value=member['nome'],inline=False)
+            await message.channel.send(embed=embed)
 
     if message.content.startswith(';shuffle'):
 
