@@ -4,15 +4,27 @@ from csv import reader
 from platform import python_revision
 from turtle import color
 import discord
+from discord.ext import commands, tasks
+import asyncio
 import random
 import roulettetools
 import json
 import configparser
+import feedparser
+import rsslistener
+import threading
 
 intents = discord.Intents.default()
 intents.message_content = True
 
 client = discord.Client(intents=intents)
+
+#channel = client.get_channel(1065847698214887496) 
+#@tasks.loop(seconds=3)
+#async def sendmessage():
+#    await channel.send("hello")
+
+#sendmessage.start()
 
 @client.event
 async def on_ready():
@@ -213,6 +225,32 @@ async def on_message(message):
 
         embed = discord.Embed(title='Roleta formada!', description=formatted)
         await message.channel.send(embed=embed)
+
+
+    if message.content.startswith(';test'):
+        rsslistener.test_title('[SubsPlease] Tomo-chan wa Onnanoko! - 04 (1080p) [FCFCA607].mkv')
+
+    if message.content.startswith(';rss'):
+        command, content = message.content.split(" ")
+
+        old_feed = []
+
+        #feed_parsed = rsslistener.fetch_rss(content)
+        #texto, rsslistener.check_for_updates(content, old_feed)
+
+        #texto = ''
+        #global titles
+        #titles = []
+        while True:
+            textos, old_feed = rsslistener.ler_rss(content, old_feed)
+            #titles.append(new_title)
+            
+            if len(textos) > 0:
+                for texto in textos:
+                    embed = discord.Embed(title='Novo episódio!')
+                    embed.add_field(name='', value=texto)
+                    await message.channel.send(embed=embed)
+            await asyncio.sleep(10)
 
 
 config = configparser.RawConfigParser()
