@@ -2,26 +2,28 @@
 
 import feedparser
 
-def test_title(title):
+def start_rss(feed):
 
-    print(title)
-    title = title.replace('[SubsPlease] ','')
-    print(title)
-    title, episode = title.split(' - ')
-    episode, trash = episode.split(' ', 1)
-    if episode[0] == '0':
-        episode = episode[1]
-    print('Ja esta disponivel o episodio '+ episode + ' de ' + title)
+    lista = []
+    feed = feedparser.parse(feed)
 
-def ler_rss(feed, old_feed):
+    for entry in feed.entries:
+        lista.append(entry.title)
+
+    print(lista)
+    
+    return lista
+
+def ler_rss(feed, lista):
     textos = []
     feed = feedparser.parse(feed)
-    entries = feed.entries
-    for entry in entries:
-        if old_feed == []:
-           old_feed = entries
-        if entry not in old_feed:
-            print(entry)
+    print(lista)
+
+    #if feed != old_feed:
+    for entry in feed.entries:
+        if entry.title not in lista:
+            
+            #print(entry)
             texto = ''
 
             partes = entry.title.split(' ')
@@ -41,37 +43,13 @@ def ler_rss(feed, old_feed):
 
             print('novo:',entry.title)
 
+            lista.append(entry.title)
+
             textos.append(texto)
 
         else:
+            print('Entry not inside old_feed')
             pass
 
-    old_feed = entries
 
-    return textos, old_feed
-
-
-
-#def ler_rss(feed, list):
-#    texto = ''
-#    Feed = feedparser.parse(feed)
-#    pointer = Feed.entries[0]
-
-#    if pointer.title not in list:
-    
-#        texto += 'summary = ' + pointer.summary
-#        #texto += '\n\n' + 'link = ' + pointer.link
-#        #texto += '\n\n' + 'published = ' + pointer.published
-#        texto += '\n\n' + 'title = ' + pointer.title
-#        texto += '\n\n' + 'hash = ' + pointer.nyaa_infohash
-#        texto += '\n\n' + 'id = <' + pointer.id + '>'
-#        #for item in pointer:
-#        #    texto += '\n\n pointer item: ' + item
-
-#        print('novo:',pointer.title)
-
-#        return texto, pointer.title
-    
-#    else:
-#        texto = ''
-#        return texto, pointer.title
+    return textos, lista

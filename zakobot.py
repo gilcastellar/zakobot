@@ -233,24 +233,19 @@ async def on_message(message):
     if message.content.startswith(';rss'):
         command, content = message.content.split(" ")
 
-        old_feed = []
+        old_feed = feedparser.parse(content)
 
-        #feed_parsed = rsslistener.fetch_rss(content)
-        #texto, rsslistener.check_for_updates(content, old_feed)
+        lista = rsslistener.start_rss(content)
 
-        #texto = ''
-        #global titles
-        #titles = []
         while True:
-            textos, old_feed = rsslistener.ler_rss(content, old_feed)
-            #titles.append(new_title)
+            textos, lista = rsslistener.ler_rss(content, lista)
             
             if len(textos) > 0:
                 for texto in textos:
                     embed = discord.Embed(title='Novo episódio!')
                     embed.add_field(name='', value=texto)
                     await message.channel.send(embed=embed)
-            await asyncio.sleep(10)
+            await asyncio.sleep(60)
 
 
 config = configparser.RawConfigParser()
