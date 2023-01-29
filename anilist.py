@@ -1,7 +1,7 @@
 def test_anilist(url):
 
     anime_id, anime_name = url.replace('https://anilist.co/anime/','').lsplit('/')
-    print(anime_id, anime_name.strip('/')
+    print(anime_id, anime_name.strip('/'))
 
     query = '''
     query ($id: Int) { # Define which variables will be used in the query (id)
