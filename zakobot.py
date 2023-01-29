@@ -259,7 +259,7 @@ async def on_message(message):
     if message.content.lower().startswith(';secreto'):
         command, content = message.content.split(" ",1)
 
-        print(message.author.user + ': ' + content)
+        print(message.author.name + ': ' + content)
 
         await message.delete()
     
