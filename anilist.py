@@ -1,6 +1,6 @@
 def test_anilist(url):
 
-    anime_id, anime_name = url.replace('https://anilist.co/anime/','').lsplit('/')
+    anime_id, anime_name = url.replace('https://anilist.co/anime/','').split('/')
     print(anime_id, anime_name.strip('/'))
 
     query = '''
