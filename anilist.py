@@ -3,7 +3,7 @@ import json
 
 def test_anilist(url):
 
-    anime_id, anime_name = url.replace('https://anilist.co/anime/','').split('/','')
+    anime_id, anime_name = url.replace('https://anilist.co/anime/','').split('/',1)
     print(anime_id, anime_name.strip('/'))
 
     query = '''
