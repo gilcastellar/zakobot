@@ -261,7 +261,7 @@ async def on_message(message):
 
         print(content)
 
-        await message.delete
+        await message.delete()
     
 
 config = configparser.RawConfigParser()
