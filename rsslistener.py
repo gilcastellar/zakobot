@@ -1,4 +1,4 @@
-# encoding: utf-8
+﻿# encoding: utf-8
 
 import feedparser
 
@@ -37,9 +37,9 @@ def ler_rss(feed, lista):
                 episode = episode[1]
 
             
-            texto += 'Ja esta disponivel para download o episodio '+ episode + ' de ' + title + '\n\n'
-            texto += 'Link do nyaa: <' + entry.id + '> \n\n'
-            texto += 'Ou se preferir, o hash: ' + entry.nyaa_infohash + '\n\n'
+            texto += 'Já esta disponível para download o episódio '+ episode + ' de ' + title + '\n\n'
+            texto += 'Link: <' + entry.id + '> \n\n'
+            texto += 'Hash: ' + entry.nyaa_infohash + '\n\n'
 
             print('novo:',entry.title)
 
@@ -50,6 +50,5 @@ def ler_rss(feed, lista):
         else:
             print('Entry not inside old_feed')
             pass
-
 
     return textos, lista

@@ -6,13 +6,11 @@ from turtle import color
 import discord
 from discord.ext import commands, tasks
 import asyncio
-import random
 import roulettetools
 import json
 import configparser
 import feedparser
 import rsslistener
-import threading
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -204,11 +202,9 @@ async def on_message(message):
             await message.channel.send(embed=embed)
 
     if message.content.startswith(';shuffle'):
-
-        #global previous_roulette
+        
         with open('previous_roulette.txt') as file:
             previous_roulette = file.read().split(',')
-        #print('original: ' + previous_roulette.read().replace(',',' ').title())
 
         formatted, shuffled = roulettetools.shuffle_roulette(previous_roulette)
 
@@ -225,7 +221,6 @@ async def on_message(message):
 
         embed = discord.Embed(title='Roleta formada!', description=formatted)
         await message.channel.send(embed=embed)
-
 
     if message.content.startswith(';test'):
         rsslistener.test_title('[SubsPlease] Tomo-chan wa Onnanoko! - 04 (1080p) [FCFCA607].mkv')
