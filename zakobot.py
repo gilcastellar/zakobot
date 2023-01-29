@@ -2,7 +2,7 @@
 
 from csv import reader
 from platform import python_revision
-from turtle import color
+#from turtle import color
 import discord
 from discord.ext import commands, tasks
 import asyncio
@@ -17,12 +17,7 @@ intents.message_content = True
 
 client = discord.Client(intents=intents)
 
-#channel = client.get_channel(1065847698214887496) 
-#@tasks.loop(seconds=3)
-#async def sendmessage():
-#    await channel.send("hello")
-
-#sendmessage.start()
+admins = ['906937520254758973','98410347597139968','628466603486478336','1050904689685831760']
 
 @client.event
 async def on_ready():
@@ -99,7 +94,6 @@ async def on_message(message):
                         await message.channel.send('Cadastro realizado!')
             break
 
-           
     if message.content.lower().startswith(';obs'):
         id = message.author.id
 
@@ -190,7 +184,7 @@ async def on_message(message):
 
         await message.channel.send(embed=embed)
 
-    if message.content.startswith(';membros'):
+    if message.content.lower().startswith(';membros'):
         embed = discord.Embed(title='Membros ativos na roleta:')
 
         with open('roulette_members.json','r') as file:
@@ -201,31 +195,31 @@ async def on_message(message):
                     embed.add_field(name='',value=member['nome'],inline=False)
             await message.channel.send(embed=embed)
 
-    if message.content.startswith(';shuffle'):
-        
-        with open('previous_roulette.txt') as file:
-            previous_roulette = file.read().split(',')
+    if message.content.lower().startswith(';shuffle'):
+        print(message.author.id)
+        if message.author.id not in admins:
+            await message.channel.send('Você não tem permissão para usar esse comando!')
+        else:
+            with open('previous_roulette.txt') as file:
+                previous_roulette = file.read().split(',')
 
-        formatted, shuffled = roulettetools.shuffle_roulette(previous_roulette)
+            formatted, shuffled = roulettetools.shuffle_roulette(previous_roulette)
 
-        with open('roulette.txt', 'w') as file:
-            list = ''
-            i = 0
-            for member in shuffled:
-                if i != len(shuffled) - 1:
-                    list += str(member) + ','
-                else:
-                    list += str(member) + ',' + str(shuffled[0])
-                i += 1
-            file.write(list)
+            with open('roulette.txt', 'w') as file:
+                list = ''
+                i = 0
+                for member in shuffled:
+                    if i != len(shuffled) - 1:
+                        list += str(member) + ','
+                    else:
+                        list += str(member) + ',' + str(shuffled[0])
+                    i += 1
+                file.write(list)
 
-        embed = discord.Embed(title='Roleta formada!', description=formatted)
-        await message.channel.send(embed=embed)
+            embed = discord.Embed(title='Roleta formada!', description=formatted)
+            await message.channel.send(embed=embed)
 
-    if message.content.startswith(';test'):
-        rsslistener.test_title('[SubsPlease] Tomo-chan wa Onnanoko! - 04 (1080p) [FCFCA607].mkv')
-
-    if message.content.startswith(';rss'):
+    if message.content.lower().startswith(';rss'):
         command, content = message.content.split(" ")
 
         old_feed = feedparser.parse(content)
