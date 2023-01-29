@@ -1,4 +1,5 @@
 ﻿# encoding: utf-8
+# para que acentos sejam aceitos é preciso salvar o script com o encoding correto
 
 from csv import reader
 from platform import python_revision

@@ -34,7 +34,7 @@ def ler_rss(feed, lista):
                 episode = episode[1]
 
             
-            texto += 'Já esta disponível para download o episódio '+ episode + ' de ' + title + '\n\n'
+            texto += 'Já está disponível para download o episódio '+ episode + ' de ' + title + '\n\n'
             texto += 'Link: <' + entry.id + '> \n\n'
             texto += 'Hash: ' + entry.nyaa_infohash + '\n\n'
 
