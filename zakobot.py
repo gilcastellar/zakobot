@@ -221,22 +221,24 @@ async def on_message(message):
             embed = discord.Embed(title='Roleta formada!', description=formatted)
             await message.channel.send(embed=embed)
 
-    if message.content.lower().startswith(';rss'):
-        command, content = message.content.split(" ")
+    #if message.content.lower().startswith(';rss'):
+        #command, content = message.content.split(" ")
 
-        old_feed = feedparser.parse(content)
+    content = 'https://nyaa.si/?page=rss&q=subsplease+1080&c=0_0&f=0'
 
-        lista = rsslistener.start_rss(content)
+    old_feed = feedparser.parse(content)
 
-        while True:
-            textos, lista = rsslistener.ler_rss(content, lista)
+    lista = rsslistener.start_rss(content)
+
+    while True:
+        textos, lista = rsslistener.ler_rss(content, lista)
             
-            if len(textos) > 0:
-                for texto in textos:
-                    embed = discord.Embed(title='Novo episódio!')
-                    embed.add_field(name='', value=texto)
-                    await message.channel.send(embed=embed)
-            await asyncio.sleep(60)
+        if len(textos) > 0:
+            for texto in textos:
+                embed = discord.Embed(title='Novo episódio!')
+                embed.add_field(name='', value=texto)
+                await message.channel.send(embed=embed)
+        await asyncio.sleep(60)
 
     if message.content.lower().startswith(';test'):
         command, content = message.content.split(" ")
