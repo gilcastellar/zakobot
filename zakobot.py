@@ -8,6 +8,7 @@ import discord
 from discord.ext import commands, tasks
 import asyncio
 import roulettetools
+import anilist
 import json
 import configparser
 import feedparser
@@ -236,6 +237,10 @@ async def on_message(message):
                     embed.add_field(name='', value=texto)
                     await message.channel.send(embed=embed)
             await asyncio.sleep(60)
+
+    if message.content.lower().startswith(';test'):
+        command, content = message.content.split(" ")
+        print(anilist.test_anilist(content))
 
 
 config = configparser.RawConfigParser()
