@@ -256,6 +256,12 @@ async def on_message(message):
         embed = discord.Embed(title='Sinopse de ' + title, description=description.replace('<br><br>','').replace('<i>','*').replace('</i>','*'))
         await message.channel.send(embed=embed)
 
+    if message.content.lower().startswith(';secreto'):
+        command, content = message.content.split(" ",1)
+
+        print(content)
+
+        await message.delete
     
 
 config = configparser.RawConfigParser()
