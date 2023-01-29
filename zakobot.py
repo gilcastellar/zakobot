@@ -25,6 +25,23 @@ admins = ['906937520254758973','98410347597139968','628466603486478336','1050904
 async def on_ready():
     print(f'We have logged in as {client.user}')
 
+    content = 'https://nyaa.si/?page=rss&q=subsplease+1080&c=0_0&f=0'
+    channel = client.get_channel(1067926098815484064)
+
+    old_feed = feedparser.parse(content)
+
+    lista = rsslistener.start_rss(content)
+
+    while True:
+        textos, lista = rsslistener.ler_rss(content, lista)
+            
+        if len(textos) > 0:
+            for texto in textos:
+                embed = discord.Embed(title='Novo episódio!')
+                embed.add_field(name='', value=texto)
+                await channel.send(embed=embed)
+        await asyncio.sleep(60)
+
 @client.event
 async def on_message(message):
     if message.author.id == client.user:
@@ -224,26 +241,11 @@ async def on_message(message):
     #if message.content.lower().startswith(';rss'):
         #command, content = message.content.split(" ")
 
-    content = 'https://nyaa.si/?page=rss&q=subsplease+1080&c=0_0&f=0'
-
-    old_feed = feedparser.parse(content)
-
-    lista = rsslistener.start_rss(content)
-
-    while True:
-        textos, lista = rsslistener.ler_rss(content, lista)
-            
-        if len(textos) > 0:
-            for texto in textos:
-                embed = discord.Embed(title='Novo episódio!')
-                embed.add_field(name='', value=texto)
-                await message.channel.send(embed=embed)
-        await asyncio.sleep(60)
-
     if message.content.lower().startswith(';test'):
         command, content = message.content.split(" ")
         print(anilist.test_anilist(content))
 
+    
 
 config = configparser.RawConfigParser()
 config.read('app.properties')
