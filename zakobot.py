@@ -241,7 +241,7 @@ async def on_message(message):
     #if message.content.lower().startswith(';rss'):
         #command, content = message.content.split(" ")
 
-    if message.content.lower().startswith(';test'):
+    if message.content.lower().startswith(';sinopse'):
         command, content = message.content.split(" ")
         response = anilist.test_anilist(content)
 
@@ -249,7 +249,7 @@ async def on_message(message):
 
         o = response.json()
         #print(o.data.Media.id)
-        await message.channel.send(o['data']['Media']['title']['romaji'])
+        await message.channel.send(o['data']['Media']['description'])
 
     
 
