@@ -243,7 +243,13 @@ async def on_message(message):
 
     if message.content.lower().startswith(';test'):
         command, content = message.content.split(" ")
-        print(anilist.test_anilist(content))
+        response = anilist.test_anilist(content)
+
+        print(json.dumps(response.json(), indent=2))
+
+        o = response.json()
+        #print(o.data.Media.id)
+        await message.channel.send(o['data']['Media']['title']['romaji'])
 
     
 
