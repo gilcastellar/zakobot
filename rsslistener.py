@@ -17,13 +17,10 @@ def start_rss(feed):
 def ler_rss(feed, lista):
     textos = []
     feed = feedparser.parse(feed)
-    print(lista)
 
     #if feed != old_feed:
     for entry in feed.entries:
         if entry.title not in lista:
-            
-            #print(entry)
             texto = ''
 
             partes = entry.title.split(' ')
@@ -48,7 +45,6 @@ def ler_rss(feed, lista):
             textos.append(texto)
 
         else:
-            print('Entry not inside old_feed')
             pass
 
     return textos, lista
