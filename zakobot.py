@@ -253,7 +253,7 @@ async def on_message(message):
         description = o['data']['Media']['description']
 
 
-        embed = discord.Embed(title='Sinopse de ' + title, description=description.replace('<br>','\n')
+        embed = discord.Embed(title='Sinopse de ' + title, description=description.replace('<br>','\n'))
         #await message.channel.send(o['data']['Media']['description'])
 
     
