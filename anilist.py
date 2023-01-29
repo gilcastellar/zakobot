@@ -11,6 +11,9 @@ def test_anilist(url):
       Media (id: $id, type: ANIME) { # Insert our variables into the query arguments (id) (type: ANIME is hard-coded in the query)
         id
         description
+        title {
+            romaji
+        }
       }
     }
     '''
