@@ -44,8 +44,8 @@ def test_mutation(anime, token):
 
     # Define our query variables and values that will be used in the query request
     variables = {
-        "mediaId" => 1,
-        "status" => "CURRENT"
+        "mediaId": 1,
+        "status": "CURRENT"
     }
 
     data = (requests.post('https://graphql.anilist.co', json={'query': mutation, headers=headers}))
