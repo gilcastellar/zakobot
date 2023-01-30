@@ -48,7 +48,7 @@ def test_mutation(anime, token):
         "status": "CURRENT"
     }
 
-    data = (requests.post('https://graphql.anilist.co', json={'query': mutation, headers=headers}))
+    data = (requests.post('https://graphql.anilist.co', json={'query': mutation}, headers=headers))
 
     print(data)
        
