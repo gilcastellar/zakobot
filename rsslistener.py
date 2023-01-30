@@ -10,7 +10,7 @@ def start_rss(feed):
     for entry in feed.entries:
         lista.append(entry.title)
 
-    print(lista)
+    #print(lista)
     
     return lista
 

@@ -35,9 +35,9 @@ def test_mutation(anime, token):
 
     mutation = '''
     mutation ($mediaId: Int, $status: MediaListStatus) {
-    SaveMediaListEntry (mediaId: $mediaId, status: $status) {
-        id
-        status
+        SaveMediaListEntry (mediaId: $mediaId, status: $status) {
+            id
+            status
         }
     }
     '''
@@ -48,7 +48,7 @@ def test_mutation(anime, token):
         "status": "CURRENT"
     }
 
-    data = (requests.post('https://graphql.anilist.co', json={'query': mutation}, headers=headers))
-
+    data = (requests.post('https://graphql.anilist.co', json={'query': mutation, 'variables':variables}, headers=headers).json())
+    
     print(data)
        
