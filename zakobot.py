@@ -96,10 +96,13 @@ async def on_message(message):
                     if any(d['id'] == id for d in roulettetools.roulette_members):
                         for dict in roulettetools.roulette_members:
                             if dict['id'] == id:
-                                if dict['tipo'] == content.lower():
-                                    await message.channel.send('Cadastro atualizado!')
+                                if dict['tipo'] == '':
+                                    await message.channel.send('Cadastro feito!')
                                 else:
-                                    dict['tipo'] = content.lower()
+                                    await message.channel.send('Cadastro atualizado!')
+                                
+                                dict['tipo'] = content.lower()
+                                    
                         with open('roulette_members.json','w') as file:
                             json.dump(roulettetools.roulette_members, file, indent=2)
                                 
