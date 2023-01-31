@@ -286,10 +286,10 @@ async def on_message(message):
         test = anilist.test_mutation(content, accessToken)
 
     if message.content.lower().startswith(';idle'):
-        command, content = message.content.split(" ",1)
+        #command, content = message.content.split(" ",1)
 
-        text = await start_idle(message.channel)
-        await message.channel.send(text)
+        await start_idle(message.channel)
+        await message.channel.send('ok')
 
 
 
