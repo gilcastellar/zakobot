@@ -292,7 +292,7 @@ async def on_message(message):
 
         await start_idle(message.channel)
 
-    if message.content.lower().startswith(';stopidle'):
+    #if message.content.lower().startswith(';stopidle'):
 
 
 
