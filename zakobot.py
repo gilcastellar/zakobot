@@ -218,7 +218,7 @@ async def on_message(message):
                     embed.add_field(name='',value=member['nome'],inline=False)
             await message.channel.send(embed=embed)
 
-    if message.content.lower().startswith(';roleta'):
+    if message.content.lower().startswith(';sorteio'):
         print(message.author.id)
         if message.author.id not in admins:
             await message.channel.send('Você não tem permissão para usar esse comando!')
@@ -241,6 +241,8 @@ async def on_message(message):
 
             embed = discord.Embed(title='Roleta:', description=formatted)
             await message.channel.send('Roleta formada...')
+            time.sleep(1)
+            await message.channel.send('Que rufem os tambores!')
             time.sleep(5)
             await message.channel.send(embed=embed)
 
