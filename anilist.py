@@ -44,7 +44,7 @@ def test_mutation(anime, token):
 
     # Define our query variables and values that will be used in the query request
     variables = {
-        "mediaId": 1,
+        "mediaId": anime,
         "status": "CURRENT"
     }
 

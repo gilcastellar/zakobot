@@ -215,7 +215,7 @@ async def on_message(message):
             await message.channel.send(embed=embed)
 
     if message.content.lower().startswith(';shuffle'):
-        print(message.author.id)
+        print(message.author.id + ' = ' + admins[0])
         if message.author.id not in admins:
             await message.channel.send('Você não tem permissão para usar esse comando!')
         else:
