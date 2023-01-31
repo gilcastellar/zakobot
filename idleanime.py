@@ -1,4 +1,6 @@
 import random
+import time
+import asyncio
 
 options = ['335','481','383','634','513']
 
@@ -11,4 +13,4 @@ options = ['335','481','383','634','513']
 # tomada de decisão:
 # delay: 30 minutos, a menos que esteja assistindo algo
 # neste caso empurra a decisão para 5 minutos após finalizar
-#
+
