@@ -288,7 +288,7 @@ async def on_message(message):
     if message.content.lower().startswith(';idle'):
         command, content = message.content.split(" ",1)
 
-        text = start_idle(message.channel)
+        text = await start_idle(message.channel)
         await message.channel.send(text)
 
 
