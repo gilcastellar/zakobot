@@ -34,6 +34,9 @@ async def on_ready():
 
     lista = rsslistener.start_rss(content)
 
+    await start_idle(1065847698214887496)
+    print('ok')
+
     while True:
         textos, lista = rsslistener.ler_rss(content, lista)
             
@@ -45,8 +48,7 @@ async def on_ready():
         await asyncio.sleep(60)
 
 async def start_idle(channel):
-
-
+    
     while True:
         await asyncio.sleep(3)
         await channel.send('tick')
@@ -289,7 +291,10 @@ async def on_message(message):
         #command, content = message.content.split(" ",1)
 
         await start_idle(message.channel)
-        await message.channel.send('ok')
+
+    if message.content.lower().startswith(';stopidle'):
+
+
 
 
 
