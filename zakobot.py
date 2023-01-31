@@ -34,7 +34,7 @@ async def on_ready():
 
     lista = rsslistener.start_rss(content)
 
-    await start_idle(client.get_channel(1065847698214887496), rodar=True)
+    #await start_idle(client.get_channel(1065847698214887496), rodar=True)
     print('ok')
 
     while True:
@@ -292,7 +292,7 @@ async def on_message(message):
 
 
 
-        await start_idle(message.channel)
+        await start_idle(message.channel, rodar=True)
 
     if message.content.lower().startswith(';stopidle'):
         await start_idle(message.channel, rodar=False)
