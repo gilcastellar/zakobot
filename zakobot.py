@@ -13,6 +13,7 @@ import json
 import configparser
 import feedparser
 import rsslistener
+import time
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -217,7 +218,7 @@ async def on_message(message):
                     embed.add_field(name='',value=member['nome'],inline=False)
             await message.channel.send(embed=embed)
 
-    if message.content.lower().startswith(';shuffle'):
+    if message.content.lower().startswith(';roleta'):
         print(message.author.id)
         if message.author.id not in admins:
             await message.channel.send('Você não tem permissão para usar esse comando!')
@@ -238,7 +239,9 @@ async def on_message(message):
                     i += 1
                 file.write(list)
 
-            embed = discord.Embed(title='Roleta formada!', description=formatted)
+            embed = discord.Embed(title='Roleta:', description=formatted)
+            await message.channel.send('Roleta formada...')
+            time.sleep(5)
             await message.channel.send(embed=embed)
 
     if message.content.lower().startswith(';sinopse'):

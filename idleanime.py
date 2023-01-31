@@ -8,3 +8,7 @@ options = ['335','481','383','634','513']
 # dropar anime, pausar anime, despausar anime, desdropar anime,
 # postar uma atividade, adicionar algo nos favoritos
 
+# tomada de decisão:
+# delay: 30 minutos, a menos que esteja assistindo algo
+# neste caso empurra a decisão para 5 minutos após finalizar
+#
