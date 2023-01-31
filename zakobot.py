@@ -34,7 +34,7 @@ async def on_ready():
 
     lista = rsslistener.start_rss(content)
 
-    await start_idle(1065847698214887496)
+    await start_idle(client.get_channel(1065847698214887496))
     print('ok')
 
     while True:
