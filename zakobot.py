@@ -295,13 +295,14 @@ async def on_message(message):
         await start_idle(message.channel, rodar=False)
 
     if message.content.lower().startswith(';loop'):
-        
-        while True:
-            if message.content.lower().startswith(';para'):
-                break
-            await asyncio.sleep(3)
-            await message.channel.send('tick')
-        await message.channel.send('FUNCIONOU PORRA!!')
+        command, content = message.content.split(" ",1)
+
+        if content == 'iniciar':
+            while True:
+                await asyncio.sleep(3)
+                await message.channel.send('tick')
+        elif content == 'parar':
+            await message.channel.send('FUNCIONOU PORRA!!')
 
 
 
