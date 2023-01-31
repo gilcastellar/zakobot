@@ -46,12 +46,9 @@ async def on_ready():
                 embed.add_field(name='', value=texto)
                 await channel.send(embed=embed)
         await asyncio.sleep(60)
-
-async def start_idle(channel, rodar):
+        
     
-    while rodar == True:
-        await asyncio.sleep(3)
-        await channel.send('tick')
+    
 
 @client.event
 async def on_message(message):
@@ -297,7 +294,14 @@ async def on_message(message):
     if message.content.lower().startswith(';stopidle'):
         await start_idle(message.channel, rodar=False)
 
-
+    if message.content.lower().startswith(';loop'):
+        
+        while True:
+            if message.content.lower().startswith(';para'):
+                break
+            await asyncio.sleep(3)
+            await message.channel.send('tick')
+        await message.channel.send('FUNCIONOU PORRA!!')
 
 
 
