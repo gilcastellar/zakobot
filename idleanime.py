@@ -8,7 +8,7 @@ import anilist
 
 options = ['335','481','383','634','513']
 
-global episode
+
 episode = 0
 
 # o bot precisa tomar decisões a cada X tempo
@@ -36,6 +36,7 @@ async def start_anime(token):
 
 @tasks.loop(minutes = 24)
 async def watch(anime_id, token):
+    global episode
     episode += 1
     anilist.update_episode(anime_id, episode, token)
     print(f'Assisti o episódio {episode}')
