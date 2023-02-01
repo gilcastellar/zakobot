@@ -24,6 +24,7 @@ status_options = ['DROPPED', 'PAUSED', 'WATCHING']
 
 @tasks.loop(minutes = 1)
 async def think():
+    import zakobot
     print('pensando')
     action = random.choice(action_options)
 
