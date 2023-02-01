@@ -35,7 +35,7 @@ async def start_anime(token):
     #anilist.new_anime(anime_id, token)
 
 @tasks.loop(minutes = 24)
-async def watch(anime_id, max_episodes, token):
+async def watch(anime_id, token):
     max_episodes = anilist.check_max_episodes(anime_id)
     global episode
     if episode != max_episodes:
