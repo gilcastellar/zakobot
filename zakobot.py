@@ -15,6 +15,7 @@ import configparser
 import feedparser
 import rsslistener
 import time
+import sched
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -22,6 +23,10 @@ intents.message_content = True
 client = discord.Client(intents=intents)
 
 admins = [906937520254758973,98410347597139968,628466603486478336,1050904689685831760]
+
+@tasks.loop(seconds = 2)
+async def tick(channel):
+    await channel.send('tick')
 
 @client.event
 async def on_ready():
@@ -34,7 +39,7 @@ async def on_ready():
 
     lista = rsslistener.start_rss(content)
 
-    #await start_idle(client.get_channel(1065847698214887496), rodar=True)
+    
     print('ok')
 
     while True:
@@ -46,10 +51,7 @@ async def on_ready():
                 embed.add_field(name='', value=texto)
                 await channel.send(embed=embed)
         await asyncio.sleep(60)
-        
-    
-    
-
+   
 @client.event
 async def on_message(message):
     if message.author.id == client.user:
@@ -284,27 +286,19 @@ async def on_message(message):
 
         test = anilist.test_mutation(content, accessToken)
 
-    if message.content.lower().startswith(';idle'):
-        #command, content = message.content.split(" ",1)
+    #if message.content.lower().startswith(';idle'):
+    #    #command, content = message.content.split(" ",1)
+        
+    #    await start_idle(message.channel, rodar=True)
 
+    #if message.content.lower().startswith(';stopidle'):
+    #    await start_idle(message.channel, rodar=False)
 
+    if message.content.lower().startswith(';stop'):
+        tick.stop()
+        await message.channel.send('Fim dos ticks')
 
-        await start_idle(message.channel, rodar=True)
-
-    if message.content.lower().startswith(';stopidle'):
-        await start_idle(message.channel, rodar=False)
-
-    if message.content.lower().startswith(';loop'):
-        command, content = message.content.split(" ",1)
-
-        if content == 'iniciar':
-            while True:
-                await asyncio.sleep(3)
-                await message.channel.send('tick')
-        elif content == 'parar':
-            await message.channel.send('FUNCIONOU PORRA!!')
-
-
+tick.start(client.get_channel(1065847698214887496))
 
 config = configparser.RawConfigParser()
 config.read('app.properties')
