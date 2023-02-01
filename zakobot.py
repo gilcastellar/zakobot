@@ -262,6 +262,9 @@ async def on_message(message):
             time.sleep(4)
             await message.channel.send(embed=embed)
 
+            for line in formatted:
+                await message.channel.send(line)
+
     if message.content.lower().startswith(';sinopse'):
         command, content = message.content.split(" ")
         response = anilist.query_anilist(content)
