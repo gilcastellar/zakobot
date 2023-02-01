@@ -40,6 +40,7 @@ def query_user_list(anime_id, user_name):
         id
         userId
         progress
+        episodes
       }
     }
     '''

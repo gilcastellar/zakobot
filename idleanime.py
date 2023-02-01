@@ -18,6 +18,10 @@ options = ['335','481','383','634','513']
 # delay: 30 minutos, a menos que esteja assistindo algo
 # neste caso empurra a decisão para 5 minutos após finalizar
 
+@tasks.loop(minutes = 24)
+async def think():
+    print('pensando')
+
 @tasks.loop(seconds = 20, count = len(options)) # repeat after every 10 seconds
 async def start_anime(token):
     anime_id = random.choice(options)
