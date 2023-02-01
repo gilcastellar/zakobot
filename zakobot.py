@@ -34,7 +34,6 @@ async def on_ready():
 
     lista = rsslistener.start_rss(content)
 
-    tick.start(client.get_channel(1065847698214887496))
     print('ok')
 
     while True:
