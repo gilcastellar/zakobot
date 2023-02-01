@@ -41,7 +41,7 @@ async def on_ready():
 
     lista = rsslistener.start_rss(content)
 
-    idleanime.think.start(accessToken)
+    #idleanime.think.start(accessToken)
 
     #idleanime.start_anime(accessToken)
 
