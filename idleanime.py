@@ -37,6 +37,7 @@ async def start_anime(token):
 @tasks.loop(minutes = 24)
 async def watch(anime_id, max_episodes, token):
     global episode
-    episode += 1
-    anilist.update_episode(anime_id, episode, token)
-    print(f'Assisti o episódio {episode}')
+    if episode != max_episodes:
+        episode += 1
+        anilist.update_episode(anime_id, episode, token)
+        print(f'Assisti o episódio {episode}')
