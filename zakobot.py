@@ -285,7 +285,7 @@ async def on_message(message):
         test = anilist.new_anime(content, accessToken)
         
     if message.content.lower().startswith(';test'):
-        await anilist.update_episode('1', 1, accessToken)
+        anilist.update_episode('1', 1, accessToken)
 
 config = configparser.RawConfigParser()
 config.read('app.properties')
