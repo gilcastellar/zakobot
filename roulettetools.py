@@ -36,10 +36,10 @@ def compatibility_check(members, previous_roulette):
         d = find_member(member)
         if d['tipo'] == 'manga':
             if n['tipo'].lower() == 'anime':
-                return 'not',''
+                return 'not','',[]
         elif d['tipo'].lower() == 'anime':
             if n['tipo'].lower() == 'manga':
-                return 'not',''
+                return 'not','',[]
 
         # The below section creates a new string containing 
         # the new roulette while checking if no one is paired together again
@@ -47,7 +47,7 @@ def compatibility_check(members, previous_roulette):
         with open('original_roulette.txt') as file:
             file = file.read()
             if (str(d['id']) + ',' + str(n['id'])) in file:
-                return 'not',''
+                return 'not','',[]
 
         roulette = roulette + ' ' + d['nome'] + ' -> ' + n['nome'] + '\n'
         pairs.append(d['nome'] + ' -> ' + n['nome'])
