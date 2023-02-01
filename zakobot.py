@@ -252,8 +252,8 @@ async def on_message(message):
             embed = discord.Embed(title='Roleta:', description=formatted)
             await message.channel.send('Roleta formada...')
             time.sleep(1)
-            await message.channel.send('Que rufem os tambores!')
-            time.sleep(5)
+            await message.channel.send('...')
+            time.sleep(4)
             await message.channel.send(embed=embed)
 
     if message.content.lower().startswith(';sinopse'):
