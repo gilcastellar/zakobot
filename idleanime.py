@@ -24,33 +24,44 @@ status_options = ['DROPPED', 'PAUSED', 'WATCHING']
 
 @tasks.loop(minutes = 1)
 async def think():
-    from zakobot import send_message
+    #from zakobot import send_message
     print('pensando')
     action = random.choice(action_options)
 
     match action:
         case 'START':
-            send_message('Comecei um novo anime')
+            print(action)
+            #send_message('Comecei um novo anime')
         case 'WATCH':
-            send_message('Vi um episódio')
-        case 'DROP':
-            send_message('Dropei um anime')
-        case 'UNDROP':
-            send_message('Desdropei um anime')
-        case 'PAUSE':
-            send_message('Pausei um anime')
+            print(action)
+            #send_message('Vi um episódio')
+        case 'DROP
+            print(action)
+            #send_message('Dropei um anime')
+        case 'UNDROP
+            print(action)
+            #send_message('Desdropei um anime')
+        case 'PAUSE
+            print(action)
+            #send_message('Pausei um anime')
         case 'UNPAUSE':
-            send_message('Despausei um anime')
+            print(action)
+            #send_message('Despausei um anime')
         case 'PLAN':
-            send_message('Coloquei um anime no planning')
+            print(action)
+            #send_message('Coloquei um anime no planning')
         case 'STARTPLAN':
-            send_message('Comecei um anime do planning')
+            print(action)
+            #send_message('Comecei um anime do planning')
         case 'BINGE':
-            send_message('Vou maratonar um anime')
+            print(action)
+            #send_message('Vou maratonar um anime')
         case 'WRITE':
-            send_message('Postei uma atividade no anilist')
-        case 'FAV':
-            send_message('Favoritei algo no anilist')
+            print(action)
+            #send_message('Postei uma atividade no anilist')
+        case 'FAV
+            print(action)
+            #send_message('Favoritei algo no anilist')
             
 def start_anime(token):
     anime_id = random.choice(options)
