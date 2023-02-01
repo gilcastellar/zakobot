@@ -24,7 +24,7 @@ client = discord.Client(intents=intents)
 
 admins = [906937520254758973,98410347597139968,628466603486478336,1050904689685831760]
 
-@tasks.loop(seconds = 2)
+@tasks.loop(seconds = 2, count = 5)
 async def tick(channel):
     await channel.send('tick')
 
