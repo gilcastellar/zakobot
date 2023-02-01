@@ -282,10 +282,10 @@ async def on_message(message):
     if message.content.lower().startswith(';mutation'):
         command, content = message.content.split(" ",1)
         
-        test = anilist.test_mutation(content, accessToken)
+        test = anilist.new_anime(content, accessToken)
         
     if message.content.lower().startswith(';test'):
-        await print('boa')
+        await anilist.update_episode('1', 1, accessToken)
 
 config = configparser.RawConfigParser()
 config.read('app.properties')

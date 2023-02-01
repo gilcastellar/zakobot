@@ -28,7 +28,7 @@ def test_anilist(anime_id):
     # Make the HTTP Api request
     return requests.post(url, json={'query': query, 'variables': variables})
 
-def test_mutation(anime, token):
+def new_anime(anime, token):
     headers = {
         'Authorization': token
         }
@@ -52,3 +52,26 @@ def test_mutation(anime, token):
     
     print(data)
        
+def update_episode(anime, episode, token):
+    headers = {
+        'Authorization': token
+        }
+
+    mutation = '''
+    mutation ($mediaId: Int, $progress: Int) {
+        SaveMediaListEntry (mediaId: $mediaId, progress: $progress) {
+            id
+            progress
+        }
+    }
+    '''
+
+    # Define our query variables and values that will be used in the query request
+    variables = {
+        "mediaId": anime,
+        "progress": episode
+    }
+
+    data = (requests.post('https://graphql.anilist.co', json={'query': mutation, 'variables':variables}, headers=headers).json())
+    
+    print(data)
