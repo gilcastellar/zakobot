@@ -8,6 +8,8 @@ import anilist
 
 options = ['335','481','383','634','513']
 
+episode = 0
+
 # o bot precisa tomar decisões a cada X tempo
 # opções de decisões de macro level:
 # começar anime novo, assistir episódio de um anime do watching,
@@ -27,6 +29,11 @@ async def start_anime(token):
 
     title = o['data']['Media']['title']['romaji']
     options.remove(anime_id)
-    print(title)
+    #print(title)
 
     #anilist.new_anime(anime_id, token)
+
+@tasks.loop(minutes = 24)
+async def watch(anime_id, token):
+    episode += 1
+    anilist.update_episode(anime_id, episode, token)
