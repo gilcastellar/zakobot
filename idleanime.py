@@ -1,4 +1,4 @@
-import random
+Ôªøimport random
 import time
 import asyncio
 import discord
@@ -10,15 +10,15 @@ options = ['335','481','383','634','513']
 
 episode = 0
 
-# o bot precisa tomar decisıes a cada X tempo
-# opÁıes de decisıes de macro level:
-# comeÁar anime novo, assistir episÛdio de um anime do watching,
+# o bot precisa tomar decis√µes a cada X tempo
+# op√ß√µes de decis√µes de macro level:
+# come√ßar anime novo, assistir epis√≥dio de um anime do watching,
 # dropar anime, pausar anime, despausar anime, desdropar anime,
 # postar uma atividade, adicionar algo nos favoritos
 
-# tomada de decis„o:
+# tomada de decis√£o:
 # delay: 30 minutos, a menos que esteja assistindo algo
-# neste caso empurra a decis„o para 5 minutos apÛs finalizar
+# neste caso empurra a decis√£o para 5 minutos ap√≥s finalizar
 
 @tasks.loop(seconds = 20, count = len(options)) # repeat after every 10 seconds
 async def start_anime(token):
@@ -37,4 +37,4 @@ async def start_anime(token):
 async def watch(anime_id, token):
     episode += 1
     anilist.update_episode(anime_id, episode, token)
-    print(f'Assisti o episÛdio {episode}')
+    print(f'Assisti o epis√≥dio {episode}')
