@@ -35,7 +35,7 @@ def query_user_list(anime_id, user_name):
     #print(anime_id, anime_name.strip('/'))
 
     query = '''
-    query ($mediaId: Int, $userName: String) { # Define which variables will be used in the query (id)
+    query ($id: Int, $mediaId: Int, $userName: String) { # Define which variables will be used in the query (id)
       MediaList (mediaId: $mediaId, userName: $userName type: ANIME) { # Insert our variables into the query arguments (id) (type: ANIME is hard-coded in the query)
         id
         userId
