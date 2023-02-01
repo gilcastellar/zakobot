@@ -281,7 +281,7 @@ async def on_message(message):
         test = anilist.test_mutation(content, accessToken)
         
     if message.content.lower().startswith(';test'):
-        idleanime.start_anime.start()
+        await idleanime.start_anime.start()
 
 config = configparser.RawConfigParser()
 config.read('app.properties')
