@@ -25,6 +25,7 @@ def shuffle_roulette(previous_roulette):
 
 def compatibility_check(members, previous_roulette):
     roulette = ''
+    pairs = []
     index = 0
 
     for member in members:
@@ -48,7 +49,8 @@ def compatibility_check(members, previous_roulette):
             if (str(d['id']) + ',' + str(n['id'])) in file:
                 return 'not',''
 
-        roulette = roulette + ' ' + d['nome'] + ' -> ' + n['nome'] + '\n' 
+        roulette = roulette + ' ' + d['nome'] + ' -> ' + n['nome'] + '\n'
+        pairs.append(d['nome'] + ' -> ' + n['nome'])
 
         index += 1
 
