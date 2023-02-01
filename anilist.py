@@ -38,6 +38,7 @@ def query_user_list(anime_id):
     query ($mediaId: Int) { # Define which variables will be used in the query (id)
       MediaList (mediaId: $mediaId, type: ANIME) { # Insert our variables into the query arguments (id) (type: ANIME is hard-coded in the query)
         id
+        userID
         progress
       }
     }
