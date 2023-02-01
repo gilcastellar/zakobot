@@ -2,6 +2,7 @@ import random
 import time
 import asyncio
 import discord
+from discord.ext import tasks
 
 options = ['335','481','383','634','513']
 
@@ -15,5 +16,6 @@ options = ['335','481','383','634','513']
 # delay: 30 minutos, a menos que esteja assistindo algo
 # neste caso empurra a decisão para 5 minutos após finalizar
 
-
-
+@tasks.loop(seconds = 10, count = len(options)) # repeat after every 10 seconds
+async def start_anime():
+    await print('boa')
