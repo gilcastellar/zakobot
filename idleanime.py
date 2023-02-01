@@ -18,4 +18,4 @@ options = ['335','481','383','634','513']
 
 @tasks.loop(seconds = 1) # repeat after every 10 seconds
 async def start_anime():
-    await print('boa')
+    print('boa')
