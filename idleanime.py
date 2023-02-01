@@ -18,12 +18,11 @@ options = ['335','481','383','634','513']
 # delay: 30 minutos, a menos que esteja assistindo algo
 # neste caso empurra a decisão para 5 minutos após finalizar
 
-@tasks.loop(minutes = 24)
+@tasks.loop(minutes = 3)
 async def think():
     print('pensando')
 
-@tasks.loop(seconds = 20, count = len(options)) # repeat after every 10 seconds
-async def start_anime(token):
+def start_anime(token):
     anime_id = random.choice(options)
     response = anilist.query_anilist(anime_id)
 
@@ -31,12 +30,11 @@ async def start_anime(token):
 
     title = o['data']['Media']['title']['romaji']
     options.remove(anime_id)
-    #print(title)
+    print(title)
 
-    #anilist.new_anime(anime_id, token)
+    anilist.new_anime(anime_id, token)
 
-@tasks.loop(minutes = 24)
-async def watch(anime_id, user_name, token):
+def watch(anime_id, user_name, token):
     max_episodes = anilist.check_max_episodes(anime_id)
     episode = anilist.check_episode(anime_id, user_name)
     if episode != max_episodes:
@@ -45,3 +43,6 @@ async def watch(anime_id, user_name, token):
         print(f'Assisti o episódio {episode}')
     else:
         watch.stop()
+
+def drop(anime_id, user_name, token):
+    anilist.drop_anime(anime_id, user_name, token)

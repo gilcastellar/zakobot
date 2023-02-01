@@ -64,7 +64,7 @@ def check_max_episodes(anime_id):
 
 def check_episode(anime_id, user_name):
     
-    response = query_user_list('1453', user_name)
+    response = query_user_list(anime_id, user_name)
 
     o = response.json()
 
@@ -92,6 +92,30 @@ def new_anime(anime, token):
     variables = {
         "mediaId": anime,
         "status": "CURRENT"
+    }
+
+    data = (requests.post('https://graphql.anilist.co', json={'query': mutation, 'variables':variables}, headers=headers).json())
+    
+    print(data)
+
+def drop_anime(anime, user, token):
+    headers = {
+        'Authorization': token
+        }
+
+    mutation = '''
+    mutation ($mediaId: Int, $status: MediaListStatus) {
+        SaveMediaListEntry (mediaId: $mediaId, status: $status) {
+            id
+            status
+        }
+    }
+    '''
+
+    # Define our query variables and values that will be used in the query request
+    variables = {
+        "mediaId": anime,
+        "status": "DROPPED"
     }
 
     data = (requests.post('https://graphql.anilist.co', json={'query': mutation, 'variables':variables}, headers=headers).json())
