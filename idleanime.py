@@ -32,9 +32,9 @@ async def start_anime(token):
     #anilist.new_anime(anime_id, token)
 
 @tasks.loop(minutes = 24)
-async def watch(anime_id, token):
+async def watch(anime_id, user_name, token):
     max_episodes = anilist.check_max_episodes(anime_id)
-    episode = anilist.check_episode(anime_id)
+    episode = anilist.check_episode(anime_id, user_name)
     if episode != max_episodes:
         episode += 1
         anilist.update_episode(anime_id, episode, token)

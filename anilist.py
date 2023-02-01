@@ -29,7 +29,7 @@ def query_anilist(anime_id):
     # Make the HTTP Api request
     return requests.post(url, json={'query': query, 'variables': variables})
 
-def query_user_list(anime_id):
+def query_user_list(anime_id, user_name):
 
     #anime_id, anime_name = url.replace('https://anilist.co/anime/','').split('/',1)
     #print(anime_id, anime_name.strip('/'))
@@ -47,7 +47,7 @@ def query_user_list(anime_id):
     # Define our query variables and values that will be used in the query request
     variables = {
         'mediaId': anime_id,
-        'userName': 'zakobot'
+        'userName': user_name
     }
 
     url = 'https://graphql.anilist.co'
@@ -62,9 +62,9 @@ def check_max_episodes(anime_id):
 
     return o['data']['Media']['episodes']
 
-def check_episode(anime_id):
+def check_episode(anime_id, user_name):
     
-    response = query_user_list(anime_id)
+    response = query_user_list(anime_id, user_name)
 
     o = response.json()
 

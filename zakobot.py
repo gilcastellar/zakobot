@@ -39,7 +39,7 @@ async def on_ready():
 
     idleanime.start_anime.start(accessToken)
 
-    idleanime.watch.start('1', accessToken)
+    idleanime.watch.start('1', 'zakobot', accessToken)
 
     print('ok')
 
