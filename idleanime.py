@@ -35,13 +35,13 @@ async def think():
         case 'WATCH':
             print(action)
             #send_message('Vi um episódio')
-        case 'DROP
+        case 'DROP':
             print(action)
             #send_message('Dropei um anime')
-        case 'UNDROP
+        case 'UNDROP':
             print(action)
             #send_message('Desdropei um anime')
-        case 'PAUSE
+        case 'PAUSE':
             print(action)
             #send_message('Pausei um anime')
         case 'UNPAUSE':
@@ -59,7 +59,7 @@ async def think():
         case 'WRITE':
             print(action)
             #send_message('Postei uma atividade no anilist')
-        case 'FAV
+        case 'FAV':
             print(action)
             #send_message('Favoritei algo no anilist')
             
