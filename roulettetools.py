@@ -19,9 +19,9 @@ def shuffle_roulette(previous_roulette):
     
     while fully_compatible != 'yes':
         random.shuffle(members)
-        fully_compatible, roulette = compatibility_check(members, previous_roulette)
+        fully_compatible, roulette, pairs = compatibility_check(members, previous_roulette)
 
-    return roulette, members
+    return roulette, members, pairs
 
 def compatibility_check(members, previous_roulette):
     roulette = ''
@@ -54,7 +54,7 @@ def compatibility_check(members, previous_roulette):
 
         index += 1
 
-    return 'yes', roulette
+    return 'yes', roulette, pairs
 
 
 def find_member(id):

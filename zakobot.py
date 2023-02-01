@@ -242,7 +242,7 @@ async def on_message(message):
             with open('previous_roulette.txt') as file:
                 previous_roulette = file.read().split(',')
 
-            formatted, shuffled = roulettetools.shuffle_roulette(previous_roulette)
+            formatted, shuffled, pairs = roulettetools.shuffle_roulette(previous_roulette)
 
             with open('roulette.txt', 'w') as file:
                 list = ''
@@ -262,7 +262,7 @@ async def on_message(message):
             time.sleep(4)
             await message.channel.send(embed=embed)
 
-            for line in formatted:
+            for line in pairs:
                 await message.channel.send(line)
 
     if message.content.lower().startswith(';sinopse'):
