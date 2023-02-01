@@ -8,6 +8,7 @@ import anilist
 
 options = ['335','481','383','634','513']
 
+global episode
 episode = 0
 
 # o bot precisa tomar decisões a cada X tempo
