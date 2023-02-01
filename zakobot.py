@@ -37,9 +37,11 @@ async def on_ready():
 
     lista = rsslistener.start_rss(content)
 
-    idleanime.start_anime.start(accessToken)
+    idleanime.start_anime(accessToken)
 
-    idleanime.watch.start('1', 'zakobot', accessToken)
+    idleanime.watch('1', 'zakobot', accessToken)
+
+    idleanime.drop('1', 'zakobot', accessToken)
 
     print('ok')
 
