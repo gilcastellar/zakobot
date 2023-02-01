@@ -1,4 +1,5 @@
-﻿import random
+﻿from lib2to3.pgen2 import token
+import random
 import time
 import asyncio
 import discord
@@ -22,46 +23,49 @@ status_options = ['DROPPED', 'PAUSED', 'WATCHING']
 # delay: 30 minutos, a menos que esteja assistindo algo
 # neste caso empurra a decisão para 5 minutos após finalizar
 
-@tasks.loop(minutes = 1)
-async def think():
-    #from zakobot import send_message
-    print('pensando')
-    action = random.choice(action_options)
+@tasks.loop(seconds = 1)
+async def think(token):
 
-    match action:
-        case 'START':
-            print(action)
-            #send_message('Comecei um novo anime')
-        case 'WATCH':
-            print(action)
-            #send_message('Vi um episódio')
-        case 'DROP':
-            print(action)
-            #send_message('Dropei um anime')
-        case 'UNDROP':
-            print(action)
-            #send_message('Desdropei um anime')
-        case 'PAUSE':
-            print(action)
-            #send_message('Pausei um anime')
-        case 'UNPAUSE':
-            print(action)
-            #send_message('Despausei um anime')
-        case 'PLAN':
-            print(action)
-            #send_message('Coloquei um anime no planning')
-        case 'STARTPLAN':
-            print(action)
-            #send_message('Comecei um anime do planning')
-        case 'BINGE':
-            print(action)
-            #send_message('Vou maratonar um anime')
-        case 'WRITE':
-            print(action)
-            #send_message('Postei uma atividade no anilist')
-        case 'FAV':
-            print(action)
-            #send_message('Favoritei algo no anilist')
+    watch('1', 'zakobot', token)
+
+    ##from zakobot import send_message
+    #print('pensando')
+    #action = random.choice(action_options)
+
+    #match action:
+    #    case 'START':
+    #        print(action)
+    #        #send_message('Comecei um novo anime')
+    #    case 'WATCH':
+    #        print(action)
+    #        #send_message('Vi um episódio')
+    #    case 'DROP':
+    #        print(action)
+    #        #send_message('Dropei um anime')
+    #    case 'UNDROP':
+    #        print(action)
+    #        #send_message('Desdropei um anime')
+    #    case 'PAUSE':
+    #        print(action)
+    #        #send_message('Pausei um anime')
+    #    case 'UNPAUSE':
+    #        print(action)
+    #        #send_message('Despausei um anime')
+    #    case 'PLAN':
+    #        print(action)
+    #        #send_message('Coloquei um anime no planning')
+    #    case 'STARTPLAN':
+    #        print(action)
+    #        #send_message('Comecei um anime do planning')
+    #    case 'BINGE':
+    #        print(action)
+    #        #send_message('Vou maratonar um anime')
+    #    case 'WRITE':
+    #        print(action)
+    #        #send_message('Postei uma atividade no anilist')
+    #    case 'FAV':
+    #        print(action)
+    #        #send_message('Favoritei algo no anilist')
             
 def start_anime(token):
     anime_id = random.choice(options)
@@ -84,6 +88,7 @@ def watch(anime_id, user_name, token):
         print(f'Assisti o episódio {episode}')
     else:
         score = random.randrange(1,10)
+        print('nota =',score)
         anilist.give_score(anime_id, score, user_name, token)
 
 
