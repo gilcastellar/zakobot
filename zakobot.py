@@ -39,7 +39,7 @@ async def on_ready():
 
     idleanime.start_anime.start(accessToken)
 
-    idleanime.watch.start('21128', accessToken)
+    idleanime.watch.start('1', accessToken)
 
     print('ok')
 
