@@ -50,7 +50,7 @@ def compatibility_check(members, previous_roulette):
                 return 'not','',[]
 
         roulette = roulette + ' ' + d['nome'] + ' -> ' + n['nome'] + '\n'
-        pairs.append(d['nome'] + ' -> ' + n['nome'])
+        pairs.append('**' + d['nome'] + '**' + ' -> ' + '**' + n['nome'] + '**')
 
         index += 1
 
