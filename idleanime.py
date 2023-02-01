@@ -18,4 +18,6 @@ options = ['335','481','383','634','513']
 
 @tasks.loop(seconds = 1, count = len(options)) # repeat after every 10 seconds
 async def start_anime():
-    print('boa')
+    anime = random.choice(options)
+    options.remove(anime)
+    print(anime)
