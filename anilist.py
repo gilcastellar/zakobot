@@ -98,7 +98,7 @@ def new_anime(anime, token):
     
     print(data)
 
-def drop_anime(anime, user, token):
+def update_anime_status(anime, user, status, token):
     headers = {
         'Authorization': token
         }
@@ -115,7 +115,7 @@ def drop_anime(anime, user, token):
     # Define our query variables and values that will be used in the query request
     variables = {
         "mediaId": anime,
-        "status": "DROPPED"
+        "status": status
     }
 
     data = (requests.post('https://graphql.anilist.co', json={'query': mutation, 'variables':variables}, headers=headers).json())
