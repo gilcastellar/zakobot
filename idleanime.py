@@ -24,33 +24,33 @@ status_options = ['DROPPED', 'PAUSED', 'WATCHING']
 
 @tasks.loop(minutes = 1)
 async def think():
-    import zakobot
+    from zakobot import send_message
     print('pensando')
     action = random.choice(action_options)
 
     match action:
         case 'START':
-            zakobot.send_message('Comecei um novo anime')
+            send_message('Comecei um novo anime')
         case 'WATCH':
-            zakobot.send_message('Vi um episódio')
+            send_message('Vi um episódio')
         case 'DROP':
-            zakobot.send_message('Dropei um anime')
+            send_message('Dropei um anime')
         case 'UNDROP':
-            zakobot.send_message('Desdropei um anime')
+            send_message('Desdropei um anime')
         case 'PAUSE':
-            zakobot.send_message('Pausei um anime')
+            send_message('Pausei um anime')
         case 'UNPAUSE':
-            zakobot.send_message('Despausei um anime')
+            send_message('Despausei um anime')
         case 'PLAN':
-            zakobot.send_message('Coloquei um anime no planning')
+            send_message('Coloquei um anime no planning')
         case 'STARTPLAN':
-            zakobot.send_message('Comecei um anime do planning')
+            send_message('Comecei um anime do planning')
         case 'BINGE':
-            zakobot.send_message('Vou maratonar um anime')
+            send_message('Vou maratonar um anime')
         case 'WRITE':
-            zakobot.send_message('Postei uma atividade no anilist')
+            send_message('Postei uma atividade no anilist')
         case 'FAV':
-            zakobot.send_message('Favoritei algo no anilist')
+            send_message('Favoritei algo no anilist')
             
 def start_anime(token):
     anime_id = random.choice(options)
