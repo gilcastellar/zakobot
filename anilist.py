@@ -1,10 +1,10 @@
 import requests
 import json
 
-def test_anilist(url):
+def test_anilist(anime_id):
 
-    anime_id, anime_name = url.replace('https://anilist.co/anime/','').split('/',1)
-    print(anime_id, anime_name.strip('/'))
+    #anime_id, anime_name = url.replace('https://anilist.co/anime/','').split('/',1)
+    #print(anime_id, anime_name.strip('/'))
 
     query = '''
     query ($id: Int) { # Define which variables will be used in the query (id)

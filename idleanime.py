@@ -4,6 +4,8 @@ import asyncio
 import discord
 from discord.ext import tasks
 
+import anilist
+
 options = ['335','481','383','634','513']
 
 # o bot precisa tomar decisões a cada X tempo
@@ -18,6 +20,7 @@ options = ['335','481','383','634','513']
 
 @tasks.loop(seconds = 1, count = len(options)) # repeat after every 10 seconds
 async def start_anime():
-    anime = random.choice(options)
-    options.remove(anime)
-    print(anime)
+    anime_id = random.choice(options)
+    anime_name = anilist.test_anilist(anime_id)
+    options.remove(anime_id)
+    print(anime_name)
