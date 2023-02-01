@@ -145,3 +145,27 @@ def update_episode(anime, episode, token):
     data = (requests.post('https://graphql.anilist.co', json={'query': mutation, 'variables':variables}, headers=headers).json())
     
     print(data)
+
+def give_score(anime, score, user, token):
+    headers = {
+        'Authorization': token
+        }
+
+    mutation = '''
+    mutation ($mediaId: Int, $score: Float) {
+        SaveMediaListEntry (mediaId: $mediaId, score: $score) {
+            id
+            score
+        }
+    }
+    '''
+
+    # Define our query variables and values that will be used in the query request
+    variables = {
+        "mediaId": anime,
+        "score": score
+    }
+
+    data = (requests.post('https://graphql.anilist.co', json={'query': mutation, 'variables':variables}, headers=headers).json())
+    
+    print(data)

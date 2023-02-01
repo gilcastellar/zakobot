@@ -83,7 +83,9 @@ def watch(anime_id, user_name, token):
         anilist.update_episode(anime_id, episode, token)
         print(f'Assisti o episódio {episode}')
     else:
-        watch.stop()
+        score = random.randrange(1,10)
+        anilist.give_score(anime_id, score, user_name, token)
+
 
 def update_status(anime_id, user_name, status, token):
     anilist.update_anime_status(anime_id, user_name, status, token)
