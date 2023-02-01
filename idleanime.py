@@ -4,7 +4,6 @@ import asyncio
 import discord
 from discord.ext import tasks
 
-import zakobot
 import anilist
 
 options = ['335','481','383','634','513']
