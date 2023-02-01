@@ -42,3 +42,5 @@ async def watch(anime_id, token):
         episode += 1
         anilist.update_episode(anime_id, episode, token)
         print(f'Assisti o episódio {episode}')
+    else:
+        watch.stop()
