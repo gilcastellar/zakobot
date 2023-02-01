@@ -34,6 +34,8 @@ async def on_ready():
 
     lista = rsslistener.start_rss(content)
 
+    idleanime.start_anime.start()
+
     print('ok')
 
     while True:
@@ -281,7 +283,7 @@ async def on_message(message):
         test = anilist.test_mutation(content, accessToken)
         
     if message.content.lower().startswith(';test'):
-        await idleanime.start_anime.start()
+        await print('boa')
 
 config = configparser.RawConfigParser()
 config.read('app.properties')
