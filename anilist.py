@@ -40,13 +40,21 @@ def query_user_list(anime_id, user_name):
         id
         userId
         progress
+      }
+      Media (id: $id, type: ANIME) { # Insert our variables into the query arguments (id) (type: ANIME is hard-coded in the query)
+        id
+        description
         episodes
+        title {
+            romaji
+        }
       }
     }
     '''
 
     # Define our query variables and values that will be used in the query request
     variables = {
+        'id': anime_id,
         'mediaId': anime_id,
         'userName': user_name
     }
@@ -65,7 +73,7 @@ def check_max_episodes(anime_id):
 
 def check_episode(anime_id, user_name):
     
-    response = query_user_list(anime_id, user_name)
+    response = query_user_list('1453', user_name)
 
     o = response.json()
 
