@@ -255,16 +255,12 @@ async def on_message(message):
                     i += 1
                 file.write(list)
 
-            #embed = discord.Embed(title='Roleta:', description=formatted)
-            #await message.channel.send('Roleta formada...')
-            #time.sleep(1)
-            #await message.channel.send('...')
-            #time.sleep(4)
-            #await message.channel.send(embed=embed)
-
             for line in pairs:
-                time.sleep(1)
+                time.sleep(3)
                 await message.channel.send(line)
+
+            embed = discord.Embed(title='Roleta:', description=formatted)
+            await message.channel.send(embed=embed)
 
     if message.content.lower().startswith(';sinopse'):
         command, content = message.content.split(" ")
