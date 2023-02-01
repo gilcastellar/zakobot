@@ -21,6 +21,10 @@ options = ['335','481','383','634','513']
 @tasks.loop(seconds = 1, count = len(options)) # repeat after every 10 seconds
 async def start_anime():
     anime_id = random.choice(options)
-    anime_name = anilist.test_anilist(anime_id)
+    response = anilist.test_anilist(anime_id)
+
+    o = response.json()
+
+    title = o['data']['Media']['title']['romaji']
     options.remove(anime_id)
-    print(anime_name)
+    print(title)
