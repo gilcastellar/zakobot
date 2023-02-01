@@ -42,7 +42,7 @@ async def on_ready():
     max_episodes = anilist.check_max_episodes('1')
     print(max_episodes)
 
-    idleanime.watch.start('1', , accessToken)
+    idleanime.watch.start('1', max_episodes, accessToken)
 
     print('ok')
 

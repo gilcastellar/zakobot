@@ -33,6 +33,7 @@ def check_max_episodes(anime_id):
     response = query_anilist(anime_id)
 
     o = response.json()
+    print(o['episodes'])
 
     return o['episodes']
 
