@@ -39,7 +39,10 @@ async def on_ready():
 
     idleanime.start_anime.start(accessToken)
 
-    idleanime.watch.start('1', accessToken)
+    max_episodes = anilist.check_max_episodes('1')
+    print(max_episodes)
+
+    idleanime.watch.start('1', , accessToken)
 
     print('ok')
 
@@ -258,7 +261,7 @@ async def on_message(message):
 
     if message.content.lower().startswith(';sinopse'):
         command, content = message.content.split(" ")
-        response = anilist.test_anilist(content)
+        response = anilist.query_anilist(content)
 
         print(json.dumps(response.json(), indent=2))
 

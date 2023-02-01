@@ -1,7 +1,7 @@
 import requests
 import json
 
-def test_anilist(anime_id):
+def query_anilist(anime_id):
 
     #anime_id, anime_name = url.replace('https://anilist.co/anime/','').split('/',1)
     #print(anime_id, anime_name.strip('/'))
@@ -11,6 +11,7 @@ def test_anilist(anime_id):
       Media (id: $id, type: ANIME) { # Insert our variables into the query arguments (id) (type: ANIME is hard-coded in the query)
         id
         description
+        episodes
         title {
             romaji
         }
@@ -27,6 +28,14 @@ def test_anilist(anime_id):
 
     # Make the HTTP Api request
     return requests.post(url, json={'query': query, 'variables': variables})
+
+def check_max_episodes(anime_id):
+    response = query_anilist(anime_id)
+
+    o = response.json()
+
+    return o['episodes']
+
 
 def new_anime(anime, token):
     headers = {

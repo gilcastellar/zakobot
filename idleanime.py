@@ -24,7 +24,7 @@ episode = 0
 @tasks.loop(seconds = 20, count = len(options)) # repeat after every 10 seconds
 async def start_anime(token):
     anime_id = random.choice(options)
-    response = anilist.test_anilist(anime_id)
+    response = anilist.query_anilist(anime_id)
 
     o = response.json()
 
@@ -34,8 +34,8 @@ async def start_anime(token):
 
     #anilist.new_anime(anime_id, token)
 
-@tasks.loop(seconds = 2)
-async def watch(anime_id, token):
+@tasks.loop(minutes = 24)
+async def watch(anime_id, max_episodes, token):
     global episode
     episode += 1
     anilist.update_episode(anime_id, episode, token)
