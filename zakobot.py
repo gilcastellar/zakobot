@@ -26,7 +26,7 @@ admins = [906937520254758973,98410347597139968,628466603486478336,10509046896858
 
 @tasks.loop(seconds = 2)
 async def tick(channel):
-    await channel.send('tick')
+    channel.send('tick')
 
 @client.event
 async def on_ready():
