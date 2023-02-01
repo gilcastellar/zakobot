@@ -29,4 +29,4 @@ async def start_anime(token):
     options.remove(anime_id)
     print(title)
 
-    anilist.new_anime(anime_id, token)
+    #anilist.new_anime(anime_id, token)
