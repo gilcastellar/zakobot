@@ -34,7 +34,7 @@ async def start_anime(token):
 
     #anilist.new_anime(anime_id, token)
 
-@tasks.loop(minutes = 24)
+@tasks.loop(seconds = 2)
 async def watch(anime_id, token):
     global episode
     episode += 1
