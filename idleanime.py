@@ -18,8 +18,8 @@ options = ['335','481','383','634','513']
 # delay: 30 minutos, a menos que esteja assistindo algo
 # neste caso empurra a decisão para 5 minutos após finalizar
 
-@tasks.loop(seconds = 1, count = len(options)) # repeat after every 10 seconds
-async def start_anime():
+@tasks.loop(seconds = 20, count = len(options)) # repeat after every 10 seconds
+async def start_anime(token):
     anime_id = random.choice(options)
     response = anilist.test_anilist(anime_id)
 
@@ -28,3 +28,5 @@ async def start_anime():
     title = o['data']['Media']['title']['romaji']
     options.remove(anime_id)
     print(title)
+
+    anilist.test_mutation(anime_id, token)
