@@ -26,7 +26,7 @@ admins = [906937520254758973,98410347597139968,628466603486478336,10509046896858
 
 @tasks.loop(seconds = 2)
 async def tick(channel):
-    channel.send('tick')
+    await channel.send('tick')
 
 @client.event
 async def on_ready():
@@ -39,7 +39,7 @@ async def on_ready():
 
     lista = rsslistener.start_rss(content)
 
-    
+    await tick.start(client.get_channel(1065847698214887496))
     print('ok')
 
     while True:
@@ -297,8 +297,6 @@ async def on_message(message):
     if message.content.lower().startswith(';stop'):
         tick.stop()
         await message.channel.send('Fim dos ticks')
-
-tick.start(client.get_channel(1065847698214887496))
 
 config = configparser.RawConfigParser()
 config.read('app.properties')
