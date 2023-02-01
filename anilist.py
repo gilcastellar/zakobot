@@ -72,7 +72,7 @@ def check_episode(anime_id, user_name):
     print(o)
     print(o['data']['MediaList']['progress'])
     
-    print('max =', o['data']['MediaList']['progress'])
+    print('max =', o['data']['MediaList']['episodes'])
 
     return o['data']['MediaList']['progress']
 
