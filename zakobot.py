@@ -87,54 +87,6 @@ async def on_message(message):
             await message.channel.send(embed=commands.ajuda())
         case ';cadastro':
             await message.channel.send(commands.cadastro(msg, sender_info))
-        
-
-    #if message.content.lower().startswith(';cadastro'):
-
-    #    id = message.author.id
-    #    name = message.author.name
-    #    avatar = message.author.avatar
-
-    #    await message.channel.send(commands.cadastro(id, name, avatar, content))
-
-    #    while True:
-    #        try:
-    #            command, content = message.content.split(" ")
-
-    #        except:
-    #            await message.channel.send('Algo de errado não está certo. Tente novamente!')
-    #            break
-                
-    #        if content.lower() in ['anime','manga','animanga']:
-
-    #            new_member = {'id': id, 'nome': name, 'ativo': 'Sim', 'pontos': '', 'tipo': content, 'obs': ''}
-
-    #            with open('roulette_members.json','r') as file:
-                    
-    #                roulettetools.roulette_members = json.load(file)
-
-    #                if any(d['id'] == id for d in roulettetools.roulette_members):
-    #                    for dict in roulettetools.roulette_members:
-    #                        if dict['id'] == id:
-    #                            if dict['tipo'] == '':
-    #                                await message.channel.send('Cadastro feito!')
-    #                            else:
-    #                                await message.channel.send('Cadastro atualizado!')
-                                
-    #                            dict['tipo'] = content.lower()
-                                    
-    #                    with open('roulette_members.json','w') as file:
-    #                        json.dump(roulettetools.roulette_members, file, indent=2)
-                                
-    #                else:
-    #                    roulettetools.roulette_members.append(new_member)
-
-    #                    with open('roulette_members.json', 'w') as file:
-    #                        print(new_member)
-    #                        json.dump(roulettetools.roulette_members, file, indent=2)
-
-    #                    await message.channel.send('Cadastro realizado!')
-    #        break
 
     if message.content.lower().startswith(';obs'):
         id = message.author.id
