@@ -6,13 +6,13 @@ import json
 def ajuda():
 
     embed = discord.Embed(title='Instruções:')
-    embed.add_field(name='Se você ainda não se cadastro, utilize o comando ;cadastro seguido do tipo de obra que aceita',value='',inline=False)
+    embed.add_field(name='Se você quer se cadastrar ou alterar o tipo de obra que aceita receber, utilize o comando ;cadastro seguido do tipo',value='',inline=False)
     embed.add_field(name='',value='Exemplos:',inline=False)
     embed.add_field(name='',value=';cadastro anime \n ou \n;cadastro manga \n ou \n;cadastro animanga',inline=False)
     embed.add_field(name="", value="", inline=False)
     embed.add_field(name="--", value="", inline=False)
     embed.add_field(name="", value="", inline=False)
-    embed.add_field(name='Para participar da próxima roleta, digite ;ativar. Para se ausentar, use ;desativar',value='',inline=False)
+    embed.add_field(name='Para participar da próxima roleta, use ;ativar. Para se ausentar, use ;desativar',value='',inline=False)
     embed.add_field(name="", value="", inline=False)
     embed.add_field(name="--", value="", inline=False)
     embed.add_field(name="", value="", inline=False)
