@@ -7,6 +7,7 @@ from platform import python_revision
 import discord
 from discord.ext import commands, tasks
 import asyncio
+import commands
 import roulettetools
 import anilist
 import idleanime
@@ -65,7 +66,7 @@ async def on_message(message):
         return
 
     if message.content.lower().startswith(';ajuda'):
-        await message.channel.send(command.help())
+        await message.channel.send(commands.help())
 
     if message.content.lower().startswith(';cadastro'):
 
