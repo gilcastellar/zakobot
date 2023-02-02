@@ -35,6 +35,7 @@ def cadastro(msg, info):
     if msg[1].lower() in ['anime','manga','mangá','animanga','animangá']:
         if msg[1].lower() in ['mangá','animangá']:
             msg[1] = msg[1].replace('á','a')
+            print(msg[1])
         new_member = {'id': info['id'], 'nome': info['display_name'], 'ativo': 'Não', 'pontos': 0, 'tipo': msg[1].lower(), 'obs': ''}
 
         with open('roulette_members.json','r') as file:
@@ -43,7 +44,7 @@ def cadastro(msg, info):
 
             if any(d['id'] == info['id'] for d in roulettetools.roulette_members):
                 for dict in roulettetools.roulette_members:
-                    if dict['id'] == id:
+                    if dict['id'] == info['id']:
                         dict['tipo'] = msg[1].lower()
                         return 'Cadastro atualizado!'
 
