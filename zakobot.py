@@ -1,7 +1,6 @@
 ﻿# encoding: utf-8
 # para que acentos sejam aceitos é preciso salvar o script com o encoding correto
 
-from csv import reader
 from platform import python_revision
 #from turtle import color
 import discord
@@ -60,68 +59,82 @@ async def on_ready():
                 await channel.send(embed=embed)
         await asyncio.sleep(60)
    
+def get_sender_info(msg):
+    dict = {
+        'id': msg.author.id,
+        'name': msg.author.name,
+        'avatar': msg.author.avatar,
+        'mention': msg.author.mention,
+        'nick': msg.author.nick,
+        'roles': msg.author.roles,
+        'display_name': msg.author.display_name,
+        'display_avatar': msg.author.display_avatar
+        }
+    return dict
+
 @client.event
 async def on_message(message):
     if message.author.id == client.user:
         return
 
-    msg = message.content.split(" ")
+    msg = message.content.split(' ')
+    sender_info = get_sender_info(message)
 
     command = msg[0].lower()
 
     match command:
-
         case ';ajuda':
             await message.channel.send(embed=commands.ajuda())
-    #if message.content.lower().startswith(';ajuda'):
+        case ';cadastro':
+            await message.channel.send(commands.cadastro(msg, sender_info))
         
 
-    if message.content.lower().startswith(';cadastro'):
+    #if message.content.lower().startswith(';cadastro'):
 
-        id = message.author.id
-        name = message.author.name
-        avatar = message.author.avatar
+    #    id = message.author.id
+    #    name = message.author.name
+    #    avatar = message.author.avatar
 
-        await message.channel.send(commands.cadastro(id, name, avatar, content))
+    #    await message.channel.send(commands.cadastro(id, name, avatar, content))
 
-        while True:
-            try:
-                command, content = message.content.split(" ")
+    #    while True:
+    #        try:
+    #            command, content = message.content.split(" ")
 
-            except:
-                await message.channel.send('Algo de errado não está certo. Tente novamente!')
-                break
+    #        except:
+    #            await message.channel.send('Algo de errado não está certo. Tente novamente!')
+    #            break
                 
-            if content.lower() in ['anime','manga','animanga']:
+    #        if content.lower() in ['anime','manga','animanga']:
 
-                new_member = {'id': id, 'nome': name, 'ativo': 'Sim', 'pontos': '', 'tipo': content, 'obs': ''}
+    #            new_member = {'id': id, 'nome': name, 'ativo': 'Sim', 'pontos': '', 'tipo': content, 'obs': ''}
 
-                with open('roulette_members.json','r') as file:
+    #            with open('roulette_members.json','r') as file:
                     
-                    roulettetools.roulette_members = json.load(file)
+    #                roulettetools.roulette_members = json.load(file)
 
-                    if any(d['id'] == id for d in roulettetools.roulette_members):
-                        for dict in roulettetools.roulette_members:
-                            if dict['id'] == id:
-                                if dict['tipo'] == '':
-                                    await message.channel.send('Cadastro feito!')
-                                else:
-                                    await message.channel.send('Cadastro atualizado!')
+    #                if any(d['id'] == id for d in roulettetools.roulette_members):
+    #                    for dict in roulettetools.roulette_members:
+    #                        if dict['id'] == id:
+    #                            if dict['tipo'] == '':
+    #                                await message.channel.send('Cadastro feito!')
+    #                            else:
+    #                                await message.channel.send('Cadastro atualizado!')
                                 
-                                dict['tipo'] = content.lower()
+    #                            dict['tipo'] = content.lower()
                                     
-                        with open('roulette_members.json','w') as file:
-                            json.dump(roulettetools.roulette_members, file, indent=2)
+    #                    with open('roulette_members.json','w') as file:
+    #                        json.dump(roulettetools.roulette_members, file, indent=2)
                                 
-                    else:
-                        roulettetools.roulette_members.append(new_member)
+    #                else:
+    #                    roulettetools.roulette_members.append(new_member)
 
-                        with open('roulette_members.json', 'w') as file:
-                            print(new_member)
-                            json.dump(roulettetools.roulette_members, file, indent=2)
+    #                    with open('roulette_members.json', 'w') as file:
+    #                        print(new_member)
+    #                        json.dump(roulettetools.roulette_members, file, indent=2)
 
-                        await message.channel.send('Cadastro realizado!')
-            break
+    #                    await message.channel.send('Cadastro realizado!')
+    #        break
 
     if message.content.lower().startswith(';obs'):
         id = message.author.id
@@ -262,7 +275,7 @@ async def on_message(message):
 
             formatted, shuffled, pairs = roulettetools.shuffle_roulette(previous_roulette)
 
-            with open('roulette.txt', 'w') as file:
+            with open('previous_roulette.txt', 'w') as file:
                 list = ''
                 i = 0
                 for member in shuffled:

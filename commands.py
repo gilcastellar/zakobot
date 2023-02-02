@@ -1,5 +1,7 @@
-﻿
-import discord
+﻿import discord
+import roulettetools
+import json
+
 
 def ajuda():
 
@@ -25,3 +27,32 @@ def ajuda():
     embed.add_field(name='',value=';perfil @kaiser \n ;perfil 906937520254758973',inline=False) 
 
     return embed
+
+def cadastro(msg, info):
+    if len(msg) != 2:
+        return 'Você enviou informações demais (ou de menos). Para se cadastrar, envie apenas ;cadastro + tipo de cadastro.'
+
+    if msg[1].lower() in ['anime','manga','animanga']:
+        new_member = {'id': info['id'], 'nome': info['display_name'], 'ativo': 'Não', 'pontos': 0, 'tipo': msg[1], 'obs': ''}
+
+        with open('roulette_members.json','r') as file:
+                    
+            roulettetools.roulette_members = json.load(file)
+
+            if any(d['id'] == id for d in roulettetools.roulette_members):
+                for dict in roulettetools.roulette_members:
+                    if dict['id'] == id:
+                        dict['tipo'] = msg[1].lower()
+                        return 'Cadastro atualizado!'
+
+                with open('roulette_members.json','w') as file:
+                    json.dump(roulettetools.roulette_members, file, indent=2)
+                                
+            else:
+                roulettetools.roulette_members.append(new_member)
+
+                with open('roulette_members.json', 'w') as file:
+                    print(new_member)
+                    json.dump(roulettetools.roulette_members, file, indent=2)
+
+                return 'Cadastro realizado!'
