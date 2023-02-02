@@ -1,4 +1,4 @@
-import requests
+﻿import requests
 import json
 
 def query_anilist(anime_id):
