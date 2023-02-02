@@ -216,12 +216,31 @@ async def on_message(message):
                     else:
                         tipo = 'Anime'
 
+                    points = d['pontos']
                     obs = d['obs']
                     embed.add_field(name='Ativo:',value=ativo,inline=False)
                     embed.add_field(name='Aceito:',value=tipo,inline=False)
+                    embed.add_field(name='Pontos:',value=points,inline=False)
                     embed.add_field(name='Observações:',value=obs,inline=False)
 
         await message.channel.send(embed=embed)
+
+    if message.content.lower().startswith(';darpontos'):
+        command, user_id, points = message.content.split(" ",2)
+
+        points = int(points)
+        
+        with open('roulette_members.json','r') as file:
+                    
+            roulettetools.roulette_members = json.load(file)
+
+            for member in roulettetools.roulette_members:
+                if member['id'] == user_id:
+                    d['pontos'] += points
+
+        with open('roulette_members.json', 'w') as file:
+            json.dump(roulettetools.roulette_members, file, indent=2)
+            
 
     if message.content.lower().startswith(';membros'):
         embed = discord.Embed(title='Membros ativos na roleta:')
@@ -291,6 +310,7 @@ async def on_message(message):
         command, content = message.content.split(" ",1)
         
         test = anilist.new_anime(content, accessToken)
+
         
     if message.content.lower().startswith(';test'):
         anilist.update_episode('1', 1, accessToken)
