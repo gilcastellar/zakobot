@@ -49,6 +49,7 @@ def cadastro(msg, info):
                         return 'Cadastro atualizado!'
 
                 with open('roulette_members.json','w') as file:
+                    print('chegou no write')
                     json.dump(roulettetools.roulette_members, file, indent=2)
                                 
             else:
