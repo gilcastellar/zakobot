@@ -231,6 +231,7 @@ async def on_message(message):
         print('ok1')
 
         points = int(points)
+        user_id = int(user_id)
         
         with open('roulette_members.json','r') as file:
                     
