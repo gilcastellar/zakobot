@@ -41,7 +41,7 @@ def cadastro(msg, info):
                     
             roulettetools.roulette_members = json.load(file)
 
-            if any(d['id'] == id for d in roulettetools.roulette_members):
+            if any(d['id'] == info['id'] for d in roulettetools.roulette_members):
                 for dict in roulettetools.roulette_members:
                     if dict['id'] == id:
                         dict['tipo'] = msg[1].lower()
