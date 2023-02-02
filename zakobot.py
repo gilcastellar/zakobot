@@ -241,7 +241,7 @@ async def on_message(message):
 
             for member in roulettetools.roulette_members:
                 if member['id'] == user_id:
-                    d['pontos'] += points
+                    member['pontos'] += points
 
             print('ok3')
 
