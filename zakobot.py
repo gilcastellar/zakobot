@@ -66,7 +66,7 @@ async def on_message(message):
         return
 
     if message.content.lower().startswith(';ajuda'):
-        await message.channel.send(commands.help())
+        await message.channel.send(embed=commands.help())
 
     if message.content.lower().startswith(';cadastro'):
 
