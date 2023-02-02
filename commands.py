@@ -34,7 +34,7 @@ def cadastro(msg, info):
 
     if msg[1].lower() in ['anime','manga','mangá','animanga','animangá']:
         if msg[1].lower() in ['mangá','animangá']:
-            msg[1] = msg[1].replace('á','a')
+            msg[1] = msg[1].replace('á','a').lower()
         new_member = {'id': info['id'], 'nome': info['display_name'], 'ativo': 'Não', 'pontos': 0, 'tipo': msg[1], 'obs': ''}
 
         with open('roulette_members.json','r') as file:
