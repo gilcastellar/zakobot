@@ -1,10 +1,10 @@
 ﻿
 import discord
 
-def help():
+def ajuda():
 
     embed = discord.Embed(title='Instruções:')
-    embed.add_field(name='Para se cadastrar ou alterar seu cadastro, utilize novamente o comando ;cadastro seguido do tipo de obra que aceita',value='',inline=False)
+    embed.add_field(name='Se voc o comando ;cadastro seguido do tipo de obra que aceita',value='',inline=False)
     embed.add_field(name='',value='Exemplos:',inline=False)
     embed.add_field(name='',value=';cadastro anime \n ;cadastro manga \n ;cadastro animanga',inline=False)
     embed.add_field(name="", value="", inline=False)

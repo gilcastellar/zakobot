@@ -65,14 +65,24 @@ async def on_message(message):
     if message.author.id == client.user:
         return
 
-    if message.content.lower().startswith(';ajuda'):
-        await message.channel.send(embed=commands.help())
+    msg = message.content.split(" ")
+
+    command = msg[0].lower()
+
+    match command:
+
+        case ';ajuda':
+            await message.channel.send(embed=commands.ajuda())
+    #if message.content.lower().startswith(';ajuda'):
+        
 
     if message.content.lower().startswith(';cadastro'):
 
         id = message.author.id
         name = message.author.name
         avatar = message.author.avatar
+
+        await message.channel.send(commands.cadastro(id, name, avatar, content))
 
         while True:
             try:
