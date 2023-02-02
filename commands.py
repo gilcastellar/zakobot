@@ -32,7 +32,9 @@ def cadastro(msg, info):
     if len(msg) != 2:
         return 'Você enviou informações demais (ou de menos). Para se cadastrar, envie apenas ;cadastro + tipo de cadastro.'
 
-    if msg[1].lower() in ['anime','manga','animanga']:
+    if msg[1].lower() in ['anime','manga','mangá','animanga','animangá']:
+        if msg[1].lower() in ['mangá','animangá']:
+            msg[1] = msg[1].replace('á','a')
         new_member = {'id': info['id'], 'nome': info['display_name'], 'ativo': 'Não', 'pontos': 0, 'tipo': msg[1], 'obs': ''}
 
         with open('roulette_members.json','r') as file:
