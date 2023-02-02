@@ -228,18 +228,26 @@ async def on_message(message):
     if message.content.lower().startswith(';darpontos'):
         command, user_id, points = message.content.split(" ",2)
 
+        print('ok1')
+
         points = int(points)
         
         with open('roulette_members.json','r') as file:
                     
             roulettetools.roulette_members = json.load(file)
+            
+            print('ok2')
 
             for member in roulettetools.roulette_members:
                 if member['id'] == user_id:
                     d['pontos'] += points
 
+            print('ok3')
+
         with open('roulette_members.json', 'w') as file:
             json.dump(roulettetools.roulette_members, file, indent=2)
+
+        print('ok4')
             
 
     if message.content.lower().startswith(';membros'):
