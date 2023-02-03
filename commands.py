@@ -112,7 +112,7 @@ def editar_placar(msg, pares, info, admins):
 
     with open(pares, 'w') as newfile:
         for i in pairs:
-            newfile.write(newline + '\n')
+            newfile.write(newline + ',')
 
     return pares, embed
 
@@ -150,6 +150,6 @@ def terminei(msg, info, pares):
     
     with open(pares, 'w') as newfile:
         for i in pairs:
-            newfile.write(newline + '\n')
+            newfile.write(newline + ',')
 
     return pares, embed
