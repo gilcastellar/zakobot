@@ -108,6 +108,7 @@ def terminei(msg, info, pares):
 
     if '/10' in nota:
         nota = nota.replace('/10','')
+        print(nota)
     
     user = '-> ' + info['display_name']
     
