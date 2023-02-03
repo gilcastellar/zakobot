@@ -102,16 +102,17 @@ async def on_message(message):
             await message.channel.send(commands.cadastro(msg, sender_info))
         case ';gerarplacar':
             users = await get_users('previous_roulette.txt')
-            pares, placar = commands.gerar_placar(users)
-            print(pares)
+            global pairs
+            pairs, placar = commands.gerar_placar(users)
+            print(pairs)
             message = await message.channel.send(embed=placar)
             global placar_id
             placar_id = message.id
         case ';editarplacar':
-            print(pares)
+            print(pairs)
             channel = client.get_channel(1065847698214887496)
             msg_to_edit = await channel.fetch_message(placar_id)
-            await msg_to_edit.edit(embed=commands.editar_placar(msg, pares))
+            await msg_to_edit.edit(embed=commands.editar_placar(msg, pairs))
 
     if message.content.lower().startswith(';obs'):
         id = message.author.id
