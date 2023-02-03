@@ -65,13 +65,17 @@ def gerar_placar(users, info, admins):
 
     index = 0
     linha = 1
-    
+
     for user in users:
         if index < len(users) - 1:
             pairs.append(str(linha) + '. ' + users[index].display_name + ' -> ' + users[index+1].display_name + '   :   ' + recs[index] + ' ')
             embed.add_field(name='', value=pairs[index], inline=False)
             index += 1
             linha += 1
+
+    with open('placar.txt','w') as file:
+
+        file.write(pairs)
             
     return pairs, embed
 
