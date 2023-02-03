@@ -65,19 +65,18 @@ def gerar_placar(users):
     
     for user in users:
         if index < len(users) - 1:
-            pairs.append('**' + str(linha) + '. ' + users[index].display_name + '**' + '  ->  ' + '**' + users[index+1].display_name + '**' + '   :   ' + recs[index] + ' ')
+            pairs.append(str(linha) + '. ' + users[index].display_name + ' -> ' + users[index+1].display_name + '   :   ' + recs[index] + ' ')
             embed.add_field(name='', value=pairs[index], inline=False)
             index += 1
             linha += 1
-
-    print(pairs)
+            
     return pairs, embed
 
 def editar_placar(msg, pares):
+    if len(msg) != 3:
+        return 
     par = msg[1]
     nota = msg[2]
-
-    print(pares)
     
     embed = discord.Embed(title='Roleta:')
 
@@ -85,8 +84,24 @@ def editar_placar(msg, pares):
     
     for pair in pares:
         if linha == int(par):
-            pares[linha - 1] += '✅ {' + nota + '/10}'
-            print(pares[linha-1])
+            pares[linha - 1] += '✅ ' + nota + '/10'
+        embed.add_field(name='', value=pares[linha - 1], inline=False)
+        linha += 1
+
+    return embed
+
+def terminei(msg, info, pares):
+    nota = msg[1]
+    
+    user = '-> ' + info['display_name']
+    
+    embed = discord.Embed(title='Roleta:')
+
+    linha = 1
+    
+    for pair in pares:
+        if user in pair:
+            pares[linha - 1] += '✅ ' + nota + '/10'
         embed.add_field(name='', value=pares[linha - 1], inline=False)
         linha += 1
 
