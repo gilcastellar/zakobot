@@ -112,6 +112,7 @@ def editar_placar(msg, pares, info, admins):
 
     with open(pares, 'w') as newfile:
         index = 0
+        print(len(pairs))
         for i in pairs:
             if index+1 < len(pairs):
                 newfile.write(newline + ',')
