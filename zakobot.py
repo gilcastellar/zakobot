@@ -87,6 +87,8 @@ async def on_message(message):
             await message.channel.send(embed=commands.ajuda())
         case ';cadastro':
             await message.channel.send(commands.cadastro(msg, sender_info))
+        case ';gerarplacar':
+            await message.channel.send(commands.gerar_placar())
 
     if message.content.lower().startswith(';obs'):
         id = message.author.id

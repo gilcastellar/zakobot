@@ -53,3 +53,9 @@ def cadastro(msg, info):
                     print(new_member)
                     json.dump(roulettetools.roulette_members, file, indent=2)
                 return 'Cadastro realizado!'
+
+def gerar_placar():
+    with open('previous_roulette.txt', 'r') as file:
+        members = file.read().split(',')
+        print(members)
+        return members
