@@ -58,7 +58,13 @@ def gerar_placar(users):
     embed = discord.Embed(title='Roleta:')
     pairs = []
 
-    return users[0].name
-        #for member in members:
-            #pair = member + ' -> ' + members
-            #embed.add_field(name='', value=pair, inline=False)
+    recs = ['Jungle wa Itsumo Hare nochi Guu','Haiyore! Nyaruko-san','Fire Punch','Sanctuary','Cross Over','Megumi no Daigo','Yugami-kun ni wa Tomodachi ga Inai','Kokoro ni Haha wo!; Uramichi Oniisan','Paradise Kiss','BECK: Mongolian Chop Squad','Gungrave','Tsuki no Laika to Nosferatu','ef: a tale of memories','Futoku no Guild','Chainsaw Man','Harmony; Aura','Noragami','Haibane Renmei','Kemonozume','Fune o Amu']
+
+    index = 0
+    
+    for user in users:
+        pairs.append(members[index] + ' -> ' + members[index+1] + '' + recs[index])
+        embed.add_field(name='', value=pairs[index], inline=False)
+        index += 1
+
+    return embed
