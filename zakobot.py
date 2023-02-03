@@ -98,7 +98,9 @@ async def on_message(message):
             await message.channel.send(commands.cadastro(msg, sender_info))
         case ';gerarplacar':
             users = await get_users('previous_roulette.txt')
-            await message.channel.send(embed=commands.gerar_placar(users))
+            message = await message.channel.send(embed=commands.gerar_placar(users))
+            message_id = message.id
+            await message.channel.send(message_id)
 
     if message.content.lower().startswith(';obs'):
         id = message.author.id
