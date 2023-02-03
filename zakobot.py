@@ -111,7 +111,7 @@ async def on_message(message):
             global pares
             channel = client.get_channel(1065847698214887496)
             msg_to_edit = await channel.fetch_message(placar_id)
-            await msg_to_edit.edit(embed=commands.editar_placar(msg, pares, msg_to_edit))
+            await msg_to_edit.edit(embed=commands.editar_placar(msg, pares))
 
     if message.content.lower().startswith(';obs'):
         id = message.author.id

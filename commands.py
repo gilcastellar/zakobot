@@ -72,16 +72,18 @@ def gerar_placar(users):
 
     return pairs, embed
 
-def editar_placar(msg, pares, msg_to_edit):
+def editar_placar(msg, pares):
     par = msg[1]
     nota = msg[2]
+    
+    embed = discord.Embed(title='Roleta:')
 
-    index = 0
     linha = 1
     
     for pair in pares:
-        if index < len(users) - 1:
-            pair += '✅ {' + nota + '/10}'
-            index += 1
+        if linha == par:
+            pares[linha - 1] += '✅ {' + nota + '/10}'
+        embed.add_field(name='', value=pares[linha - 1], inline=False)
+        linha += 1
 
-    return pares
+    return embed
