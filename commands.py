@@ -125,7 +125,7 @@ def terminei(msg, info, pares):
     linha = 1
     
     with open(pares, 'r') as file:
-        lines = file.split(',')
+        lines = file.split(',').read()
         for line in lines:
             if user in line:
                 if '✅' in line:
