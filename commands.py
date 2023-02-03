@@ -154,6 +154,6 @@ def terminei(msg, info, pares):
     
     with open(pares, 'w') as newfile:
         for i in pairs:
-            newfile.write(newline + ',')
+            newfile.write(i + ',')
 
     return pares, embed
