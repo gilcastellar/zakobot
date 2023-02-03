@@ -110,7 +110,7 @@ async def on_message(message):
         case ';editarplacar':
             channel = client.get_channel(1065847698214887496)
             msg_to_edit = await channel.fetch_message(placar_id)
-            pairs, placar = commands.gerar_placar(users)
+            pairs, placar = commands.editar_placar(msg, pairs)
             await msg_to_edit.edit(embed=placar)
         case ';terminei':
             channel = client.get_channel(1065847698214887496)
