@@ -72,6 +72,14 @@ def get_sender_info(msg):
         }
     return dict
 
+async def get_users(txt):
+    user_objects = []
+    with open(txt,'r') as file:
+        members = file.read().split(',')
+        for member_id in members:
+            user = await client.fetch_user(member_id)
+            user_objects.append(user)
+
 @client.event
 async def on_message(message):
     if message.author.id == client.user:
@@ -88,7 +96,8 @@ async def on_message(message):
         case ';cadastro':
             await message.channel.send(commands.cadastro(msg, sender_info))
         case ';gerarplacar':
-            await message.channel.send(commands.gerar_placar(client))
+            users = get_users('previous_roulette.txt')
+            await message.channel.send(commands.gerar_placar(users))
 
     if message.content.lower().startswith(';obs'):
         id = message.author.id

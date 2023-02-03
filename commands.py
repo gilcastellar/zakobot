@@ -54,15 +54,11 @@ def cadastro(msg, info):
                     json.dump(roulettetools.roulette_members, file, indent=2)
                 return 'Cadastro realizado!'
 
-async def gerar_placar(bot):
-    with open('previous_roulette.txt', 'r') as file:
-        members = file.read().split(',')
-        embed = discord.Embed(title='Roleta:')
-        pairs = []
+async def gerar_placar(users):
+    embed = discord.Embed(title='Roleta:')
+    pairs = []
 
-        print(await bot.fetch_user(members[0]))
-
-        return members
+    return users[0].name
         #for member in members:
             #pair = member + ' -> ' + members
             #embed.add_field(name='', value=pair, inline=False)
