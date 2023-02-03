@@ -130,14 +130,17 @@ def terminei(msg, info, pares):
             if user in line:
                 if '✅' in line:
                     text, trash = line.split('✅')
+                    print(text)
                 else:
                     text = line
+                    print(text)
                 extra = '✅ ' + nota + '/10'
             else:
                 text = line
                 extra = ''
             embed.add_field(name='', value=text + extra, inline=False)
             newline = text + extra
+            print(newline)
             with open(pares, 'w') as newfile:
                 newfile.write(newline)
             linha += 1
