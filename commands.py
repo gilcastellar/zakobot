@@ -113,6 +113,7 @@ def editar_placar(msg, pares, info, admins):
 
 def terminei(msg, info, pares):
     nota = msg[1]
+    print('1')
 
     if '/10' in nota:
         nota = nota.replace('/10','')
