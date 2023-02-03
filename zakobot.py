@@ -107,13 +107,15 @@ async def on_message(message):
             message = await message.channel.send(embed=placar)
             global placar_id
             placar_id = message.id
+            global placar_channel
+            placar_channel = message.channel.id
         case ';editarplacar':
-            channel = client.get_channel(message.channel.id)
+            channel = client.get_channel(placar_channel)
             msg_to_edit = await channel.fetch_message(placar_id)
             pairs, placar = commands.editar_placar(msg, pairs)
             await msg_to_edit.edit(embed=placar)
         case ';terminei':
-            channel = client.get_channel(message.channel.id)
+            channel = client.get_channel(placar_channel)
             msg_to_edit = await channel.fetch_message(placar_id)
             pairs, placar = commands.terminei(msg, sender_info, pairs)
             await msg_to_edit.edit(embed=placar)
