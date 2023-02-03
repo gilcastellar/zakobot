@@ -86,6 +86,7 @@ def editar_placar(msg, pares):
     for pair in pares:
         if linha == par:
             pares[linha - 1] += '✅ {' + nota + '/10}'
+            print(pares[linha-1])
         embed.add_field(name='', value=pares[linha - 1], inline=False)
         linha += 1
 
