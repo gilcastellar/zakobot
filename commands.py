@@ -100,6 +100,9 @@ def editar_placar(msg, pares):
 
 def terminei(msg, info, pares):
     nota = msg[1]
+
+    if '/10' in nota:
+        nota = nota.replace('/10','')
     
     user = '-> ' + info['display_name']
     
