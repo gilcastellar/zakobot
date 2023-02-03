@@ -144,6 +144,7 @@ def terminei(msg, info, pares):
                 extra = ''
             embed.add_field(name='', value=text + extra, inline=False)
             newline = text + extra
+            print(newline)
             pairs.append(newline)
             linha += 1
     
