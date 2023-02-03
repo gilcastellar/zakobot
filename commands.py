@@ -61,11 +61,11 @@ def gerar_placar(users):
     recs = ['Jungle wa Itsumo Hare nochi Guu','Haiyore! Nyaruko-san','Fire Punch','Sanctuary','Cross Over','Megumi no Daigo','Yugami-kun ni wa Tomodachi ga Inai','Kokoro ni Haha wo!; Uramichi Oniisan','Paradise Kiss','BECK: Mongolian Chop Squad','Gungrave','Tsuki no Laika to Nosferatu','ef: a tale of memories','Futoku no Guild','Chainsaw Man','Harmony; Aura','Noragami','Haibane Renmei','Kemonozume','Fune o Amu']
 
     index = 0
-    linha = index + 1
+    linha = 1
     
     for user in users:
         if index < len(users) - 1:
-            pairs.append('**' + linha + '. ' + users[index].display_name + '**' + '  ->  ' + '**' + users[index+1].display_name + '**' + '   :   ' + recs[index])
+            pairs.append('**' + str(linha) + '. ' + users[index].display_name + '**' + '  ->  ' + '**' + users[index+1].display_name + '**' + '   :   ' + recs[index])
             embed.add_field(name='', value=pairs[index], inline=False)
             index += 1
             linha += 1
