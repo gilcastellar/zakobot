@@ -103,6 +103,7 @@ async def on_message(message):
         case ';gerarplacar':
             users = await get_users('previous_roulette.txt')
             pares, placar = commands.gerar_placar(users)
+            print(pares)
             message = await message.channel.send(embed=placar)
             global placar_id
             placar_id = message.id
