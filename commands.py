@@ -60,7 +60,7 @@ def gerar_placar(bot):
         embed = discord.Embed(title='Roleta:')
         pairs = []
 
-        print(bot.get_user(members[0]))
+        print(bot.fetch_user(members[0]))
 
         return members
         #for member in members:
