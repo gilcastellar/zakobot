@@ -101,7 +101,7 @@ def editar_placar(msg, pares, info, admins):
     linha = 1
     
     with open(pares, 'r') as file:
-        lines = file.readlines()
+        lines = file.read().split(',')
         for line in lines:
             if linha == int(par):
                 if '✅' in line:
@@ -117,14 +117,15 @@ def editar_placar(msg, pares, info, admins):
             pairs.append(newline)
             linha += 1
 
-    with open(pares, 'w') as newfile:
-        index = 0
+    with open(pares, 'w') as file:
+        index = 1
         print(len(pairs))
         for i in pairs:
-            if index+1 < len(pairs):
-                newfile.write(newline + ',')
-            elif index+1 == len(pairs):
-                newfile.write(newline)
+            if index < len(pairs):
+                file.write(i + ',')
+                print(str(index) + '. ' + i)
+            elif index == len(pairs):
+                file.write(i)
             index += 1
 
     return pares, embed
@@ -165,8 +166,15 @@ def terminei(msg, info, pares):
             pairs.append(newline)
             linha += 1
     
-    with open(pares, 'w') as newfile:
+    with open(pares, 'w') as file:
+        index = 1
+        print(len(pairs))
         for i in pairs:
-            newfile.write(i + ',')
+            if index < len(pairs):
+                file.write(i + ',')
+                print(str(index) + '. ' + i)
+            elif index == len(pairs):
+                file.write(i)
+            index += 1
 
     return pares, embed
