@@ -105,7 +105,7 @@ async def on_message(message):
             placar_id = message.id
             #await message.channel.send(placar_id)
         case ';editarplacar':
-            embed_new = Embed(title='TESTE')
+            embed_new = discord.Embed(title='TESTE')
             channel = client.get_channel(1065847698214887496)
             msg = await channel.fetch_message(placar_id)
             await msg.edit(embed=embed_new)
