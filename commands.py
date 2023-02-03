@@ -70,6 +70,7 @@ def gerar_placar(users):
             index += 1
             linha += 1
 
+    print(pairs)
     return pairs, embed
 
 def editar_placar(msg, pares):
