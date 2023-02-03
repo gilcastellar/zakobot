@@ -65,9 +65,23 @@ def gerar_placar(users):
     
     for user in users:
         if index < len(users) - 1:
-            pairs.append('**' + str(linha) + '. ' + users[index].display_name + '**' + '  ->  ' + '**' + users[index+1].display_name + '**' + '   :   ' + recs[index])
+            pairs.append('**' + str(linha) + '. ' + users[index].display_name + '**' + '  ->  ' + '**' + users[index+1].display_name + '**' + '   :   ' + recs[index] + ' ')
             embed.add_field(name='', value=pairs[index], inline=False)
             index += 1
             linha += 1
 
-    return embed
+    return pairs, embed
+
+def editar_placar(msg, pares, msg_to_edit):
+    par = msg[1]
+    nota = msg[2]
+
+    index = 0
+    linha = 1
+    
+    for pair in pares:
+        if index < len(users) - 1:
+            pair += '✅ {' + nota + '/10}'
+            index += 1
+
+    return pares

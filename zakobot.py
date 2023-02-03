@@ -26,6 +26,7 @@ admins = [906937520254758973,98410347597139968,628466603486478336,10509046896858
 accessToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImZkNTQ1ODlmMGRkOTFhNDM5NDVlZmZjNjUwYzQ1MTM4YTIwYTBkZjM0ODgwMGRjMmIxZGE4NTZjMmZkY2VlZDhkMGExMTJmYTUwNWQ1Y2Q4In0.eyJhdWQiOiIxMTA3NSIsImp0aSI6ImZkNTQ1ODlmMGRkOTFhNDM5NDVlZmZjNjUwYzQ1MTM4YTIwYTBkZjM0ODgwMGRjMmIxZGE4NTZjMmZkY2VlZDhkMGExMTJmYTUwNWQ1Y2Q4IiwiaWF0IjoxNjc1MDI5ODQ0LCJuYmYiOjE2NzUwMjk4NDQsImV4cCI6MTcwNjU2NTg0NCwic3ViIjoiNjE1ODM2MyIsInNjb3BlcyI6W119.R3x71_Exf_L8jXP9H6CAZz8_Ne1u4TvoezDGQhTYDetG0oiarW2T422eOedJmtWjAnB5-z62GbfwAiaif7siir9B6Xb_cQoucA085MS3VT0un-UwEQZxadfEBEM3cBy8JmHrxEEc8wB836a6oNMRqunU10PJBe-sKoXaGAxR4GCHpLT2fxPBW2h5vvJNKP-_OUYc230TcpKQfar4kfzn1s7vrsCqEe10mUER8YCYdYdO7b4TzJ0fsSZC012aiQlhp3TBBTs9epOTA1JDO0b1_VIaCMceL3GUR2Mbi2MHYdXmOVWudn265xkoxiyy3ougsi7b_ZP1YasjtLNVrM4IhKGAaaH6ztTtAVRNQrkQ7ERK3bDiLWF5cA7Lwx3eXCboS1py6MSXHNYMn76hwk35sF6NpsoyqnQJE2xUxDNDo_TqPPg9BKoD544chQZ7m9x8TkdUbrn_iYQO-uv4s_kq--LpOc2-x5_ysIZy_fLvWfcsCctvsVuFJPHJRqIfgkFXj-loyPt-oQEaQRUIt5tufvkliNkux1abPSLBb-g0WQ6XpqXgr9P-lej2bFjz5e-5njy-UA8bXlS5C9QpQsVTr-j6hF9J3gxDoaNj5n9VF0iBJY1hkJFlov0ULv4hgCBH7Gw937Q_8m_jY_i2jTvS-ysCeKByRLHiZiTvhlE6A98'
 
 global placar_id
+global pares
 
 def send_message(message):
     channel = client.get_channel(1065847698214887496)
@@ -100,14 +101,17 @@ async def on_message(message):
             await message.channel.send(commands.cadastro(msg, sender_info))
         case ';gerarplacar':
             users = await get_users('previous_roulette.txt')
-            message = await message.channel.send(embed=commands.gerar_placar(users))
+            pairs, placar = commands.gerar_placar(users)
+            global pares
+            pares = pairs
+            message = await message.channel.send(embed=placar)
             global placar_id
             placar_id = message.id
         case ';editarplacar':
-            embed_new = discord.Embed(title='TESTE')
+            global pares
             channel = client.get_channel(1065847698214887496)
-            msg = await channel.fetch_message(placar_id)
-            await msg.edit(embed=embed_new)
+            msg_to_edit = await channel.fetch_message(placar_id)
+            await msg_to_edit.edit(embed=commands.editar_placar(msg, pares, msg_to_edit))
 
     if message.content.lower().startswith(';obs'):
         id = message.author.id
