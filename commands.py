@@ -122,10 +122,12 @@ def terminei(msg, info, pares):
     user = '-> ' + info['display_name']
     
     embed = discord.Embed(title='Roleta:')
+    print('2')
 
     linha = 1
     
     with open(pares, 'r') as file:
+        print('3')
         lines = file.read().split(',')
         for line in lines:
             if user in line:
