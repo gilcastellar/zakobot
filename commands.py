@@ -75,6 +75,8 @@ def gerar_placar(users):
 def editar_placar(msg, pares):
     par = msg[1]
     nota = msg[2]
+
+    print(pares)
     
     embed = discord.Embed(title='Roleta:')
 
