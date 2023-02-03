@@ -54,7 +54,7 @@ def cadastro(msg, info):
                     json.dump(roulettetools.roulette_members, file, indent=2)
                 return 'Cadastro realizado!'
 
-async def gerar_placar(users):
+def gerar_placar(users):
     embed = discord.Embed(title='Roleta:')
     pairs = []
 
