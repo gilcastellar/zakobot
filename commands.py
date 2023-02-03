@@ -86,7 +86,9 @@ def editar_placar(msg, pares, info, admins):
         return 
     par = msg[1]
     nota = msg[2]
-    
+
+    pairs = []
+     
     embed = discord.Embed(title='Roleta:')
 
     linha = 1
@@ -105,50 +107,46 @@ def editar_placar(msg, pares, info, admins):
                 extra = ''
             embed.add_field(name='', value=text + extra, inline=False)
             newline = text + extra
-            with open(pares, 'w') as newfile:
-                newfile.write(newline)
+            pairs.append(newline)
             linha += 1
+
+    with open(pares, 'w') as newfile:
+         newfile.write(newline + '\n')
 
     return pares, embed
 
 def terminei(msg, info, pares):
     nota = msg[1]
-    print('1')
 
     if '/10' in nota:
         nota = nota.replace('/10','')
-        print(nota)
     
     user = '-> ' + info['display_name']
     
+    pairs = []
+
     embed = discord.Embed(title='Roleta:')
-    print('2')
 
     linha = 1
     
     with open(pares, 'r') as file:
-        print('3')
         lines = file.read().split(',')
         for line in lines:
             if user in line:
-                print('user in line')
                 if '✅' in line:
-                    print('✅ in line')
                     text, trash = line.split('✅')
-                    print(text)
                 else:
                     text = line
-                    print(text)
                 extra = '✅ ' + nota + '/10'
             else:
                 text = line
                 extra = ''
             embed.add_field(name='', value=text + extra, inline=False)
             newline = text + extra
-            print(newline)
-            with open(pares, 'w') as newfile:
-                print('4')
-                newfile.write(newline)
+            pairs.append(newline)
             linha += 1
+    
+    with open(pares, 'w') as newfile:
+         newfile.write(newline + '\n')
 
     return pares, embed
