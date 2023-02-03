@@ -82,6 +82,7 @@ def gerar_placar(users, info, admins):
                 print(str(index) + '. ' + i)
             elif index == len(pairs):
                 file.write(i)
+            index += 1
             
     return pairs, embed
 
