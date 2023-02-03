@@ -78,7 +78,9 @@ async def get_users(txt):
         members = file.read().split(',')
         for member_id in members:
             user = await client.fetch_user(member_id)
+            print(user.display_name)
             user_objects.append(user)
+    return user_objects
 
 @client.event
 async def on_message(message):
