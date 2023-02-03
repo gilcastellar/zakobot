@@ -131,6 +131,9 @@ def editar_placar(msg, pares, info, admins):
     return pares, embed
 
 def terminei(msg, info, pares):
+    if len(msg) != 2:
+        return pares,''
+
     nota = msg[1]
 
     if '/10' in nota:
