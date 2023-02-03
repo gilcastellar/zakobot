@@ -115,7 +115,9 @@ def editar_placar(msg, pares, info, admins):
         for i in pairs:
             if index < len(pairs):
                 newfile.write(newline + ',')
-                index += 1
+            elif index == len(pairs):
+                newfile.write(newline)
+            index += 1
 
     return pares, embed
 
