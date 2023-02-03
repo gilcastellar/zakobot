@@ -104,8 +104,10 @@ async def on_message(message):
             global placar_id
             placar_id = message.id
             #await message.channel.send(placar_id)
-        case ';idplacar':
-            await message.channel.send(placar_id)
+        case ';editarplacar':
+            channel = client.get_channel(1065847698214887496)
+            msg = await channel.fetch_message(placar_id)
+            await msg.edit(content='teste')
 
     if message.content.lower().startswith(';obs'):
         id = message.author.id
