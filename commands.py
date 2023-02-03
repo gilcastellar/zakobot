@@ -103,36 +103,33 @@ def editar_placar(msg, pares, info, admins):
 
     return pares, embed
 
-def terminei(msg, users, info, pares):
-    for user in users:
-        if user['id'] == info['id']:
-            
-            nota = msg[1]
+def terminei(msg, info, pares):
+    nota = msg[1]
 
-            if '/10' in nota:
-                nota = nota.replace('/10','')
-                print(nota)
+    if '/10' in nota:
+        nota = nota.replace('/10','')
+        print(nota)
 
     
     
-            user = '-> ' + info['display_name']
+    user = '-> ' + info['display_name']
     
-            embed = discord.Embed(title='Roleta:')
+    embed = discord.Embed(title='Roleta:')
 
-            linha = 1
+    linha = 1
     
-            for pair in pares:
-                if user in pair:
-                    if '✅' in pair:
-                        text, trash = pair.split('✅')
-                    else:
-                        text = pair
-                    extra = '✅ ' + nota + '/10'
-                else:
-                    text = pair
-                    extra = ''
-                embed.add_field(name='', value=text + extra, inline=False)
-                pares[linha-1] = text + extra
-                linha += 1
+    for pair in pares:
+        if user in pair:
+            if '✅' in pair:
+                text, trash = pair.split('✅')
+            else:
+                text = pair
+            extra = '✅ ' + nota + '/10'
+        else:
+            text = pair
+            extra = ''
+        embed.add_field(name='', value=text + extra, inline=False)
+        pares[linha-1] = text + extra
+        linha += 1
 
-            return pares, embed
+    return pares, embed
