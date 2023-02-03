@@ -63,7 +63,7 @@ def gerar_placar(users):
     index = 0
     
     for user in users:
-        pairs.append(users[index] + ' -> ' + users[index+1] + '' + recs[index])
+        pairs.append(users[index].display_name + ' -> ' + users[index+1].display_name + '' + recs[index])
         embed.add_field(name='', value=pairs[index], inline=False)
         index += 1
 
