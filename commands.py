@@ -79,7 +79,7 @@ def gerar_placar(users, info, admins):
         for i in pairs:
             if index < len(pairs):
                 file.write(i + ',')
-                print(index + '. ' + i)
+                print(str(index) + '. ' + i)
             elif index == len(pairs):
                 file.write(i)
             
