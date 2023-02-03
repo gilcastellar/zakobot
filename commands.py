@@ -90,6 +90,7 @@ def editar_placar(msg, pares):
                 text = pair
             extra = '✅ ' + nota + '/10'
         else:
+            text = pair
             extra = ''
         embed.add_field(name='', value=text + extra, inline=False)
         pares[linha-1] = text + extra
@@ -114,6 +115,7 @@ def terminei(msg, info, pares):
                 text = pair
             extra = '✅ ' + nota + '/10'
         else:
+            text = pair
             extra = ''
         embed.add_field(name='', value=text + extra, inline=False)
         pares[linha-1] = text + extra
