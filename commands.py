@@ -84,13 +84,18 @@ def editar_placar(msg, pares):
     
     for pair in pares:
         if linha == int(par):
+            if '✅' in pair:
+                text, trash = pair.split('✅')
+            else:
+                text = pair
             extra = '✅ ' + nota + '/10'
         else:
             extra = ''
-        embed.add_field(name='', value=pares[linha - 1] + extra, inline=False)
+        embed.add_field(name='', value=text + extra, inline=False)
+        pares[linha-1] = text + extra
         linha += 1
 
-    return embed
+    return pares, embed
 
 def terminei(msg, info, pares):
     nota = msg[1]
@@ -103,10 +108,15 @@ def terminei(msg, info, pares):
     
     for pair in pares:
         if user in pair:
+            if '✅' in pair:
+                text, trash = pair.split('✅')
+            else:
+                text = pair
             extra = '✅ ' + nota + '/10'
         else:
             extra = ''
-        embed.add_field(name='', value=pares[linha - 1] + extra, inline=False)
+        embed.add_field(name='', value=text + extra, inline=False)
+        pares[linha-1] = text + extra
         linha += 1
 
-    return embed
+    return pares, embed
