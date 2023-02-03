@@ -54,7 +54,10 @@ def cadastro(msg, info):
                     json.dump(roulettetools.roulette_members, file, indent=2)
                 return 'Cadastro realizado!'
 
-def gerar_placar(users):
+def gerar_placar(users, info, admins):
+    if info['id'] not in admins:
+        return [], ''
+
     embed = discord.Embed(title='Roleta:')
     pairs = []
 
@@ -72,7 +75,9 @@ def gerar_placar(users):
             
     return pairs, embed
 
-def editar_placar(msg, pares):
+def editar_placar(msg, pares, info, admins):
+    if info['id'] not in admins:
+        return [], ''
     if len(msg) != 3:
         return 
     par = msg[1]

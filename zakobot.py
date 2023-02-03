@@ -103,7 +103,7 @@ async def on_message(message):
         case ';gerarplacar':
             users = await get_users('previous_roulette.txt')
             global pairs
-            pairs, placar = commands.gerar_placar(users)
+            pairs, placar = commands.gerar_placar(users, sender_info, admins)
             message = await message.channel.send(embed=placar)
             global placar_id
             placar_id = message.id
@@ -112,7 +112,7 @@ async def on_message(message):
         case ';editarplacar':
             channel = client.get_channel(placar_channel)
             msg_to_edit = await channel.fetch_message(placar_id)
-            pairs, placar = commands.editar_placar(msg, pairs)
+            pairs, placar = commands.editar_placar(msg, pairs, sender_info, admins)
             await msg_to_edit.edit(embed=placar)
         case ';terminei':
             channel = client.get_channel(placar_channel)
