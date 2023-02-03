@@ -103,8 +103,10 @@ def terminei(msg, info, pares):
     
     for pair in pares:
         if user in pair:
-            pares[linha - 1] += '✅ ' + nota + '/10'
-        embed.add_field(name='', value=pares[linha - 1], inline=False)
+            extra = '✅ ' + nota + '/10'
+        else:
+            extra = ''
+        embed.add_field(name='', value=pares[linha - 1] + extra, inline=False)
         linha += 1
 
     return embed
