@@ -115,9 +115,10 @@ async def on_message(message):
             pairs, placar = commands.editar_placar(msg, pairs, sender_info, admins)
             await msg_to_edit.edit(embed=placar)
         case ';terminei':
+            users = await get_users('previous_roulette.txt')
             channel = client.get_channel(placar_channel)
             msg_to_edit = await channel.fetch_message(placar_id)
-            pairs, placar = commands.terminei(msg, sender_info, pairs)
+            pairs, placar = commands.terminei(msg, users, sender_info, pairs)
             await msg_to_edit.edit(embed=placar)
 
 
