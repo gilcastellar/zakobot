@@ -111,7 +111,8 @@ def editar_placar(msg, pares, info, admins):
             linha += 1
 
     with open(pares, 'w') as newfile:
-         newfile.write(newline + '\n')
+        for i in pairs:
+            newfile.write(newline + '\n')
 
     return pares, embed
 
@@ -147,6 +148,7 @@ def terminei(msg, info, pares):
             linha += 1
     
     with open(pares, 'w') as newfile:
-         newfile.write(newline + '\n')
+        for i in pairs:
+            newfile.write(newline + '\n')
 
     return pares, embed
