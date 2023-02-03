@@ -75,7 +75,6 @@ def gerar_placar(users, info, admins):
 
     with open('placar.txt','w') as file:
         for i in pairs:
-            print(i)
             file.write(i + '\n')
             
     return pairs, embed
@@ -92,19 +91,23 @@ def editar_placar(msg, pares, info, admins):
 
     linha = 1
     
-    for pair in pares:
-        if linha == int(par):
-            if '✅' in pair:
-                text, trash = pair.split('✅')
+    with open(pares, 'r') as file:
+        lines = file.readlines()
+        for line in lines:
+            if linha == int(par):
+                if '✅' in line:
+                    text, trash = line.split('✅')
+                else:
+                    text = line
+                extra = '✅ ' + nota + '/10'
             else:
-                text = pair
-            extra = '✅ ' + nota + '/10'
-        else:
-            text = pair
-            extra = ''
-        embed.add_field(name='', value=text + extra, inline=False)
-        pares[linha-1] = text + extra
-        linha += 1
+                text = line
+                extra = ''
+            embed.add_field(name='', value=text + extra, inline=False)
+            newline = text + extra
+            with open(pares, 'w') as newfile:
+                newfile.write(newline)
+            linha += 1
 
     return pares, embed
 
@@ -114,8 +117,6 @@ def terminei(msg, info, pares):
     if '/10' in nota:
         nota = nota.replace('/10','')
         print(nota)
-
-    
     
     user = '-> ' + info['display_name']
     
@@ -123,18 +124,22 @@ def terminei(msg, info, pares):
 
     linha = 1
     
-    for pair in pares:
-        if user in pair:
-            if '✅' in pair:
-                text, trash = pair.split('✅')
+    with open(pares, 'r') as file:
+        lines = file.readlines()
+        for line in lines:
+            if user in line:
+                if '✅' in line:
+                    text, trash = line.split('✅')
+                else:
+                    text = line
+                extra = '✅ ' + nota + '/10'
             else:
-                text = pair
-            extra = '✅ ' + nota + '/10'
-        else:
-            text = pair
-            extra = ''
-        embed.add_field(name='', value=text + extra, inline=False)
-        pares[linha-1] = text + extra
-        linha += 1
+                text = line
+                extra = ''
+            embed.add_field(name='', value=text + extra, inline=False)
+            newline = text + extra
+            with open(pares, 'w') as newfile:
+                newfile.write(newline)
+            linha += 1
 
     return pares, embed
