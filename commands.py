@@ -75,7 +75,8 @@ def gerar_placar(users, info, admins):
 
     with open('placar.txt','w') as file:
         for i in pairs:
-            file.write(i)
+            print(i)
+            file.write(i + '\n')
             
     return pairs, embed
 
