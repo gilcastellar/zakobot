@@ -97,7 +97,7 @@ async def on_message(message):
         case ';cadastro':
             await message.channel.send(commands.cadastro(msg, sender_info))
         case ';gerarplacar':
-            users = get_users('previous_roulette.txt')
+            users = await get_users('previous_roulette.txt')
             #await message.channel.send(commands.gerar_placar(users))
 
     if message.content.lower().startswith(';obs'):
