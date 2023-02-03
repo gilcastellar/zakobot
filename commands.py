@@ -74,8 +74,13 @@ def gerar_placar(users, info, admins):
             linha += 1
 
     with open('placar.txt','w') as file:
+        index = 0
+        print(len(pairs))
         for i in pairs:
-            file.write(i + ',')
+            if index+1 < len(pairs):
+                file.write(i + ',')
+            elif index+1 == len(pairs):
+                file.w
             
     return pairs, embed
 
