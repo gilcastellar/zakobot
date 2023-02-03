@@ -130,6 +130,7 @@ def terminei(msg, info, pares):
             if user in line:
                 print('user in line')
                 if '✅' in line:
+                    print('✅ in line')
                     text, trash = line.split('✅')
                     print(text)
                 else:
