@@ -147,6 +147,7 @@ def terminei(msg, info, pares):
             newline = text + extra
             print(newline)
             with open(pares, 'w') as newfile:
+                print('4')
                 newfile.write(newline)
             linha += 1
 
