@@ -2,15 +2,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>75b2f495-0817-4b3f-91ef-b053cc315a37</ProjectGuid>
+    <ProjectGuid>af3e1329-d5c3-4f4d-b731-0c366d439091</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>zakobot.py</StartupFile>
+    <StartupFile>ZAKO_test.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <Name>zakobot</Name>
-    <RootNamespace>zakobot</RootNamespace>
+    <Name>ZAKO_test</Name>
+    <RootNamespace>ZAKO_test</RootNamespace>
+    <SuppressConfigureTestFrameworkPrompt>true</SuppressConfigureTestFrameworkPrompt>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,7 +22,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="zakobot.py" />
+    <Compile Include="ZAKO_test.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

@@ -1,5 +1,6 @@
 ﻿import requests
 import json
+import random
 
 def query_anilist(anime_id):
 
@@ -7,10 +8,11 @@ def query_anilist(anime_id):
     #print(anime_id, anime_name.strip('/'))
 
     query = '''
-    query ($id: Int) { # Define which variables will be used in the query (id)
-      Media (id: $id, type: ANIME) { # Insert our variables into the query arguments (id) (type: ANIME is hard-coded in the query)
+    query ($id: Int, format:) { # Define which variables will be used in the query (id)
+      Media (id: $id, format: type: ANIME) { # Insert our variables into the query arguments (id) (type: ANIME is hard-coded in the query)
         id
         description
+        duration
         episodes
         title {
             romaji
@@ -29,17 +31,163 @@ def query_anilist(anime_id):
     # Make the HTTP Api request
     return requests.post(url, json={'query': query, 'variables': variables})
 
-def query_user_list(anime_id, user_name):
+def get_last_page():
+    query = '''
+    {
+        Page(page: 351, perPage: 50) {
+            pageInfo {
+              lastPage
+            }
+            media(type: ANIME, status_not_in: [NOT_YET_RELEASED, RELEASING, CANCELLED]) {
+              id
+            }
+        }
+    }
+    '''
+
+    # Define our query variables and values that will be used in the query request
+
+    url = 'https://graphql.anilist.co'
+
+    return requests.post(url, json={'query': query})
+
+def query_random_anime():
+
+    query = '''
+    query ($page: Int, $perPage: Int) {
+        Page(page: $page, perPage: $perPage) {
+            pageInfo {
+              total
+              currentPage
+              lastPage
+              hasNextPage
+              perPage
+            }
+            media(type: ANIME, status_not_in: [NOT_YET_RELEASED, RELEASING, CANCELLED], countryOfOrigin: JP) {
+              id
+              format
+              popularity
+              episodes
+              duration
+              title {
+                romaji
+              }
+            }
+          }
+        }
+    '''
+
+    # Define our query variables and values that will be used in the query request
+    variables = {
+        'page': random.randrange(1,350),
+        'perPage': 50
+    }
+
+    url = 'https://graphql.anilist.co'
+
+    # Make the HTTP Api request
+    return requests.post(url, json={'query': query, 'variables': variables})
+
+def query_anime_id(id):
 
     #anime_id, anime_name = url.replace('https://anilist.co/anime/','').split('/',1)
     #print(anime_id, anime_name.strip('/'))
 
     query = '''
-    query ($mediaId: Int, $userName: String) { # Define which variables will be used in the query (id)
-      MediaList (mediaId: $mediaId, userName: $userName type: ANIME) { # Insert our variables into the query arguments (id) (type: ANIME is hard-coded in the query)
+    query ($id: Int) {
+      Media (id: $id, type: ANIME) {
+        id
+        format
+        episodes
+        duration
+        popularity
+        title {
+            romaji
+        }
+        startDate {
+            day
+            month
+            year
+        }
+        relations {
+            edges {
+                relationType
+                node {
+                    id
+                    title {
+                        romaji
+                    }
+                    format
+                    duration
+                    startDate {
+                        day
+                        month
+                        year
+                    }
+                }
+            }
+        }
+      }
+    }
+    '''
+
+    # Define our query variables and values that will be used in the query request
+    variables = {
+        'id': id
+    }
+
+    url = 'https://graphql.anilist.co'
+
+    # Make the HTTP Api request
+    return requests.post(url, json={'query': query, 'variables': variables})
+
+def query_list_by_status(status, page, user_name):
+
+    query = '''
+    query ($page: Int, $status: MediaListStatus, $userName: String) {
+        Page (page: $page, perPage: 50) {
+            pageInfo {
+                total
+                currentPage
+                lastPage
+                hasNextPage
+                perPage
+            }
+            mediaList(status: $status, userName: $userName, type: ANIME) {
+                mediaId
+                id
+                userId
+                progress
+                status
+            }
+        }
+    }
+
+    '''
+
+    variables = {
+        "status": status,
+        "userName": user_name,
+        "page": page
+        }
+
+    url = 'https://graphql.anilist.co'
+
+    # Make the HTTP Api request
+    return requests.post(url, json={'query': query, 'variables': variables})
+
+def query_user_list(anime_id,user_name):
+
+    #anime_id, anime_name = url.replace('https://anilist.co/anime/','').split('/',1)
+    #print(anime_id, anime_name.strip('/'))
+
+    query = '''
+    query ($mediaId: Int, $userName: String) {
+      MediaList (mediaId: $mediaId, userName: $userName type: ANIME) {
         id
         userId
         progress
+        status
       }
     }
     '''
@@ -56,16 +204,17 @@ def query_user_list(anime_id, user_name):
     return requests.post(url, json={'query': query, 'variables': variables})
 
 def check_max_episodes(anime_id):
-    response = query_anilist(anime_id)
-
+    response = query_anime_id(anime_id)
+    print(json.dumps(response.json(), indent=2))
     o = response.json()
+
 
     return o['data']['Media']['episodes']
 
 def check_episode(anime_id, user_name):
     
     response = query_user_list(anime_id, user_name)
-
+    print(json.dumps(response.json(), indent=2))
     o = response.json()
 
     print(o)
@@ -73,32 +222,7 @@ def check_episode(anime_id, user_name):
 
     return o['data']['MediaList']['progress']
 
-
-def new_anime(anime, token):
-    headers = {
-        'Authorization': token
-        }
-
-    mutation = '''
-    mutation ($mediaId: Int, $status: MediaListStatus) {
-        SaveMediaListEntry (mediaId: $mediaId, status: $status) {
-            id
-            status
-        }
-    }
-    '''
-
-    # Define our query variables and values that will be used in the query request
-    variables = {
-        "mediaId": anime,
-        "status": "CURRENT"
-    }
-
-    data = (requests.post('https://graphql.anilist.co', json={'query': mutation, 'variables':variables}, headers=headers).json())
-    
-    print(data)
-
-def update_anime_status(anime, user, status, token):
+def put_in_status(anime, status, token):
     headers = {
         'Authorization': token
         }
@@ -169,3 +293,4 @@ def give_score(anime, score, user, token):
     data = (requests.post('https://graphql.anilist.co', json={'query': mutation, 'variables':variables}, headers=headers).json())
     
     print(data)
+    

@@ -1,318 +1,576 @@
-﻿# encoding: utf-8
-# para que acentos sejam aceitos é preciso salvar o script com o encoding correto
+﻿# token = MTA5OTU5NTIwMDQyODUyMzUzMA.GAqCqA.T2W3Bn9lPCwcTfEHx8IO1s6BK2HBAN4nM9RYeI
 
-from platform import python_revision
-#from turtle import color
+from importlib.metadata import requires
+from posixpath import split
+from random import choices, shuffle
+
 import discord
-from discord.ext import commands, tasks
-import asyncio
-import commands
-import roulettetools
-import anilist
-import idleanime
-import json
 import configparser
-import feedparser
-import rsslistener
+import database
+import anilist
+import json
 import time
-
 intents = discord.Intents.default()
-intents.message_content = True
+intents.members = True
+bot = discord.Bot(intents=intents)
+admins = [906937520254758973,628466603486478336,1050904689685831760,98410347597139968]
+test = 'eita'
+key = False
 
-client = discord.Client(intents=intents)
+class EditRouletteProfileModal(discord.ui.Modal):
+    def __init__(self, user_id, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        
+        _lista = database.select('SELECT anime_list FROM user WHERE id=' + str(user_id))
+        print(_lista)
+        _obs = database.select('SELECT obs FROM user WHERE id=' + str(user_id))
+        print(_obs)
 
-admins = [906937520254758973,628466603486478336,1050904689685831760]
+        self.add_item(discord.ui.InputText(label="Link do perfil do MAL/Anilist (opcional)", required=False, value=_lista))
+        self.add_item(discord.ui.InputText(label="Suas observações", style=discord.InputTextStyle.long, required=False, value=_obs))
 
-accessToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImZkNTQ1ODlmMGRkOTFhNDM5NDVlZmZjNjUwYzQ1MTM4YTIwYTBkZjM0ODgwMGRjMmIxZGE4NTZjMmZkY2VlZDhkMGExMTJmYTUwNWQ1Y2Q4In0.eyJhdWQiOiIxMTA3NSIsImp0aSI6ImZkNTQ1ODlmMGRkOTFhNDM5NDVlZmZjNjUwYzQ1MTM4YTIwYTBkZjM0ODgwMGRjMmIxZGE4NTZjMmZkY2VlZDhkMGExMTJmYTUwNWQ1Y2Q4IiwiaWF0IjoxNjc1MDI5ODQ0LCJuYmYiOjE2NzUwMjk4NDQsImV4cCI6MTcwNjU2NTg0NCwic3ViIjoiNjE1ODM2MyIsInNjb3BlcyI6W119.R3x71_Exf_L8jXP9H6CAZz8_Ne1u4TvoezDGQhTYDetG0oiarW2T422eOedJmtWjAnB5-z62GbfwAiaif7siir9B6Xb_cQoucA085MS3VT0un-UwEQZxadfEBEM3cBy8JmHrxEEc8wB836a6oNMRqunU10PJBe-sKoXaGAxR4GCHpLT2fxPBW2h5vvJNKP-_OUYc230TcpKQfar4kfzn1s7vrsCqEe10mUER8YCYdYdO7b4TzJ0fsSZC012aiQlhp3TBBTs9epOTA1JDO0b1_VIaCMceL3GUR2Mbi2MHYdXmOVWudn265xkoxiyy3ougsi7b_ZP1YasjtLNVrM4IhKGAaaH6ztTtAVRNQrkQ7ERK3bDiLWF5cA7Lwx3eXCboS1py6MSXHNYMn76hwk35sF6NpsoyqnQJE2xUxDNDo_TqPPg9BKoD544chQZ7m9x8TkdUbrn_iYQO-uv4s_kq--LpOc2-x5_ysIZy_fLvWfcsCctvsVuFJPHJRqIfgkFXj-loyPt-oQEaQRUIt5tufvkliNkux1abPSLBb-g0WQ6XpqXgr9P-lej2bFjz5e-5njy-UA8bXlS5C9QpQsVTr-j6hF9J3gxDoaNj5n9VF0iBJY1hkJFlov0ULv4hgCBH7Gw937Q_8m_jY_i2jTvS-ysCeKByRLHiZiTvhlE6A98'
+    async def callback(self, interaction: discord.Interaction):
+        embed = discord.Embed(title="Perfil")
+        embed.add_field(name="MAL/Anilist", value=self.children[0].value, inline=False)
+        embed.add_field(name="Suas observações", value=self.children[1].value, inline=False)
 
-global placar_id
-#global pares
+        user_id = str(interaction.user.id)
+        _lista = self.children[0].value
+        print(_lista)
+        _obs = self.children[1].value
+        print(_obs)
 
-def send_message(message):
-    channel = client.get_channel(1065847698214887496)
+        sql = 'UPDATE user SET anime_list= "' + _lista + '", obs= "' + _obs + '" WHERE id=' + user_id
+        print(sql)
+        database.update(sql)
 
-    channel.send(message)
+        global key
+        key = True
+        await interaction.response.send_message(embeds=[embed])
 
-@client.event
-async def on_ready():
-    print(f'We have logged in as {client.user}')
+async def send_message(ctx, text, channel_id=''):
 
-    content = 'https://nyaa.si/?page=rss&q=subsplease+1080&c=0_0&f=0'
-    channel = client.get_channel(1067926098815484064)
+    if channel_id != '':
+        channel = bot.get_channel(channel_id)
+        message = await channel.send(text)
+    else:
+        message = await ctx.send(text)
 
-    old_feed = feedparser.parse(content)
+    return message
 
-    lista = rsslistener.start_rss(content)
+async def send_embed(ctx,embed):
 
-    #idleanime.think.start(accessToken)
+    await ctx.send(embed=embed)
 
-    #idleanime.start_anime(accessToken)
+async def fetch_user(id):
+    user = await bot.fetch_user(id)
 
-    #idleanime.watch('1', 'zakobot', accessToken)
+    return user
 
-    print('ok')
+@bot.slash_command()
+async def editar_perfil(ctx: discord.ApplicationContext):
+    """Shows an example of a modal dialog being invoked from a slash command."""
+    user_id = ctx.author.id
+    modal = EditRouletteProfileModal(user_id, title="Editar perfil da roleta")
+    await ctx.send_modal(modal)
+
+# SLASH PRA SE CADASTRAR NA ROLETA
+@bot.slash_command(name='preferencias_roleta')
+async def preferencias_roleta_command(
+  ctx: discord.ApplicationContext,
+  ativo: discord.Option(str, choices=['Ativo','Inativo'], name='status', description=''),
+  tipo_que_recebe: discord.Option(str, choices=['Anime', 'Mangá', 'Anime e Mangá'], name='recebo', description='Tipo de obra que quer receber recomendações'),
+  tipo_que_envia: discord.Option(str, choices=['Anime', 'Mangá', 'Anime e Mangá'], name='envio', description='Tipo de obra que quer recomendar')
+):
+  user_id = str(ctx.author.id)
+
+  if ativo.lower() == 'ativo':
+      is_ativo = 1
+  else:
+      is_ativo = 0
+  
+  is_ativo = str(is_ativo)
+  
+  sql = 'UPDATE user SET active= "' + is_ativo + '", receives= "' + tipo_que_recebe.lower() + '", gives= "' + tipo_que_envia.lower() +  '" WHERE id=' + user_id
+  database.update(sql)
+
+  await ctx.respond(f'Você quer receber `{tipo_que_recebe.lower()}` e enviar `{tipo_que_envia.lower()}` na roleta!')
+ 
+@bot.command(name='registro')
+async def registro_command(ctx):
+    
+    user_id = ctx.author.id
+    guild = 1059298932825538661
+    name = ctx.author.name
+    database.insert('INSERT INTO user (id, id_guild, name) VALUES (%s,%s,%s)',(user_id, guild, name))
+
+    await ctx.respond(f"Seja bem-vindo(a) à roleta, {name}!")
+
+@bot.command(name='insert')
+async def insert_command(ctx):
+
+    role = discord.utils.get(ctx.guild.roles, name="Roleta")
+    print(role)
+
+    for user in ctx.guild.members:
+        if role in user.roles:
+            id = user.id
+            print(id)
+            print(type(id))
+            guild = 1059298932825538661
+            name = user.name
+            database.insert('INSERT INTO user (id, id_guild, name) VALUES (%s,%s,%s)',(id, guild, name))
+
+async def get_members_names(ctx: discord.AutocompleteContext):
+    members = database.selectall('SELECT id, name, active, anime_list, receives, gives, obs FROM user')
+    members_names = []
+
+    for member in members:
+        members_names.append(member[1])
+
+    sorted_members_names = sorted(members_names, key=str.lower)
+
+    return sorted_members_names
+
+def get_member_info(name):
+    
+    member = database.selectall('SELECT id, name, active, anime_list, receives, gives, obs FROM user WHERE name="' + name + '"')
+
+    id = member[0][0]
+    active = member[0][2]
+    anime_list = member[0][3]
+    receives = member[0][4]
+    gives = member[0][5]
+    obs = member[0][6]
+
+    return id, active, anime_list, receives, gives, obs
+
+@bot.slash_command(name='perfil')
+async def perfil_command(
+    ctx: discord.ApplicationContext,
+    member: discord.Option(str, autocomplete=get_members_names, name='membro')
+):
+    id, active, anime_list, receives, gives, obs = get_member_info(member)
+
+    user = await bot.fetch_user(id)
+    avatar = user.avatar
+
+    if active == 1:
+        _ativo = 'Ativo'
+    else:
+        _ativo = 'Inativo'
+    embed = discord.Embed(title=member)
+    embed.set_thumbnail(url=avatar)
+    embed.add_field(name=_ativo,value='',inline=False)
+    embed.add_field(name='Quero receber:',value=receives,inline=False)
+    embed.add_field(name='Posso enviar:',value=gives,inline=False)
+    embed.add_field(name='Perfil MAL/Anilist:',value=anime_list,inline=False)
+    embed.add_field(name='Observações:',value=obs,inline=False)
+
+    await ctx.respond(embed=embed)
+
+jan23 = ['691095708866183229,163447617005551616,129635640122933248,115555588397727751,98410347597139968,273325876530380800,92484473207144448,324731795138674689,266340550267895808,1050904689685831760,315599461399265280,95565745009733632,252946147973267456,351647595527143434,188504910059274240,450498161895538708,125944165958680576,98437897933299712,128322474059235328,691095708866183229']
+fev23 = ['273325876530380800,98437897933299712,92484473207144448,98410347597139968,252946147973267456,125944165958680576,745062616493326408,158024279882072064,324731795138674689,129635640122933248,270061072487153664,128322474059235328,235808827662925825,95565745009733632,115555588397727751,1050904689685831760,188504910059274240,266340550267895808,163447617005551616,315599461399265280,273325876530380800']
+mar23 = ['287766312808349696,115555588397727751,163447617005551616,188504910059274240,158024279882072064,691095708866183229,252946147973267456,324731795138674689,745062616493326408,1050904689685831760,128322474059235328,98437897933299712,125944165958680576,129635640122933248,273325876530380800,95565745009733632,92484473207144448,315599461399265280,235808827662925825,906937520254758973,392050013116694528,287766312808349696'] # começa por estroncio 287766312808349696
+abr23 = ['98410347597139968,92484473207144448,115555588397727751,125944165958680576,392050013116694528,128322474059235328,235808827662925825,170007555907518464,252946147973267456,691095708866183229,158024279882072064,1050904689685831760,188504910059274240,98437897933299712,315599461399265280,745062616493326408,273325876530380800,287766312808349696,324731795138674689,163447617005551616,129635640122933248,95565745009733632,98410347597139968'] # começa por kaiser 906937520254758973 (trocar para 98410347597139968)
+
+@bot.slash_command(name='sorteio')
+async def sorteio_command(
+    ctx: discord.ApplicationContext,
+    name: discord.Option(str, name='nome'),
+    delay: discord.Option(int, name='delay')
+):
+    print(ctx.author.id)
+    if ctx.author.id in admins:
+        sql = 'SELECT id FROM user WHERE active=1'
+        draw_list = database.selectall(sql, True)
+
+        id = get_last_roulette_id()
+
+        result = roulette_shuffle(draw_list, id)
+        print(type(result))
+
+        result_as_str = draw_to_str(result)
+        print(result_as_str)
+        print(type(result_as_str))
+
+        pairs = generate_pairs(result)
+
+        #await visualize_pairs(pairs)
+
+        sql = 'INSERT INTO roleta (id, name, draw, status) VALUES (%s,%s,%s,%s)'
+        val = (id+1, name, result_as_str, 'ongoing')
+        database.insert(sql, val)
+        
+        index = 1
+        for pair in pairs:
+
+            time.sleep(delay)
+
+            giver, receiver = pair.split(',')
+            giver = await fetch_user(giver)
+            receiver = await fetch_user(receiver)
+
+            text = giver.display_name + ' -> ' + receiver.display_name
+            
+            message = await send_message(ctx,text) # REALIZA O SORTEIO AO VIVO NO CHAT E RETORNA O OBJETO DA MENSAGEM
+            
+            sql = 'INSERT INTO user_has_roleta (idx, id_receiver, id_giver, id_roleta, status) VALUES (%s,%s,%s,%s,%s)'
+            val = (index, str(receiver.id), str(giver.id), id+1, 'ongoing')
+            database.insert(sql, val)
+
+            index += 1
+
+        board_message = await generate_board(ctx, 1101463762864701540)
+
+        print(board_message)
+        
+        board_message_id = board_message.id
+        print('board_message_id:')
+        print(board_message_id)
+
+        board_message_channel_id = board_message.channel.id
+        print('board_message_channel_id:')
+        print(board_message_channel_id)
+
+        sql = 'UPDATE roleta SET id_message="' + str(board_message_id) + '", id_channel="' + str(board_message_channel_id) + '" WHERE id="' + str(id+1) + '"'
+        database.update(sql)
+
+        await board_update(id+1)
+
+async def visualize_pairs(pairs):
+
+    for pair in pairs:
+        giver_id, receiver_id = pair.split(',')
+        giver = await bot.fetch_user(giver_id)
+        receiver = await bot.fetch_user(receiver_id)
+        print(giver.display_name + ' -> ' + receiver.display_name)
+    
+def list_to_sql(list):
+    return json.dumps(list)
+
+def draw_to_str(list):
+    new_list = ''
+    last = len(list)-1
+    print(last)
+    index = 0
+    for id in list:
+        if id != list[last]: # CONTROL SO THE LAST ID CAN BE CORRECTLY HANDED
+            new_list += id + ','
+            continue
+
+        else:
+            new_list += id + ',' + list[0]
+
+        index += 1
+
+    return new_list
+
+def get_last_roulette_id():
+
+    sql = 'SELECT id FROM roleta'
+    result = database.selectall(sql, True)
+    print(result)
+
+    last_roulette_id = max(result)
+    print(result)
+
+    return last_roulette_id
+
+def roulette_shuffle(list, roulette_id):
+
+    last_two_draws = get_last_draws(roulette_id)
 
     while True:
-        textos, lista = rsslistener.ler_rss(content, lista)
-            
-        if len(textos) > 0:
-            for texto in textos:
-                embed = discord.Embed(title='Novo episódio!')
-                embed.add_field(name='', value=texto)
-                await channel.send(embed=embed)
-        await asyncio.sleep(60)
-   
-def get_sender_info(msg):
-    dict = {
-        'id': msg.author.id,
-        'name': msg.author.name,
-        'avatar': msg.author.avatar,
-        'mention': msg.author.mention,
-        'nick': msg.author.nick,
-        'roles': msg.author.roles,
-        'display_name': msg.author.display_name,
-        'display_avatar': msg.author.display_avatar
-        }
-    return dict
+        shuffle(list)
+        pairs = generate_pairs(list)
+        is_valid = roulette_validator(pairs, last_two_draws)
 
-async def get_users(txt):
-    user_objects = []
-    with open(txt,'r') as file:
-        members = file.read().split(',')
-        for member_id in members:
-            user = await client.fetch_user(member_id)
-            user_objects.append(user)
-    return user_objects
-
-@client.event
-async def on_message(message):
-    if message.author.id == client.user:
-        return
-
-    msg = message.content.split(' ')
-    sender_info = get_sender_info(message)
-
-    command = msg[0].lower()
-    pares = []
-    match command:
-        
-        case ';ajuda':
-            await message.channel.send(embed=commands.ajuda())
-        case ';cadastro':
-            await message.channel.send(commands.cadastro(msg, sender_info))
-        case ';gerarplacar':
-            users = await get_users('previous_roulette.txt')
-            global pairs
-            pairs, placar = commands.gerar_placar(users, sender_info, admins)
-            message = await message.channel.send(embed=placar)
-            global placar_id
-            placar_id = message.id
-            global placar_channel
-            placar_channel = message.channel.id
-        case ';editarplacar':
-            channel = client.get_channel(1059946512202862734)
-            msg_to_edit = await channel.fetch_message(1071084787827224607)
-            pairs, placar = commands.editar_placar(msg, 'placar.txt', sender_info, admins)
-            await msg_to_edit.edit(embed=placar)
-        case ';terminei':
-            channel = client.get_channel(1059946512202862734)
-            msg_to_edit = await channel.fetch_message(1071084787827224607)
-            pairs, placar = commands.terminei(msg, sender_info, 'placar.txt')
-            await msg_to_edit.edit(embed=placar)
-
-    if message.content.lower().startswith(';obs'):
-        id = message.author.id
-
-        while True:
-            try:
-                command, content = message.content.split(" ",1)
-
-            except:
-                await message.channel.send('Algo de errado não está certo. Tente novamente!')
-                break
-            
-            with open('roulette_members.json','r') as file:
-                    
-                roulettetools.roulette_members = json.load(file)
-
-                for d in roulettetools.roulette_members:
-                    if d['id'] == id:
-                        d['obs'] = content
-                        await message.channel.send('Observações atualizadas!')
-
-                with open('roulette_members.json', 'w') as file:
-                    json.dump(roulettetools.roulette_members, file, indent=2)
+        if is_valid:
+            print('sorteio válido')
+            print(pairs)
             break
 
-    if message.content.lower().startswith(';ativar'):
-        id = message.author.id
-        with open('roulette_members.json','r') as file:
-                    
-            roulettetools.roulette_members = json.load(file)
-
-            for d in roulettetools.roulette_members:
-                if d['id'] == id:
-                    d['ativo'] = 'Sim'
-                    await message.channel.send('Cadastro atualizado!')
-
-            with open('roulette_members.json', 'w') as file:
-                json.dump(roulettetools.roulette_members, file, indent=2)
-
-    if message.content.lower().startswith(';desativar'):
-        id = message.author.id
-        with open('roulette_members.json','r') as file:
-                    
-            roulettetools.roulette_members = json.load(file)
-
-            for d in roulettetools.roulette_members:
-                if d['id'] == id:
-                    d['ativo'] = 'Não'
-                    await message.channel.send('Cadastro atualizado!')
-
-            with open('roulette_members.json', 'w') as file:
-                json.dump(roulettetools.roulette_members, file, indent=2)
-
-    if message.content.lower().startswith(';perfil'):
-
-        if message.content.lower() == ';perfil':
-            id = message.author.id
-            name = message.author.name
-            avatar = message.author.avatar
         else:
-            command, content = message.content.split(" ")
-            id = content.strip('<>@')
-            user = await client.fetch_user(id)
-            id = user.id
-            name = user.name
-            avatar = user.avatar
+            print('recomeçando sorteio')
 
-        embed = discord.Embed(title=name)
-        embed.set_thumbnail(url=avatar)
-        with open('roulette_members.json','r') as file:
-                    
-            roulettetools.roulette_members = json.load(file)
+    return list
 
-            for d in roulettetools.roulette_members:
-                if d['id'] == id:
-                    tipo = d['tipo']
-                    ativo = d['ativo']
-                    if tipo.lower() == 'animanga':
-                        tipo = 'Anime & Mangá'
-                    elif tipo.lower() == 'manga':
-                        tipo = 'Mangá'
-                    else:
-                        tipo = 'Anime'
+def get_last_draws(id):
 
-                    points = d['pontos']
-                    obs = d['obs']
-                    embed.add_field(name='Ativo:',value=ativo,inline=False)
-                    embed.add_field(name='Aceito:',value=tipo,inline=False)
-                    embed.add_field(name='Pontos:',value=points,inline=False)
-                    embed.add_field(name='Observações:',value=obs,inline=False)
+    last = str(int(id))
+    second_last = str(int(id) - 1)
 
-        await message.channel.send(embed=embed)
+    sql = 'SELECT draw FROM roleta WHERE id=' + last
+    last_draw = database.select(sql)
 
-    if message.content.lower().startswith(';darpontos'):
-        command, user_id, points = message.content.split(" ",2)
+    sql = 'SELECT draw FROM roleta WHERE id=' + second_last
+    second_last_draw = database.select(sql)
 
-        print('ok1')
+    last_two_draws = (last_draw, second_last_draw)
 
-        points = int(points)
-        user_id = int(user_id)
-        
-        with open('roulette_members.json','r') as file:
-                    
-            roulettetools.roulette_members = json.load(file)
-            
-            print('ok2')
+    return last_two_draws
 
-            for member in roulettetools.roulette_members:
-                if member['id'] == user_id:
-                    member['pontos'] += points
+def generate_pairs(list):
 
-            print('ok3')
+    head_of_list = list[0]
+    pairs = []
+    new_pair = ''
+    index = 0
 
-        with open('roulette_members.json', 'w') as file:
-            json.dump(roulettetools.roulette_members, file, indent=2)
+    for id in list:
 
-        print('ok4')
-            
+        if id == head_of_list: # CONTROL SO THE FIRST ID CAN BE CORRECTLY HANDED
+            previous_id = id
+            continue
 
-    if message.content.lower().startswith(';membros'):
-        embed = discord.Embed(title='Membros ativos na roleta:')
-
-        with open('roulette_members.json','r') as file:
-                    
-            roulettetools.roulette_members = json.load(file)
-            for member in roulettetools.roulette_members:
-                if member['ativo'].lower() == 'sim':
-                    embed.add_field(name='',value=member['nome'],inline=False)
-            await message.channel.send(embed=embed)
-
-    if message.content.lower().startswith(';sorteio'):
-        print(message.author.id)
-        if message.author.id not in admins:
-            await message.channel.send('Você não tem permissão para usar esse comando!')
         else:
-            with open('previous_roulette.txt') as file:
-                previous_roulette = file.read().split(',')
+            new_pair = previous_id + ',' + id
 
-            formatted, shuffled, pairs = roulettetools.shuffle_roulette(previous_roulette)
+        previous_id = id
+        pairs.append(new_pair)
+        index += 1
 
-            with open('previous_roulette.txt', 'w') as file:
-                list = ''
-                i = 0
-                for member in shuffled:
-                    if i != len(shuffled) - 1:
-                        list += str(member) + ','
-                    else:
-                        list += str(member) + ',' + str(shuffled[0])
-                    i += 1
-                file.write(list)
+    new_pair = list[index] + ',' + head_of_list # CREATES THE LAST PAIR
+    pairs.append(new_pair)
 
-            for line in pairs:
-                time.sleep(3)
-                await message.channel.send(line)
+    return pairs
 
-            embed = discord.Embed(title='Roleta:', description=formatted)
-            await message.channel.send(embed=embed)
+def roulette_validator(pairs, last_two_draws):
 
-    if message.content.lower().startswith(';sinopse'):
-        command, content = message.content.split(" ")
-        response = anilist.query_anilist(content)
+    print('lista de pares:')
+    print(pairs)
 
-        print(json.dumps(response.json(), indent=2))
+    for pair in pairs:
+        print(pair)
+        print('checando existencia do par na última roleta:')
 
-        o = response.json()
+        # VALIDATING IF PAIR DIDN'T HAPPEN IN THE LAST 2 ROULETTES
 
-        title = o['data']['Media']['title']['romaji']
-        description = o['data']['Media']['description']
-
-
-        embed = discord.Embed(title='Sinopse de ' + title, description=description.replace('<br><br>','').replace('<i>','*').replace('</i>','*'))
-        await message.channel.send(embed=embed)
-
-    if message.content.lower().startswith(';secreto'):
-        command, content = message.content.split(" ",1)
-
-        print(message.author.name + ': ' + content)
-
-        await message.delete()
-
-    if message.content.lower().startswith(';autenticar'):
-        command, content = message.content.split(" ",1)
-
-    if message.content.lower().startswith(';mutation'):
-        command, content = message.content.split(" ",1)
+        if pair in last_two_draws[0]:
+            print('par aconteceu na última roleta')
+            return False
         
-        test = anilist.new_anime(content, accessToken)
+        print('checando existencia do par na penúltima roleta:')
+        if pair in last_two_draws[1]:
+            print('par aconteceu na penúltima roleta')
+            return False
 
-        
-    if message.content.lower().startswith(';test'):
-        anilist.update_episode('1', 1, accessToken)
+        # VALIDATING IF PAIR TYPES ARE COMPATIBLE
 
+        giver, receiver = pair.split(',',1)
+        giver_type = database.select('SELECT gives FROM user WHERE id="' + giver + '"')
+        print(giver_type)
+        receiver_type = database.select('SELECT receives FROM user WHERE id="' + receiver + '"')
+        print(receiver_type)
+
+        if 'anime e mangá' not in (giver_type, receiver_type):
+            if receiver_type == 'anime' and giver_type == 'mangá':
+                print('Par incompatível')
+                return False
+            if receiver_type == 'mangá' and giver_type == 'anime':
+                print('Par incompatível')
+                return False
+            
+    return True
+
+async def generate_board(ctx, channel_id):
+    return await send_message(ctx, 'board', channel_id)
+
+async def board_update(roleta_id):
+
+    sql = 'SELECT id_message, id_channel FROM roleta WHERE id="' + str(roleta_id) + '"'
+    message_info = database.selectall(sql)
+
+    
+    channel_id = int(message_info[0][1])
+
+    channel = bot.get_channel(channel_id)
+
+    message_id = int(message_info[0][0])
+
+    message = await channel.fetch_message(message_id)
+
+    sql = 'SELECT idx, id_giver, id_receiver, received_rec, score, status FROM user_has_roleta WHERE id_roleta="' + str(roleta_id) + '" ORDER BY idx'
+
+    board_info = database.selectall(sql)
+
+    board_text = '```\n'
+
+    for pairing in board_info:
+
+        giver = await bot.fetch_user(pairing[1])
+        receiver = await bot.fetch_user(pairing[2])
+
+        if pairing[3] != None:
+            medias = board_indications_manager(pairing[3])
+        else:
+            medias = ''
+
+        status = pairing[5]
+        match status:
+            case 'ongoing':
+                status_text = ''
+            case 'finished':
+                status_text = '✅ '
+            case 'abandoned':
+                status_text = '❌ ABANDONADO'
+
+
+        score = str(pairing[4]) + '/10'
+        if score == '/10':
+            score = ''
+
+        board_text += str(pairing[0]) + '. ' + giver.display_name + ' -> ' + receiver.display_name + ' [' + medias + '] ' + status_text + score + '\n'
+
+    board_text = board_text.replace('None/10','')
+    board_text = board_text.replace('[]','')
+    board_text += '```'
+
+    await message.edit(board_text)
+
+def board_indications_manager(medias):
+
+    media_text = ''
+
+    if medias != None:
+
+        if ',' not in medias:
+            media_type, media_id = get_type_and_id_from_anilist_link(medias)
+            if media_type == 'anime':
+                response = anilist.query_anime_id(media_id)
+                anime_obj = response.json()
+                title = anime_obj['data']['Media']['title']['romaji']
+            media_text += title
+
+        else:
+
+            medias = medias.split(',')
+
+            for media in medias:
+
+                media_type, media_id = get_type_and_id_from_anilist_link(media)
+
+                if media_type == 'anime':
+                    response = anilist.query_anime_id(media_id)
+                    anime_obj = response.json()
+                    title = anime_obj['data']['Media']['title']['romaji']
+                else:
+                    ...
+
+            
+
+                media_text += title + ' ; '
+
+        media_text = media_text.strip("; ")
+
+        return media_text
+     
+    else:
+
+        return ''
+
+def get_type_and_id_from_anilist_link(link):
+    if 'https://' in link:
+        link = link.replace('https://','')
+
+    link_parts = link.split('/')
+
+    print(link_parts)
+
+    return link_parts[1], link_parts[2]
+
+@bot.slash_command(name='indicar')
+async def indicar_command(
+    ctx: discord.ApplicationContext,
+    media1: discord.Option(str, name='primeira_indicação', description='INSIRA O LINK DO ANILIST DA OBRA', required=True),
+    media2: discord.Option(str, name='segunda_indicação', description='INSIRA O LINK DO ANILIST DA OBRA', required=False),
+    media3: discord.Option(str, name='terceira_indicação', description='INSIRA O LINK DO ANILIST DA OBRA', required=False)
+):
+    roletas = database.selectall('SELECT id FROM roleta', True)
+    roleta_atual = max(roletas)
+
+    roleta_atual = 5
+
+    sql = 'SELECT id_giver FROM user_has_roleta WHERE id_roleta="' + str(roleta_atual) + '"'
+    allowed_givers = database.selectall(sql, True)
+
+    medias = ''
+    medias += media1
+
+    if media2 != None:
+        medias += ',' + media2
+    if media3  != None:
+        medias += ',' + media3
+
+    if str(ctx.author.id) in allowed_givers:
+
+        sql = 'UPDATE user_has_roleta SET received_rec="' + medias + '" WHERE id_giver="' + str(ctx.author.id) + '"'
+        database.update(sql)
+    
+    await ctx.respond(f"Obrigado pela indicação!")
+    # RESTA ATUALIZAR O PLACAR, SE É QUE ISSO NÃO SERÁ AUTOMÁTICO A.K.A. REALIZADO PELO PRÓPRIO PLACAR
+    await board_update(roleta_atual)
+
+async def get_roletas(ctx: discord.AutocompleteContext):
+    roletas = database.selectall('SELECT name FROM roleta ORDER BY id')
+    roletas_names = []
+
+    for roleta in roletas:
+        roletas_names.append(roleta[0])
+        #year, month = roleta.split('_')
+        #year = str(year)
+        #match month:
+        #    case 'jan':
+        #        roletas_names.append('Janeiro 20' + year)
+        #    case 'fev':
+        #        roletas_names.append('Fevereiro 20' + year)
+        #    case 'mar':
+        #        roletas_names.append('Março 20' + year)
+        #    case 'abr':
+        #        roletas_names.append('Abril 20' + year)
+        #    case 'mai':
+        #        roletas_names.append('Maio 20' + year)
+        #    case 'jun':
+        #        roletas_names.append('Junho 20' + year)
+        #    case 'jul':
+        #        roletas_names.append('Julho 20' + year)
+        #    case 'ago':
+        #        roletas_names.append('Agosto 20' + year)
+        #    case 'set':
+        #        roletas_names.append('Setembro 20' + year)
+        #    case 'out':
+        #        roletas_names.append('Outubro 20' + year)
+        #    case 'nov':
+        #        roletas_names.append('Novembro 20' + year)
+        #    case 'dez':
+        #        roletas_names.append('Dzembro 20' + year)
+
+    return roletas_names
+
+@bot.slash_command(name='dar_nota')
+async def dar_nota_command(
+    ctx: discord.ApplicationContext,
+    roleta: discord.Option(str, name='roleta', description='Escolha a roleta', autocomplete=get_roletas, required=True),
+    score: discord.Option(int, name='nota', description='Insira sua nota de 0 a 10', min_value=0, max_value=10, required=True)
+):
+    roleta_id = database.select('SELECT id FROM roleta WHERE name="' + roleta + '"')
+    sql = 'UPDATE user_has_roleta SET score=' + str(score) + ',status="finished"' +  'WHERE id_roleta=' + str(roleta_id) + ' AND id_receiver="' + str(ctx.author.id) + '"'
+    database.update(sql)
+
+    await ctx.respond(f"Obrigado pela dedicação! :muscle:")
+    await board_update(roleta_id)
+
+@bot.command(name='debug')
+async def debug_command(ctx):
+    #print(await get_roletas(ctx))
+
+    await board_update(5)
+    #print(get_type_and_id_from_anilist_link('https://anilist.co/anime/141911/Skip-to-Loafer/'))
+
+    
 config = configparser.RawConfigParser()
 config.read('app.properties')
 token = config.get('Discord', 'token')
-
-client.run(token)
+#bot.run("MTA5OTU5NTIwMDQyODUyMzUzMA.GAqCqA.T2W3Bn9lPCwcTfEHx8IO1s6BK2HBAN4nM9RYeI")
+bot.run(token)
