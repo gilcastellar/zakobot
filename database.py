@@ -42,22 +42,22 @@ id_guild = '1059298932825538661'
 #db.commit()
     
 def query_user_id(user_id):
-    db = mysql.connector.connect(user='root',
-                             password='iniciar',
-                             host='127.0.0.1',
-                             port='3307',
-                             database='mydb')
+    db = mysql.connector.connect(user='u84953_PldAoFY9St',
+                             password='yyaeofA.vu6EzF0=@rPF67g3',
+                             host='78.108.218.47',
+                             port='3306',
+                             database='s84953_zakobot')
 
     cur = db.cursor()
     cur.execute('SELECT id FROM user WHERE id_discord="' + str(user_id) + '"')
     return cur.fetchall()
 
 def profile_query(user_id):
-    db = mysql.connector.connect(user='root',
-                             password='iniciar',
-                             host='127.0.0.1',
-                             port='3307',
-                             database='mydb')
+    db = mysql.connector.connect(user='u84953_PldAoFY9St',
+                             password='yyaeofA.vu6EzF0=@rPF67g3',
+                             host='78.108.218.47',
+                             port='3306',
+                             database='s84953_zakobot')
 
     cur = db.cursor()
     id = query_user_id(user_id)
@@ -69,11 +69,11 @@ def profile_query(user_id):
         for row in cur.fetchall()][0]
 
 def temp_update_profile():
-    db = mysql.connector.connect(user='root',
-                             password='iniciar',
-                             host='127.0.0.1',
-                             port='3307',
-                             database='mydb')
+    db = mysql.connector.connect(user='u84953_PldAoFY9St',
+                             password='yyaeofA.vu6EzF0=@rPF67g3',
+                             host='78.108.218.47',
+                             port='3306',
+                             database='s84953_zakobot')
 
     cur = db.cursor()
     with open('roulette_members.json', 'r') as file:
@@ -99,11 +99,11 @@ def temp_update_profile():
             db.commit()
 
 def select(sql):
-    db = mysql.connector.connect(user='root',
-                             password='iniciar',
-                             host='127.0.0.1',
-                             port='3307',
-                             database='mydb')
+    db = mysql.connector.connect(user='u84953_PldAoFY9St',
+                             password='yyaeofA.vu6EzF0=@rPF67g3',
+                             host='78.108.218.47',
+                             port='3306',
+                             database='s84953_zakobot')
 
     cur = db.cursor()
     cur.execute(sql)
@@ -112,11 +112,11 @@ def select(sql):
     #return cur.description
 
 def selectall(sql, fix=False):
-    db = mysql.connector.connect(user='root',
-                             password='iniciar',
-                             host='127.0.0.1',
-                             port='3307',
-                             database='mydb')
+    db = mysql.connector.connect(user='u84953_PldAoFY9St',
+                             password='yyaeofA.vu6EzF0=@rPF67g3',
+                             host='78.108.218.47',
+                             port='3306',
+                             database='s84953_zakobot')
 
     cur = db.cursor()
     cur.execute(sql)
@@ -134,22 +134,22 @@ def selectall(sql, fix=False):
     #return cur.description
 
 def insert(sql, val):
-    db = mysql.connector.connect(user='root',
-                             password='iniciar',
-                             host='127.0.0.1',
-                             port='3307',
-                             database='mydb')
+    db = mysql.connector.connect(user='u84953_PldAoFY9St',
+                             password='yyaeofA.vu6EzF0=@rPF67g3',
+                             host='78.108.218.47',
+                             port='3306',
+                             database='s84953_zakobot')
 
     cur = db.cursor()
     cur.execute(sql,val)
     db.commit()
 
 def update(sql):
-    db = mysql.connector.connect(user='root',
-                             password='iniciar',
-                             host='127.0.0.1',
-                             port='3307',
-                             database='mydb')
+    db = mysql.connector.connect(user='u84953_PldAoFY9St',
+                             password='yyaeofA.vu6EzF0=@rPF67g3',
+                             host='78.108.218.47',
+                             port='3306',
+                             database='s84953_zakobot')
 
     cur = db.cursor()
     #sql = 'INSERT INTO ' + table + ' (' + column + ') VALUES ("' + text + '") WHERE member_id=' + user_id
