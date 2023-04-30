@@ -110,13 +110,12 @@ async def preferencias_roleta_command(
       is_ativo = 0
   
   is_ativo = str(is_ativo)
-
   
   sql = 'UPDATE user SET active= "' + is_ativo + '", receives= "' + tipo_que_recebe.lower() + '", gives= "' + tipo_que_envia.lower() +  '" WHERE id=' + user_id
   database.update(sql)
 
-  if is_ativo == 0:
-      ctx.respond(f'Você está inativo. Bom descanso!')
+  if ativo.lower() == 'inativo':
+      await ctx.respond(f'Você está inativo. Bom descanso!')
   else:
       await ctx.respond(f'Você está ativo e quer receber `{tipo_que_recebe.lower()}` e enviar `{tipo_que_envia.lower()}` na roleta!')
  
