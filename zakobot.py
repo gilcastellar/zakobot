@@ -72,8 +72,7 @@ async def registro_command(ctx):
 
     user_id = ctx.author.id
     exists = database.check_if_exists(str(user_id))
-    print('exists:')
-    print(exists)
+
     if exists == 0:
 
         guild = 1059298932825538661
@@ -83,6 +82,7 @@ async def registro_command(ctx):
         await ctx.respond(f"Seja bem-vindo(a) à roleta, {name}!")
 
     else:
+
         await ctx.respond('Você já está cadastrado!')
 
 
@@ -105,15 +105,21 @@ async def preferencias_roleta_command(
 
   if ativo.lower() == 'ativo':
       is_ativo = 1
+      ativo_text = 'ativo'
   else:
       is_ativo = 0
+      ativo_text = 'inativo'
   
   is_ativo = str(is_ativo)
+
   
   sql = 'UPDATE user SET active= "' + is_ativo + '", receives= "' + tipo_que_recebe.lower() + '", gives= "' + tipo_que_envia.lower() +  '" WHERE id=' + user_id
   database.update(sql)
 
-  await ctx.respond(f'Você quer receber `{tipo_que_recebe.lower()}` e enviar `{tipo_que_envia.lower()}` na roleta!')
+  if is_ativo == 0:
+      ctx.respond(f'Você está inativo. Bom descanso!')
+  else:
+      await ctx.respond(f'Você quer receber `{tipo_que_recebe.lower()}` e enviar `{tipo_que_envia.lower()}` na roleta!')
  
 
 
