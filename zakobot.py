@@ -433,7 +433,7 @@ async def board_update(roleta_id, message=None):
 
     board_info = database.selectall(sql)
 
-    generate_board(board_info, message)
+    await generate_board(board_info, message)
     
 def board_indications_manager(medias):
 
