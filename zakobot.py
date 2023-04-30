@@ -464,6 +464,8 @@ def board_indications_manager(medias):
 
             media_type, media_id = get_type_and_id_from_anilist_link(medias)
 
+            print('media_id')
+            print(media_id)
             print('Media:')
             print(medias)
 
