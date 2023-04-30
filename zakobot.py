@@ -420,7 +420,7 @@ async def generate_board(info, message):
 
 
         score = str(pairing[4]) + '/10'
-        if score == '/10':
+        if score == '/10' or score == '0/10':
             score = ''
 
         board_text += str(pairing[0]) + '. ' + giver.display_name + ' -> ' + receiver.display_name + ' [' + medias + '] ' + status_text + score + '\n'
