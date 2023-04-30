@@ -109,7 +109,7 @@ async def preferencias_roleta_command(
       print(ativo.lower())
       is_ativo = 0
   
-  is_ativo = str(is_ativo)
+  is_ativo = str(is_ativo) 
   
   sql = 'UPDATE user SET active= "' + is_ativo + '", receives= "' + tipo_que_recebe.lower() + '", gives= "' + tipo_que_envia.lower() +  '" WHERE id=' + user_id
   database.update(sql)
