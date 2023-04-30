@@ -109,8 +109,9 @@ def select(sql):
     cur.execute(sql)
 
     print(cur.fetchone())
-
+        
     if cur.fetchone() == None:
+        print(cur.fetchone())
         return cur.fetchone()
     else:
         print(cur.fetchone()[0])
