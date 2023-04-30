@@ -414,18 +414,20 @@ async def generate_board(info, message):
     await message.edit(board_text)
 
 
-async def board_update(roleta_id):
+async def board_update(roleta_id, message=None):
 
     sql = 'SELECT id_message, id_channel FROM roleta WHERE id="' + str(roleta_id) + '"'
     message_info = database.selectall(sql)
 
-    channel_id = int(message_info[0][1])
+    if message == None:
 
-    channel = bot.get_channel(channel_id)
+        channel_id = int(message_info[0][1])
 
-    message_id = int(message_info[0][0])
+        channel = bot.get_channel(channel_id)
 
-    message = await channel.fetch_message(message_id)
+        message_id = int(message_info[0][0])
+
+        message = await channel.fetch_message(message_id)
 
     sql = 'SELECT idx, id_giver, id_receiver, received_rec, score, status FROM user_has_roleta WHERE id_roleta="' + str(roleta_id) + '" ORDER BY idx'
 
@@ -570,7 +572,9 @@ async def debug_command(ctx):
     #await board_update(5)
     #print(get_type_and_id_from_anilist_link('https://anilist.co/anime/141911/Skip-to-Loafer/'))
 
-    create_board_message(ctx, ctx.interaction.channel.id)
+    message = create_board_message(ctx, ctx.interaction.channel.id)
+
+    board_update(5, message)
 
     
 config = configparser.RawConfigParser()
