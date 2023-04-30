@@ -662,7 +662,7 @@ async def debug_command(ctx):
     print(roleta[1])
 
     for id in roleta:
-        if index < 23:
+        if index < len(roleta):
             idx = index
             receiver = roleta[index]
             giver = id
