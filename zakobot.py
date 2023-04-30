@@ -495,6 +495,7 @@ def board_indications_manager(medias):
 
                 
                 anime_obj = response.json()
+                print(anime_obj)
                 title = anime_obj['data']['Media']['title']['romaji']
                 media_text += title + ' ; '
 
