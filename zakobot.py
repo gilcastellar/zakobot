@@ -621,6 +621,7 @@ async def historico_roleta_command(
     message = await create_board_message(ctx, ctx.interaction.channel.id)
     roleta_id = database.select('SELECT id FROM roleta WHERE name="' + roleta + '"')
     await board_update(roleta_id, message)
+    await ctx.respond("Carregando...")
 
 @bot.slash_command(name='insert')
 async def insert_command(
