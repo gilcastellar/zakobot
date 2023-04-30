@@ -656,7 +656,7 @@ async def debug_command(ctx):
             idx = index
             receiver = fev23[index]
             giver = id
-            roleta = 1
+            roleta = 2
             recs = ''
             score = 0
             status = ''
