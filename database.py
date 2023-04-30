@@ -121,7 +121,7 @@ def check_if_exists(id):
     cur = db.cursor()
     cur.execute('SELECT COUNT(1) FROM user WHERE id="' + id + '"')
 
-    return cur.fetchone()
+    return cur.fetchone()[0]
 
 
 
