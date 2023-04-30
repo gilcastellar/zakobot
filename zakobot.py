@@ -106,20 +106,20 @@ async def registro_command(ctx):
 
     await ctx.respond(f"Seja bem-vindo(a) à roleta, {name}!")
 
-@bot.command(name='insert')
-async def insert_command(ctx):
+#@bot.command(name='insert')
+#async def insert_command(ctx):
 
-    role = discord.utils.get(ctx.guild.roles, name="Roleta")
-    print(role)
+#    role = discord.utils.get(ctx.guild.roles, name="Roleta")
+#    print(role)
 
-    for user in ctx.guild.members:
-        if role in user.roles:
-            id = user.id
-            print(id)
-            print(type(id))
-            guild = 1059298932825538661
-            name = user.name
-            database.insert('INSERT INTO user (id, id_guild, name) VALUES (%s,%s,%s)',(id, guild, name))
+#    for user in ctx.guild.members:
+#        if role in user.roles:
+#            id = user.id
+#            print(id)
+#            print(type(id))
+#            guild = 1059298932825538661
+#            name = user.name
+#            database.insert('INSERT INTO user (id, id_guild, name) VALUES (%s,%s,%s)',(id, guild, name))
 
 async def get_members_names(ctx: discord.AutocompleteContext):
     members = database.selectall('SELECT id, name, active, anime_list, receives, gives, obs FROM user WHERE active=1')
@@ -169,10 +169,10 @@ async def perfil_command(
 
     await ctx.respond(embed=embed)
 
-jan23 = ['691095708866183229,163447617005551616,129635640122933248,115555588397727751,98410347597139968,273325876530380800,92484473207144448,324731795138674689,266340550267895808,1050904689685831760,315599461399265280,95565745009733632,252946147973267456,351647595527143434,188504910059274240,450498161895538708,125944165958680576,98437897933299712,128322474059235328,691095708866183229']
-fev23 = ['273325876530380800,98437897933299712,92484473207144448,98410347597139968,252946147973267456,125944165958680576,745062616493326408,158024279882072064,324731795138674689,129635640122933248,270061072487153664,128322474059235328,235808827662925825,95565745009733632,115555588397727751,1050904689685831760,188504910059274240,266340550267895808,163447617005551616,315599461399265280,273325876530380800']
-mar23 = ['287766312808349696,115555588397727751,163447617005551616,188504910059274240,158024279882072064,691095708866183229,252946147973267456,324731795138674689,745062616493326408,1050904689685831760,128322474059235328,98437897933299712,125944165958680576,129635640122933248,273325876530380800,95565745009733632,92484473207144448,315599461399265280,235808827662925825,906937520254758973,392050013116694528,287766312808349696'] # começa por estroncio 287766312808349696
-abr23 = ['98410347597139968,92484473207144448,115555588397727751,125944165958680576,392050013116694528,128322474059235328,235808827662925825,170007555907518464,252946147973267456,691095708866183229,158024279882072064,1050904689685831760,188504910059274240,98437897933299712,315599461399265280,745062616493326408,273325876530380800,287766312808349696,324731795138674689,163447617005551616,129635640122933248,95565745009733632,98410347597139968'] # começa por kaiser 906937520254758973 (trocar para 98410347597139968)
+#jan23 = ['691095708866183229,163447617005551616,129635640122933248,115555588397727751,98410347597139968,273325876530380800,92484473207144448,324731795138674689,266340550267895808,1050904689685831760,315599461399265280,95565745009733632,252946147973267456,351647595527143434,188504910059274240,450498161895538708,125944165958680576,98437897933299712,128322474059235328,691095708866183229']
+#fev23 = ['273325876530380800,98437897933299712,92484473207144448,98410347597139968,252946147973267456,125944165958680576,745062616493326408,158024279882072064,324731795138674689,129635640122933248,270061072487153664,128322474059235328,235808827662925825,95565745009733632,115555588397727751,1050904689685831760,188504910059274240,266340550267895808,163447617005551616,315599461399265280,273325876530380800']
+#mar23 = ['287766312808349696,115555588397727751,163447617005551616,188504910059274240,158024279882072064,691095708866183229,252946147973267456,324731795138674689,745062616493326408,1050904689685831760,128322474059235328,98437897933299712,125944165958680576,129635640122933248,273325876530380800,95565745009733632,92484473207144448,315599461399265280,235808827662925825,906937520254758973,392050013116694528,287766312808349696'] # começa por estroncio 287766312808349696
+#abr23 = ['98410347597139968,92484473207144448,115555588397727751,125944165958680576,392050013116694528,128322474059235328,235808827662925825,170007555907518464,252946147973267456,691095708866183229,158024279882072064,1050904689685831760,188504910059274240,98437897933299712,315599461399265280,745062616493326408,273325876530380800,287766312808349696,324731795138674689,163447617005551616,129635640122933248,95565745009733632,98410347597139968'] # começa por kaiser 906937520254758973 (trocar para 98410347597139968)
 
 @bot.slash_command(name='sorteio')
 async def sorteio_command(
@@ -221,7 +221,7 @@ async def sorteio_command(
 
             index += 1
 
-        board_message = await generate_board(ctx, 1101463762864701540)
+        board_message = await create_board_message(ctx, 1101463762864701540)
 
         print(board_message)
         
@@ -374,30 +374,14 @@ def roulette_validator(pairs, last_two_draws):
             
     return True
 
-async def generate_board(ctx, channel_id):
+async def create_board_message(ctx, channel_id):
     return await send_message(ctx, 'board', channel_id)
 
-async def board_update(roleta_id):
-
-    sql = 'SELECT id_message, id_channel FROM roleta WHERE id="' + str(roleta_id) + '"'
-    message_info = database.selectall(sql)
-
-    
-    channel_id = int(message_info[0][1])
-
-    channel = bot.get_channel(channel_id)
-
-    message_id = int(message_info[0][0])
-
-    message = await channel.fetch_message(message_id)
-
-    sql = 'SELECT idx, id_giver, id_receiver, received_rec, score, status FROM user_has_roleta WHERE id_roleta="' + str(roleta_id) + '" ORDER BY idx'
-
-    board_info = database.selectall(sql)
+async def generate_board(info, message):
 
     board_text = '```\n'
 
-    for pairing in board_info:
+    for pairing in info:
 
         giver = await bot.fetch_user(pairing[1])
         receiver = await bot.fetch_user(pairing[2])
@@ -429,6 +413,26 @@ async def board_update(roleta_id):
 
     await message.edit(board_text)
 
+
+async def board_update(roleta_id):
+
+    sql = 'SELECT id_message, id_channel FROM roleta WHERE id="' + str(roleta_id) + '"'
+    message_info = database.selectall(sql)
+
+    channel_id = int(message_info[0][1])
+
+    channel = bot.get_channel(channel_id)
+
+    message_id = int(message_info[0][0])
+
+    message = await channel.fetch_message(message_id)
+
+    sql = 'SELECT idx, id_giver, id_receiver, received_rec, score, status FROM user_has_roleta WHERE id_roleta="' + str(roleta_id) + '" ORDER BY idx'
+
+    board_info = database.selectall(sql)
+
+    generate_board(board_info, message)
+    
 def board_indications_manager(medias):
 
     media_text = ''
@@ -456,9 +460,7 @@ def board_indications_manager(medias):
                     anime_obj = response.json()
                     title = anime_obj['data']['Media']['title']['romaji']
                 else:
-                    ...
-
-            
+                    ... # PERHAPS NOT NEEDED...?
 
                 media_text += title + ' ; '
 
@@ -544,7 +546,7 @@ async def get_roletas(ctx: discord.AutocompleteContext):
         #    case 'nov':
         #        roletas_names.append('Novembro 20' + year)
         #    case 'dez':
-        #        roletas_names.append('Dzembro 20' + year)
+        #        roletas_names.append('eDzembro 20' + year)
 
     return roletas_names
 
@@ -565,8 +567,12 @@ async def dar_nota_command(
 async def debug_command(ctx):
     #print(await get_roletas(ctx))
 
-    await board_update(5)
+    #await board_update(5)
     #print(get_type_and_id_from_anilist_link('https://anilist.co/anime/141911/Skip-to-Loafer/'))
+
+    print(ctx)
+
+    #create_board_message(ctx, )
 
     
 config = configparser.RawConfigParser()
