@@ -588,7 +588,6 @@ async def terminei_command(
 @bot.slash_command(name='insert')
 async def insert_command(
     ctx: discord.ApplicationContext,
-    roleta: discord.Option(int, name='roleta'),
     idx: discord.Option(int, name='index'),
     recs: discord.Option(str, name='recs'),
     score: discord.Option(int, name='nota'),
