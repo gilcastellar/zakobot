@@ -572,6 +572,7 @@ async def debug_command(ctx):
 
     print(ctx)
     print(ctx.interaction.channel)
+    print(ctx.interaction.channel.id)
     
 
     #create_board_message(ctx, )
