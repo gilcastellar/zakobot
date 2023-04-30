@@ -614,7 +614,7 @@ async def debug_command(ctx):
     val = (idx, str(receiver), str(giver), str(roleta), recs, str(score), status)
     database.insert(sql, val)
     
-    ...
+    print('done')
     
 config = configparser.RawConfigParser()
 config.read('app.properties')
