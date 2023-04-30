@@ -397,7 +397,11 @@ async def generate_board(info, message):
 
     board_text = '```\n'
 
+    index = 1
+
     for pairing in info:
+
+        print('loop ' + str(index))
 
         giver = await bot.fetch_user(pairing[1])
         receiver = await bot.fetch_user(pairing[2])
@@ -424,11 +428,12 @@ async def generate_board(info, message):
             score = ''
 
         board_text += str(pairing[0]) + '. ' + giver.display_name + ' -> ' + receiver.display_name + ' [' + medias + '] ' + status_text + score + '\n'
-
+    
+    print('catraca pós-loop')
     board_text = board_text.replace('None/10','')
     board_text = board_text.replace('[]','')
     board_text += '```'
-
+    print('catraca pós-final edit')
     await message.edit(board_text)
 
 
