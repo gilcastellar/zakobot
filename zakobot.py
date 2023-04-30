@@ -91,6 +91,7 @@ async def editar_perfil(ctx: discord.ApplicationContext):
     """Shows an example of a modal dialog being invoked from a slash command."""
     user_id = ctx.author.id
     modal = EditRouletteProfileModal(user_id, title="Editar perfil da roleta")
+    await ctx.respond('Editando...')
     await ctx.send_modal(modal)
 
 # SLASH PRA SE CADASTRAR NA ROLETA
