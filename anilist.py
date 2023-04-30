@@ -153,6 +153,7 @@ def query_manga_id(id):
         format
         title {
             romaji
+        }
       }
     }
     '''
