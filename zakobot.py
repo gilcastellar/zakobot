@@ -582,7 +582,7 @@ async def debug_command(ctx):
     
     user_id = '197909881427066880'
 
-    exists = database.select('SELECT name FROM user WHERE id="' + user_id)
+    exists = database.select('SELECT name FROM user WHERE id="' + user_id + '"')
 
     print(type(exists))
     print(exists)
