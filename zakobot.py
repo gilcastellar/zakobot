@@ -395,14 +395,9 @@ async def create_board_message(ctx, channel_id):
 
 async def generate_board(info, message):
 
-    index = 1
-
     board_text = '```\n'
 
     for pairing in info:
-
-        print(index)
-        index += 1
 
         giver = await bot.fetch_user(pairing[1])
         receiver = await bot.fetch_user(pairing[2])
