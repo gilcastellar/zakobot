@@ -108,15 +108,20 @@ def select(sql):
     cur = db.cursor()
     cur.execute(sql)
 
-    print(cur.fetchone())
-        
-    if cur.fetchone() != None:
-        print(cur.fetchone()[0])
-        return cur.fetchone()[0]
-    else:
-        print(cur.fetchone())
-        return cur.fetchone()
+    return cur.fetchone()[0]
     #return cur.description
+
+def check_if_exists(id):
+    db = mysql.connector.connect(user='u84953_PldAoFY9St',
+                             password='yyaeofA.vu6EzF0=@rPF67g3',
+                             host='78.108.218.47',
+                             port='3306',
+                             database='s84953_zakobot')
+
+    cur = db.cursor()
+    cur.execute('SELECT COUNT(1) FROM user WHERE id="' + id '"')
+
+
 
 def selectall(sql, fix=False):
     db = mysql.connector.connect(user='u84953_PldAoFY9St',
