@@ -568,8 +568,8 @@ async def get_roletas(ctx: discord.AutocompleteContext):
 
     return roletas_names
 
-@bot.slash_command(name='dar_nota')
-async def dar_nota_command(
+@bot.slash_command(name='terminei')
+async def terminei_command(
     ctx: discord.ApplicationContext,
     roleta: discord.Option(str, name='roleta', description='Escolha a roleta', autocomplete=get_roletas, required=True),
     score: discord.Option(int, name='nota', description='Insira sua nota de 0 a 10', min_value=0, max_value=10, required=True)
@@ -591,13 +591,6 @@ async def debug_command(ctx):
     #message = await create_board_message(ctx, ctx.interaction.channel.id)
 
     #await board_update(5, message)
-    
-    user_id = '197909881427066880'
-
-    exists = database.select('SELECT name FROM user WHERE id="' + user_id + '"')
-
-    print(type(exists))
-    print(exists)
 
     
 config = configparser.RawConfigParser()
