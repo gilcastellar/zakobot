@@ -570,12 +570,7 @@ async def debug_command(ctx):
     #await board_update(5)
     #print(get_type_and_id_from_anilist_link('https://anilist.co/anime/141911/Skip-to-Loafer/'))
 
-    print(ctx)
-    print(ctx.interaction.channel)
-    print(ctx.interaction.channel.id)
-    
-
-    #create_board_message(ctx, )
+    create_board_message(ctx, ctx.interaction.channel.id)
 
     
 config = configparser.RawConfigParser()
