@@ -613,6 +613,15 @@ async def terminei_command(
     await ctx.respond(f"Obrigado pela dedicação! :muscle:")
     await board_update(roleta_id)
 
+@bot.slash_command(name='historico_roleta')
+async def historico_roleta_command(
+    ctx: discord.ApplicationContext,
+    roleta: discord.Option(str, name='roleta', description='Escolha a roleta que quer visualizar', autocomplete=get_roletas, required=True)
+):
+    message = await create_board_message(ctx, ctx.interaction.channel.id)
+    roleta_id = database.select('SELECT id FROM roleta WHERE name="' + roleta + '"')
+    await board_update(roleta_id, message)
+
 @bot.slash_command(name='insert')
 async def insert_command(
     ctx: discord.ApplicationContext,
