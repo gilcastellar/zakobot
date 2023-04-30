@@ -30,6 +30,7 @@ class EditRouletteProfileModal(discord.ui.Modal):
         self.add_item(discord.ui.InputText(label="Suas observações", style=discord.InputTextStyle.long, required=False, value=_obs))
 
     async def callback(self, interaction: discord.Interaction):
+        await interaction.response.send_message('Editando...')
         embed = discord.Embed(title="Perfil")
         embed.add_field(name="MAL/Anilist", value=self.children[0].value, inline=False)
         embed.add_field(name="Suas observações", value=self.children[1].value, inline=False)
@@ -91,7 +92,6 @@ async def editar_perfil(ctx: discord.ApplicationContext):
     """Shows an example of a modal dialog being invoked from a slash command."""
     user_id = ctx.author.id
     modal = EditRouletteProfileModal(user_id, title="Editar perfil da roleta")
-    await ctx.respond('Editando...')
     await ctx.send_modal(modal)
 
 # SLASH PRA SE CADASTRAR NA ROLETA
