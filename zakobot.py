@@ -402,6 +402,7 @@ async def generate_board(info, message):
     for pairing in info:
 
         print('loop ' + str(index))
+        index += 1
 
         giver = await bot.fetch_user(pairing[1])
         receiver = await bot.fetch_user(pairing[2])
