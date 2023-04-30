@@ -463,8 +463,11 @@ def board_indications_manager(medias):
         if ',' not in medias:
 
             media_type, media_id = get_type_and_id_from_anilist_link(medias)
+            
+            print('media_type:')
+            print(media_type)
 
-            print('media_id')
+            print('media_id:')
             print(media_id)
 
             print('Media:')
@@ -493,7 +496,9 @@ def board_indications_manager(medias):
 
                 media_type, media_id = get_type_and_id_from_anilist_link(media)
 
-                print('media_id')
+                print('media_type:')
+                print(media_type)
+                print('media_id:')
                 print(media_id)
 
                 response = anilist.query_anime_id(media_id)
