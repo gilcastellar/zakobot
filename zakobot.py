@@ -473,13 +473,13 @@ def board_indications_manager(medias):
             print('Media:')
             print(medias)
 
-            response = anilist.query_anime_id(media_id)
-
-            #if media_type == 'anime':
-            #    response = anilist.query_anime_id(media_id)
+            if media_type == 'anime':
+                print('anime')
+                response = anilist.query_anime_id(media_id)
                 
-            #else:
-            #    response = anilist.query_manga_id(media_id)
+            else:
+                print('manga')
+                response = anilist.query_manga_id(media_id)
 
             anime_obj = response.json()
             title = anime_obj['data']['Media']['title']['romaji']
@@ -503,10 +503,12 @@ def board_indications_manager(medias):
 
                 response = anilist.query_anime_id(media_id)
 
-                #if media_type == 'anime':
-                #    response = anilist.query_anime_id(media_id)
-                #else:
-                #    response = anilist.query_manga_id(media_id)
+                if media_type == 'anime':
+                    print('anime')
+                    response = anilist.query_anime_id(media_id)
+                else:
+                    print('manga')
+                    response = anilist.query_manga_id(media_id)
 
                 print(response)
                 anime_obj = response.json()
