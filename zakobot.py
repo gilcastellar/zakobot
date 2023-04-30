@@ -71,7 +71,7 @@ async def fetch_user(id):
 async def registro_command(ctx):
 
     user_id = ctx.author.id
-    exists = database.select('SELECT name FROM user WHERE id="' + str(user_id) + '"')
+    exists = database.check_if_exists(user_id)
     print('exists:')
     print(exists)
     if exists == 0:
