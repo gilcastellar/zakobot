@@ -93,6 +93,8 @@ async def editar_perfil(ctx: discord.ApplicationContext):
     modal = EditRouletteProfileModal(user_id, title="Editar perfil da roleta")
     await ctx.send_modal(modal)
 
+    await ctx.respond('Edições realizadas!')
+
 # SLASH PRA SE CADASTRAR NA ROLETA
 @bot.slash_command(name='preferencias_roleta')
 async def preferencias_roleta_command(
