@@ -67,6 +67,18 @@ async def fetch_user(id):
 
     return user
 
+@bot.command(name='registro')
+async def registro_command(ctx):
+    
+
+    user_id = ctx.author.id
+    exists = database.select('SELECT name FROM user WHERE id="' + user_id)
+    guild = 1059298932825538661
+    name = ctx.author.name
+    database.insert('INSERT INTO user (id, id_guild, name) VALUES (%s,%s,%s)',(user_id, guild, name))
+
+    await ctx.respond(f"Seja bem-vindo(a) à roleta, {name}!")
+
 @bot.slash_command()
 async def editar_perfil(ctx: discord.ApplicationContext):
     """Shows an example of a modal dialog being invoked from a slash command."""
@@ -96,15 +108,7 @@ async def preferencias_roleta_command(
 
   await ctx.respond(f'Você quer receber `{tipo_que_recebe.lower()}` e enviar `{tipo_que_envia.lower()}` na roleta!')
  
-@bot.command(name='registro')
-async def registro_command(ctx):
-    
-    user_id = ctx.author.id
-    guild = 1059298932825538661
-    name = ctx.author.name
-    database.insert('INSERT INTO user (id, id_guild, name) VALUES (%s,%s,%s)',(user_id, guild, name))
 
-    await ctx.respond(f"Seja bem-vindo(a) à roleta, {name}!")
 
 #@bot.command(name='insert')
 #async def insert_command(ctx):
@@ -572,9 +576,16 @@ async def debug_command(ctx):
     #await board_update(5)
     #print(get_type_and_id_from_anilist_link('https://anilist.co/anime/141911/Skip-to-Loafer/'))
 
-    message = await create_board_message(ctx, ctx.interaction.channel.id)
+    #message = await create_board_message(ctx, ctx.interaction.channel.id)
 
-    await board_update(5, message)
+    #await board_update(5, message)
+    
+    user_id = '197909881427066880'
+
+    exists = database.select('SELECT name FROM user WHERE id="' + user_id)
+
+    print(type(exists))
+    print(exists)
 
     
 config = configparser.RawConfigParser()
