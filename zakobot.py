@@ -437,7 +437,7 @@ async def generate_board(info, message, id=0):
 def parse_name(name):
 
     #match name:
-    #    ...
+        ...
 
 async def board_update(roleta_id, message=None):
 
