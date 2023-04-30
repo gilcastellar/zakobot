@@ -105,10 +105,9 @@ async def preferencias_roleta_command(
 
   if ativo.lower() == 'ativo':
       is_ativo = 1
-      ativo_text = 'ativo'
   else:
+      print(ativo.lower())
       is_ativo = 0
-      ativo_text = 'inativo'
   
   is_ativo = str(is_ativo)
 
@@ -119,7 +118,7 @@ async def preferencias_roleta_command(
   if is_ativo == 0:
       ctx.respond(f'Você está inativo. Bom descanso!')
   else:
-      await ctx.respond(f'Você quer receber `{tipo_que_recebe.lower()}` e enviar `{tipo_que_envia.lower()}` na roleta!')
+      await ctx.respond(f'Você está ativo e quer receber `{tipo_que_recebe.lower()}` e enviar `{tipo_que_envia.lower()}` na roleta!')
  
 
 
