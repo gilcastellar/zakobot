@@ -466,6 +466,7 @@ def board_indications_manager(medias):
 
             print('media_id')
             print(media_id)
+
             print('Media:')
             print(medias)
 
@@ -487,13 +488,13 @@ def board_indications_manager(medias):
 
             for media in medias:
 
-                print('media_id')
-                print(media_id)
-
                 print('Media:')
                 print(media)
 
                 media_type, media_id = get_type_and_id_from_anilist_link(media)
+
+                print('media_id')
+                print(media_id)
 
                 response = anilist.query_anime_id(media_id)
 
