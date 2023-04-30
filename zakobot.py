@@ -493,7 +493,7 @@ def board_indications_manager(medias):
                 else:
                     response = anilist.query_manga_id(media_id)
 
-                
+                print(response)
                 anime_obj = response.json()
                 print(anime_obj)
                 title = anime_obj['data']['Media']['title']['romaji']
