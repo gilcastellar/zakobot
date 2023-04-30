@@ -464,6 +464,9 @@ def board_indications_manager(medias):
 
             media_type, media_id = get_type_and_id_from_anilist_link(medias)
 
+            print('Medias:')
+            print(medias)
+
             if media_type == 'anime':
                 response = anilist.query_anime_id(media_id)
                 anime_obj = response.json()
@@ -476,6 +479,9 @@ def board_indications_manager(medias):
             medias = medias.split(',')
 
             for media in medias:
+
+                print('Media:')
+                print(media)
 
                 media_type, media_id = get_type_and_id_from_anilist_link(media)
 
