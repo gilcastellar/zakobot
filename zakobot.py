@@ -69,10 +69,9 @@ async def fetch_user(id):
 
 @bot.command(name='registro')
 async def registro_command(ctx):
-    
 
     user_id = ctx.author.id
-    exists = database.select('SELECT name FROM user WHERE id="' + user_id)
+    exists = database.select('SELECT name FROM user WHERE id="' + user_id + '"')
     guild = 1059298932825538661
     name = ctx.author.name
     database.insert('INSERT INTO user (id, id_guild, name) VALUES (%s,%s,%s)',(user_id, guild, name))
