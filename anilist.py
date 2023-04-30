@@ -141,6 +141,32 @@ def query_anime_id(id):
     # Make the HTTP Api request
     return requests.post(url, json={'query': query, 'variables': variables})
 
+def query_manga_id(id):
+
+    #anime_id, anime_name = url.replace('https://anilist.co/anime/','').split('/',1)
+    #print(anime_id, anime_name.strip('/'))
+
+    query = '''
+    query ($id: Int) {
+      Media (id: $id, type: MANGA) {
+        id
+        format
+        title {
+            romaji
+      }
+    }
+    '''
+
+    # Define our query variables and values that will be used in the query request
+    variables = {
+        'id': id
+    }
+
+    url = 'https://graphql.anilist.co'
+
+    # Make the HTTP Api request
+    return requests.post(url, json={'query': query, 'variables': variables})
+
 def query_list_by_status(status, page, user_name):
 
     query = '''
