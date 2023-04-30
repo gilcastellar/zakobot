@@ -402,7 +402,7 @@ async def generate_board(info, message):
         giver = await bot.fetch_user(pairing[1])
         receiver = await bot.fetch_user(pairing[2])
 
-        if pairing[3] != None:
+        if pairing[3] != None and pairing[3] != '':
             medias = board_indications_manager(pairing[3])
         else:
             medias = ''
