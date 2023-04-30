@@ -601,6 +601,7 @@ async def debug_command(ctx):
     index = 1
 
     jan23 = jan23.split(',')
+    print(jan23)
 
     for id in jan23:
         idx = index
