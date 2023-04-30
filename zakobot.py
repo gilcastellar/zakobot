@@ -591,6 +591,8 @@ async def debug_command(ctx):
     #message = await create_board_message(ctx, ctx.interaction.channel.id)
 
     #await board_update(5, message)
+    
+    ...
 
     
 config = configparser.RawConfigParser()
