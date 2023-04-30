@@ -593,6 +593,8 @@ async def insert_command(
     score: discord.Option(int, name='nota'),
     status: discord.Option(str, name ='status')
 ):
+    if status == '':
+        status = 'finished'
     sql = 'UPDATE user_has_roleta SET received_rec="' + recs + '", score=' + str(score) + ', status="' + status + '" WHERE id_roleta=1 AND idx=' + str(idx)
     database.update(sql)
 
