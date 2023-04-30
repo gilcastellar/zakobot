@@ -72,7 +72,7 @@ async def registro_command(ctx):
 
     user_id = ctx.author.id
     exists = database.select('SELECT name FROM user WHERE id="' + str(user_id) + '"')
-    if exists != None:
+    if exists == None:
 
         guild = 1059298932825538661
         name = ctx.author.name

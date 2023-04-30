@@ -110,9 +110,9 @@ def select(sql):
 
     print(cur.fetchone())
 
-    if cur.fetchone() != None:
-        return cur.fetchone()[0]
-    return None
+    if cur.fetchone() == None:
+        return cur.fetchone()
+    return cur.fetchone()[0]
     #return cur.description
 
 def selectall(sql, fix=False):
