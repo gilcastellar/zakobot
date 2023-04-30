@@ -397,12 +397,7 @@ async def generate_board(info, message):
 
     board_text = '```\n'
 
-    index = 1
-
     for pairing in info:
-
-        print('loop ' + str(index))
-        index += 1
 
         giver = await bot.fetch_user(pairing[1])
         receiver = await bot.fetch_user(pairing[2])
@@ -430,11 +425,9 @@ async def generate_board(info, message):
 
         board_text += str(pairing[0]) + '. ' + giver.display_name + ' -> ' + receiver.display_name + ' [' + medias + '] ' + status_text + score + '\n'
     
-    print('catraca pós-loop')
     board_text = board_text.replace('None/10','')
     board_text = board_text.replace('[]','')
     board_text += '```'
-    print('catraca pós-final edit')
     await message.edit(board_text)
 
 
@@ -591,7 +584,19 @@ async def terminei_command(
 
     await ctx.respond(f"Obrigado pela dedicação! :muscle:")
     await board_update(roleta_id)
-    
+
+@bot.slash_command(name='insert')
+async def insert_command(
+    ctx: discord.ApplicationContext,
+    roleta: discord.Option(int, name='roleta'),
+    idx: discord.Option(int, name='index'),
+    recs: discord.Option(str, name='recs'),
+    score: discord.Option(int, name='nota'),
+    status: discord.Option(str, name ='status')
+):
+    sql = 'UPDATE user_has_roleta SET received_rec="' + recs + '", score=' + str(score) + ', status="' + status + '" WHERE id_roleta=1 AND idx=' + str(idx)
+    database.update(sql)
+
 @bot.command(name='debug')
 async def debug_command(ctx):
     #print(await get_roletas(ctx))
