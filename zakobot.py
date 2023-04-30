@@ -393,9 +393,13 @@ def roulette_validator(pairs, last_two_draws):
 async def create_board_message(ctx, channel_id):
     return await send_message(ctx, 'Carregando...', channel_id)
 
-async def generate_board(info, message):
+async def generate_board(info, message, id=0):
 
-    board_text = '```\n'
+    name = database.select('SELECT name FROM roleta WHERE id=' + str(id))
+
+    name = parse_name(nome)
+
+    board_text = '```\n' +  + '\n'
 
     for pairing in info:
 
@@ -430,6 +434,10 @@ async def generate_board(info, message):
     board_text += '```'
     await message.edit(board_text)
 
+def parse_name(name):
+
+    match name:
+        case
 
 async def board_update(roleta_id, message=None):
 
@@ -452,7 +460,7 @@ async def board_update(roleta_id, message=None):
 
     print('starting to generate board')
 
-    await generate_board(board_info, message)
+    await generate_board(board_info, message, roleta_id)
     
 def board_indications_manager(medias):
 
@@ -657,7 +665,7 @@ async def debug_command(ctx):
 
     index = 1
 
-    roleta = mar23.split(',')
+    roleta = abr23.split(',')
     print(roleta)
     print(roleta[1])
 
@@ -666,7 +674,7 @@ async def debug_command(ctx):
             idx = index
             receiver = roleta[index]
             giver = id
-            roleta_id = 3
+            roleta_id = 4
             recs = ''
             score = 0
             status = ''
