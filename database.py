@@ -112,7 +112,7 @@ def select(sql):
 
     if cur.fetchone() != None:
         return cur.fetchone()[0]
-    return False
+    return None
     #return cur.description
 
 def selectall(sql, fix=False):
