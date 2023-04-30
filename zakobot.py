@@ -487,6 +487,9 @@ def board_indications_manager(medias):
 
             for media in medias:
 
+                print('media_id')
+                print(media_id)
+
                 print('Media:')
                 print(media)
 
