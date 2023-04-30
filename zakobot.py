@@ -605,20 +605,19 @@ async def debug_command(ctx):
     print(jan23[1])
 
     for id in jan23:
-        print(index)
-        print(id)
-        idx = index
-        receiver = jan23[index]
-        giver = id
-        roleta = 1
-        recs = ''
-        score = 0
-        status = ''
-        index += 1
+        if index < 21:
+            idx = index
+            receiver = jan23[index]
+            giver = id
+            roleta = 1
+            recs = ''
+            score = 0
+            status = ''
+            index += 1
         
-    sql = 'INSERT INTO user_has_roleta (idx, id_receiver, id_giver, id_roleta, received_rec, score, status) VALUES (%s,%s,%s,%s,%s,%s,%s)'
-    val = (idx, str(receiver), str(giver), str(roleta), recs, str(score), status)
-    database.insert(sql, val)
+            sql = 'INSERT INTO user_has_roleta (idx, id_receiver, id_giver, id_roleta, received_rec, score, status) VALUES (%s,%s,%s,%s,%s,%s,%s)'
+            val = (idx, str(receiver), str(giver), str(roleta), recs, str(score), status)
+            database.insert(sql, val)
     
     print('done')
     
