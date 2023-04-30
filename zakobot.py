@@ -657,23 +657,23 @@ async def debug_command(ctx):
 
     index = 1
 
-    fev23 = fev23.split(',')
-    print(fev23)
-    print(fev23[1])
+    roleta = mar23.split(',')
+    print(roleta)
+    print(roleta[1])
 
-    for id in fev23:
+    for id in roleta:
         if index < 23:
             idx = index
-            receiver = fev23[index]
+            receiver = roleta[index]
             giver = id
-            roleta = 2
+            roleta_id = 3
             recs = ''
             score = 0
             status = ''
             index += 1
         
             sql = 'INSERT INTO user_has_roleta (idx, id_receiver, id_giver, id_roleta, received_rec, score, status) VALUES (%s,%s,%s,%s,%s,%s,%s)'
-            val = (idx, str(receiver), str(giver), str(roleta), recs, str(score), status)
+            val = (idx, str(receiver), str(giver), str(roleta_id), recs, str(score), status)
             database.insert(sql, val)
     
     print('done')
