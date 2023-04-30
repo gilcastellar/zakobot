@@ -46,7 +46,7 @@ class EditRouletteProfileModal(discord.ui.Modal):
 
         global key
         key = True
-        await interaction.response.send_message(embeds=[embed])
+        await interaction.response.send_message('Edições realizadas! Utilize o comando /perfil para visualizar.')
 
 async def send_message(ctx, text, channel_id=''):
 
@@ -93,7 +93,7 @@ async def editar_perfil(ctx: discord.ApplicationContext):
     modal = EditRouletteProfileModal(user_id, title="Editar perfil da roleta")
     await ctx.send_modal(modal)
 
-    await ctx.respond('Edições realizadas!')
+    
 
 # SLASH PRA SE CADASTRAR NA ROLETA
 @bot.slash_command(name='preferencias_roleta')
