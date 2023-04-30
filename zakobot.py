@@ -415,6 +415,8 @@ async def generate_board(info, message):
                 status_text = '✅ '
             case 'abandoned':
                 status_text = '❌ ABANDONADO'
+            case '':
+                status_text = ''
 
 
         score = str(pairing[4]) + '/10'
