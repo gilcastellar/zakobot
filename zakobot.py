@@ -463,11 +463,6 @@ def board_indications_manager(medias):
 
             media_type, media_id = get_type_and_id_from_anilist_link(medias)
 
-            print('media_type')
-            print(media_type)
-            print('media_id')
-            print(media_id)
-
             if media_type == 'anime':
                 response = anilist.query_anime_id(media_id)
                 anime_obj = response.json()
@@ -505,10 +500,6 @@ def get_type_and_id_from_anilist_link(link):
         link = link.replace('https://','')
 
     link_parts = link.split('/')
-
-    print(link_parts)
-    print(link_parts[1])
-    print(link_parts[2])
 
     return link_parts[1], link_parts[2]
 
