@@ -110,12 +110,12 @@ def select(sql):
 
     print(cur.fetchone())
         
-    if cur.fetchone() == None:
-        print(cur.fetchone())
-        return cur.fetchone()
-    else:
+    if cur.fetchone() != None:
         print(cur.fetchone()[0])
         return cur.fetchone()[0]
+    else:
+        print(cur.fetchone())
+        return cur.fetchone()
     #return cur.description
 
 def selectall(sql, fix=False):
