@@ -122,7 +122,7 @@ async def insert_command(ctx):
             database.insert('INSERT INTO user (id, id_guild, name) VALUES (%s,%s,%s)',(id, guild, name))
 
 async def get_members_names(ctx: discord.AutocompleteContext):
-    members = database.selectall('SELECT id, name, active, anime_list, receives, gives, obs FROM user')
+    members = database.selectall('SELECT id, name, active, anime_list, receives, gives, obs FROM user WHERE active=1')
     members_names = []
 
     for member in members:
