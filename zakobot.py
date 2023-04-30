@@ -671,9 +671,10 @@ async def debug_command(ctx):
             score = 0
             status = ''
             index += 1
-        
+            
             sql = 'INSERT INTO user_has_roleta (idx, id_receiver, id_giver, id_roleta, received_rec, score, status) VALUES (%s,%s,%s,%s,%s,%s,%s)'
             val = (idx, str(receiver), str(giver), str(roleta_id), recs, str(score), status)
+            print('inserting ' + str(giver))
             database.insert(sql, val)
     
     print('done')
