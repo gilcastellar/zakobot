@@ -572,7 +572,7 @@ async def debug_command(ctx):
     #await board_update(5)
     #print(get_type_and_id_from_anilist_link('https://anilist.co/anime/141911/Skip-to-Loafer/'))
 
-    message = create_board_message(ctx, ctx.interaction.channel.id)
+    message = await create_board_message(ctx, ctx.interaction.channel.id)
 
     await board_update(5, message)
 
