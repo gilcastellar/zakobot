@@ -198,7 +198,9 @@ async def sorteio_command(
 
         id = get_last_roulette_id()
 
-        result = roulette_shuffle(draw_list, id)
+        last_two_draws = get_last_draws(id)
+
+        result = roulette_shuffle(draw_list, id, last_two_draws)
         print(type(result))
 
         result_as_str = draw_to_str(result)
@@ -301,9 +303,7 @@ def get_last_roulette_id():
 
     return last_roulette_id
 
-def roulette_shuffle(list, roulette_id):
-
-    last_two_draws = get_last_draws(roulette_id)
+def roulette_shuffle(list, roulette_id, last_two_draws):
 
     while True:
 
