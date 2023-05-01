@@ -98,15 +98,18 @@ async def editar_perfil(ctx: discord.ApplicationContext):
 @bot.slash_command(name='configurar')
 async def configurar_command(
   ctx: discord.ApplicationContext,
-  ativo: discord.Option(str, choices=['Ativo','Inativo'], name='status', description=''),
+  ativo: discord.Option(str, choices=['Ativo','Inativo'], name='status', description='Sua situação na roleta'),
   tipo_que_recebe: discord.Option(str, choices=['Anime', 'Mangá', 'Anime e Mangá'], name='recebo', description='Tipo de obra que quer receber recomendações'),
   tipo_que_envia: discord.Option(str, choices=['Anime', 'Mangá', 'Anime e Mangá'], name='envio', description='Tipo de obra que quer recomendar')
 ):
   user_id = str(ctx.author.id)
 
   if ativo.lower() == 'ativo':
+
       is_ativo = 1
+
   else:
+
       print(ativo.lower())
       is_ativo = 0
   
@@ -116,28 +119,15 @@ async def configurar_command(
   database.update(sql)
 
   if ativo.lower() == 'inativo':
+
       await ctx.respond(f'Você está inativo. Bom descanso!')
+
   else:
+
       await ctx.respond(f'Você está ativo e quer receber `{tipo_que_recebe.lower()}` e enviar `{tipo_que_envia.lower()}` na roleta!')
- 
-
-
-#@bot.command(name='insert')
-#async def insert_command(ctx):
-
-#    role = discord.utils.get(ctx.guild.roles, name="Roleta")
-#    print(role)
-
-#    for user in ctx.guild.members:
-#        if role in user.roles:
-#            id = user.id
-#            print(id)
-#            print(type(id))
-#            guild = 1059298932825538661
-#            name = user.name
-#            database.insert('INSERT INTO user (id, id_guild, name) VALUES (%s,%s,%s)',(id, guild, name))
 
 async def get_members_names(ctx: discord.AutocompleteContext):
+
     members = database.selectall('SELECT id, name, active, anime_list, receives, gives, obs FROM user WHERE active=1')
     members_names = []
 
@@ -166,15 +156,20 @@ async def perfil_command(
     ctx: discord.ApplicationContext,
     member: discord.Option(str, autocomplete=get_members_names, name='membro')
 ):
+
     id, active, anime_list, receives, gives, obs = get_member_info(member)
 
     user = await bot.fetch_user(id)
     avatar = user.avatar
 
     if active == 1:
+
         _ativo = 'Ativo'
+
     else:
+
         _ativo = 'Inativo'
+
     embed = discord.Embed(title=member)
     embed.set_thumbnail(url=avatar)
     embed.add_field(name=_ativo,value='',inline=False)
@@ -196,7 +191,7 @@ async def sorteio_command(
     name: discord.Option(str, name='nome'),
     delay: discord.Option(int, name='delay')
 ):
-    print(ctx.author.id)
+    
     if ctx.author.id in admins:
         sql = 'SELECT id FROM user WHERE active=1'
         draw_list = database.selectall(sql, True)
@@ -257,25 +252,36 @@ async def sorteio_command(
 async def visualize_pairs(pairs):
 
     for pair in pairs:
+
         giver_id, receiver_id = pair.split(',')
+
         giver = await bot.fetch_user(giver_id)
         receiver = await bot.fetch_user(receiver_id)
+
         print(giver.display_name + ' -> ' + receiver.display_name)
     
 def list_to_sql(list):
+
     return json.dumps(list)
 
 def draw_to_str(list):
+
     new_list = ''
     last = len(list)-1
+
     print(last)
+
     index = 0
+
     for id in list:
+
         if id != list[last]: # CONTROL SO THE LAST ID CAN BE CORRECTLY HANDED
+
             new_list += id + ','
             continue
 
         else:
+
             new_list += id + ',' + list[0]
 
         index += 1
@@ -286,9 +292,11 @@ def get_last_roulette_id():
 
     sql = 'SELECT id FROM roleta'
     result = database.selectall(sql, True)
+
     print(result)
 
     last_roulette_id = max(result)
+
     print(result)
 
     return last_roulette_id
@@ -298,16 +306,20 @@ def roulette_shuffle(list, roulette_id):
     last_two_draws = get_last_draws(roulette_id)
 
     while True:
+
         shuffle(list)
+
         pairs = generate_pairs(list)
         is_valid = roulette_validator(pairs, last_two_draws)
 
         if is_valid:
+
             print('sorteio válido')
             print(pairs)
             break
 
         else:
+
             print('recomeçando sorteio')
 
     return list
@@ -332,19 +344,23 @@ def generate_pairs(list):
     head_of_list = list[0]
     pairs = []
     new_pair = ''
+
     index = 0
 
     for id in list:
 
         if id == head_of_list: # CONTROL SO THE FIRST ID CAN BE CORRECTLY HANDED
+
             previous_id = id
             continue
 
         else:
+
             new_pair = previous_id + ',' + id
 
         previous_id = id
         pairs.append(new_pair)
+
         index += 1
 
     new_pair = list[index] + ',' + head_of_list # CREATES THE LAST PAIR
@@ -358,17 +374,21 @@ def roulette_validator(pairs, last_two_draws):
     print(pairs)
 
     for pair in pairs:
+
         print(pair)
         print('checando existencia do par na última roleta:')
 
         # VALIDATING IF PAIR DIDN'T HAPPEN IN THE LAST 2 ROULETTES
 
         if pair in last_two_draws[0]:
+
             print('par aconteceu na última roleta')
             return False
         
         print('checando existencia do par na penúltima roleta:')
+
         if pair in last_two_draws[1]:
+
             print('par aconteceu na penúltima roleta')
             return False
 
@@ -376,21 +396,29 @@ def roulette_validator(pairs, last_two_draws):
 
         giver, receiver = pair.split(',',1)
         giver_type = database.select('SELECT gives FROM user WHERE id="' + giver + '"')
+
         print(giver_type)
+
         receiver_type = database.select('SELECT receives FROM user WHERE id="' + receiver + '"')
+
         print(receiver_type)
 
         if 'anime e mangá' not in (giver_type, receiver_type):
+
             if receiver_type == 'anime' and giver_type == 'mangá':
+
                 print('Par incompatível')
                 return False
+
             if receiver_type == 'mangá' and giver_type == 'anime':
+
                 print('Par incompatível')
                 return False
             
     return True
 
 async def create_board_message(ctx, channel_id):
+
     return await send_message(ctx, 'Carregando...', channel_id)
 
 async def generate_board(info, message, id=0):
@@ -407,24 +435,34 @@ async def generate_board(info, message, id=0):
         receiver = await bot.fetch_user(pairing[2])
 
         if pairing[3] != None and pairing[3] != '':
+
             medias = board_indications_manager(pairing[3])
+
         else:
+
             medias = ''
 
         status = pairing[5]
+
         match status:
+
             case 'ongoing':
                 status_text = ''
+
             case 'finished':
                 status_text = '✅ '
+
             case 'abandoned':
                 status_text = '❌ ABANDONADO'
+
             case '':
                 status_text = ''
 
 
         score = str(pairing[4]) + '/10'
+
         if score == '/10' or score == '0/10':
+
             score = ''
 
         board_text += str(pairing[0]) + '. ' + giver.display_name + ' -> ' + receiver.display_name + ' [' + medias + '] ' + status_text + score + '\n'
@@ -432,6 +470,7 @@ async def generate_board(info, message, id=0):
     board_text = board_text.replace('None/10','')
     board_text = board_text.replace('[]','')
     board_text += '```'
+
     await message.edit(board_text)
 
 def parse_name(name):
@@ -467,7 +506,6 @@ async def board_update(roleta_id, message=None):
         message = await channel.fetch_message(message_id)
 
     sql = 'SELECT idx, id_giver, id_receiver, received_rec, score, status FROM user_has_roleta WHERE id_roleta="' + str(roleta_id) + '" ORDER BY idx'
-
     board_info = database.selectall(sql)
 
     print('starting to generate board')
@@ -506,7 +544,9 @@ def board_indications_manager(medias):
         return ''
 
 def get_type_and_id_from_anilist_link(link):
+
     if 'https://' in link:
+
         link = link.replace('https://','')
 
     link_parts = link.split('/')
@@ -522,6 +562,7 @@ async def indicar_command(
     media2: discord.Option(str, name='segunda_indicação', description='INSIRA O LINK DO ANILIST DA OBRA', required=False),
     media3: discord.Option(str, name='terceira_indicação', description='INSIRA O LINK DO ANILIST DA OBRA', required=False)
 ):
+
     roletas = database.selectall('SELECT id FROM roleta', True)
     roleta_atual = max(roletas)
 
@@ -534,8 +575,11 @@ async def indicar_command(
     medias += media1
 
     if media2 != None:
+
         medias += ',' + media2
+
     if media3  != None:
+
         medias += ',' + media3
 
     if str(ctx.author.id) in allowed_givers:
@@ -544,14 +588,16 @@ async def indicar_command(
         database.update(sql)
     
     await ctx.respond(f"Obrigado pela indicação!")
-    # RESTA ATUALIZAR O PLACAR, SE É QUE ISSO NÃO SERÁ AUTOMÁTICO A.K.A. REALIZADO PELO PRÓPRIO PLACAR
+    
     await board_update(roleta_atual)
 
 async def get_roletas(ctx: discord.AutocompleteContext):
+
     roletas = database.selectall('SELECT name FROM roleta ORDER BY id')
     roletas_names = []
 
     for roleta in roletas:
+
         roletas_names.append(roleta[0])
 
     return roletas_names
@@ -562,11 +608,14 @@ async def terminei_command(
     roleta: discord.Option(str, name='roleta', description='Escolha a roleta', autocomplete=get_roletas, required=True),
     score: discord.Option(int, name='nota', description='Insira sua nota de 1 a 10', min_value=1, max_value=10, required=True)
 ):
+
     roleta_id = database.select('SELECT id FROM roleta WHERE name="' + roleta + '"')
+
     sql = 'UPDATE user_has_roleta SET score=' + str(score) + ',status="finished"' + 'WHERE id_roleta=' + str(roleta_id) + ' AND id_receiver="' + str(ctx.author.id) + '"'
     database.update(sql)
 
     await ctx.respond(f"Obrigado pela dedicação! :muscle:")
+
     await board_update(roleta_id)
 
 @bot.slash_command(name='abandonei')
@@ -574,11 +623,13 @@ async def abandonei_command(
     ctx: discord.ApplicationContext,
     roleta: discord.Option(str, name='roleta', description='Escolha a roleta', autocomplete=get_roletas, required=True)
 ):
+
     roleta_id = database.select('SELECT id FROM roleta WHERE name="' + roleta + '"')
     sql = 'UPDATE user_has_roleta SET status="abandoned" WHERE id_roleta=' + str(roleta_id) + ' AND id_receiver="' + str(ctx.author.id) + '"'
     database.update(sql)
 
     await ctx.respond(f"Indicação abandonada. Obrigado por priorizar sua saúde mental! :health_worker:")
+
     await board_update(roleta_id)
 
 
@@ -587,9 +638,12 @@ async def placar_roleta_command(
     ctx: discord.ApplicationContext,
     roleta: discord.Option(str, name='roleta', description='Escolha a roleta que quer visualizar', autocomplete=get_roletas, required=True)
 ):
+
     message = await create_board_message(ctx, ctx.interaction.channel.id)
     roleta_id = database.select('SELECT id FROM roleta WHERE name="' + roleta + '"')
+
     await board_update(roleta_id, message)
+
     await ctx.respond("Carregando...")
 
 #@bot.slash_command(name='insert')
@@ -607,6 +661,7 @@ async def placar_roleta_command(
 
 @bot.command(name='comandos')
 async def comandos_command(ctx):
+
     embed = discord.Embed(title='Lista de comandos')
     embed.add_field(name='Comandos para participar da roleta:',value='',inline=False)
     embed.add_field(name='/registro',value='Se nunca participou de uma roleta, utilize esse comando para se cadastrar',inline=False)
@@ -622,8 +677,11 @@ async def comandos_command(ctx):
     #embed.add_field(name='Outros comandos:',value='',inline=False)
     #embed.add_field(name='/arakaki:',value='',inline=False)
 
+    await ctx.respond(embed=embed)
+
 @bot.command(name='ajuda')
 async def ajuda_command(ctx):
+
     embed = discord.Embed(title='Lista de comandos')
     embed.add_field(name='Comandos para participar da roleta:',value='',inline=False)
     embed.add_field(name='/registro',value='Se nunca participou de uma roleta, utilize esse comando para se cadastrar',inline=False)
@@ -643,6 +701,7 @@ async def ajuda_command(ctx):
 
 
 def add_to_obra(link):
+
     type, id = get_type_and_id_from_anilist_link(link)
 
     exists = database.check_if_exists(id, 'obra')
@@ -650,6 +709,7 @@ def add_to_obra(link):
     if exists == 0:
     
         if type == 'anime':
+
             response = anilist.query_anime_id(id)
                 
         else:
@@ -663,12 +723,14 @@ def add_to_obra(link):
         database.insert(sql,val)
     
     else:
+
         print('obra já existe na tabela obra')
 
 
 
 @bot.command(name='debug')
 async def debug_command(ctx):
+
     if ctx.author.id in admins:
 
 
