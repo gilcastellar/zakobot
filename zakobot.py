@@ -198,7 +198,7 @@ async def sorteio_command(
 
         print(draw_list)
 
-        draw_list_with_meta = create_id_with_type(draw_list)
+        draw_list = create_id_with_type(draw_list)
 
         id = get_last_roulette_id()
 
@@ -258,8 +258,6 @@ async def sorteio_command(
 
 def create_id_with_type(list):
 
-    example = [('1050904689685831760', 'anime e mangá', 'anime e mangá'), ('115555588397727751', 'anime', 'anime'), ('125944165958680576', 'anime e mangá', 'anime'), ('128322474059235328', 'anime', 'anime'), ('129635640122933248', 'anime', 'anime e mangá'), ('158024279882072064', 'anime e mangá', 'mangá'), ('235808827662925825', 'anime', 'anime'), ('252946147973267456', 'anime e mangá', 'mangá'), ('273325876530380800', 'anime e mangá', 'anime'), ('312638427512307713', 'anime', 'anime'), ('315599461399265280', 'anime', 'anime'), ('392050013116694528', 'anime', 'anime e mangá'), ('491809230454521863', 'anime e mangá', 'mangá'), ('691095708866183229', 'anime e mangá', 'mangá'), ('95565745009733632', 'anime', 'anime'), ('98410347597139968', 'anime', 'anime'), ('98437897933299712', 'anime', 'anime')]
-
     new_list = []
 
     for item in list:
@@ -275,11 +273,15 @@ def create_id_with_type(list):
     return new_list
 
 def parse_type(type):
+
     match type:
+
         case 'anime':
             return 1
+
         case 'mangá':
             return 2
+
         case 'anime e mangá':
             return 3
 
@@ -341,8 +343,7 @@ def roulette_shuffle(list, roulette_id, last_two_draws):
 
         shuffle(list)
 
-        pairs = generate_pairs(list)
-        is_valid = roulette_validator(pairs, last_two_draws)
+        is_valid = roulette_validator(list, last_two_draws)
 
         if is_valid:
 
@@ -402,7 +403,15 @@ def generate_pairs(list):
 
     return pairs
 
-def roulette_validator(pairs, last_two_draws):
+def roulette_validator(list, last_two_draws):
+
+    ids_only_list = []
+
+    for item in list:
+        id, gives, receives = item.split('_')
+        ids_only_list.append(id)
+
+    pairs = generate_pairs(ids_only_list)
 
     #print('lista de pares:')
     #print(pairs)
@@ -423,18 +432,36 @@ def roulette_validator(pairs, last_two_draws):
 
         # VALIDATING IF PAIR TYPES ARE COMPATIBLE
 
+    pairs_with_types = generate_pairs(list)
+
+    for pair in pairs_with_types:
+
         giver, receiver = pair.split(',',1)
-        giver_type = database.select('SELECT gives FROM user WHERE id="' + giver + '"')
 
-        receiver_type = database.select('SELECT receives FROM user WHERE id="' + receiver + '"')
+        giver = giver.split('_')
+        print('giver:')
+        print(giver)
+        receiver = receiver.split('_')
+        print('receiver:')
+        print(receiver)
 
-        if 'anime e mangá' not in (giver_type, receiver_type):
-
-            if receiver_type == 'anime' and giver_type == 'mangá':
+        if '3' not in (giver[1], receiver[2]):
+            if giver[1] != receiver[2]:
                 return False
 
-            if receiver_type == 'mangá' and giver_type == 'anime':
-                return False
+
+
+        #giver_type = database.select('SELECT gives FROM user WHERE id="' + giver + '"')
+
+        #receiver_type = database.select('SELECT receives FROM user WHERE id="' + receiver + '"')
+
+        #if 'anime e mangá' not in (giver_type, receiver_type):
+
+        #    if receiver_type == 'anime' and giver_type == 'mangá':
+        #        return False
+
+        #    if receiver_type == 'mangá' and giver_type == 'anime':
+        #        return False
             
     return True
 
