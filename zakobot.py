@@ -140,7 +140,7 @@ async def get_members_names(ctx: discord.AutocompleteContext):
 
 def get_member_info(name):
     
-    member = database.selectall('SELECT id, name, active, anime_list, receives, gives, obs FROM user WHERE name="' + name + '"')
+    member = database.selectall('SELECT id, name, active, anime_list, receives, gives, obs, zakoleta FROM user WHERE name="' + name + '"')
 
     id = member[0][0]
     active = member[0][2]
@@ -148,8 +148,9 @@ def get_member_info(name):
     receives = member[0][4]
     gives = member[0][5]
     obs = member[0][6]
+    zakoleta = member[0][7]
 
-    return id, active, anime_list, receives, gives, obs
+    return id, active, anime_list, receives, gives, obs, zakoleta
 
 @bot.slash_command(name='perfil')
 async def perfil_command(
@@ -157,7 +158,7 @@ async def perfil_command(
     member: discord.Option(str, autocomplete=get_members_names, name='membro')
 ):
 
-    id, active, anime_list, receives, gives, obs = get_member_info(member)
+    id, active, anime_list, receives, gives, obs, zakoletas = get_member_info(member)
 
     user = await bot.fetch_user(id)
     avatar = user.avatar
@@ -173,6 +174,7 @@ async def perfil_command(
     embed = discord.Embed(title=member)
     embed.set_thumbnail(url=avatar)
     embed.add_field(name=_ativo,value='',inline=False)
+    embed.add_field(name='Zakoletas: ',value=zakoletas)
     embed.add_field(name='Quero receber:',value=receives,inline=False)
     embed.add_field(name='Posso enviar:',value=gives,inline=False)
     embed.add_field(name='Perfil MAL/Anilist:',value=anime_list,inline=False)
