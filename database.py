@@ -119,7 +119,7 @@ def check_if_exists(id, table):
                              database='s84953_zakobot')
 
     cur = db.cursor()
-    cur.execute('SELECT COUNT(1) FROM' + table + 'WHERE id="' + id + '"')
+    cur.execute('SELECT COUNT(1) FROM ' + table + ' WHERE id="' + id + '"')
 
     return cur.fetchone()[0]
 
