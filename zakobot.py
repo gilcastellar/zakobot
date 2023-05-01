@@ -592,6 +592,21 @@ async def insert_command(
     sql = 'UPDATE user_has_roleta SET received_rec="' + recs + '", score=' + str(score) + ', status="' + status + '" WHERE id_roleta=2 AND idx=' + str(idx)
     database.update(sql)
 
+
+@bot.command(name='ajuda')
+async def ajuda_command(ctx):
+    embed = discord.Embed(title='Ajuda/Comandos')
+    embed.add_field(name='/perfil',value='Permite visualizar o perfil de alguém da roleta à escolha',inline=False)
+    embed.add_field(name='',value='',inline=False)
+    embed.add_field(name='',value='',inline=False)
+    embed.add_field(name='',value='',inline=False)
+    embed.add_field(name='',value='',inline=False)
+    embed.add_field(name='',value='',inline=False)
+    embed.add_field(name='',value='',inline=False)
+
+    ctx.respond(embed=embed)
+
+
 def add_to_obra(link):
     type, id = get_type_and_id_from_anilist_link(link)
 
@@ -614,6 +629,8 @@ def add_to_obra(link):
     
     else:
         print('obra já existe na tabela obra')
+
+
 
 @bot.command(name='debug')
 async def debug_command(ctx):
