@@ -482,10 +482,10 @@ def board_indications_manager(medias):
 
         if ',' not in medias:
 
+            print('pegando nome de ' + medias + '...')
+
             sql = 'SELECT title FROM obra WHERE url="' + medias + '"'
             media_text += database.select(sql)
-        
-
 
             #media_type, media_id = get_type_and_id_from_anilist_link(medias)
             
@@ -515,6 +515,7 @@ def board_indications_manager(medias):
             medias = medias.split(',')
 
             for media in medias:
+                print('pegando nome de ' + media + '...')
 
                 #print('Media:')
                 #print(media)
