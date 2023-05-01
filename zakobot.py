@@ -608,8 +608,8 @@ async def terminei_command(
     await ctx.respond(f"Obrigado pela dedicação! :muscle:")
     await board_update(roleta_id)
 
-@bot.slash_command(name='historico_roleta')
-async def historico_roleta_command(
+@bot.slash_command(name='placar_roleta')
+async def placar_roleta_command(
     ctx: discord.ApplicationContext,
     roleta: discord.Option(str, name='roleta', description='Escolha a roleta que quer visualizar', autocomplete=get_roletas, required=True)
 ):
