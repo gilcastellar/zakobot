@@ -448,7 +448,7 @@ def parse_name(name):
 
 async def board_update(roleta_id, message=None):
 
-    sql = 'SELECT id_message, id_channel FROM roleta WHERE id="' + str(roleta_id) + '"'
+    sql = 'SELECT id_message, id_channel FROM roleta WHERE id=' + str(roleta_id)
     message_info = database.selectall(sql)
 
     if message == None:
