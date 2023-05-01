@@ -691,9 +691,18 @@ async def debug_command(ctx):
     #        database.insert(sql, val)
 
     sql = 'SELECT received_rec FROM user_has_roleta'
-    print(database.selectall(sql,True))
+    obras = database.selectall(sql,True)
 
-    
+    obras = ['https://anilist.co/anime/20638/Rokujouma-no-Shinryakusha/','https://anilist.co/anime/111944/Ongaku/,https://anilist.co/anime/875/Mind-Game/,https://anilist.co/anime/3326/Inaka-Isha/']
+
+    for link in obras:
+        if ',' not in link:
+            add_to_obra(link)
+
+        else:
+            links = link.split(',')
+            for new_link in links:
+                add_to_obra(new_link)
     
     print('done')
     
