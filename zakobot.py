@@ -174,7 +174,7 @@ async def perfil_command(
     embed = discord.Embed(title=member)
     embed.set_thumbnail(url=avatar)
     embed.add_field(name=_ativo,value='',inline=False)
-    embed.add_field(name='Ƶ',value=zakoletas)
+    embed.add_field(name='Ƶ'+zakoletas,value='')
     embed.add_field(name='Quero receber:',value=receives,inline=False)
     embed.add_field(name='Posso enviar:',value=gives,inline=False)
     embed.add_field(name='Perfil MAL/Anilist:',value=anime_list,inline=False)
