@@ -194,7 +194,7 @@ async def sorteio_command(
     
     if ctx.author.id in admins:
         sql = 'SELECT id, gives, receives FROM user WHERE active=1'
-        draw_list = database.selectall(sql, True)
+        draw_list = database.selectall(sql)
 
         print(draw_list)
 
