@@ -377,23 +377,18 @@ def roulette_validator(pairs, last_two_draws):
     print('lista de pares:')
     print(pairs)
 
-    for pair in pairs:
+    print('checando compatibilidade...')
 
-        print(pair)
-        print('checando existencia do par na última roleta:')
+    for pair in pairs:
 
         # VALIDATING IF PAIR DIDN'T HAPPEN IN THE LAST 2 ROULETTES
 
         if pair in last_two_draws[0]:
-
-            print('par aconteceu na última roleta')
+            
             return False
-        
-        print('checando existencia do par na penúltima roleta:')
 
         if pair in last_two_draws[1]:
-
-            print('par aconteceu na penúltima roleta')
+            
             return False
 
         # VALIDATING IF PAIR TYPES ARE COMPATIBLE
@@ -401,22 +396,14 @@ def roulette_validator(pairs, last_two_draws):
         giver, receiver = pair.split(',',1)
         giver_type = database.select('SELECT gives FROM user WHERE id="' + giver + '"')
 
-        print(giver_type)
-
         receiver_type = database.select('SELECT receives FROM user WHERE id="' + receiver + '"')
-
-        print(receiver_type)
 
         if 'anime e mangá' not in (giver_type, receiver_type):
 
             if receiver_type == 'anime' and giver_type == 'mangá':
-
-                print('Par incompatível')
                 return False
 
             if receiver_type == 'mangá' and giver_type == 'anime':
-
-                print('Par incompatível')
                 return False
             
     return True
