@@ -95,8 +95,8 @@ async def editar_perfil(ctx: discord.ApplicationContext):
     await ctx.send_modal(modal)
 
 # SLASH PRA SE CADASTRAR NA ROLETA
-@bot.slash_command(name='preferencias_roleta')
-async def preferencias_roleta_command(
+@bot.slash_command(name='configurar')
+async def configurar_command(
   ctx: discord.ApplicationContext,
   ativo: discord.Option(str, choices=['Ativo','Inativo'], name='status', description=''),
   tipo_que_recebe: discord.Option(str, choices=['Anime', 'Mangá', 'Anime e Mangá'], name='recebo', description='Tipo de obra que quer receber recomendações'),
@@ -563,11 +563,24 @@ async def terminei_command(
     score: discord.Option(int, name='nota', description='Insira sua nota de 1 a 10', min_value=1, max_value=10, required=True)
 ):
     roleta_id = database.select('SELECT id FROM roleta WHERE name="' + roleta + '"')
-    sql = 'UPDATE user_has_roleta SET score=' + str(score) + ',status="finished"' +  'WHERE id_roleta=' + str(roleta_id) + ' AND id_receiver="' + str(ctx.author.id) + '"'
+    sql = 'UPDATE user_has_roleta SET score=' + str(score) + ',status="finished"' + 'WHERE id_roleta=' + str(roleta_id) + ' AND id_receiver="' + str(ctx.author.id) + '"'
     database.update(sql)
 
     await ctx.respond(f"Obrigado pela dedicação! :muscle:")
     await board_update(roleta_id)
+
+@bot.slash_command(name='abandonei')
+async def abandonei_command(
+    ctx: discord.ApplicationContext,
+    roleta: discord.Option(str, name='roleta', description='Escolha a roleta', autocomplete=get_roletas, required=True)
+):
+    roleta_id = database.select('SELECT id FROM roleta WHERE name="' + roleta + '"')
+    sql = 'UPDATE user_has_roleta SET status="abandoned" WHERE id_roleta=' + str(roleta_id) + ' AND id_receiver="' + str(ctx.author.id) + '"'
+    database.update(sql)
+
+    await ctx.respond(f"Obrigado pela dedicação! :muscle:")
+    await board_update(roleta_id)
+
 
 @bot.slash_command(name='placar_roleta')
 async def placar_roleta_command(
@@ -579,30 +592,52 @@ async def placar_roleta_command(
     await board_update(roleta_id, message)
     await ctx.respond("Carregando...")
 
-@bot.slash_command(name='insert')
-async def insert_command(
-    ctx: discord.ApplicationContext,
-    idx: discord.Option(int, name='index'),
-    recs: discord.Option(str, name='recs'),
-    score: discord.Option(int, name='nota'),
-    status: discord.Option(str, name ='status')
-):
-    if status == '':
-        status = 'finished'
-    sql = 'UPDATE user_has_roleta SET received_rec="' + recs + '", score=' + str(score) + ', status="' + status + '" WHERE id_roleta=2 AND idx=' + str(idx)
-    database.update(sql)
+#@bot.slash_command(name='insert')
+#async def insert_command(
+#    ctx: discord.ApplicationContext,
+#    idx: discord.Option(int, name='index'),
+#    recs: discord.Option(str, name='recs'),
+#    score: discord.Option(int, name='nota'),
+#    status: discord.Option(str, name ='status')
+#):
+#    if status == '':
+#        status = 'finished'
+#    sql = 'UPDATE user_has_roleta SET received_rec="' + recs + '", score=' + str(score) + ', status="' + status + '" WHERE id_roleta=2 AND idx=' + str(idx)
+#    database.update(sql)
 
+@bot.command(name='comandos')
+async def comandos_command(ctx):
+    embed = discord.Embed(title='Lista de comandos')
+    embed.add_field(name='Comandos para participar da roleta:',value='',inline=False)
+    embed.add_field(name='/registro',value='Se nunca participou de uma roleta, utilize esse comando para se cadastrar',inline=False)
+    embed.add_field(name='/configurar',value='Utilize esse comando para configurar sua situação na roleta.\n Permite se ativar/desativar e selecionar o tipo de obra que gostaria de receber e indicar.',inline=False)
+    embed.add_field(name='/editar_perfil',value='Utilize esse comando para adicionar informações como link do seu MAL/anilist ao seu perfil da roleta.',inline=False)
+    embed.add_field(name='',value='',inline=False)
+    embed.add_field(name='Outros comandos da roleta:',value='',inline=False)
+    embed.add_field(name='/perfil',value='Permite visualizar o perfil de alguém da roleta à escolha',inline=False)
+    embed.add_field(name='/placar_roleta',value='Permite visualizar o placar de uma roleta à escolha.',inline=False)
+    embed.add_field(name='/indicar',value='Utilize esse comando para oficializar uma indicação da roleta. Deve ser utilizado APÓS aceite de quem receberá a indicação.',inline=False)
+    embed.add_field(name='/terminei',value='Utilize esse comando para oficializar o término de uma indicação da roleta. A nota deve contemplar o conjunto de obras que compõe a indicação e ser um número inteiro de 1 a 10.',inline=False)
+    embed.add_field(name='/abandonei',value='Utilize esse comando para oficializar o abandono de uma indicação da roleta. Caso termine a obra um dia, é só utilizar o /terminei!',inline=False)
+    #embed.add_field(name='Outros comandos:',value='',inline=False)
+    #embed.add_field(name='/arakaki:',value='',inline=False)
 
 @bot.command(name='ajuda')
 async def ajuda_command(ctx):
-    embed = discord.Embed(title='Ajuda/Comandos')
+    embed = discord.Embed(title='Lista de comandos')
+    embed.add_field(name='Comandos para participar da roleta:',value='',inline=False)
+    embed.add_field(name='/registro',value='Se nunca participou de uma roleta, utilize esse comando para se cadastrar',inline=False)
+    embed.add_field(name='/configurar',value='Utilize esse comando para configurar sua situação na roleta.\n Permite se ativar/desativar e selecionar o tipo de obra que gostaria de receber e indicar.',inline=False)
+    embed.add_field(name='/editar_perfil',value='Utilize esse comando para adicionar informações como link do seu MAL/anilist ao seu perfil da roleta.',inline=False)
+    embed.add_field(name='',value='',inline=False)
+    embed.add_field(name='Outros comandos da roleta:',value='',inline=False)
     embed.add_field(name='/perfil',value='Permite visualizar o perfil de alguém da roleta à escolha',inline=False)
-    embed.add_field(name='',value='',inline=False)
-    embed.add_field(name='',value='',inline=False)
-    embed.add_field(name='',value='',inline=False)
-    embed.add_field(name='',value='',inline=False)
-    embed.add_field(name='',value='',inline=False)
-    embed.add_field(name='',value='',inline=False)
+    embed.add_field(name='/placar_roleta',value='Permite visualizar o placar de uma roleta à escolha.',inline=False)
+    embed.add_field(name='/indicar',value='Utilize esse comando para oficializar uma indicação da roleta. Deve ser utilizado APÓS aceite de quem receberá a indicação.',inline=False)
+    embed.add_field(name='/terminei',value='Utilize esse comando para oficializar o término de uma indicação da roleta. A nota deve contemplar o conjunto de obras que compõe a indicação e ser um número inteiro de 1 a 10.',inline=False)
+    embed.add_field(name='/abandonei',value='Utilize esse comando para oficializar o abandono de uma indicação da roleta. Caso termine a obra um dia, é só utilizar o /terminei!',inline=False)
+    #embed.add_field(name='Outros comandos:',value='',inline=False)
+    #embed.add_field(name='/arakaki:',value='',inline=False)
 
     await ctx.respond(embed=embed)
 
