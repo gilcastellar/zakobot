@@ -635,19 +635,26 @@ async def insert_command(
 
 def add_to_obra(link):
     type, id = get_type_and_id_from_anilist_link(link)
+
+    exists = database.check_if_exists(id)
+
+    if exists == 0:
     
-    if type == 'anime':
-        response = anilist.query_anime_id(id)
+        if type == 'anime':
+            response = anilist.query_anime_id(id)
                 
+        else:
+            response = anilist.query_manga_id(id)
+
+        anime_obj = response.json()
+        title = anime_obj['data']['Media']['title']['romaji']
+
+        sql = 'INSERT INTO obra (id, url, title, type) VALUES (%s,%s,%s,%s)'
+        val = (id, link, title, type)
+        database.insert(sql,val)
+    
     else:
-        response = anilist.query_manga_id(id)
-
-    anime_obj = response.json()
-    title = anime_obj['data']['Media']['title']['romaji']
-
-    sql = 'INSERT INTO obra (id, url, title, type) VALUES (%s,%s,%s,%s)'
-    val = (id, link, title, type)
-    database.insert(sql,val)
+        print('obra já existe na tabela obra')
 
 @bot.command(name='debug')
 async def debug_command(ctx):
