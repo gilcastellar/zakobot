@@ -706,6 +706,7 @@ async def debug_command(ctx):
             else:
                 links = link.split(',')
                 for new_link in links:
+                    print('adicionando ' + new_link + ' na tabela de obras...')
                     add_to_obra(new_link)
     
         print('done')
