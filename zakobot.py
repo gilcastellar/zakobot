@@ -436,7 +436,7 @@ async def generate_board(info, message, id=0):
 
 def parse_name(name):
 
-    nome_da_roleta += 'Roleta de '
+    nome_da_roleta = 'Roleta de '
 
     year, month = name.split('_')
 
