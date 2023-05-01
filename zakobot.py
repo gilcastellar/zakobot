@@ -857,7 +857,7 @@ async def debug_command(ctx):
             print(times)
 
             for i in range(times):
-                sql = 'UPDATE user SET zakoleta=zakoleta+' + str(value) + 'WHERE id="' + user + '"'
+                sql = 'UPDATE user SET zakoleta=zakoleta+' + str(value) + ' WHERE id="' + user + '"'
                 database.update(sql)
 
         print('done')
