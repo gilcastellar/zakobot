@@ -399,7 +399,7 @@ async def generate_board(info, message, id=0):
 
     name = parse_name(name)
 
-    board_text = '```\n' +  + '\n'
+    board_text = '```\n' + name + '\n'
 
     for pairing in info:
 
@@ -436,8 +436,38 @@ async def generate_board(info, message, id=0):
 
 def parse_name(name):
 
-    #match name:
-        ...
+    nome_da_roleta += 'Roleta de '
+
+    year, month = name.split('_')
+
+    year = str(year)
+    match month:
+        case 'jan':
+            nome_da_roleta += 'Janeiro/' + year
+        case 'fev':
+            nome_da_roleta += 'Fevereiro/' + year
+        case 'mar':
+            nome_da_roleta += 'Março/' + year
+        case 'abr':
+            nome_da_roleta += 'Abril/' + year
+        case 'mai':
+            nome_da_roleta += 'Maio/' + year
+        case 'jun':
+            nome_da_roleta += 'Junho/' + year
+        case 'jul':
+            nome_da_roleta += 'Julho/' + year
+        case 'ago':
+            nome_da_roleta += 'Agosto/' + year
+        case 'set':
+            nome_da_roleta += 'Setembro/' + year
+        case 'out':
+            nome_da_roleta += 'Outubro/' + year
+        case 'nov':
+            nome_da_roleta += 'Novembro/' + year
+        case 'dez':
+            nome_da_roleta += 'Dezembro/' + year
+
+    return nome_da_roleta
 
 async def board_update(roleta_id, message=None):
 
@@ -579,32 +609,7 @@ async def get_roletas(ctx: discord.AutocompleteContext):
     for roleta in roletas:
         roletas_names.append(roleta[0])
         #year, month = roleta.split('_')
-        #year = str(year)
-        #match month:
-        #    case 'jan':
-        #        roletas_names.append('Janeiro 20' + year)
-        #    case 'fev':
-        #        roletas_names.append('Fevereiro 20' + year)
-        #    case 'mar':
-        #        roletas_names.append('Março 20' + year)
-        #    case 'abr':
-        #        roletas_names.append('Abril 20' + year)
-        #    case 'mai':
-        #        roletas_names.append('Maio 20' + year)
-        #    case 'jun':
-        #        roletas_names.append('Junho 20' + year)
-        #    case 'jul':
-        #        roletas_names.append('Julho 20' + year)
-        #    case 'ago':
-        #        roletas_names.append('Agosto 20' + year)
-        #    case 'set':
-        #        roletas_names.append('Setembro 20' + year)
-        #    case 'out':
-        #        roletas_names.append('Outubro 20' + year)
-        #    case 'nov':
-        #        roletas_names.append('Novembro 20' + year)
-        #    case 'dez':
-        #        roletas_names.append('eDzembro 20' + year)
+
 
     return roletas_names
 
