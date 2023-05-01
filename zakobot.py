@@ -453,6 +453,11 @@ async def board_update(roleta_id, message=None):
 
     if message == None:
 
+        print("message_info")
+        print(message_info)
+        print('message_info[0]')
+        print(message_info[0])
+
         channel_id = int(message_info[0][1])
 
         channel = bot.get_channel(channel_id)
@@ -601,7 +606,7 @@ async def terminei_command(
     database.update(sql)
 
     await ctx.respond(f"Obrigado pela dedicação! :muscle:")
-    await board_update(roleta_id)
+    await board_update(roleta_id, message)
 
 @bot.slash_command(name='historico_roleta')
 async def historico_roleta_command(
