@@ -699,7 +699,6 @@ async def ajuda_command(ctx):
 
     await ctx.respond(embed=embed)
 
-
 def add_to_obra(link):
 
     type, id = get_type_and_id_from_anilist_link(link)
