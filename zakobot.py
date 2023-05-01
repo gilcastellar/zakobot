@@ -329,12 +329,12 @@ def get_last_draws(id):
     last = str(int(id))
     second_last = str(int(id) - 1)
 
-    print('puxando sorteio da roleta de id ' + str(last) + '...'
+    print('puxando sorteio da roleta de id ' + str(last) + '...')
 
     sql = 'SELECT draw FROM roleta WHERE id=' + last
     last_draw = database.select(sql)
     
-    print('puxando sorteio da roleta de id ' + str(second_last) + '...'
+    print('puxando sorteio da roleta de id ' + str(second_last) + '...')
 
     sql = 'SELECT draw FROM roleta WHERE id=' + second_last
     second_last_draw = database.select(sql)
