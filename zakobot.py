@@ -844,7 +844,7 @@ async def debug_command(ctx):
         #            add_to_obra(new_link)
         
         sql = 'SELECT id FROM user'
-        users = database.selectall(sql)
+        users = database.selectall(sql, True)
 
         print(users)
 
