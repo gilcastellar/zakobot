@@ -847,7 +847,7 @@ async def debug_command(ctx):
         users = database.selectall(sql, True)
 
         print(users)
-        value = 5
+        value = 50
 
         for user in users:
             times = database.select('SELECT COUNT(1) FROM user_has_roleta WHERE id_giver="' + user + '"')
@@ -857,8 +857,8 @@ async def debug_command(ctx):
             print(times)
             
             for i in range(times):
-                #sql = 'UPDATE user SET zakoleta=zakoleta+' + str(value) + ' WHERE id="' + user + '"'
-                sql = 'UPDATE user SET zakoleta=0 WHERE id="' + user + '"'
+                sql = 'UPDATE user SET zakoleta=zakoleta+' + str(value) + ' WHERE id="' + user + '"'
+                #sql = 'UPDATE user SET zakoleta=0 WHERE id="' + user + '"'
                 database.update(sql)
 
         print('done')
