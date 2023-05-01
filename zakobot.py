@@ -232,7 +232,7 @@ async def sorteio_command(
 
             index += 1
 
-        board_message = await create_board_message(ctx, 1101463762864701540)
+        board_message = await create_board_message(ctx, 1077070205987082281)
 
         print(board_message)
         
