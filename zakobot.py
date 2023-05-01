@@ -198,6 +198,8 @@ async def sorteio_command(
 
         print(draw_list)
 
+        draw_list = create_id_with_type(draw_list)
+
         id = get_last_roulette_id()
 
         last_two_draws = get_last_draws(id)
@@ -218,6 +220,7 @@ async def sorteio_command(
         database.insert(sql, val)
         
         index = 1
+
         for pair in pairs:
 
             time.sleep(delay)
@@ -252,6 +255,33 @@ async def sorteio_command(
         database.update(sql)
 
         await board_update(id+1)
+
+def create_id_with_type(list):
+
+    example = [('1050904689685831760', 'anime e mangá', 'anime e mangá'), ('115555588397727751', 'anime', 'anime'), ('125944165958680576', 'anime e mangá', 'anime'), ('128322474059235328', 'anime', 'anime'), ('129635640122933248', 'anime', 'anime e mangá'), ('158024279882072064', 'anime e mangá', 'mangá'), ('235808827662925825', 'anime', 'anime'), ('252946147973267456', 'anime e mangá', 'mangá'), ('273325876530380800', 'anime e mangá', 'anime'), ('312638427512307713', 'anime', 'anime'), ('315599461399265280', 'anime', 'anime'), ('392050013116694528', 'anime', 'anime e mangá'), ('491809230454521863', 'anime e mangá', 'mangá'), ('691095708866183229', 'anime e mangá', 'mangá'), ('95565745009733632', 'anime', 'anime'), ('98410347597139968', 'anime', 'anime'), ('98437897933299712', 'anime', 'anime')]
+
+    new_list = []
+
+    for item in list:
+
+        id = item[0]
+        gives = parse_type(item[1])
+        receives = parse_type(item[2])
+
+        new_list.append(id + '_' + str(gives) + '_' + str(receives))
+
+    print(new_list)
+
+    return new_list
+
+def parse_type(type):
+    match type:
+        case 'anime':
+            return 1
+        case 'manga':
+            return 2
+        case 'anime e mangá':
+            return 3
 
 async def visualize_pairs(pairs):
 
