@@ -487,59 +487,12 @@ def board_indications_manager(medias):
             sql = 'SELECT title FROM obra WHERE url="' + medias + '"'
             media_text += database.select(sql)
 
-            #media_type, media_id = get_type_and_id_from_anilist_link(medias)
-            
-            #print('media_type:')
-            #print(media_type)
-
-            #print('media_id:')
-            #print(media_id)
-
-            #print('Media:')
-            #print(medias)
-
-            #if media_type == 'anime':
-            #    print('anime')
-            #    response = anilist.query_anime_id(media_id)
-                
-            #else:
-            #    print('manga')
-            #    response = anilist.query_manga_id(media_id)
-
-            #anime_obj = response.json()
-            #title = anime_obj['data']['Media']['title']['romaji']
-            #media_text += title
-
         else:
 
             medias = medias.split(',')
 
             for media in medias:
                 print('pegando nome de ' + media + '...')
-
-                #print('Media:')
-                #print(media)
-
-                #media_type, media_id = get_type_and_id_from_anilist_link(media)
-
-                #print('media_type:')
-                #print(media_type)
-                #print('media_id:')
-                #print(media_id)
-
-                #response = anilist.query_anime_id(media_id)
-
-                #if media_type == 'anime':
-                #    print('anime')
-                #    response = anilist.query_anime_id(media_id)
-                #else:
-                #    print('manga')
-                #    response = anilist.query_manga_id(media_id)
-
-                #print(response)
-                #anime_obj = response.json()
-                #print(anime_obj)
-                #title = anime_obj['data']['Media']['title']['romaji']
 
                 sql = 'SELECT title FROM obra WHERE url="' + media + '"'
                 media_text += database.select(sql) + ' ; '
