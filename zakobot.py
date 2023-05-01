@@ -847,14 +847,18 @@ async def debug_command(ctx):
         users = database.selectall(sql, True)
 
         print(users)
+        value = 5
 
         for user in users:
-            value = database.select('SELECT COUNT(1) FROM user_has_roleta WHERE id_giver="' + user + '"')
+            times = database.select('SELECT COUNT(1) FROM user_has_roleta WHERE id_giver="' + user + '"')
             print('user:')
             print(user)
-            print('value:')
-            print(value)
-            #sql = 'UPDATE user SET zakoleta=zakoleta+' + value + 'WHERE id="' + user + '"'
+            print('times participated:')
+            print(times)
+
+            for i in range(times):
+                sql = 'UPDATE user SET zakoleta=zakoleta+' + value + 'WHERE id="' + user + '"'
+                database.update(sql)
 
         print('done')
     
