@@ -329,12 +329,10 @@ def get_last_draws(id):
     last = str(int(id))
     second_last = str(int(id) - 1)
 
-    print('puxando sorteio da roleta de id ' + str(last) + '...')
+    print('sorteio será comparado com os draws das roletas de índice ' + second_last + ' e ' + last)
 
     sql = 'SELECT draw FROM roleta WHERE id=' + last
     last_draw = database.select(sql)
-    
-    print('puxando sorteio da roleta de id ' + str(second_last) + '...')
 
     sql = 'SELECT draw FROM roleta WHERE id=' + second_last
     second_last_draw = database.select(sql)
@@ -374,10 +372,10 @@ def generate_pairs(list):
 
 def roulette_validator(pairs, last_two_draws):
 
-    print('lista de pares:')
-    print(pairs)
+    #print('lista de pares:')
+    #print(pairs)
 
-    print('checando compatibilidade...')
+    #print('checando compatibilidade...')
 
     for pair in pairs:
 
