@@ -436,39 +436,13 @@ async def generate_board(info, message, id=0):
 
 def parse_name(name):
 
-    nome_da_roleta = 'Roleta de '
+    nome_da_roleta = '**Roleta de '
 
     year, month = name.split('_')
 
     year = str(year)
 
-    nome_da_roleta += month.title() + '/' + year
-
-    #match month:
-    #    case 'jan':
-    #        nome_da_roleta += 'Janeiro/' + year
-    #    case 'fev':
-    #        nome_da_roleta += 'Fevereiro/' + year
-    #    case 'mar':
-    #        nome_da_roleta += 'Março/' + year
-    #    case 'abr':
-    #        nome_da_roleta += 'Abril/' + year
-    #    case 'mai':
-    #        nome_da_roleta += 'Maio/' + year
-    #    case 'jun':
-    #        nome_da_roleta += 'Junho/' + year
-    #    case 'jul':
-    #        nome_da_roleta += 'Julho/' + year
-    #    case 'ago':
-    #        nome_da_roleta += 'Agosto/' + year
-    #    case 'set':
-    #        nome_da_roleta += 'Setembro/' + year
-    #    case 'out':
-    #        nome_da_roleta += 'Outubro/' + year
-    #    case 'nov':
-    #        nome_da_roleta += 'Novembro/' + year
-    #    case 'dez':
-    #        nome_da_roleta += 'Dezembro/' + year
+    nome_da_roleta += month.title() + '/' + year + '**'
 
     return nome_da_roleta
 
@@ -620,7 +594,7 @@ async def get_roletas(ctx: discord.AutocompleteContext):
 async def terminei_command(
     ctx: discord.ApplicationContext,
     roleta: discord.Option(str, name='roleta', description='Escolha a roleta', autocomplete=get_roletas, required=True),
-    score: discord.Option(int, name='nota', description='Insira sua nota de 0 a 10', min_value=0, max_value=10, required=True)
+    score: discord.Option(int, name='nota', description='Insira sua nota de 1 a 10', min_value=1, max_value=10, required=True)
 ):
     roleta_id = database.select('SELECT id FROM roleta WHERE name="' + roleta + '"')
     sql = 'UPDATE user_has_roleta SET score=' + str(score) + ',status="finished"' +  'WHERE id_roleta=' + str(roleta_id) + ' AND id_receiver="' + str(ctx.author.id) + '"'
