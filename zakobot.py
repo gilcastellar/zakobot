@@ -397,7 +397,7 @@ async def generate_board(info, message, id=0):
 
     name = database.select('SELECT name FROM roleta WHERE id=' + str(id))
 
-    name = parse_name(nome)
+    name = parse_name(name)
 
     board_text = '```\n' +  + '\n'
 
