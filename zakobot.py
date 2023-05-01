@@ -578,7 +578,7 @@ async def abandonei_command(
     sql = 'UPDATE user_has_roleta SET status="abandoned" WHERE id_roleta=' + str(roleta_id) + ' AND id_receiver="' + str(ctx.author.id) + '"'
     database.update(sql)
 
-    await ctx.respond(f"Obrigado pela dedicação! :muscle:")
+    await ctx.respond(f"Indicação abandonada. Obrigado por priorizar sua saúde mental! :health_worker:")
     await board_update(roleta_id)
 
 
