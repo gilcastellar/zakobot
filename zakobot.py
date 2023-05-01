@@ -842,7 +842,12 @@ async def debug_command(ctx):
         #        for new_link in links:
         #            print('adicionando ' + new_link + ' na tabela de obras...')
         #            add_to_obra(new_link)
-    
+        
+        sql = 'SELECT id FROM user'
+        users = database.selectall(sql)
+
+        print(users)
+
         print('done')
     
 config = configparser.RawConfigParser()
