@@ -363,6 +363,9 @@ def roulette_shuffle(list, roulette_id, last_two_draws):
 
     pairs = generate_pairs(ids_only_list)
 
+    print('pairs:')
+    print(pairs)
+
     return pairs
 
 def get_last_draws(id):
