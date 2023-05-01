@@ -297,7 +297,7 @@ def get_last_roulette_id():
 
     last_roulette_id = max(result)
 
-    print(result)
+    print(last_roulette_id)
 
     return last_roulette_id
 
