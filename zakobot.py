@@ -319,8 +319,8 @@ def roulette_shuffle(list, roulette_id):
             break
 
         else:
-
-            print('recomeçando sorteio')
+            ...
+            #print('recomeçando sorteio')
 
     return list
 
