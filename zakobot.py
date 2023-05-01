@@ -482,28 +482,33 @@ def board_indications_manager(medias):
 
         if ',' not in medias:
 
-            media_type, media_id = get_type_and_id_from_anilist_link(medias)
+            sql = 'SELECT title FROM obra WHERE url="' + medias + '"'
+            media_text += database.select(sql)
+        
+
+
+            #media_type, media_id = get_type_and_id_from_anilist_link(medias)
             
-            print('media_type:')
-            print(media_type)
+            #print('media_type:')
+            #print(media_type)
 
-            print('media_id:')
-            print(media_id)
+            #print('media_id:')
+            #print(media_id)
 
-            print('Media:')
-            print(medias)
+            #print('Media:')
+            #print(medias)
 
-            if media_type == 'anime':
-                print('anime')
-                response = anilist.query_anime_id(media_id)
+            #if media_type == 'anime':
+            #    print('anime')
+            #    response = anilist.query_anime_id(media_id)
                 
-            else:
-                print('manga')
-                response = anilist.query_manga_id(media_id)
+            #else:
+            #    print('manga')
+            #    response = anilist.query_manga_id(media_id)
 
-            anime_obj = response.json()
-            title = anime_obj['data']['Media']['title']['romaji']
-            media_text += title
+            #anime_obj = response.json()
+            #title = anime_obj['data']['Media']['title']['romaji']
+            #media_text += title
 
         else:
 
@@ -511,30 +516,32 @@ def board_indications_manager(medias):
 
             for media in medias:
 
-                print('Media:')
-                print(media)
+                #print('Media:')
+                #print(media)
 
-                media_type, media_id = get_type_and_id_from_anilist_link(media)
+                #media_type, media_id = get_type_and_id_from_anilist_link(media)
 
-                print('media_type:')
-                print(media_type)
-                print('media_id:')
-                print(media_id)
+                #print('media_type:')
+                #print(media_type)
+                #print('media_id:')
+                #print(media_id)
 
-                response = anilist.query_anime_id(media_id)
+                #response = anilist.query_anime_id(media_id)
 
-                if media_type == 'anime':
-                    print('anime')
-                    response = anilist.query_anime_id(media_id)
-                else:
-                    print('manga')
-                    response = anilist.query_manga_id(media_id)
+                #if media_type == 'anime':
+                #    print('anime')
+                #    response = anilist.query_anime_id(media_id)
+                #else:
+                #    print('manga')
+                #    response = anilist.query_manga_id(media_id)
 
-                print(response)
-                anime_obj = response.json()
-                print(anime_obj)
-                title = anime_obj['data']['Media']['title']['romaji']
-                media_text += title + ' ; '
+                #print(response)
+                #anime_obj = response.json()
+                #print(anime_obj)
+                #title = anime_obj['data']['Media']['title']['romaji']
+
+                sql = 'SELECT title FROM obra WHERE url="' + media + '"'
+                media_text += database.select(sql) + ' ; '
 
         media_text = media_text.strip("; ")
 
@@ -592,8 +599,6 @@ async def get_roletas(ctx: discord.AutocompleteContext):
 
     for roleta in roletas:
         roletas_names.append(roleta[0])
-        #year, month = roleta.split('_')
-
 
     return roletas_names
 
@@ -700,22 +705,22 @@ async def debug_command(ctx):
         #        print('inserting ' + str(giver))
         #        database.insert(sql, val)
 
-        sql = 'SELECT received_rec FROM user_has_roleta'
-        obras = database.selectall(sql,True)
+        #sql = 'SELECT received_rec FROM user_has_roleta'
+        #obras = database.selectall(sql,True)
 
-        #obras = ['https://anilist.co/anime/20638/Rokujouma-no-Shinryakusha/','https://anilist.co/anime/111944/Ongaku/,https://anilist.co/anime/875/Mind-Game/,https://anilist.co/anime/3326/Inaka-Isha/','https://anilist.co/manga/86044/Amaama-to-Inazuma/,https://anilist.co/manga/47051/Barakamon/']
+        ##obras = ['https://anilist.co/anime/20638/Rokujouma-no-Shinryakusha/','https://anilist.co/anime/111944/Ongaku/,https://anilist.co/anime/875/Mind-Game/,https://anilist.co/anime/3326/Inaka-Isha/','https://anilist.co/manga/86044/Amaama-to-Inazuma/,https://anilist.co/manga/47051/Barakamon/']
 
-        for link in obras:
-            time.sleep(1)
-            if ',' not in link:
-                print('adicionando ' + link + ' na tabela de obras...')
-                add_to_obra(link)
+        #for link in obras:
+        #    time.sleep(1)
+        #    if ',' not in link:
+        #        print('adicionando ' + link + ' na tabela de obras...')
+        #        add_to_obra(link)
 
-            else:
-                links = link.split(',')
-                for new_link in links:
-                    print('adicionando ' + new_link + ' na tabela de obras...')
-                    add_to_obra(new_link)
+        #    else:
+        #        links = link.split(',')
+        #        for new_link in links:
+        #            print('adicionando ' + new_link + ' na tabela de obras...')
+        #            add_to_obra(new_link)
     
         print('done')
     
