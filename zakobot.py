@@ -441,31 +441,34 @@ def parse_name(name):
     year, month = name.split('_')
 
     year = str(year)
-    match month:
-        case 'jan':
-            nome_da_roleta += 'Janeiro/' + year
-        case 'fev':
-            nome_da_roleta += 'Fevereiro/' + year
-        case 'mar':
-            nome_da_roleta += 'Março/' + year
-        case 'abr':
-            nome_da_roleta += 'Abril/' + year
-        case 'mai':
-            nome_da_roleta += 'Maio/' + year
-        case 'jun':
-            nome_da_roleta += 'Junho/' + year
-        case 'jul':
-            nome_da_roleta += 'Julho/' + year
-        case 'ago':
-            nome_da_roleta += 'Agosto/' + year
-        case 'set':
-            nome_da_roleta += 'Setembro/' + year
-        case 'out':
-            nome_da_roleta += 'Outubro/' + year
-        case 'nov':
-            nome_da_roleta += 'Novembro/' + year
-        case 'dez':
-            nome_da_roleta += 'Dezembro/' + year
+
+    nome_da_roleta += month.title() + '/' + year
+
+    #match month:
+    #    case 'jan':
+    #        nome_da_roleta += 'Janeiro/' + year
+    #    case 'fev':
+    #        nome_da_roleta += 'Fevereiro/' + year
+    #    case 'mar':
+    #        nome_da_roleta += 'Março/' + year
+    #    case 'abr':
+    #        nome_da_roleta += 'Abril/' + year
+    #    case 'mai':
+    #        nome_da_roleta += 'Maio/' + year
+    #    case 'jun':
+    #        nome_da_roleta += 'Junho/' + year
+    #    case 'jul':
+    #        nome_da_roleta += 'Julho/' + year
+    #    case 'ago':
+    #        nome_da_roleta += 'Agosto/' + year
+    #    case 'set':
+    #        nome_da_roleta += 'Setembro/' + year
+    #    case 'out':
+    #        nome_da_roleta += 'Outubro/' + year
+    #    case 'nov':
+    #        nome_da_roleta += 'Novembro/' + year
+    #    case 'dez':
+    #        nome_da_roleta += 'Dezembro/' + year
 
     return nome_da_roleta
 
