@@ -348,14 +348,22 @@ def roulette_shuffle(list, roulette_id, last_two_draws):
         if is_valid:
 
             print('sorteio válido')
-            print(pairs)
+            print(list)
             break
 
         else:
             ...
             #print('recomeçando sorteio')
 
-    return list
+    ids_only_list = []
+
+    for item in list:
+        id, gives, receives = item.split('_')
+        ids_only_list.append(id)
+
+    pairs = generate_pairs(ids_only_list)
+
+    return pairs
 
 def get_last_draws(id):
 
