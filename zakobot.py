@@ -848,6 +848,14 @@ async def debug_command(ctx):
 
         print(users)
 
+        for user in users:
+            value = database.select('SELECT COUNT(1) FROM user_has_roleta WHERE id_giver="' + user + '"')
+            print('user:')
+            print(user)
+            print('value:')
+            print(value)
+            #sql = 'UPDATE user SET zakoleta=zakoleta+' + value + 'WHERE id="' + user + '"'
+
         print('done')
     
 config = configparser.RawConfigParser()
