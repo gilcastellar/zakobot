@@ -550,6 +550,8 @@ def get_type_and_id_from_anilist_link(link):
 
     link_parts = link.split('/')
 
+    print(link_parts[1])
+
     return link_parts[1], link_parts[2]
 
 @bot.slash_command(name='indicar')
