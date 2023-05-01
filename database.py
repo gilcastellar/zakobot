@@ -111,7 +111,7 @@ def select(sql):
     return cur.fetchone()[0]
     #return cur.description
 
-def check_if_exists(id):
+def check_if_exists(id, table):
     db = mysql.connector.connect(user='u84953_PldAoFY9St',
                              password='yyaeofA.vu6EzF0=@rPF67g3',
                              host='78.108.218.47',
@@ -119,7 +119,7 @@ def check_if_exists(id):
                              database='s84953_zakobot')
 
     cur = db.cursor()
-    cur.execute('SELECT COUNT(1) FROM user WHERE id="' + id + '"')
+    cur.execute('SELECT COUNT(1) FROM' + table + 'WHERE id="' + id + '"')
 
     return cur.fetchone()[0]
 

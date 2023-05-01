@@ -72,7 +72,7 @@ async def fetch_user(id):
 async def registro_command(ctx):
 
     user_id = ctx.author.id
-    exists = database.check_if_exists(str(user_id))
+    exists = database.check_if_exists(str(user_id), 'user')
 
     if exists == 0:
 
@@ -636,7 +636,7 @@ async def insert_command(
 def add_to_obra(link):
     type, id = get_type_and_id_from_anilist_link(link)
 
-    exists = database.check_if_exists(id)
+    exists = database.check_if_exists(id, 'obra')
 
     if exists == 0:
     
