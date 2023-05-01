@@ -399,7 +399,7 @@ async def generate_board(info, message, id=0):
 
     name = parse_name(name)
 
-    board_text = '```\n' + name + '\n'
+    board_text = name + '\n```'
 
     for pairing in info:
 
