@@ -198,7 +198,7 @@ async def sorteio_command(
 
         print(draw_list)
 
-        draw_list = create_id_with_type(draw_list)
+        draw_list_with_meta = create_id_with_type(draw_list)
 
         id = get_last_roulette_id()
 
@@ -278,7 +278,7 @@ def parse_type(type):
     match type:
         case 'anime':
             return 1
-        case 'manga':
+        case 'mangá':
             return 2
         case 'anime e mangá':
             return 3
