@@ -604,7 +604,7 @@ async def ajuda_command(ctx):
     embed.add_field(name='',value='',inline=False)
     embed.add_field(name='',value='',inline=False)
 
-    ctx.respond(embed=embed)
+    await ctx.respond(embed=embed)
 
 
 def add_to_obra(link):
