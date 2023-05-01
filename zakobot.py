@@ -635,11 +635,9 @@ def add_to_obra(link):
     type, id = get_type_and_id_from_anilist_link(link)
     
     if type == 'anime':
-        print('anime')
         response = anilist.query_anime_id(id)
                 
     else:
-        print('manga')
         response = anilist.query_manga_id(id)
 
     anime_obj = response.json()
