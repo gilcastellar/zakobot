@@ -697,6 +697,7 @@ async def debug_command(ctx):
 
     for link in obras:
         if ',' not in link:
+            print('adicionando ' + link + ' na tabela de obras...')
             add_to_obra(link)
 
         else:
