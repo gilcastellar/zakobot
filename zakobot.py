@@ -696,7 +696,7 @@ async def debug_command(ctx):
         sql = 'SELECT received_rec FROM user_has_roleta'
         obras = database.selectall(sql,True)
 
-        obras = ['https://anilist.co/anime/20638/Rokujouma-no-Shinryakusha/','https://anilist.co/anime/111944/Ongaku/,https://anilist.co/anime/875/Mind-Game/,https://anilist.co/anime/3326/Inaka-Isha/']
+        obras = ['https://anilist.co/anime/20638/Rokujouma-no-Shinryakusha/','https://anilist.co/anime/111944/Ongaku/,https://anilist.co/anime/875/Mind-Game/,https://anilist.co/anime/3326/Inaka-Isha/','https://anilist.co/manga/86044/Amaama-to-Inazuma/,https://anilist.co/manga/47051/Barakamon/']
 
         for link in obras:
             if ',' not in link:
