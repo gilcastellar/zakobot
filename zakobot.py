@@ -841,40 +841,38 @@ async def debug_command(ctx):
         #        print('inserting ' + str(giver))
         #        database.insert(sql, val)
 
-        #sql = 'SELECT received_rec FROM user_has_roleta'
-        #obras = database.selectall(sql,True)
+        sql = 'SELECT received_rec FROM user_has_roleta WHERE id_roleta=5'
+        obras = database.selectall(sql,True)
 
-        ##obras = ['https://anilist.co/anime/20638/Rokujouma-no-Shinryakusha/','https://anilist.co/anime/111944/Ongaku/,https://anilist.co/anime/875/Mind-Game/,https://anilist.co/anime/3326/Inaka-Isha/','https://anilist.co/manga/86044/Amaama-to-Inazuma/,https://anilist.co/manga/47051/Barakamon/']
+        for link in obras:
+            time.sleep(1)
+            if ',' not in link:
+                print('adicionando ' + link + ' na tabela de obras...')
+                add_to_obra(link)
 
-        #for link in obras:
-        #    time.sleep(1)
-        #    if ',' not in link:
-        #        print('adicionando ' + link + ' na tabela de obras...')
-        #        add_to_obra(link)
-
-        #    else:
-        #        links = link.split(',')
-        #        for new_link in links:
-        #            print('adicionando ' + new_link + ' na tabela de obras...')
-        #            add_to_obra(new_link)
+            else:
+                links = link.split(',')
+                for new_link in links:
+                    print('adicionando ' + new_link + ' na tabela de obras...')
+                    add_to_obra(new_link)
         
-        sql = 'SELECT id FROM user'
-        users = database.selectall(sql, True)
+        #sql = 'SELECT id FROM user'
+        #users = database.selectall(sql, True)
 
-        print(users)
-        value = 50
+        #print(users)
+        #value = 50
 
-        for user in users:
-            times = database.select('SELECT COUNT(1) FROM user_has_roleta WHERE id_giver="' + user + '"')
-            print('user:')
-            print(user)
-            print('times participated:')
-            print(times)
+        #for user in users:
+        #    times = database.select('SELECT COUNT(1) FROM user_has_roleta WHERE id_giver="' + user + '"')
+        #    print('user:')
+        #    print(user)
+        #    print('times participated:')
+        #    print(times)
             
-            for i in range(times):
-                sql = 'UPDATE user SET zakoleta=zakoleta+' + str(value) + ' WHERE id="' + user + '"'
-                #sql = 'UPDATE user SET zakoleta=0 WHERE id="' + user + '"'
-                database.update(sql)
+        #    for i in range(times):
+        #        sql = 'UPDATE user SET zakoleta=zakoleta+' + str(value) + ' WHERE id="' + user + '"'
+        #        #sql = 'UPDATE user SET zakoleta=0 WHERE id="' + user + '"'
+        #        database.update(sql)
 
         print('done')
     
