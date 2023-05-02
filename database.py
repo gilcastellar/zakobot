@@ -110,6 +110,8 @@ def select(sql):
 
     print('cur.fetchone()[0]')
     print(cur.fetchone()[0])
+    print('cur.fetchall()')
+    print(cur.fetchall())
 
     return cur.fetchone()[0]
     #return cur.description
