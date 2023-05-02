@@ -672,7 +672,7 @@ async def indicar_command(
         for media in list:
             print('adding media to table obra:')
             print(media)
-            #add_to_obra(media)
+            add_to_obra(media)
     
         await board_update(roleta_atual)
 
