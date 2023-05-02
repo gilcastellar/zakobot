@@ -590,7 +590,9 @@ def board_indications_manager(medias):
 
             print('pegando nome de ' + medias + '...')
 
-            sql = 'SELECT title FROM obra WHERE url="' + medias + '"'
+            type, id = get_type_and_id_from_anilist_link(medias)
+
+            sql = 'SELECT title FROM obra WHERE id=' + id
             media_text += database.select(sql)
 
         else:
@@ -600,7 +602,9 @@ def board_indications_manager(medias):
             for media in medias:
                 print('pegando nome de ' + media + '...')
 
-                sql = 'SELECT title FROM obra WHERE url="' + media + '"'
+                type, id = get_type_and_id_from_anilist_link(media)
+                
+                sql = 'SELECT title FROM obra WHERE id=' + id
                 media_text += database.select(sql) + ' ; '
 
         media_text = media_text.strip("; ")
@@ -804,8 +808,6 @@ def add_to_obra(link):
     else:
 
         print('obra já existe na tabela obra')
-
-
 
 @bot.command(name='debug')
 async def debug_command(ctx):
