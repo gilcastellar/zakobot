@@ -657,7 +657,7 @@ async def indicar_command(
 
         if str(ctx.author.id) in allowed_givers:
 
-            sql = 'UPDATE user_has_roleta SET received_rec="' + medias + '" WHERE id_giver="' + str(ctx.author.id) + '"'
+            sql = 'UPDATE user_has_roleta SET received_rec="' + medias + '" WHERE id_giver="' + str(ctx.author.id) + '" AND id_roleta=' + roleta_atual
             database.update(sql)
     
         await ctx.respond(f"Obrigado pela indicação!")
