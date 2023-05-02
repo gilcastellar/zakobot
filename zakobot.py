@@ -748,14 +748,13 @@ def help_embed():
 
 @bot.command(name='comandos')
 async def comandos_command(ctx):
-    
     await ctx.respond(embed=help_embed)
 
 @bot.command(name='ajuda')
 async def ajuda_command(ctx):
-    
     await ctx.respond(embed=help_embed)
 
+# Adds entry to obra table
 def add_to_obra(link):
 
     type, id = get_type_and_id_from_anilist_link(link)
@@ -782,6 +781,7 @@ def add_to_obra(link):
 
         print('obra já existe na tabela obra')
 
+# Auxiliar command
 @bot.command(name='debug')
 async def debug_command(ctx):
 
