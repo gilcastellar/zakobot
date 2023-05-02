@@ -572,6 +572,8 @@ async def board_update(roleta_id, message=None):
     board_info = database.selectall(sql)
 
     print('starting to generate board')
+    print('roleta_id:')
+    print(roleta_id)
 
     await generate_board(board_info, message, roleta_id)
     
