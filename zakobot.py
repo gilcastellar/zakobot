@@ -18,6 +18,7 @@ admins = [906937520254758973,628466603486478336,1050904689685831760,984103475971
 test = 'eita'
 key = False
 
+# Edit profile modal
 class EditarPerfilModal(discord.ui.Modal):
     def __init__(self, user_id, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
@@ -72,7 +73,6 @@ async def fetch_user(id):
 
     return user
 
-
 @bot.command(name='registro')
 async def registro_command(ctx):
 
@@ -90,7 +90,6 @@ async def registro_command(ctx):
     else:
 
         await ctx.respond('Você já está cadastrado!')
-
 
 @bot.slash_command(name='editar_perfil')
 async def editar_perfil_command(ctx: discord.ApplicationContext):
@@ -177,6 +176,9 @@ async def perfil_command(
     else:
 
         _ativo = 'Inativo'
+
+    if zakoletas == None:
+        zakoletas = 0
 
     embed = discord.Embed(title=member)
     embed.set_thumbnail(url=avatar)
@@ -727,6 +729,7 @@ async def placar_roleta_command(
 
     await ctx.respond("Carregando...")
 
+# Help embed
 def help_embed():
 
     embed = discord.Embed(title='Lista de comandos')
