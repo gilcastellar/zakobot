@@ -635,45 +635,46 @@ async def indicar_command(
     media3: discord.Option(str, name='terceira_indicação', description='INSIRA O LINK DO ANILIST DA OBRA', required=False)
 ):
 
-    roletas = database.selectall('SELECT id FROM roleta', True)
-    roleta_atual = max(roletas)
+    if ctx.author.id in admins:
+        roletas = database.selectall('SELECT id FROM roleta', True)
+        roleta_atual = max(roletas)
 
-    roleta_atual = 5
+        roleta_atual = 5
 
-    sql = 'SELECT id_giver FROM user_has_roleta WHERE id_roleta="' + str(roleta_atual) + '"'
-    allowed_givers = database.selectall(sql, True)
+        sql = 'SELECT id_giver FROM user_has_roleta WHERE id_roleta="' + str(roleta_atual) + '"'
+        allowed_givers = database.selectall(sql, True)
 
-    medias = ''
-    medias += media1
+        medias = ''
+        medias += media1
 
-    if media2 != None:
+        if media2 != None:
 
-        medias += ',' + media2
+            medias += ',' + media2
 
-    if media3  != None:
+        if media3  != None:
 
-        medias += ',' + media3
+            medias += ',' + media3
 
-    if str(ctx.author.id) in allowed_givers:
+        if str(ctx.author.id) in allowed_givers:
 
-        sql = 'UPDATE user_has_roleta SET received_rec="' + medias + '" WHERE id_giver="' + str(ctx.author.id) + '"'
-        database.update(sql)
+            sql = 'UPDATE user_has_roleta SET received_rec="' + medias + '" WHERE id_giver="' + str(ctx.author.id) + '"'
+            database.update(sql)
     
-    await ctx.respond(f"Obrigado pela indicação!")
+        await ctx.respond(f"Obrigado pela indicação!")
 
-    list = []
+        list = []
 
-    if ',' in medias:
-        list = medias.split(',')
-    else:
-        list.append(medias)
+        if ',' in medias:
+            list = medias.split(',')
+        else:
+            list.append(medias)
 
-    for media in list:
-        print('adding media to table obra:')
-        print(media)
-        #add_to_obra(media)
+        for media in list:
+            print('adding media to table obra:')
+            print(media)
+            #add_to_obra(media)
     
-    await board_update(roleta_atual)
+        await board_update(roleta_atual)
 
 async def get_roletas(ctx: discord.AutocompleteContext):
 
