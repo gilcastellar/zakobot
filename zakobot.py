@@ -13,7 +13,7 @@ import json
 import time
 intents = discord.Intents.default()
 intents.members = True
-bot = Commands.Bot(intents=intents)
+bot = discord.Bot(intents=intents)
 admins = [906937520254758973,628466603486478336,1050904689685831760,98410347597139968]
 test = 'eita'
 key = False
