@@ -849,6 +849,8 @@ async def debug_command(ctx):
 
         for link in obras:
             time.sleep(1)
+            if link == None:
+                continue
             if ',' not in link:
                 print('adicionando ' + link + ' na tabela de obras...')
                 add_to_obra(link)
