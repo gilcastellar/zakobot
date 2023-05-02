@@ -77,7 +77,7 @@ async def fetch_user(id):
 async def registro_command(ctx):
 
     user_id = ctx.author.id
-    exists = database.check_if_exists(str(user_id), 'user')
+    exists = database.check_if_exists(str(user_id), 'id', 'user')
 
     if exists == 0:
 
@@ -195,7 +195,8 @@ async def perfil_command(
 async def sorteio_command(
     ctx: discord.ApplicationContext,
     name: discord.Option(str, name='nome'),
-    delay: discord.Option(int, name='delay')
+    delay: discord.Option(int, name='delay'),
+    reward: discord.Option(str, name='recompensa', options=['True','False'])
 ):
     
     if ctx.author.id in admins:
@@ -230,6 +231,11 @@ async def sorteio_command(
             time.sleep(delay)
 
             giver, receiver = pair.split(',')
+
+            if reward == 'True':
+                
+                add_zakoleta(ctx.author.id, 50)
+
             giver = await fetch_user(giver)
             receiver = await fetch_user(receiver)
 
@@ -240,6 +246,8 @@ async def sorteio_command(
             sql = 'INSERT INTO user_has_roleta (idx, id_receiver, id_giver, id_roleta, status) VALUES (%s,%s,%s,%s,%s)'
             val = (index, str(receiver.id), str(giver.id), id+1, 'ongoing')
             database.insert(sql, val)
+
+            
 
             index += 1
 
@@ -257,6 +265,8 @@ async def sorteio_command(
 
         sql = 'UPDATE roleta SET id_message="' + str(board_message_id) + '", id_channel="' + str(board_message_channel_id) + '" WHERE id="' + str(id+1) + '"'
         database.update(sql)
+
+
 
         await board_update(id+1)
 
@@ -695,6 +705,11 @@ async def terminei_command(
 
     roleta_id = database.select('SELECT id FROM roleta WHERE name="' + roleta + '"')
 
+    status = database.select('SELECT status FROM user_has_roleta WHERE id_receiver=' + str(ctx.author.id) + ' AND id_roleta=' + str(roleta_id))
+
+    if status == 'ongoing':
+        add_zakoleta(ctx.author.id, 50)
+
     sql = 'UPDATE user_has_roleta SET score=' + str(score) + ',status="finished"' + 'WHERE id_roleta=' + str(roleta_id) + ' AND id_receiver="' + str(ctx.author.id) + '"'
     database.update(sql)
 
@@ -709,6 +724,12 @@ async def abandonei_command(
 ):
 
     roleta_id = database.select('SELECT id FROM roleta WHERE name="' + roleta + '"')
+
+    status = database.select('SELECT status FROM user_has_roleta WHERE id_receiver=' + str(ctx.author.id) + ' AND id_roleta=' + str(roleta_id))
+
+    if status == 'ongoing':
+        add_zakoleta(ctx.author.id, 25)
+
     sql = 'UPDATE user_has_roleta SET status="abandoned" WHERE id_roleta=' + str(roleta_id) + ' AND id_receiver="' + str(ctx.author.id) + '"'
     database.update(sql)
 
@@ -762,7 +783,7 @@ def add_to_obra(link):
 
     type, id = get_type_and_id_from_anilist_link(link)
 
-    exists = database.check_if_exists(id, 'obra')
+    exists = database.check_if_exists(id, 'id', 'obra')
 
     if exists == 0:
     
@@ -783,6 +804,12 @@ def add_to_obra(link):
     else:
 
         print('obra já existe na tabela obra')
+
+# Add zakoletas
+def add_zakoleta(user_id, quantity):
+
+    sql = 'UPDATE user SET zakoleta=zakoleta+' + str(quantity) + ' WHERE id="' + str(user_id) + '"'
+    database.update(sql)
 
 # Auxiliar command
 @bot.command(name='debug')
