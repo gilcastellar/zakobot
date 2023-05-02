@@ -563,6 +563,9 @@ async def board_update(roleta_id, message=None):
 
         message_id = int(message_info[0][0])
 
+        print('message_id')
+        print(message_id)
+
         message = await channel.fetch_message(message_id)
 
     sql = 'SELECT idx, id_giver, id_receiver, received_rec, score, status FROM user_has_roleta WHERE id_roleta="' + str(roleta_id) + '" ORDER BY idx'
