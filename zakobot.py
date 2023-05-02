@@ -18,7 +18,7 @@ admins = [906937520254758973,628466603486478336,1050904689685831760,984103475971
 test = 'eita'
 key = False
 
-class EditRouletteProfileModal(discord.ui.Modal):
+class EditarPerfilModal(discord.ui.Modal):
     def __init__(self, user_id, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         
@@ -50,6 +50,7 @@ class EditRouletteProfileModal(discord.ui.Modal):
         key = True
         await interaction.response.send_message('Edições realizadas! Utilize o comando /perfil para visualizar.')
 
+# Send message
 async def send_message(ctx, text, channel_id=''):
 
     if channel_id != '':
@@ -60,14 +61,17 @@ async def send_message(ctx, text, channel_id=''):
 
     return message
 
+# Send embed
 async def send_embed(ctx,embed):
 
     await ctx.send(embed=embed)
 
+# Fetch user object
 async def fetch_user(id):
     user = await bot.fetch_user(id)
 
     return user
+
 
 @bot.command(name='registro')
 async def registro_command(ctx):
@@ -88,11 +92,11 @@ async def registro_command(ctx):
         await ctx.respond('Você já está cadastrado!')
 
 
-@bot.slash_command()
-async def editar_perfil(ctx: discord.ApplicationContext):
+@bot.slash_command(name='editar_perfil')
+async def editar_perfil_command(ctx: discord.ApplicationContext):
     """Shows an example of a modal dialog being invoked from a slash command."""
     user_id = ctx.author.id
-    modal = EditRouletteProfileModal(user_id, title="Editar perfil da roleta")
+    modal = EditarPerfilModal(user_id, title="Editar perfil da roleta")
     await ctx.send_modal(modal)
 
 # SLASH PRA SE CADASTRAR NA ROLETA
@@ -127,6 +131,7 @@ async def configurar_command(
 
       await ctx.respond(f'Você está ativo e quer receber `{tipo_que_recebe.lower()}` e enviar `{tipo_que_envia.lower()}` na roleta!')
 
+# Get active members
 async def get_members_names(ctx: discord.AutocompleteContext):
 
     members = database.selectall('SELECT id, name, active, anime_list, receives, gives, obs FROM user WHERE active=1')
@@ -139,6 +144,7 @@ async def get_members_names(ctx: discord.AutocompleteContext):
 
     return sorted_members_names
 
+# Get member info
 def get_member_info(name):
     
     member = database.selectall('SELECT id, name, active, anime_list, receives, gives, obs, zakoleta FROM user WHERE name="' + name + '"')
@@ -183,11 +189,6 @@ async def perfil_command(
 
     await ctx.respond(embed=embed)
 
-#jan23 = ['691095708866183229,163447617005551616,129635640122933248,115555588397727751,98410347597139968,273325876530380800,92484473207144448,324731795138674689,266340550267895808,1050904689685831760,315599461399265280,95565745009733632,252946147973267456,351647595527143434,188504910059274240,450498161895538708,125944165958680576,98437897933299712,128322474059235328,691095708866183229']
-#fev23 = ['273325876530380800,98437897933299712,92484473207144448,98410347597139968,252946147973267456,125944165958680576,745062616493326408,158024279882072064,324731795138674689,129635640122933248,270061072487153664,128322474059235328,235808827662925825,95565745009733632,115555588397727751,1050904689685831760,188504910059274240,266340550267895808,163447617005551616,315599461399265280,273325876530380800']
-#mar23 = ['287766312808349696,115555588397727751,163447617005551616,188504910059274240,158024279882072064,691095708866183229,252946147973267456,324731795138674689,745062616493326408,1050904689685831760,128322474059235328,98437897933299712,125944165958680576,129635640122933248,273325876530380800,95565745009733632,92484473207144448,315599461399265280,235808827662925825,906937520254758973,392050013116694528,287766312808349696'] # começa por estroncio 287766312808349696
-#abr23 = ['98410347597139968,92484473207144448,115555588397727751,125944165958680576,392050013116694528,128322474059235328,235808827662925825,170007555907518464,252946147973267456,691095708866183229,158024279882072064,1050904689685831760,188504910059274240,98437897933299712,315599461399265280,745062616493326408,273325876530380800,287766312808349696,324731795138674689,163447617005551616,129635640122933248,95565745009733632,98410347597139968'] # começa por kaiser 906937520254758973 (trocar para 98410347597139968)
-
 @bot.slash_command(name='sorteio')
 async def sorteio_command(
     ctx: discord.ApplicationContext,
@@ -201,7 +202,7 @@ async def sorteio_command(
 
         print(draw_list)
 
-        draw_list = create_id_with_type(draw_list)
+        draw_list = merge_id_with_type(draw_list)
 
         id = get_last_roulette_id()
 
@@ -215,8 +216,6 @@ async def sorteio_command(
         print(type(result_as_str))
 
         pairs = generate_pairs(result)
-
-        #await visualize_pairs(pairs)
 
         sql = 'INSERT INTO roleta (id, name, draw, status) VALUES (%s,%s,%s,%s)'
         val = (id+1, name, result_as_str, 'ongoing')
@@ -259,7 +258,8 @@ async def sorteio_command(
 
         await board_update(id+1)
 
-def create_id_with_type(list):
+# Merges ID with type values for the validation of a pair in the Sorteio function
+def merge_id_with_type(list):
 
     new_list = []
 
@@ -275,6 +275,7 @@ def create_id_with_type(list):
 
     return new_list
 
+# Parses type values
 def parse_type(type):
 
     match type:
@@ -287,22 +288,8 @@ def parse_type(type):
 
         case 'anime e mangá':
             return 3
-
-async def visualize_pairs(pairs):
-
-    for pair in pairs:
-
-        giver_id, receiver_id = pair.split(',')
-
-        giver = await bot.fetch_user(giver_id)
-        receiver = await bot.fetch_user(receiver_id)
-
-        print(giver.display_name + ' -> ' + receiver.display_name)
     
-def list_to_sql(list):
-
-    return json.dumps(list)
-
+# Turns a draw list into a str
 def draw_to_str(list):
 
     new_list = ''
@@ -327,6 +314,7 @@ def draw_to_str(list):
 
     return new_list
 
+# Get last roulette ID
 def get_last_roulette_id():
 
     sql = 'SELECT id FROM roleta'
@@ -340,6 +328,7 @@ def get_last_roulette_id():
 
     return last_roulette_id
 
+# Roulette shuffle
 def roulette_shuffle(list, roulette_id, last_two_draws):
 
     while True:
@@ -366,6 +355,7 @@ def roulette_shuffle(list, roulette_id, last_two_draws):
 
     return ids_only_list
 
+# Get last 2 draws
 def get_last_draws(id):
 
     last = str(int(id))
@@ -383,6 +373,7 @@ def get_last_draws(id):
 
     return last_two_draws
 
+# Generate list of pairs
 def generate_pairs(list):
 
     head_of_list = list[0]
@@ -412,6 +403,7 @@ def generate_pairs(list):
 
     return pairs
 
+# Roulette validator
 def roulette_validator(list, last_two_draws):
 
     ids_only_list = []
@@ -474,10 +466,12 @@ def roulette_validator(list, last_two_draws):
             
     return True
 
+# Creates board message
 async def create_board_message(ctx, channel_id):
 
     return await send_message(ctx, 'Carregando...', channel_id)
 
+# Generate board
 async def generate_board(info, message, id=0):
 
     name = database.select('SELECT name FROM roleta WHERE id=' + str(id))
@@ -536,6 +530,7 @@ async def generate_board(info, message, id=0):
 
     await message.edit(board_text)
 
+# Parse roulette name
 def parse_name(name):
 
     nome_da_roleta = '**Roleta de '
@@ -548,6 +543,7 @@ def parse_name(name):
 
     return nome_da_roleta
 
+# Board update
 async def board_update(roleta_id, message=None):
 
     sql = 'SELECT id_message, id_channel FROM roleta WHERE id=' + str(roleta_id)
@@ -580,6 +576,7 @@ async def board_update(roleta_id, message=None):
 
     await generate_board(board_info, message, roleta_id)
     
+# Board indications manager
 def board_indications_manager(medias):
 
     media_text = ''
@@ -615,6 +612,7 @@ def board_indications_manager(medias):
 
         return ''
 
+# Get type and id from anilist link
 def get_type_and_id_from_anilist_link(link):
 
     if 'https://' in link:
@@ -674,6 +672,7 @@ async def indicar_command(
     
     await board_update(roleta_atual)
 
+# Get roulettes
 async def get_roletas(ctx: discord.AutocompleteContext):
 
     roletas = database.selectall('SELECT name FROM roleta ORDER BY id')
@@ -728,58 +727,34 @@ async def placar_roleta_command(
 
     await ctx.respond("Carregando...")
 
-#@bot.slash_command(name='insert')
-#async def insert_command(
-#    ctx: discord.ApplicationContext,
-#    idx: discord.Option(int, name='index'),
-#    recs: discord.Option(str, name='recs'),
-#    score: discord.Option(int, name='nota'),
-#    status: discord.Option(str, name ='status')
-#):
-#    if status == '':
-#        status = 'finished'
-#    sql = 'UPDATE user_has_roleta SET received_rec="' + recs + '", score=' + str(score) + ', status="' + status + '" WHERE id_roleta=2 AND idx=' + str(idx)
-#    database.update(sql)
+def help_embed():
+
+    embed = discord.Embed(title='Lista de comandos')
+    embed.add_field(name='Comandos para participar da roleta:',value='',inline=False)
+    embed.add_field(name='/registro',value='Se nunca participou de uma roleta, utilize esse comando para se cadastrar',inline=False)
+    embed.add_field(name='/configurar',value='Utilize esse comando para configurar sua situação na roleta.\n Permite se ativar/desativar e selecionar o tipo de obra que gostaria de receber e indicar.',inline=False)
+    embed.add_field(name='/editar_perfil',value='Utilize esse comando para adicionar informações como link do seu MAL/anilist ao seu perfil da roleta.',inline=False)
+    embed.add_field(name='',value='',inline=False)
+    embed.add_field(name='Outros comandos da roleta:',value='',inline=False)
+    embed.add_field(name='/perfil',value='Permite visualizar o perfil de alguém da roleta à escolha',inline=False)
+    embed.add_field(name='/placar_roleta',value='Permite visualizar o placar de uma roleta à escolha.',inline=False)
+    embed.add_field(name='/indicar',value='Utilize esse comando para oficializar uma indicação da roleta. Deve ser utilizado APÓS aceite de quem receberá a indicação.',inline=False)
+    embed.add_field(name='/terminei',value='Utilize esse comando para oficializar o término de uma indicação da roleta. A nota deve contemplar o conjunto de obras que compõe a indicação e ser um número inteiro de 1 a 10.',inline=False)
+    embed.add_field(name='/abandonei',value='Utilize esse comando para oficializar o abandono de uma indicação da roleta. Caso termine a obra um dia, é só utilizar o /terminei!',inline=False)
+    #embed.add_field(name='Outros comandos:',value='',inline=False)
+    #embed.add_field(name='/arakaki:',value='',inline=False)
+
+    return embed
 
 @bot.command(name='comandos')
 async def comandos_command(ctx):
-
-    embed = discord.Embed(title='Lista de comandos')
-    embed.add_field(name='Comandos para participar da roleta:',value='',inline=False)
-    embed.add_field(name='/registro',value='Se nunca participou de uma roleta, utilize esse comando para se cadastrar',inline=False)
-    embed.add_field(name='/configurar',value='Utilize esse comando para configurar sua situação na roleta.\n Permite se ativar/desativar e selecionar o tipo de obra que gostaria de receber e indicar.',inline=False)
-    embed.add_field(name='/editar_perfil',value='Utilize esse comando para adicionar informações como link do seu MAL/anilist ao seu perfil da roleta.',inline=False)
-    embed.add_field(name='',value='',inline=False)
-    embed.add_field(name='Outros comandos da roleta:',value='',inline=False)
-    embed.add_field(name='/perfil',value='Permite visualizar o perfil de alguém da roleta à escolha',inline=False)
-    embed.add_field(name='/placar_roleta',value='Permite visualizar o placar de uma roleta à escolha.',inline=False)
-    embed.add_field(name='/indicar',value='Utilize esse comando para oficializar uma indicação da roleta. Deve ser utilizado APÓS aceite de quem receberá a indicação.',inline=False)
-    embed.add_field(name='/terminei',value='Utilize esse comando para oficializar o término de uma indicação da roleta. A nota deve contemplar o conjunto de obras que compõe a indicação e ser um número inteiro de 1 a 10.',inline=False)
-    embed.add_field(name='/abandonei',value='Utilize esse comando para oficializar o abandono de uma indicação da roleta. Caso termine a obra um dia, é só utilizar o /terminei!',inline=False)
-    #embed.add_field(name='Outros comandos:',value='',inline=False)
-    #embed.add_field(name='/arakaki:',value='',inline=False)
-
-    await ctx.respond(embed=embed)
+    
+    await ctx.respond(embed=help_embed)
 
 @bot.command(name='ajuda')
 async def ajuda_command(ctx):
-
-    embed = discord.Embed(title='Lista de comandos')
-    embed.add_field(name='Comandos para participar da roleta:',value='',inline=False)
-    embed.add_field(name='/registro',value='Se nunca participou de uma roleta, utilize esse comando para se cadastrar',inline=False)
-    embed.add_field(name='/configurar',value='Utilize esse comando para configurar sua situação na roleta.\n Permite se ativar/desativar e selecionar o tipo de obra que gostaria de receber e indicar.',inline=False)
-    embed.add_field(name='/editar_perfil',value='Utilize esse comando para adicionar informações como link do seu MAL/anilist ao seu perfil da roleta.',inline=False)
-    embed.add_field(name='',value='',inline=False)
-    embed.add_field(name='Outros comandos da roleta:',value='',inline=False)
-    embed.add_field(name='/perfil',value='Permite visualizar o perfil de alguém da roleta à escolha',inline=False)
-    embed.add_field(name='/placar_roleta',value='Permite visualizar o placar de uma roleta à escolha.',inline=False)
-    embed.add_field(name='/indicar',value='Utilize esse comando para oficializar uma indicação da roleta. Deve ser utilizado APÓS aceite de quem receberá a indicação.',inline=False)
-    embed.add_field(name='/terminei',value='Utilize esse comando para oficializar o término de uma indicação da roleta. A nota deve contemplar o conjunto de obras que compõe a indicação e ser um número inteiro de 1 a 10.',inline=False)
-    embed.add_field(name='/abandonei',value='Utilize esse comando para oficializar o abandono de uma indicação da roleta. Caso termine a obra um dia, é só utilizar o /terminei!',inline=False)
-    #embed.add_field(name='Outros comandos:',value='',inline=False)
-    #embed.add_field(name='/arakaki:',value='',inline=False)
-
-    await ctx.respond(embed=embed)
+    
+    await ctx.respond(embed=help_embed)
 
 def add_to_obra(link):
 
