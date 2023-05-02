@@ -646,6 +646,8 @@ async def indicar_command(
     
     await ctx.respond(f"Obrigado pela indicação!")
 
+    list = []
+
     if ',' in medias:
         list = medias.split(',')
     else:
