@@ -844,6 +844,9 @@ async def debug_command(ctx):
         sql = 'SELECT received_rec FROM user_has_roleta WHERE id_roleta=5'
         obras = database.selectall(sql,True)
 
+        print('obras:')
+        print(obras)
+
         for link in obras:
             time.sleep(1)
             if ',' not in link:
