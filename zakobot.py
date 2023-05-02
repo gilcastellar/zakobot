@@ -486,6 +486,9 @@ async def generate_board(info, message, id=0):
 
     board_text = name + '\n```'
 
+    print('board_text:')
+    print(board_text)
+
     for pairing in info:
 
         giver = await bot.fetch_user(pairing[1])
