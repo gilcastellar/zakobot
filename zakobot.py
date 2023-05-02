@@ -1,5 +1,6 @@
 ﻿# token = MTA5OTU5NTIwMDQyODUyMzUzMA.GAqCqA.T2W3Bn9lPCwcTfEHx8IO1s6BK2HBAN4nM9RYeI
 
+from imaplib import Commands
 from importlib.metadata import requires
 from posixpath import split
 from random import choices, shuffle
@@ -12,7 +13,7 @@ import json
 import time
 intents = discord.Intents.default()
 intents.members = True
-bot = discord.Bot(intents=intents)
+bot = Commands.Bot(intents=intents)
 admins = [906937520254758973,628466603486478336,1050904689685831760,98410347597139968]
 test = 'eita'
 key = False
