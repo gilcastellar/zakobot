@@ -715,7 +715,6 @@ async def abandonei_command(
 
     await board_update(roleta_id)
 
-
 @bot.slash_command(name='placar_roleta')
 async def placar_roleta_command(
     ctx: discord.ApplicationContext,
