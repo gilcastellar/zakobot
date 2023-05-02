@@ -645,6 +645,16 @@ async def indicar_command(
         database.update(sql)
     
     await ctx.respond(f"Obrigado pela indicação!")
+
+    if ',' in medias:
+        list = medias.split(',')
+    else:
+        list.append(medias)
+
+    for media in list:
+        print('adding media to table obra:')
+        print(media)
+        #add_to_obra(media)
     
     await board_update(roleta_atual)
 
