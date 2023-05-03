@@ -1,4 +1,6 @@
-﻿# token = MTA5OTU5NTIwMDQyODUyMzUzMA.GAqCqA.T2W3Bn9lPCwcTfEHx8IO1s6BK2HBAN4nM9RYeI
+﻿
+# encoding: utf-8
+# para que acentos sejam aceitos é preciso salvar o script com o encoding correto
 
 from imaplib import Commands
 from importlib.metadata import requires
@@ -11,14 +13,25 @@ import database
 import anilist
 import json
 import time
+from discord.ext import commands
 
 intents = discord.Intents.default()
+intents.message_content = True
 intents.members = True
 bot = discord.Bot(intents=intents)
 
-client = discord.Client(intents=intents)
-
 admins = [906937520254758973,628466603486478336,1050904689685831760,98410347597139968]
+
+print('ok')
+
+@bot.event
+async def on_ready():
+    print(f'We have logged in as {bot.user}')
+    
+    content = 'https://nyaa.si/?page=rss&q=subsplease+1080+-Batch&c=0_0&f=0'
+    channel = bot.get_channel(1067926098815484064)
+
+    await testingfun('boa')
 
 # Edit profile modal
 class EditarPerfilModal(discord.ui.Modal):
@@ -813,17 +826,8 @@ def add_zakoleta(user_id, quantity):
 
 async def testingfun(text):
     print('common print: ' + text)
-    await print('awaited print: ' + text)
-
-@client.event
-async def on_ready():
-    print(f'We have logged in as {client.user}')
+    #await print('awaited print: ' + text)
     
-    content = 'https://nyaa.si/?page=rss&q=subsplease+1080+-Batch&c=0_0&f=0'
-    channel = client.get_channel(1067926098815484064)
-
-    await testingfun('boa')
-
 # Auxiliar command
 @bot.command(name='debug')
 async def debug_command(ctx):
