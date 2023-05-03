@@ -203,8 +203,8 @@ async def perfil_command(
     if user_avg != False:
         embed.add_field(name="Nota média:", value=user_avg_text, inline=False)
     embed.add_field(name='Observações:',value=obs,inline=False)
-    embed.add_field(name="­­________________________________________________________________________­­", value="", inline=False)
-    embed.footer(name='',value='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+    embed.add_field(name="­­aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa­­", value="", inline=False)
+    #embed.footer(name='',value='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 
     await ctx.respond(embed=embed)
 
