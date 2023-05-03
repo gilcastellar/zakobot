@@ -197,8 +197,9 @@ async def perfil_command(
         embed.add_field(name="Perfil MAL/Anilist", value=anime_list, inline=False)
         embed.add_field(name="", value="", inline=False)
     embed.add_field(name="Roleta:", value="", inline=False)
-    embed.add_field(name="Quero receber:", value=receives.title(), inline=True)
-    embed.add_field(name="Posso enviar:", value=gives.title(), inline=True)
+    if '' not in [receives, gives]:
+        embed.add_field(name="Quero receber:", value=receives.title(), inline=True)
+        embed.add_field(name="Posso enviar:", value=gives.title(), inline=True)
     if user_avg != False:
         embed.add_field(name="Nota média:", value=user_avg_text, inline=False)
     embed.add_field(name='Observações:',value=obs,inline=False)
