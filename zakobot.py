@@ -186,12 +186,14 @@ async def perfil_command(
         user_avg_text = str(user_avg) + '/10'
 
 
+
     embed=discord.Embed(title=member, url=anime_list, color=0xe84545)
     embed.set_thumbnail(url=avatar)
     embed.add_field(name=_ativo,value='',inline=True)
     embed.add_field(name="Ƶ " + str(zakoletas), value="", inline=True)
     embed.add_field(name="", value="", inline=False)
-    embed.add_field(name="Perfil MAL/Anilist", value=anime_list, inline=False)
+    if anime_list.len() > 5:
+        embed.add_field(name="Perfil MAL/Anilist", value=anime_list, inline=False)
     embed.add_field(name="", value="", inline=False)
     embed.add_field(name="Roleta:", value="", inline=False)
     embed.add_field(name="Quero receber:", value=receives, inline=True)
