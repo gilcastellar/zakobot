@@ -203,7 +203,8 @@ async def perfil_command(
     if user_avg != False:
         embed.add_field(name="Nota média:", value=user_avg_text, inline=False)
     embed.add_field(name='Observações:',value=obs,inline=False)
-    
+    embed.add_field(name="                                                            ", value="", inline=False)
+
     await ctx.respond(embed=embed)
 
 @bot.slash_command(name='sorteio')
