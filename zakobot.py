@@ -171,6 +171,17 @@ async def perfil_command(
     user = await bot.fetch_user(id)
     avatar = user.avatar
 
+    if ',' in anime_list:
+        list = anime_list.split(',')
+        anime_list = list[0]
+        anime_list_text = ''
+        for anime in list:
+            anime_list_text += anime + ' | '
+        anime_list_text = anime_list_text.strip("| ")
+    else:
+        anime_list_text = anime_list
+
+
     if active == 1:
 
         _ativo = 'Ativo(a)'
@@ -197,7 +208,7 @@ async def perfil_command(
         embed.add_field(name=" ­­", value=" ", inline=True)
         embed.add_field(name="", value="­", inline=False)
     if anime_list != '':
-        embed.add_field(name="Perfil do MAL/Anilist", value=anime_list, inline=False)
+        embed.add_field(name="Perfil do MAL/Anilist", value=anime_list_text, inline=False)
         embed.add_field(name="", value="", inline=False)
     embed.add_field(name="Roleta:", value="", inline=False)
     if '' not in [receives, gives]:
