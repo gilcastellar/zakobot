@@ -192,7 +192,8 @@ async def perfil_command(
     embed.add_field(name=_ativo,value='',inline=True)
     embed.add_field(name="Ƶ " + str(zakoletas), value="", inline=True)
     embed.add_field(name="", value="", inline=False)
-    embed.add_field(name="Perfil MAL/Anilist", value=anime_list, inline=False)
+    if anime_list != '':
+        embed.add_field(name="Perfil MAL/Anilist", value=anime_list, inline=False)
     embed.add_field(name="", value="", inline=False)
     embed.add_field(name="Roleta:", value="", inline=False)
     embed.add_field(name="Quero receber:", value=receives, inline=True)
