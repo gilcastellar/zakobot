@@ -190,11 +190,12 @@ async def perfil_command(
     embed=discord.Embed(title=member, url=anime_list, color=0xe84545)
     embed.set_thumbnail(url=avatar)
     embed.add_field(name=_ativo,value='',inline=True)
+    embed.add_field(name="­­", value="", inline=True)
     if zakoletas > 0:
         embed.add_field(name="Ƶ " + str(zakoletas), value="", inline=True)
-        embed.add_field(name="", value="", inline=False)
+        embed.add_field(name="", value="­", inline=False)
     if anime_list != '':
-        embed.add_field(name="Perfil MAL/Anilist", value=anime_list, inline=False)
+        embed.add_field(name="Perfil MyAnimeList/Anilist", value=anime_list, inline=False)
         embed.add_field(name="", value="", inline=False)
     embed.add_field(name="Roleta:", value="", inline=False)
     if '' not in [receives, gives]:
@@ -203,10 +204,6 @@ async def perfil_command(
     if user_avg != False:
         embed.add_field(name="Nota média:", value=user_avg_text, inline=False)
     embed.add_field(name='Observações:',value=obs,inline=False)
-    embed.add_field(name="­­", value="", inline=True)
-    embed.add_field(name="­­", value="", inline=True)
-    embed.add_field(name="­­", value="", inline=True)
-    embed.add_field(name="­­", value="", inline=True)
 
     await ctx.respond(embed=embed)
 
