@@ -901,7 +901,7 @@ async def testingfun(text):
     print('common print: ' + text)
     await print('awaited print: ' + text)
 
-testingfun('haha')
+#testingfun('haha')
     
 config = configparser.RawConfigParser()
 config.read('app.properties')
