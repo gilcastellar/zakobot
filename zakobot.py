@@ -182,6 +182,10 @@ async def perfil_command(
 
     user_avg = await get_user_avg(user)
 
+    if user_avg != False:
+        user_avg_text = str(user_avg) + '/10'
+
+
     embed=discord.Embed(title=member, url=anime_list, color=0xe84545)
     embed.set_thumbnail(url=avatar)
     embed.add_field(name=_ativo,value='',inline=True)
@@ -192,10 +196,10 @@ async def perfil_command(
     embed.add_field(name="Roleta:", value="", inline=False)
     embed.add_field(name="Quero receber:", value=receives, inline=True)
     embed.add_field(name="Posso enviar:", value=gives, inline=True)
-    embed.add_field(name="Nota média:", value=str(user_avg) +'/10', inline=False)
+    if user_avg != False:
+        embed.add_field(name="Nota média:", value=user_avg_text, inline=False)
     embed.add_field(name='Observações:',value=obs,inline=False)
     
-
     await ctx.respond(embed=embed)
 
 @bot.slash_command(name='sorteio')
@@ -831,20 +835,30 @@ async def get_user_avg(user):
     total = 0
 
     for score in scores:
+
         if score not in [None, '0']:
+
             quantity += 1
             total += int(score)
 
-    avg = float(total/quantity)
+    if total not in [None, 0]:
 
-    if avg.is_integer():
-        avg = int(avg)
-    else:
-        avg = round(avg,1)
-    print('Their score average is:')
-    print(avg)
+        avg = float(total/quantity)
 
-    return avg
+        if avg.is_integer():
+
+            avg = int(avg)
+
+        else:
+
+            avg = round(avg,1)
+
+        print('Their score average is:')
+        print(avg)
+
+        return avg
+    
+    return False
 
 # Auxiliar command
 @bot.command(name='debug')
