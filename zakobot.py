@@ -171,11 +171,11 @@ async def perfil_command(
 
     if active == 1:
 
-        _ativo = 'Ativo'
+        _ativo = 'Ativo(a)'
 
     else:
 
-        _ativo = 'Inativo'
+        _ativo = 'Inativo(a)'
 
     if zakoletas == None:
         zakoletas = 0
@@ -197,8 +197,8 @@ async def perfil_command(
         embed.add_field(name="Perfil MAL/Anilist", value=anime_list, inline=False)
         embed.add_field(name="", value="", inline=False)
     embed.add_field(name="Roleta:", value="", inline=False)
-    embed.add_field(name="Quero receber:", value=receives, inline=True)
-    embed.add_field(name="Posso enviar:", value=gives, inline=True)
+    embed.add_field(name="Quero receber:", value=receives.title(), inline=True)
+    embed.add_field(name="Posso enviar:", value=gives.title(), inline=True)
     if user_avg != False:
         embed.add_field(name="Nota média:", value=user_avg_text, inline=False)
     embed.add_field(name='Observações:',value=obs,inline=False)
