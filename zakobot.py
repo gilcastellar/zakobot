@@ -896,6 +896,12 @@ async def debug_command(ctx):
         #        database.update(sql)
 
         print('done')
+
+async def testingfun(text):
+    print('common print: ' + text)
+    await print('awaited print: ' + text)
+
+testingfun('haha')
     
 config = configparser.RawConfigParser()
 config.read('app.properties')
