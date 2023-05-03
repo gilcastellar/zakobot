@@ -180,14 +180,21 @@ async def perfil_command(
     if zakoletas == None:
         zakoletas = 0
 
-    embed = discord.Embed(title=member)
+    user_avg = await get_user_avg(user)
+
+    embed=discord.Embed(title=member, url=anime_list, color=0xe84545)
     embed.set_thumbnail(url=avatar)
-    embed.add_field(name=_ativo,value='',inline=False)
-    embed.add_field(name='Ƶ '+str(zakoletas),value='')
-    embed.add_field(name='Quero receber:',value=receives,inline=False)
-    embed.add_field(name='Posso enviar:',value=gives,inline=False)
-    embed.add_field(name='Perfil MAL/Anilist:',value=anime_list,inline=False)
+    embed.add_field(name=_ativo,value='',inline=True)
+    embed.add_field(name="Ƶ " + str(zakoletas), value="", inline=True)
+    embed.add_field(name="", value="", inline=False)
+    embed.add_field(name="Perfil MAL/Anilist", value=anime_list, inline=False)
+    embed.add_field(name="", value="", inline=False)
+    embed.add_field(name="Roleta:", value="", inline=False)
+    embed.add_field(name="Quero receber:", value=receives, inline=True)
+    embed.add_field(name="Posso enviar:", value=gives, inline=True)
+    embed.add_field(name="Nota média:", value=str(user_avg) +'/10', inline=False)
     embed.add_field(name='Observações:',value=obs,inline=False)
+    
 
     await ctx.respond(embed=embed)
 
@@ -811,6 +818,34 @@ def add_zakoleta(user_id, quantity):
     sql = 'UPDATE user SET zakoleta=zakoleta+' + str(quantity) + ' WHERE id="' + str(user_id) + '"'
     database.update(sql)
 
+# Gets user score average
+async def get_user_avg(user):
+
+    sql = 'SELECT score FROM user_has_roleta WHERE id_receiver="' + str(user.id) + '" ORDER BY id_roleta'
+    scores = database.selectall(sql, True)
+
+    print('I was tasked with getting ' + str(user.display_name) + '\'s scores. They are below:')
+    print(scores)
+
+    quantity = 0
+    total = 0
+
+    for score in scores:
+        if score not in [None, '0']:
+            quantity += 1
+            total += int(score)
+
+    avg = float(total/quantity)
+
+    if avg.is_integer():
+        avg = int(avg)
+    else:
+        avg = round(avg,1)
+    print('Their score average is:')
+    print(avg)
+
+    return avg
+
 # Auxiliar command
 @bot.command(name='debug')
 async def debug_command(ctx):
@@ -896,12 +931,6 @@ async def debug_command(ctx):
         #        database.update(sql)
 
         print('done')
-
-async def testingfun(text):
-    print('common print: ' + text)
-    await print('awaited print: ' + text)
-
-#testingfun('haha')
     
 config = configparser.RawConfigParser()
 config.read('app.properties')
