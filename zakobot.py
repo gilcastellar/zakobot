@@ -11,12 +11,14 @@ import database
 import anilist
 import json
 import time
+
 intents = discord.Intents.default()
 intents.members = True
 bot = discord.Bot(intents=intents)
+
+client = discord.Client(intents=intents)
+
 admins = [906937520254758973,628466603486478336,1050904689685831760,98410347597139968]
-test = 'eita'
-key = False
 
 # Edit profile modal
 class EditarPerfilModal(discord.ui.Modal):
@@ -47,8 +49,6 @@ class EditarPerfilModal(discord.ui.Modal):
         print(sql)
         database.update(sql)
 
-        global key
-        key = True
         await interaction.response.send_message('Edições realizadas! Utilize o comando /perfil para visualizar.')
 
 # Send message
@@ -811,6 +811,19 @@ def add_zakoleta(user_id, quantity):
     sql = 'UPDATE user SET zakoleta=zakoleta+' + str(quantity) + ' WHERE id="' + str(user_id) + '"'
     database.update(sql)
 
+async def testingfun(text):
+    print('common print: ' + text)
+    await print('awaited print: ' + text)
+
+@client.event
+async def on_ready():
+    print(f'We have logged in as {client.user}')
+    
+    content = 'https://nyaa.si/?page=rss&q=subsplease+1080+-Batch&c=0_0&f=0'
+    channel = client.get_channel(1067926098815484064)
+
+    await testingfun('boa')
+
 # Auxiliar command
 @bot.command(name='debug')
 async def debug_command(ctx):
@@ -896,12 +909,6 @@ async def debug_command(ctx):
         #        database.update(sql)
 
         print('done')
-
-async def testingfun(text):
-    print('common print: ' + text)
-    await print('awaited print: ' + text)
-
-#testingfun('haha')
     
 config = configparser.RawConfigParser()
 config.read('app.properties')
