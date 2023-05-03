@@ -11,6 +11,8 @@ import database
 import anilist
 import json
 import time
+import asyncio
+
 intents = discord.Intents.default()
 intents.members = True
 bot = discord.Bot(intents=intents)
@@ -190,20 +192,22 @@ async def perfil_command(
     embed=discord.Embed(title=member, url=anime_list, color=0xe84545)
     embed.set_thumbnail(url=avatar)
     embed.add_field(name=_ativo,value='',inline=True)
-    embed.add_field(name="­­", value="", inline=True)
     if zakoletas > 0:
         embed.add_field(name="Ƶ " + str(zakoletas), value="", inline=True)
+        embed.add_field(name=" ­­", value=" ", inline=True)
         embed.add_field(name="", value="­", inline=False)
     if anime_list != '':
-        embed.add_field(name="Perfil MyAnimeList/Anilist", value=anime_list, inline=False)
+        embed.add_field(name="Perfil do MAL/Anilist", value=anime_list, inline=False)
         embed.add_field(name="", value="", inline=False)
     embed.add_field(name="Roleta:", value="", inline=False)
     if '' not in [receives, gives]:
         embed.add_field(name="Quero receber:", value=receives.title(), inline=True)
         embed.add_field(name="Posso enviar:", value=gives.title(), inline=True)
+        embed.add_field(name=" ­­", value=" ", inline=True)
     if user_avg != False:
         embed.add_field(name="Nota média:", value=user_avg_text, inline=False)
     embed.add_field(name='Observações:',value=obs,inline=False)
+    embed.set_footer(text="Esse perfil foi gerado por ZAKOBOT e esse rodapé existe pro perfil do JapZ não ficar cagado.")
 
     await ctx.respond(embed=embed)
 
@@ -660,6 +664,8 @@ async def indicar_command(
     media2: discord.Option(str, name='segunda_indicação', description='INSIRA O LINK DO ANILIST DA OBRA', required=False),
     media3: discord.Option(str, name='terceira_indicação', description='INSIRA O LINK DO ANILIST DA OBRA', required=False)
 ):
+    await ctx.respond(f"Obrigado pela indicação!")
+
     roletas = database.selectall('SELECT id FROM roleta', True)
     roleta_atual = max(roletas)
 
@@ -683,8 +689,6 @@ async def indicar_command(
 
         sql = 'UPDATE user_has_roleta SET received_rec="' + medias + '" WHERE id_giver="' + str(ctx.author.id) + '" AND id_roleta=' + str(roleta_atual)
         database.update(sql)
-    
-    await ctx.respond(f"Obrigado pela indicação!")
 
     list = []
 
@@ -718,7 +722,7 @@ async def terminei_command(
     roleta: discord.Option(str, name='roleta', description='Escolha a roleta', autocomplete=get_roletas, required=True),
     score: discord.Option(int, name='nota', description='Insira sua nota de 1 a 10', min_value=1, max_value=10, required=True)
 ):
-
+    await ctx.respond(f"Obrigado pela dedicação! :muscle:")
     roleta_id = database.select('SELECT id FROM roleta WHERE name="' + roleta + '"')
 
     status = database.select('SELECT status FROM user_has_roleta WHERE id_receiver=' + str(ctx.author.id) + ' AND id_roleta=' + str(roleta_id))
@@ -729,7 +733,11 @@ async def terminei_command(
     sql = 'UPDATE user_has_roleta SET score=' + str(score) + ',status="finished"' + 'WHERE id_roleta=' + str(roleta_id) + ' AND id_receiver="' + str(ctx.author.id) + '"'
     database.update(sql)
 
-    await ctx.respond(f"Obrigado pela dedicação! :muscle:")
+    #await ctx.respond(f"Obrigado pela dedicação! :muscle:")
+
+    #await ctx.response.defer()
+    #await asyncio.sleep()
+    #await ctx.followup.send()
 
     await board_update(roleta_id)
 
@@ -738,6 +746,7 @@ async def abandonei_command(
     ctx: discord.ApplicationContext,
     roleta: discord.Option(str, name='roleta', description='Escolha a roleta', autocomplete=get_roletas, required=True)
 ):
+    await ctx.respond(f"Indicação abandonada. Obrigado por priorizar sua saúde mental! :health_worker:")
 
     roleta_id = database.select('SELECT id FROM roleta WHERE name="' + roleta + '"')
 
@@ -749,8 +758,6 @@ async def abandonei_command(
     sql = 'UPDATE user_has_roleta SET status="abandoned" WHERE id_roleta=' + str(roleta_id) + ' AND id_receiver="' + str(ctx.author.id) + '"'
     database.update(sql)
 
-    await ctx.respond(f"Indicação abandonada. Obrigado por priorizar sua saúde mental! :health_worker:")
-
     await board_update(roleta_id)
 
 @bot.slash_command(name='placar_roleta')
@@ -758,13 +765,14 @@ async def placar_roleta_command(
     ctx: discord.ApplicationContext,
     roleta: discord.Option(str, name='roleta', description='Escolha a roleta que quer visualizar', autocomplete=get_roletas, required=True)
 ):
+    await ctx.respond("Carregando...")
 
     message = await create_board_message(ctx, ctx.interaction.channel.id)
     roleta_id = database.select('SELECT id FROM roleta WHERE name="' + roleta + '"')
 
     await board_update(roleta_id, message)
 
-    await ctx.respond("Carregando...")
+    
 
 # Help embed
 def help_embed():
