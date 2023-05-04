@@ -11,6 +11,7 @@ import database
 import anilist
 import json
 import time
+import datetime
 import asyncio
 
 intents = discord.Intents.default()
@@ -165,6 +166,7 @@ async def perfil_command(
     ctx: discord.ApplicationContext,
     member: discord.Option(str, autocomplete=get_members_names, name='membro')
 ):
+    await ctx.respond(f"Trazendo o perfil escolhido...")
 
     id, active, anime_list, receives, gives, obs, zakoletas = get_member_info(member)
 
@@ -194,9 +196,17 @@ async def perfil_command(
         zakoletas = 0
 
     user_avg = await get_user_avg(user)
+    #giver_avg = await get_user_avg(user)
+    #receiver_avg = await get_user_avg(user)
+
+    user_given_avg = 'Sem amostragem'
+    user_received_avg = 'Sem amostragem'
 
     if user_avg != False:
-        user_avg_text = str(user_avg) + '/10'
+        if user_avg[0] != None:
+            user_given_avg = str(user_avg[0]) + '/10'
+        if user_avg[1] != None:
+            user_received_avg = str(user_avg[1]) + '/10'
 
     print(anime_list)
         
@@ -206,7 +216,6 @@ async def perfil_command(
     if zakoletas > 0:
         embed.add_field(name="Ƶ " + str(zakoletas), value="", inline=True)
         embed.add_field(name=" ­­", value=" ", inline=True)
-        embed.add_field(name="", value="­", inline=False)
     if anime_list != '':
         embed.add_field(name="Perfil do MAL/Anilist", value=anime_list_text, inline=False)
         embed.add_field(name="", value="", inline=False)
@@ -215,12 +224,13 @@ async def perfil_command(
         embed.add_field(name="Quero receber:", value=receives.title(), inline=True)
         embed.add_field(name="Posso enviar:", value=gives.title(), inline=True)
         embed.add_field(name=" ­­", value=" ", inline=True)
-    if user_avg != False:
-        embed.add_field(name="Nota média:", value=user_avg_text, inline=False)
+    embed.add_field(name="Nota média dada:", value=user_given_avg, inline=True)
+    embed.add_field(name="Nota média recebida:", value=user_received_avg, inline=True)
+    embed.add_field(name=" ­­", value=" ", inline=True)
     embed.add_field(name='Observações:',value=obs,inline=False)
     embed.set_footer(text="Esse perfil foi gerado por ZAKOBOT e esse rodapé existe pro perfil do JapZ não ficar cagado.")
 
-    await ctx.respond(embed=embed)
+    await ctx.send(embed=embed)
 
 @bot.slash_command(name='sorteio')
 async def sorteio_command(
@@ -263,12 +273,12 @@ async def sorteio_command(
 
             giver, receiver = pair.split(',')
 
-            if reward == 'True':
-                
-                add_zakoleta(ctx.author.id, 50)
-
             giver = await fetch_user(giver)
             receiver = await fetch_user(receiver)
+
+            if reward == 'True':
+                
+                add_zakoleta(ctx.author.id, 50, ' +50 pela participação na roleta de ' + name)
 
             text = giver.display_name + ' -> ' + receiver.display_name
             
@@ -277,9 +287,7 @@ async def sorteio_command(
             sql = 'INSERT INTO user_has_roleta (idx, id_receiver, id_giver, id_roleta, status) VALUES (%s,%s,%s,%s,%s)'
             val = (index, str(receiver.id), str(giver.id), id+1, 'ongoing')
             database.insert(sql, val)
-
             
-
             index += 1
 
         board_message = await create_board_message(ctx, 1077070205987082281)
@@ -734,12 +742,17 @@ async def terminei_command(
     score: discord.Option(int, name='nota', description='Insira sua nota de 1 a 10', min_value=1, max_value=10, required=True)
 ):
     await ctx.respond(f"Obrigado pela dedicação! :muscle:")
+
     roleta_id = database.select('SELECT id FROM roleta WHERE name="' + roleta + '"')
 
     status = database.select('SELECT status FROM user_has_roleta WHERE id_receiver=' + str(ctx.author.id) + ' AND id_roleta=' + str(roleta_id))
+    
+    name = database.select('SELECT name FROM roleta WHERE id=' + str(roleta_id))
+
+    name = parse_name(name)
 
     if status == 'ongoing':
-        add_zakoleta(ctx.author.id, 50)
+        add_zakoleta(ctx.author.id, 50, ' +50 por terminar suas indicações de ' + name)
 
     sql = 'UPDATE user_has_roleta SET score=' + str(score) + ',status="finished"' + 'WHERE id_roleta=' + str(roleta_id) + ' AND id_receiver="' + str(ctx.author.id) + '"'
     database.update(sql)
@@ -763,8 +776,12 @@ async def abandonei_command(
 
     status = database.select('SELECT status FROM user_has_roleta WHERE id_receiver=' + str(ctx.author.id) + ' AND id_roleta=' + str(roleta_id))
 
+    name = database.select('SELECT name FROM roleta WHERE id=' + str(roleta_id))
+
+    name = parse_name(name)
+
     if status == 'ongoing':
-        add_zakoleta(ctx.author.id, 25)
+        add_zakoleta(ctx.author.id, 25, ' +25 por abandonar suas indicações de ' + name)
 
     sql = 'UPDATE user_has_roleta SET status="abandoned" WHERE id_roleta=' + str(roleta_id) + ' AND id_receiver="' + str(ctx.author.id) + '"'
     database.update(sql)
@@ -782,9 +799,7 @@ async def placar_roleta_command(
     roleta_id = database.select('SELECT id FROM roleta WHERE name="' + roleta + '"')
 
     await board_update(roleta_id, message)
-
     
-
 # Help embed
 def help_embed():
 
@@ -827,6 +842,7 @@ def add_to_obra(link):
             response = anilist.query_anime_id(id)
                 
         else:
+
             response = anilist.query_manga_id(id)
 
         anime_obj = response.json()
@@ -841,24 +857,33 @@ def add_to_obra(link):
         print('obra já existe na tabela obra')
 
 # Add zakoletas
-def add_zakoleta(user_id, quantity):
+def add_zakoleta(user_id, quantity, text):
 
-    sql = 'UPDATE user SET zakoleta=zakoleta+' + str(quantity) + ' WHERE id="' + str(user_id) + '"'
+    date = datetime.date.today().strftime("%B %d, %Y")
+    time = datetime.datetime.now().strftime("%H:%M:%S")
+
+    full_text = ',' + date + ' ' + time + text
+
+    sql = 'UPDATE user SET zakoleta=zakoleta+' + str(quantity) + ', zakoleta_log="' + full_text + '" WHERE id="' + str(user_id) + '"'
     database.update(sql)
+
+    print(full_text)
 
 # Gets user score average
 async def get_user_avg(user):
 
-    sql = 'SELECT score FROM user_has_roleta WHERE id_receiver="' + str(user.id) + '" ORDER BY id_roleta'
-    scores = database.selectall(sql, True)
+    both_avg = []
 
-    print('I was tasked with getting ' + str(user.display_name) + '\'s scores. They are below:')
-    print(scores)
+    sql = 'SELECT score FROM user_has_roleta WHERE id_receiver="' + str(user.id) + '" ORDER BY id_roleta'
+    scores_given = database.selectall(sql, True)
+
+    print('I was tasked with getting ' + str(user.display_name) + '\'s given scores. They are below:')
+    print(scores_given)
 
     quantity = 0
     total = 0
 
-    for score in scores:
+    for score in scores_given:
 
         if score not in [None, '0']:
 
@@ -877,12 +902,56 @@ async def get_user_avg(user):
 
             avg = round(avg,1)
 
-        print('Their score average is:')
+        print('Their given score average is:')
         print(avg)
 
-        return avg
+    else:
+
+        avg = None
+
+    both_avg.append(avg)
     
-    return False
+    sql = 'SELECT score FROM user_has_roleta WHERE id_giver="' + str(user.id) + '" ORDER BY id_roleta'
+    scores_received = database.selectall(sql, True)
+
+    print('I was tasked with getting ' + str(user.display_name) + '\'s received scores. They are below:')
+    print(scores_received)
+
+    for score in scores_received:
+
+        if score not in [None, '0']:
+
+            quantity += 1
+            total += int(score)
+
+    if total not in [None, 0]:
+
+        avg = float(total/quantity)
+
+        if avg.is_integer():
+
+            avg = int(avg)
+
+        else:
+
+            avg = round(avg,1)
+
+        print('Their received score average is:')
+        print(avg)
+
+    else:
+
+        avg = None
+
+    both_avg.append(avg)
+
+    if both_avg[0] == None and both_avg[1] == None:
+
+        return False
+
+    else:
+        
+        return both_avg
 
 # Auxiliar command
 @bot.command(name='debug')
@@ -930,25 +999,25 @@ async def debug_command(ctx):
         #        print('inserting ' + str(giver))
         #        database.insert(sql, val)
 
-        sql = 'SELECT received_rec FROM user_has_roleta WHERE id_roleta=5'
-        obras = database.selectall(sql,True)
+        #sql = 'SELECT received_rec FROM user_has_roleta WHERE id_roleta=5'
+        #obras = database.selectall(sql,True)
 
-        print('obras:')
-        print(obras)
+        #print('obras:')
+        #print(obras)
 
-        for link in obras:
-            time.sleep(1)
-            if link == None:
-                continue
-            if ',' not in link:
-                print('adicionando ' + link + ' na tabela de obras...')
-                add_to_obra(link)
+        #for link in obras:
+        #    time.sleep(1)
+        #    if link == None:
+        #        continue
+        #    if ',' not in link:
+        #        print('adicionando ' + link + ' na tabela de obras...')
+        #        add_to_obra(link)
 
-            else:
-                links = link.split(',')
-                for new_link in links:
-                    print('adicionando ' + new_link + ' na tabela de obras...')
-                    add_to_obra(new_link)
+        #    else:
+        #        links = link.split(',')
+        #        for new_link in links:
+        #            print('adicionando ' + new_link + ' na tabela de obras...')
+        #            add_to_obra(new_link)
         
         #sql = 'SELECT id FROM user'
         #users = database.selectall(sql, True)
@@ -967,6 +1036,11 @@ async def debug_command(ctx):
         #        sql = 'UPDATE user SET zakoleta=zakoleta+' + str(value) + ' WHERE id="' + user + '"'
         #        #sql = 'UPDATE user SET zakoleta=0 WHERE id="' + user + '"'
         #        database.update(sql)
+
+        #time = datetime.datetime.now().strftime("%H:%M:%S")
+        #date = datetime.date.today().strftime("%B %d, %Y")
+
+        #print(date + ' ' + time)
 
         print('done')
     
