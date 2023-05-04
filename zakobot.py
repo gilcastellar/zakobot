@@ -196,8 +196,6 @@ async def perfil_command(
         zakoletas = 0
 
     user_avg = await get_user_avg(user)
-    #giver_avg = await get_user_avg(user)
-    #receiver_avg = await get_user_avg(user)
 
     user_given_avg = 'Sem amostragem'
     user_received_avg = 'Sem amostragem'
@@ -208,7 +206,7 @@ async def perfil_command(
         if user_avg[1] != None:
             user_received_avg = str(user_avg[1]) + '/10'
 
-    print(anime_list)
+    pendencies = get_pendencies(id)
         
     embed=discord.Embed(title=member, url=anime_list, color=0xe84545)
     embed.set_thumbnail(url=avatar)
@@ -224,9 +222,10 @@ async def perfil_command(
         embed.add_field(name="Quero receber:", value=receives.title(), inline=True)
         embed.add_field(name="Posso enviar:", value=gives.title(), inline=True)
         embed.add_field(name=" ­­", value=" ", inline=True)
-    embed.add_field(name="Nota média dada:", value=user_given_avg, inline=True)
-    embed.add_field(name="Nota média recebida:", value=user_received_avg, inline=True)
+    embed.add_field(name="Média recipiente:", value=user_given_avg, inline=True)
+    embed.add_field(name="Média indicador:", value=user_received_avg, inline=True)
     embed.add_field(name=" ­­", value=" ", inline=True)
+    embed.add_field(name="Pendências", value=pendencies, inline=False)
     embed.add_field(name='Observações:',value=obs,inline=False)
     embed.set_footer(text="Esse perfil foi gerado por ZAKOBOT e esse rodapé existe pro perfil do JapZ não ficar cagado.")
 
@@ -741,7 +740,7 @@ async def terminei_command(
     roleta: discord.Option(str, name='roleta', description='Escolha a roleta', autocomplete=get_roletas, required=True),
     score: discord.Option(int, name='nota', description='Insira sua nota de 1 a 10', min_value=1, max_value=10, required=True)
 ):
-    await ctx.respond(f"Obrigado pela dedicação! :muscle:")
+    await ctx.respond(f"Você recebeu Ƶ 50 por finalizar sua indicação. Obrigado pela dedicação! :muscle:")
 
     roleta_id = database.select('SELECT id FROM roleta WHERE name="' + roleta + '"')
 
@@ -770,7 +769,7 @@ async def abandonei_command(
     ctx: discord.ApplicationContext,
     roleta: discord.Option(str, name='roleta', description='Escolha a roleta', autocomplete=get_roletas, required=True)
 ):
-    await ctx.respond(f"Indicação abandonada. Obrigado por priorizar sua saúde mental! :health_worker:")
+    await ctx.respond(f"Você recebeu Ƶ 25 por abandonar manualmente sua indicação. Obrigado por priorizar sua saúde mental! :health_worker:")
 
     roleta_id = database.select('SELECT id FROM roleta WHERE name="' + roleta + '"')
 
@@ -953,6 +952,38 @@ async def get_user_avg(user):
         
         return both_avg
 
+def get_pendencies(user_id):
+    
+    sql = 'SELECT received_rec FROM user_has_roleta WHERE status="ongoing" AND id_receiver="' + str(user_id) + '"'
+    pendencies = database.selectall(sql, True)
+
+    sql = 'SELECT name FROM user WHERE id="' + str(user_id) + '"'
+    name = database.select(sql)
+
+    pendencies_text = ''
+
+    print('I was tasked with getting ' + name + '\'s pendencies. They are below:')
+    for i in pendencies:
+        print(i)
+
+        type, id = get_type_and_id_from_anilist_link(i)
+
+        if type == 'anime':
+
+            response = anilist.query_anime_id(id)
+                
+        else:
+
+            response = anilist.query_manga_id(id)
+
+        media_obj = response.json()
+        title = media_obj['data']['Media']['title']['romaji']
+
+        pendencies_text += '[' + title + '](' + i + ')\n'
+        print(pendencies_text)
+
+    return pendencies_text
+
 # Auxiliar command
 @bot.command(name='debug')
 async def debug_command(ctx):
@@ -1041,6 +1072,8 @@ async def debug_command(ctx):
         #date = datetime.date.today().strftime("%B %d, %Y")
 
         #print(date + ' ' + time)
+
+        get_pendencies(252946147973267456)
 
         print('done')
     
