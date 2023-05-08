@@ -127,7 +127,9 @@ def query_anime_id(id):
         popularity
         status
         averageScore
-        coverImage
+        coverImage {
+            large
+        }
         title {
             romaji
             english
