@@ -126,6 +126,7 @@ def query_anime_id(id):
         duration
         popularity
         status
+        averageScore
         title {
             romaji
             english
