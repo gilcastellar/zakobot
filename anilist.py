@@ -241,7 +241,7 @@ def query_user_list(anime_id,user_name):
         mediaId
         progress
         status
-        score
+        score (format: POINT_10_DECIMAL)
       }
     }
     '''
