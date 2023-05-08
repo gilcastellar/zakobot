@@ -88,6 +88,28 @@ def query_random_anime():
     # Make the HTTP Api request
     return requests.post(url, json={'query': query, 'variables': variables})
 
+def query_list(prequery, page, user_name, status=None):
+    query = prequery
+
+
+    if status != None:
+        variables = {
+            "status": status,
+            "userName": user_name,
+            "page": page
+            }
+    else:
+        variables = {
+            "userName": user_name,
+            "page": page
+            }
+
+
+    url = 'https://graphql.anilist.co'
+
+    # Make the HTTP Api request
+    return requests.post(url, json={'query': query, 'variables': variables})
+
 def query_anime_id(id):
 
     #anime_id, anime_name = url.replace('https://anilist.co/anime/','').split('/',1)
@@ -101,8 +123,10 @@ def query_anime_id(id):
         episodes
         duration
         popularity
+        status
         title {
             romaji
+            english
         }
         startDate {
             day
@@ -116,6 +140,7 @@ def query_anime_id(id):
                     id
                     title {
                         romaji
+                        english
                     }
                     format
                     duration
@@ -168,7 +193,7 @@ def query_manga_id(id):
     # Make the HTTP Api request
     return requests.post(url, json={'query': query, 'variables': variables})
 
-def query_list_by_status(status, page, user_name):
+def query_list_by_status(status, user_name, page=1):
 
     query = '''
     query ($page: Int, $status: MediaListStatus, $userName: String) {
@@ -189,7 +214,6 @@ def query_list_by_status(status, page, user_name):
             }
         }
     }
-
     '''
 
     variables = {
@@ -211,10 +235,11 @@ def query_user_list(anime_id,user_name):
     query = '''
     query ($mediaId: Int, $userName: String) {
       MediaList (mediaId: $mediaId, userName: $userName type: ANIME) {
-        id
         userId
+        mediaId
         progress
         status
+        score
       }
     }
     '''
