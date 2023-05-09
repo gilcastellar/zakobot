@@ -247,7 +247,7 @@ def query_list_by_status(status, user_name, page=1):
     # Make the HTTP Api request
     return requests.post(url, json={'query': query, 'variables': variables})
 
-def query_user_list(type, id,user_name):
+def query_user_list(type, id, user_name):
 
     #anime_id, anime_name = url.replace('https://anilist.co/anime/','').split('/',1)
     #print(anime_id, anime_name.strip('/'))
