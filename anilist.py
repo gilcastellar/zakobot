@@ -251,7 +251,7 @@ def query_user_list(type, id,user_name):
 
     #anime_id, anime_name = url.replace('https://anilist.co/anime/','').split('/',1)
     #print(anime_id, anime_name.strip('/'))
-    if type == 'ANIME':
+    if type == 'anime':
         query = '''
         query ($mediaId: Int, $userName: String) {
           MediaList (mediaId: $mediaId, userName: $userName type: ANIME) {
@@ -263,7 +263,7 @@ def query_user_list(type, id,user_name):
           }
         }
         ''' 
-    if type == 'MANGA':
+    if type == 'manga':
         query = '''
         query ($mediaId: Int, $userName: String) {
           MediaList (mediaId: $mediaId, userName: $userName type: MANGA) {
