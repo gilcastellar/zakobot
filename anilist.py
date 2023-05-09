@@ -247,26 +247,38 @@ def query_list_by_status(status, user_name, page=1):
     # Make the HTTP Api request
     return requests.post(url, json={'query': query, 'variables': variables})
 
-def query_user_list(anime_id,user_name):
+def query_user_list(type, id,user_name):
 
     #anime_id, anime_name = url.replace('https://anilist.co/anime/','').split('/',1)
     #print(anime_id, anime_name.strip('/'))
-
-    query = '''
-    query ($mediaId: Int, $userName: String) {
-      MediaList (mediaId: $mediaId, userName: $userName type: ANIME) {
-        userId
-        mediaId
-        progress
-        status
-        score (format: POINT_10_DECIMAL)
-      }
-    }
-    '''
+    if type == 'ANIME':
+        query = '''
+        query ($mediaId: Int, $userName: String) {
+          MediaList (mediaId: $mediaId, userName: $userName type: ANIME) {
+            userId
+            mediaId
+            progress
+            status
+            score (format: POINT_10_DECIMAL)
+          }
+        }
+        ''' 
+    if type == 'MANGA':
+        query = '''
+        query ($mediaId: Int, $userName: String) {
+          MediaList (mediaId: $mediaId, userName: $userName type: MANGA) {
+            userId
+            mediaId
+            progress
+            status
+            score (format: POINT_10_DECIMAL)
+          }
+        }
+        '''
 
     # Define our query variables and values that will be used in the query request
     variables = {
-        'mediaId': anime_id,
+        'mediaId': id,
         'userName': user_name
     }
 
