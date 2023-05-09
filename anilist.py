@@ -182,8 +182,22 @@ def query_manga_id(id):
       Media (id: $id, type: MANGA) {
         id
         format
+        episodes
+        duration
+        popularity
+        status
+        averageScore
+        coverImage {
+            large
+        }
         title {
             romaji
+            english
+        }
+        startDate {
+            day
+            month
+            year
         }
       }
     }
