@@ -118,7 +118,7 @@ def select(sql):
     return cur.fetchone()[0]
     #return cur.description
 
-def check_if_exists(id, column, table):
+def check_if_exists(item, column, table):
     db = mysql.connector.connect(user='u84953_PldAoFY9St',
                              password='yyaeofA.vu6EzF0=@rPF67g3',
                              host='78.108.218.47',
@@ -126,11 +126,21 @@ def check_if_exists(id, column, table):
                              database='s84953_zakobot')
 
     cur = db.cursor()
-    cur.execute('SELECT COUNT(1) FROM ' + table + ' WHERE ' + column + '=' + id + '')
+    cur.execute('SELECT COUNT(1) FROM ' + table + ' WHERE ' + column + '="' + item + '"')
 
     return cur.fetchone()[0]
 
+def check_if_exists_two(item1, item2, column1, column2, table):
+    db = mysql.connector.connect(user='u84953_PldAoFY9St',
+                             password='yyaeofA.vu6EzF0=@rPF67g3',
+                             host='78.108.218.47',
+                             port='3306',
+                             database='s84953_zakobot')
 
+    cur = db.cursor()
+    cur.execute('SELECT COUNT(1) FROM ' + table + ' WHERE ' + column1 + '=' + item1 + ' AND ' + column2 + '=' + item2)
+
+    return cur.fetchone()[0]
 
 def selectall(sql, fix=False):
     db = mysql.connector.connect(user='u84953_PldAoFY9St',
