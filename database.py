@@ -110,7 +110,7 @@ def select(sql):
 
     return cur.fetchone()[0]
 
-def create(sql):
+def execute(sql):
     db = mysql.connector.connect(user='u84953_PldAoFY9St',
                              password='yyaeofA.vu6EzF0=@rPF67g3',
                              host='78.108.218.47',
