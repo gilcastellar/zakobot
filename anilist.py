@@ -407,6 +407,7 @@ def query_single_character(page):
                             title {
                               romaji
                             }
+                            siteUrl
                           }
                         }
                       }
@@ -453,6 +454,7 @@ def query_characters(page):
                             title {
                               romaji
                             }
+                            siteUrl
                           }
                         }
                       }
