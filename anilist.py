@@ -396,7 +396,9 @@ def query_single_character(page):
                       }
                       favourites
                       gender
-                      image
+                      image {
+                        medium
+                        }
                       media {
                         edges {
                           node {
