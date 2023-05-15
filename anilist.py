@@ -397,7 +397,7 @@ def query_single_character(page):
                       favourites
                       gender
                       image {
-                        medium
+                        large
                         }
                       siteUrl
                       media {
@@ -444,7 +444,7 @@ def query_characters(page):
                       favourites
                       gender
                       image {
-                        medium
+                        large
                         }
                       siteUrl
                       media {
