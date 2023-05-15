@@ -399,6 +399,53 @@ def query_single_character(page):
                       image {
                         medium
                         }
+                      siteUrl
+                      media {
+                        edges {
+                          node {
+                            id
+                            title {
+                              romaji
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }'''
+
+    # Define our query variables and values that will be used in the query request
+    variables = {
+        "page": page
+    }
+
+    url = 'https://graphql.anilist.co'
+
+    # Make the HTTP Api request
+    return requests.post(url, json={'query': query, 'variables': variables})
+
+def query_characters(page):
+
+    query = '''query ($id: Int, $page: Int) {
+                  Page(page: $page, perPage: 50) {
+                    pageInfo {
+                      total
+                      currentPage
+                      lastPage
+                      hasNextPage
+                      perPage
+                    }
+                    characters(id: $id, sort: FAVOURITES_DESC) {
+                      id
+                      name {
+                        userPreferred
+                      }
+                      favourites
+                      gender
+                      image {
+                        medium
+                        }
+                      siteUrl
                       media {
                         edges {
                           node {
