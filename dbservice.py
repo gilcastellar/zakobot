@@ -63,7 +63,7 @@ def select(table, columns, where=''):
 
         for i in where:
 
-            sql += i + '="' + where[i] + '",'
+            sql += i + '="' + str(where[i]) + '",'
 
         sql = sql.strip(',')
 
