@@ -2,7 +2,7 @@ import database
 
 def update(table, columns, values, where_col, where_val):
 
-    sql = 'UPDATE ' + table + ' SET '
+    sql = 'UPDATE ' + str(table) + ' SET '
 
     idx = 0
 
@@ -12,10 +12,10 @@ def update(table, columns, values, where_col, where_val):
 
             sql += ', '
 
-        sql += column + '="' + values[idx] + '"'
+        sql += str(column) + '="' + str(values[idx]) + '"'
         idx += 1
 
-    sql += ' WHERE ' + where_col + '="' + where_val + '"'
+    sql += ' WHERE ' + str(where_col) + '="' + str(where_val) + '"'
 
     print(sql)
     
@@ -29,7 +29,7 @@ def insert(table, columns, val):
 
     for column in columns:
 
-        sql += column + ','
+        sql += str(column) + ','
 
         _val += '%s,'
 
@@ -43,3 +43,31 @@ def insert(table, columns, val):
     print(val)
 
     database.insert(sql,val)
+
+
+def select(table, columns, where=''):
+
+    sql = 'SELECT '
+
+    for column in columns:
+
+        sql += str(column) + ','
+
+    sql = sql.strip(',')
+
+    sql += ' FROM ' + table
+
+    if where != '':
+
+        sql += ' WHERE '
+
+        for i in where:
+
+            sql += i + '="' + where[i] + '",'
+
+        sql = sql.strip(',')
+
+    print(sql)
+
+    ...
+

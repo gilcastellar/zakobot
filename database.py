@@ -110,6 +110,18 @@ def select(sql):
 
     return cur.fetchone()[0]
 
+def select_t(sql):
+    db = mysql.connector.connect(user='u84953_PldAoFY9St',
+                             password='yyaeofA.vu6EzF0=@rPF67g3',
+                             host='78.108.218.47',
+                             port='3306',
+                             database='s84953_zakobot')
+
+    cur = db.cursor()
+    cur.execute(sql)
+
+    return cur.fetchall()
+
 def execute(sql):
     db = mysql.connector.connect(user='u84953_PldAoFY9St',
                              password='yyaeofA.vu6EzF0=@rPF67g3',
