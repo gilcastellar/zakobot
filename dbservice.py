@@ -1,4 +1,4 @@
-def update(table, columns, values):
+def update(table, columns, values, where_col, where_val):
 
     sql = 'UPDATE ' + table + ' SET '
 
@@ -9,6 +9,8 @@ def update(table, columns, values):
             sql += ', '
         sql += column + '="' + values[idx] + '"'
         idx += 1
+
+    sql += ' WHERE ' + where_col + '="' + where_val
 
     print(sql)
     ...
