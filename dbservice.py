@@ -1,6 +1,6 @@
 import database
 
-def update(table, columns, values, where_col, where_val):
+def update(table, columns, values, where):
 
     sql = 'UPDATE ' + str(table) + ' SET '
 
@@ -15,7 +15,11 @@ def update(table, columns, values, where_col, where_val):
         sql += str(column) + '="' + str(values[idx]) + '"'
         idx += 1
 
-    sql += ' WHERE ' + str(where_col) + '="' + str(where_val) + '"'
+    for i in where:
+
+        sql += i + '="' + str(where[i]) + '",'
+
+    sql = sql.strip(',')
 
     print(sql)
     
