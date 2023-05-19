@@ -43,7 +43,7 @@ def insert(table, columns, values):
     
     val = val.strip(',') + ')'
 
-    sql += ') VALUES (' + _val
+    sql += ') VALUES ' + _val
 
     print(sql)
     print(val)
