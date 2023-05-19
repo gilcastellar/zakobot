@@ -10,7 +10,7 @@ def update(table, columns, values, where_col, where_val):
         sql += column + '="' + values[idx] + '"'
         idx += 1
 
-    sql += ' WHERE ' + where_col + '="' + where_val
+    sql += ' WHERE ' + where_col + '="' + where_val + '"'
 
     print(sql)
     ...
