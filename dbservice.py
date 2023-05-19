@@ -39,6 +39,8 @@ def insert(table, columns, values):
 
         val += '"' + value + '",'
 
+    sql = sql.strip(',')
+
     _val = _val.strip(',') + ')'
     
     val = val.strip(',') + ')'
