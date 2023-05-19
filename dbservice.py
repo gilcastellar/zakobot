@@ -75,6 +75,10 @@ def select(table, columns, where=''):
 
     print(len(response))
 
+    if len(response) == 1:
+
+        print(response[0])
+
     #a = response.json()
 
     #print(a)
