@@ -27,13 +27,13 @@ def insert(table, columns, values):
 
     val = '('
 
-    _val = '(%s'
+    _val = '('
 
     for column in columns:
 
         sql += column + ','
 
-        _val += ',%s'
+        _val += '%s,'
 
     for value in values:
 
