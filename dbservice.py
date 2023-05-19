@@ -73,7 +73,13 @@ def select(table, columns, where=''):
 
     if len(response) == 1:
 
-        return response[0]
+        if len(response[0]) == 1:
+
+            return response[0][0]
+
+        else:
+
+            return response[0]
 
     else:
         
