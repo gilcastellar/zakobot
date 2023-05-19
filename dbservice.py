@@ -71,15 +71,13 @@ def select(table, columns, where=''):
 
     response = database.select_t(sql)
 
-    print(len(response))
-
     if len(response) == 1:
 
-        print(response[0])
+        return response[0]
 
     else:
         
-        print(response)
+        return response
 
     #a = response.json()
 
