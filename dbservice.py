@@ -69,5 +69,5 @@ def select(table, columns, where=''):
 
     print(sql)
 
-    ...
+    database.select_t(sql)
 
