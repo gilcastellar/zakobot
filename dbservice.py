@@ -75,5 +75,5 @@ def select(table, columns, where=''):
 
     #a = response.json()
 
-    print(a)
+    #print(a)
 
