@@ -37,7 +37,7 @@ def insert(table, columns, values):
 
     for value in values:
 
-        val += value + ','
+        val += '"' + value + '",'
 
     _val = _val.strip(',') + ')'
     
