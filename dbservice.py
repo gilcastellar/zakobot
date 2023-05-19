@@ -73,7 +73,7 @@ def select(table, columns, where=''):
 
     print(response)
 
-    a = response.json()
+    #a = response.json()
 
     print(a)
 
