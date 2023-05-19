@@ -25,7 +25,7 @@ def insert(table, columns, val):
 
     sql = 'INSERT INTO ' + table + ' ('
 
-    _val = ()
+    _val = '('
 
     for column in columns:
 
