@@ -85,7 +85,3 @@ def select(table, columns, where=''):
         
         return response
 
-    #a = response.json()
-
-    #print(a)
-
