@@ -71,6 +71,8 @@ def select(table, columns, where=''):
 
     response = database.select_t(sql)
 
+    print(response)
+
     a = response.json()
 
     print(a)
