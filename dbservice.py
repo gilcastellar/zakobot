@@ -73,6 +73,8 @@ def select(table, columns, where=''):
 
     print(response)
 
+    print(len(response))
+
     #a = response.json()
 
     #print(a)
