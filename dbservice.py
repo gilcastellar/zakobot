@@ -21,13 +21,11 @@ def update(table, columns, values, where_col, where_val):
     
     database.update(sql)
 
-def insert(table, columns, values):
+def insert(table, columns, val):
 
     sql = 'INSERT INTO ' + table + ' ('
 
-    val = '('
-
-    _val = '('
+    _val = ()
 
     for column in columns:
 
@@ -35,15 +33,9 @@ def insert(table, columns, values):
 
         _val += '%s,'
 
-    for value in values:
-
-        val += '"' + value + '",'
-
     sql = sql.strip(',')
 
     _val = _val.strip(',') + ')'
-    
-    val = val.strip(',') + ')'
 
     sql += ') VALUES ' + _val
 
