@@ -49,3 +49,5 @@ def insert(table, columns, values):
 
     print(sql)
     print(val)
+
+    database.insert(sql,val)
