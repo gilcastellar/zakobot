@@ -15,6 +15,8 @@ def update(table, columns, values, where):
         sql += str(column) + '="' + str(values[idx]) + '"'
         idx += 1
 
+    sql += ' WHERE '
+
     for i in where:
 
         sql += i + '="' + str(where[i]) + '",'
