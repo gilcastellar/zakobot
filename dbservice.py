@@ -1,4 +1,4 @@
-async def update(table, columns, values):
+def update(table, columns, values):
 
     sql = 'UPDATE ' + table + ' SET '
 
