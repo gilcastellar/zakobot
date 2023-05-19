@@ -69,5 +69,9 @@ def select(table, columns, where=''):
 
     print(sql)
 
-    database.select_t(sql)
+    response = database.select_t(sql)
+
+    a = response.json()
+
+    print(a)
 
