@@ -17,12 +17,7 @@ def update(table, columns, values, where):
 
     sql += ' WHERE '
 
-    print(where)
-
     for i in where:
-
-        print(i)
-        print(where[i])
 
         sql += i + '="' + str(where[i]) + '" AND '
 
@@ -30,7 +25,7 @@ def update(table, columns, values, where):
 
     print(sql)
     
-    #database.update(sql)
+    database.update(sql)
 
 def insert(table, columns, val):
 
