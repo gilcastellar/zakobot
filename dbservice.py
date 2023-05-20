@@ -69,9 +69,9 @@ def select(table, columns, where=''):
 
         for i in where:
 
-            sql += i + '="' + str(where[i]) + '",'
+            sql += i + '="' + str(where[i]) + '" AND '
 
-        sql = sql.strip(',')
+        sql = sql.strip('AND')
 
     print(sql)
 
