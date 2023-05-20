@@ -25,7 +25,7 @@ def update(table, columns, values, where):
 
     print(sql)
     
-    database.update(sql)
+    #database.update(sql)
 
 def insert(table, columns, val):
 
