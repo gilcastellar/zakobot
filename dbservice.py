@@ -26,7 +26,7 @@ def update(table, columns, values, where):
 
         sql += i + '="' + str(where[i]) + '" AND '
 
-    sql = sql.strip('AND')
+    sql = sql.strip(' AND ')
 
     print(sql)
     
@@ -76,7 +76,7 @@ def select(table, columns, where=''):
 
             sql += i + '="' + str(where[i]) + '" AND '
 
-        sql = sql.strip('AND')
+        sql = sql.strip(' AND ')
 
     print(sql)
 
