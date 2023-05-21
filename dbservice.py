@@ -75,7 +75,7 @@ def select(table, columns, where=''):
 
     print(query)
 
-    response = database.select_t(query)
+    response = database.select(query)
 
     if len(response) == 1:
 

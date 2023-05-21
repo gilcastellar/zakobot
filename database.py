@@ -110,15 +110,15 @@ def temp_update_profile():
             cur.execute(sql, val)
             db.commit()
 
+#def select(sql):
+#    db = connect_db()
+
+#    cur = db.cursor()
+#    cur.execute(sql)
+
+#    return cur.fetchone()[0]
+
 def select(sql):
-    db = connect_db()
-
-    cur = db.cursor()
-    cur.execute(sql)
-
-    return cur.fetchone()[0]
-
-def select_t(sql):
     db = connect_db()
 
     cur = db.cursor()
