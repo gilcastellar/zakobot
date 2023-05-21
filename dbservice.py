@@ -27,9 +27,13 @@ def update(table, columns, values, where):
     
     database.update(query)
 
-def insert(table, columns, val):
+def insert(table, columns, val, ignore=False):
 
-    query = 'INSERT INTO ' + table + ' ('
+    if ignore:
+        query = 'INSERT IGNORE INTO ' + table + ' ('
+
+    else:
+        query = 'INSERT INTO ' + table + ' ('
 
     _val = '('
 
@@ -51,7 +55,7 @@ def insert(table, columns, val):
     database.insert(query, val)
 
 
-def select(table, columns, where=''):
+def select(table, columns, order, where=''):
 
     query = 'SELECT '
 
@@ -74,6 +78,10 @@ def select(table, columns, where=''):
         query = query.strip(' AND ')
 
     print(query)
+
+    if order != '':
+
+        query += ' ' + order
 
     response = database.select(query)
 
