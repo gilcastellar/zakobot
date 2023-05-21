@@ -65,11 +65,11 @@ def select(table, columns, where=''):
 
     if where != '':
 
-        sql += ' WHERE '
+        query += ' WHERE '
 
         for i in where:
 
-            sql += i + '="' + str(where[i]) + '" AND '
+            query += i + '="' + str(where[i]) + '" AND '
 
         query = query.strip(' AND ')
 
