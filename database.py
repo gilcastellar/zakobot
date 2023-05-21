@@ -1,6 +1,17 @@
 ﻿import mysql.connector
 import json
+import configparser
 
+
+
+
+config = configparser.RawConfigParser()
+config.read('app.properties')
+user = config.get('Database', 'user')
+password = config.get('Database', 'password')
+host = config.get('Database', 'host')
+port = config.get('Database', 'port')
+database = config.get('Database', 'database')
 
 
 id_guild = '1059298932825538661'
@@ -40,6 +51,19 @@ id_guild = '1059298932825538661'
 #cur.execute(sql)
 
 #db.commit()
+
+def connect_db():
+    _user = config.get('Database', 'user')
+    _password = config.get('Database', 'password')
+    _host = config.get('Database', 'host')
+    _port = config.get('Database', 'port')
+    _database = config.get('Database', 'database')
+    return mysql.connector.connect(user=_user,
+                password=_password,
+                host=_host,
+                port=_port,
+                database=_database)
+
     
 def query_user_id(user_id):
     db = mysql.connector.connect(user='u84953_PldAoFY9St',
@@ -98,19 +122,19 @@ def temp_update_profile():
             cur.execute(sql, val)
             db.commit()
 
+#def select(sql):
+#    db = mysql.connector.connect(user='u84953_PldAoFY9St',
+#                             password='yyaeofA.vu6EzF0=@rPF67g3',
+#                             host='78.108.218.47',
+#                             port='3306',
+#                             database='s84953_zakobot')
+
+#    cur = db.cursor()
+#    cur.execute(sql)
+
+#    return cur.fetchone()[0]
+
 def select(sql):
-    db = mysql.connector.connect(user='u84953_PldAoFY9St',
-                             password='yyaeofA.vu6EzF0=@rPF67g3',
-                             host='78.108.218.47',
-                             port='3306',
-                             database='s84953_zakobot')
-
-    cur = db.cursor()
-    cur.execute(sql)
-
-    return cur.fetchone()[0]
-
-def select_t(sql):
     db = mysql.connector.connect(user='u84953_PldAoFY9St',
                              password='yyaeofA.vu6EzF0=@rPF67g3',
                              host='78.108.218.47',
@@ -132,15 +156,11 @@ def execute(sql):
     cur = db.cursor()
     cur.execute(sql)
 
-def check_if_exists(item, column, table):
-    db = mysql.connector.connect(user='u84953_PldAoFY9St',
-                             password='yyaeofA.vu6EzF0=@rPF67g3',
-                             host='78.108.218.47',
-                             port='3306',
-                             database='s84953_zakobot')
+def check_existence(query):
+    db = connect_db()
 
     cur = db.cursor()
-    cur.execute('SELECT COUNT(1) FROM ' + table + ' WHERE ' + column + '="' + item + '"')
+    cur.execute(query)
 
     return cur.fetchone()[0]
 

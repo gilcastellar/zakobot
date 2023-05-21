@@ -2,7 +2,7 @@ import database
 
 def update(table, columns, values, where):
 
-    sql = 'UPDATE ' + str(table) + ' SET '
+    query = 'UPDATE ' + str(table) + ' SET '
 
     idx = 0
 
@@ -10,58 +10,58 @@ def update(table, columns, values, where):
 
         if idx != 0:
 
-            sql += ', '
+            query += ', '
 
-        sql += str(column) + '="' + str(values[idx]) + '"'
+        query += str(column) + '="' + str(values[idx]) + '"'
         idx += 1
 
-    sql += ' WHERE '
+    query += ' WHERE '
 
     for i in where:
 
-        sql += i + '="' + str(where[i]) + '" AND '
+        query += i + '="' + str(where[i]) + '" AND '
 
-    sql = sql.strip(' AND ')
+    query = query.strip(' AND ')
 
-    print(sql)
+    #print(query)
     
-    database.update(sql)
+    database.update(query)
 
 def insert(table, columns, val):
 
-    sql = 'INSERT INTO ' + table + ' ('
+    query = 'INSERT INTO ' + table + ' ('
 
     _val = '('
 
     for column in columns:
 
-        sql += str(column) + ','
+        query += str(column) + ','
 
         _val += '%s,'
 
-    sql = sql.strip(',')
+    query = query.strip(',')
 
     _val = _val.strip(',') + ')'
 
-    sql += ') VALUES ' + _val
+    query += ') VALUES ' + _val
 
-    print(sql)
+    print(query)
     print(val)
 
-    database.insert(sql,val)
+    database.insert(query, val)
 
 
 def select(table, columns, where=''):
 
-    sql = 'SELECT '
+    query = 'SELECT '
 
     for column in columns:
 
-        sql += str(column) + ','
+        query += str(column) + ','
 
-    sql = sql.strip(',')
+    query = query.strip(',')
 
-    sql += ' FROM ' + table
+    query += ' FROM ' + table
 
     if where != '':
 
@@ -71,11 +71,11 @@ def select(table, columns, where=''):
 
             sql += i + '="' + str(where[i]) + '" AND '
 
-        sql = sql.strip(' AND ')
+        query = query.strip(' AND ')
 
-    print(sql)
+    print(query)
 
-    response = database.select_t(sql)
+    response = database.select_t(query)
 
     if len(response) == 1:
 
@@ -90,4 +90,16 @@ def select(table, columns, where=''):
     else:
         
         return response
+
+def check_existence(table, where):
+
+    query = 'SELECT COUNT(1) FROM ' + str(table) + ' WHERE '
+
+    for i in where:
+
+        query += i + '="' + where[i] + '" AND '
+
+    query = query.strip(' AND ')
+
+    return database.check_existence(query)
 
