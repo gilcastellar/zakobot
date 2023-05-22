@@ -77,18 +77,13 @@ def select(table, columns, extra, where=''):
 
         query = query.strip(' AND ')
 
-    #print(query)
+    print(query)
 
     if extra != '':
 
         query += ' ' + extra
 
     response = database.select(query)
-
-    print(response)
-
-    print('len:')
-    print(len(response))
 
     if len(response) == 1:
 
