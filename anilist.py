@@ -95,6 +95,7 @@ def query_list(prequery, page, user_name, status=None):
 
 
     if status != None:
+        print(status)
         variables = {
             "status": status,
             "userName": user_name,
