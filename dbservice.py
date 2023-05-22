@@ -105,7 +105,7 @@ def check_existence(table, where):
 
     for i in where:
 
-        query += i + '="' + where[i] + '" AND '
+        query += i + '="' + str(where[i]) + '" AND '
 
     query = query.strip(' AND ')
 
