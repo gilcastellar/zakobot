@@ -85,9 +85,6 @@ def select(table, columns, extra, where=''):
 
     response = database.select(query)
 
-    print('len:')
-    print(len(response))
-
     if len(response) == 1:
 
         if len(response[0]) == 1:
