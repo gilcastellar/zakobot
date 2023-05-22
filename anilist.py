@@ -471,3 +471,7 @@ def query_characters(page):
 
     # Make the HTTP Api request
     return requests.post(url, json={'query': query, 'variables': variables})
+
+def query(query, variables):
+
+    return requests.post('https://graphql.anilist.co', json={'query': query, 'variables': variables})
