@@ -77,7 +77,7 @@ def select(table, columns, extra, where=''):
 
         query = query.strip(' AND ')
 
-    print(query)
+    #print(query)
 
     if extra != '':
 
