@@ -55,7 +55,7 @@ def insert(table, columns, val, ignore=False):
     database.insert(query, val)
 
 
-def select(table, columns, order, where=''):
+def select(table, columns, extra, where=''):
 
     query = 'SELECT '
 
@@ -79,9 +79,9 @@ def select(table, columns, order, where=''):
 
     #print(query)
 
-    if order != '':
+    if extra != '':
 
-        query += ' ' + order
+        query += ' ' + extra
 
     response = database.select(query)
 
@@ -114,3 +114,14 @@ def check_existence(table, where):
 
     return database.check_existence(query)
 
+def drop(table):
+
+    sql = 'DROP TABLE ' + table
+
+    database.execute(sql)
+
+def create(table, extra):
+
+    sql = 'CREATE TABLE IF NOT EXISTS ' + table + extra
+    
+    database.execute(sql)
