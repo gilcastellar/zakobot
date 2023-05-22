@@ -49,8 +49,8 @@ def insert(table, columns, val, ignore=False):
 
     query += ') VALUES ' + _val
 
-    print(query)
-    print(val)
+    #print(query)
+    #print(val)
 
     database.insert(query, val)
 
@@ -77,7 +77,7 @@ def select(table, columns, order, where=''):
 
         query = query.strip(' AND ')
 
-    print(query)
+    #print(query)
 
     if order != '':
 
