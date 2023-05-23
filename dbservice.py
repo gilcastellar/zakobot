@@ -91,11 +91,12 @@ def select(table, columns, extra, where=''):
 
         query = query.strip(' AND ')
 
-    #print(query)
 
     if extra != '':
 
         query += ' ' + extra
+
+    print(query)
 
     response = database.select(query)
 
