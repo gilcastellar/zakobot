@@ -2,20 +2,7 @@ import database
 
 def update(table, columns, values, where):
 
-    query = 'UPDATE ' + str(table) + ' SET '
-
-    idx = 0
-
-    for column in columns:
-
-        if idx != 0:
-
-            query += ', '
-
-        query += str(column) + '="' + str(values[idx]) + '"'
-        idx += 1
-
-    query += ' WHERE '
+    query = 'SELECT COUNT(1) FROM ' + str(table) + ' WHERE '
 
     for i in where:
 
@@ -23,9 +10,36 @@ def update(table, columns, values, where):
 
     query = query.strip(' AND ')
 
-    #print(query)
+    exists = database.check_existence(query)
+
+    if exists == 1:
+
+        query = 'UPDATE ' + str(table) + ' SET '
+
+        idx = 0
+
+        for column in columns:
+
+            if idx != 0:
+
+                query += ', '
+
+            query += str(column) + '="' + str(values[idx]) + '"'
+            idx += 1
+
+        query += ' WHERE '
+
+        for i in where:
+
+            query += i + '="' + str(where[i]) + '" AND '
+
+        query = query.strip(' AND ')
+
+        #print(query)
     
-    database.update(query)
+        database.update(query)
+
+    return exists
 
 def insert(table, columns, val, ignore=False):
 
