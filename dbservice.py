@@ -137,3 +137,9 @@ def create(table, extra):
     sql = 'CREATE TABLE IF NOT EXISTS ' + table + extra
     
     database.execute(sql)
+
+def truncate(table):
+
+    sql = 'TRUNCATE TABLE ' + table 
+
+    database.execute(sql)
