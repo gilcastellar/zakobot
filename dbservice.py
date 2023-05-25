@@ -53,7 +53,7 @@ def update_zakoleta(table, quantity, log, user_id, operation):
         
     print(query)
 
-    #database.update(query)
+    database.update(query)
 
 def insert(table, columns, val, ignore=False):
 
