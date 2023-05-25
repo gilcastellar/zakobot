@@ -35,7 +35,7 @@ def update(table, columns, values, where):
 
         query = query.strip(' AND ')
 
-        #print(query)
+        print(query)
     
         database.update(query)
 
