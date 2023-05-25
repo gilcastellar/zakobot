@@ -41,6 +41,20 @@ def update(table, columns, values, where):
 
     return exists
 
+def update_zakoleta(table, quantity, log, user_id, operation):
+
+    if operation == 'add':
+
+        query = 'UPDATE ' + table + ' SET zakoleta=zakoleta+' + str(quantity) + ', zakoleta_log=concat(zakoleta_log, "' + log + '") WHERE id="' + str(user_id) + '"'
+
+    if operation == 'sub':
+        
+        query = 'UPDATE ' + table + ' SET zakoleta=zakoleta-' + str(quantity) + ', zakoleta_log=concat(zakoleta_log, "' + log + '") WHERE id="' + str(user_id) + '"'
+        
+    print(query)
+
+    #database.update(query)
+
 def insert(table, columns, val, ignore=False):
 
     if ignore:
