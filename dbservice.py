@@ -110,7 +110,7 @@ def select(table, columns, extra, where=''):
 
         query += ' ' + extra
 
-    #print(query)
+    print(query)
 
     response = database.select(query)
 
