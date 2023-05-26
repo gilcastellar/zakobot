@@ -138,6 +138,8 @@ def check_existence(table, where):
 
     query = query.strip(' AND ')
 
+    print(query)
+
     return database.check_existence(query)
 
 def drop(table):
