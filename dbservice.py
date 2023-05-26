@@ -138,7 +138,7 @@ def check_existence(table, where):
 
     query = query.strip(' AND ')
 
-    #print(query)
+    print(query)
 
     return database.check_existence(query)
 
