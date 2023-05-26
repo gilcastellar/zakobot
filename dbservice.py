@@ -110,7 +110,7 @@ def select(table, columns, extra, where=''):
 
         query += ' ' + extra
 
-    print(query)
+    #print(query)
 
     response = database.select(query)
 
@@ -138,7 +138,7 @@ def check_existence(table, where):
 
     query = query.strip(' AND ')
 
-    print(query)
+    #print(query)
 
     return database.check_existence(query)
 
