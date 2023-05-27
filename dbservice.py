@@ -8,7 +8,7 @@ def update(table, columns, values, where):
 
         query += i + '="' + str(where[i]) + '" AND '
 
-    query = query.strip(' AND ')
+    query = query.rstrip(' AND ')
 
     exists = database.check_existence(query)
 
@@ -33,7 +33,7 @@ def update(table, columns, values, where):
 
             query += i + '="' + str(where[i]) + '" AND '
 
-        query = query.strip(' AND ')
+        query = query.rstrip(' AND ')
 
         print(query)
     
@@ -71,9 +71,9 @@ def insert(table, columns, val, ignore=False):
 
         _val += '%s,'
 
-    query = query.strip(',')
+    query = query.rstrip(',')
 
-    _val = _val.strip(',') + ')'
+    _val = _val.rstrip(',') + ')'
 
     query += ') VALUES ' + _val
 
@@ -102,7 +102,7 @@ def select(table, columns, extra, where=''):
 
             query += i + '="' + str(where[i]) + '" AND '
 
-        query = query.strip(' AND ')
+        query = query.rstrip(' AND ')
 
 
     if extra != '':
@@ -135,7 +135,7 @@ def check_existence(table, where):
 
         query += i + '="' + str(where[i]) + '" AND '
 
-    query = query.strip(' AND ')
+    query = query.rstrip(' AND ')
 
     print(query)
 
