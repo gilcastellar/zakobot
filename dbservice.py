@@ -161,7 +161,7 @@ def truncate(table):
 
 def delete(table, where):
 
-    sql = 'DELETE FROM ' + table + ' WHERE '
+    query = 'DELETE FROM ' + table + ' WHERE '
 
     for i in where:
 
@@ -169,4 +169,4 @@ def delete(table, where):
         
     query = query.strip(' AND ')
 
-    database.execute(sql)
+    database.execute(query)
