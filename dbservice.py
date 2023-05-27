@@ -82,7 +82,6 @@ def insert(table, columns, val, ignore=False):
 
     database.insert(query, val)
 
-
 def select(table, columns, extra, where=''):
 
     query = 'SELECT '
