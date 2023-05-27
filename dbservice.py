@@ -169,4 +169,6 @@ def delete(table, where):
         
     query = query.strip(' AND ')
 
+    print(query)
+
     database.execute(query)
