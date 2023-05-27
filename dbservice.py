@@ -80,7 +80,7 @@ def insert(table, columns, val, ignore=False):
     #print(query)
     #print(val)
 
-    return database.insert(query, val)
+    database.insert(query, val)
 
 def select(table, columns, extra, where=''):
 

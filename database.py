@@ -173,8 +173,6 @@ def insert(sql, val):
     cur.execute(sql,val)
     db.commit()
 
-    return cur.lastrowid
-
 def update(sql):
     db = connect_db()
 
