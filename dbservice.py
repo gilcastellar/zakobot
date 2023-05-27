@@ -167,7 +167,7 @@ def delete(table, where):
 
         query += i + '="' + str(where[i]) + '" AND '
         
-    query = query.strip(' AND ')
+    query = query.rstrip(' AND ')
 
     print(query)
 
