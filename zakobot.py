@@ -2198,6 +2198,8 @@ async def get_chara(ctx):
 
     chara = dbservice.select('chara', ['chara_name'], '')
 
+    chara = from_list_of_tuples_to_list(chara)
+
     return [name for name in chara if name.lower().startswith(ctx.value.lower())]
 
 @bot.slash_command(name='iniciar_oferta')
