@@ -130,21 +130,23 @@ async def on_message(message):
 
         case ";r":
 
-            if len(msg) > 1:
+            if message.channel.id in [1107765031245988060,1065847698214887496]:
+
+                if len(msg) > 1:
                 
-                if int(msg[1]) >= 10:
-                    rolls = 10
+                    if int(msg[1]) >= 10:
+                        rolls = 10
 
-                elif int(msg[1]) in range(1,10):
-                    rolls = int(msg[1])
+                    elif int(msg[1]) in range(1,10):
+                        rolls = int(msg[1])
 
-            else:
+                else:
 
-                rolls = 1
+                    rolls = 1
 
-            user_name = dbservice.select('user', ['name'], '', {'id': message.author.id})
+                user_name = dbservice.select('user', ['name'], '', {'id': message.author.id})
 
-            roll_id = dbservice.insert('rolls', ['user', 'quantity'], [user_name, rolls])
+                roll_id = dbservice.insert('rolls', ['user', 'quantity'], [user_name, rolls])
             
 
 @tasks.loop(minutes=1)
