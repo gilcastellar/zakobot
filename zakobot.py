@@ -21,6 +21,8 @@ admins = [906937520254758973,628466603486478336,1050904689685831760,984103475971
 test = 'eita'
 key = False
 
+rolls_channel = 1065847698214887496
+
 # Edit profile modal
 class EditarPerfilModal(discord.ui.Modal):
     def __init__(self, user_id, *args, **kwargs) -> None:
@@ -130,7 +132,7 @@ async def on_message(message):
 
         case ";r":
 
-            if message.channel.id in [1107765031245988060,1065847698214887496]:
+            if message.channel.id in [rolls_channel]:
 
                 if len(msg) > 1:
                 
@@ -2188,37 +2190,44 @@ async def make_rolls():
 
     ...
 
-async def get_their_collection(ctx):
-
-    user_id = dbservice.select
+async def get_chara(ctx):
     
     #collection = database.selectall('SELECT chara_name FROM user_has_chara WHERE user_id="' + str(user_id) + '"', True)
 
-    collection = dbservice.select('user_has_chara', ['chara_name'], '', {'user_id': str(user_id)})
+    #collection = dbservice.select('user_has_chara', ['chara_name'], '', {'user_id': str(user_id)})
 
-    return [name for name in collection if name.lower().startswith(ctx.value.lower())]
+    chara = dbservice.select('chara', ['chara_name'], '')
+
+    return [name for name in chara if name.lower().startswith(ctx.value.lower())]
 
 @bot.slash_command(name='iniciar_oferta')
 async def iniciar_oferta_command(
     ctx: discord.ApplicationContext,
     target: discord.Option(str, autocomplete=get_members_names, name='membro')
 ):
+
+    if ctx.channel.id == rolls_channel:
     
-    from_id = ctx.author.id
-    to_id = dbservice.select('user', ['id'], '', {'name': target})
+        from_id = ctx.author.id
+        to_id = dbservice.select('user', ['id'], '', {'name': target})
     
-    id = dbservice.insert('chara_ofertas', ['from_id', 'to_id'], [from_id, to_id])
+        id = dbservice.insert('chara_ofertas', ['from_id', 'to_id'], [from_id, to_id])
+
+        await send_message2(f'Uma janela de troca com {target} foi aberta. O ID dessa oferta é {str(id)}. Utilize o /ofertar e insire esse ID para realizar uma oferta.')
+
+@bot.slash_command(name='ofertar')
+async def ofertar_command(
+    ctx: discord.ApplicationContext,
+    id: discord.Option(int, name='id'),
+    own_chara: discord.Option(str, autocomplete=get_collection, name='chara'),
+    own_quantity: discord.Option(int, name='quantidade'),
+    target_chara: discord.Option(str, autocomplete=get_chara, name='chara'),
+    target_quantity: discord.Option(int, name='quantidade')
+):
 
     print(id)
 
-#@bot.slash_command(name='troca_chara')
-#async def troca_chara_command(
-#    ctx: discord.ApplicationContext,
-#    own_chara: discord.Option(str, autocomplete=get_collection, name='chara'),
-#    target_chara: discord.Option(str, autocomplete=get_their_collection, name='chara')
-#):
-
-#    ...
+    ...
 
 @tasks.loop(seconds=60)
 async def check_activities():
