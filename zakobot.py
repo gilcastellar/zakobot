@@ -130,7 +130,21 @@ async def on_message(message):
 
         case ";r":
 
-            roll_id = dbservice.insert('rolls', ['user', 'quantity'], '')
+            if len(msg) > 1:
+                
+                if int(msg[1]) >= 10:
+                    rolls = 10
+
+                elif int(msg[1]) in range(1,10):
+                    rolls = int(msg[1])
+
+            else:
+
+                rolls = 1
+
+            user_name = dbservice.select('user', ['name'], '', {'id': message.author.id})
+
+            roll_id = dbservice.insert('rolls', ['user', 'quantity'], [user_name, rolls])
             
 
 @tasks.loop(minutes=1)
