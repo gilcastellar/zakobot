@@ -115,7 +115,7 @@ async def on_ready():
 
     #check_activities.start()
 
-    #make_rolls.start()
+    make_rolls.start()
 
 @bot.event
 async def on_message(message):
