@@ -2334,7 +2334,7 @@ async def make_rolls():
 
     print(roll_info)
 
-    if roll_info != []
+    if roll_info != []:
 
         name = roll_info[0]
         user_id = dbservice.select('user', ['id'], '', {'name': name})
