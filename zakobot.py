@@ -2177,8 +2177,9 @@ async def make_rolls():
 
         text = f'Trazendo {str(rolls)} rolls para {name})'
 
-        print(test)
-        #await send_message2(text, 1107765031245988060)
+        print(text)
+        await send_message2(text, rolls_channel)
+        await asyncio.sleep(1)
 
         for i in range(rolls):
 
@@ -2213,7 +2214,7 @@ async def iniciar_oferta_command(
     
         id = dbservice.insert('chara_ofertas', ['from_id', 'to_id'], [from_id, to_id])
 
-        await send_message2(f'Uma janela de troca com {target} foi aberta. O ID dessa oferta é {str(id)}. Utilize o /ofertar e insire esse ID para realizar uma oferta.', rolls_channel)
+        await ctx.respond(f'Uma janela de troca com {target} foi aberta. O ID dessa oferta é {str(id)}. Utilize o /ofertar e insire esse ID para realizar uma oferta.')
 
 @bot.slash_command(name='ofertar')
 async def ofertar_command(
@@ -2227,7 +2228,12 @@ async def ofertar_command(
 
     print(id)
 
-    ...
+    columns = ['offering', 'offer_quantity', 'receiving', 'receive_quantity']
+    values = [own_chara, own_quantity, target_chara, target_quantity]
+
+    dbservice.update('chara_ofertas', columns, values, {'id': id})
+
+    await ctx.respond('Oferta realizada.')
 
 @tasks.loop(seconds=60)
 async def check_activities():
