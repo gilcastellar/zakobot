@@ -2033,6 +2033,9 @@ async def roll_chara(user_name, user_id):
 
         quantity = dbservice.select('user_has_chara', ['quantity'], '', {'chara_id': str(chara[0]), 'user_id': str(user_id)})
 
+        if quantity == None:
+            quantity = 1
+
         dbservice.update('user_has_chara', ['quantity'], [quantity+1], {'chara_id': str(chara[0]), 'user_id': str(user_id)})
 
     embed = discord.Embed(title=name, url=chara_url)
