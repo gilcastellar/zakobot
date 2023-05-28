@@ -2214,8 +2214,8 @@ async def iniciar_oferta_command(
 @bot.slash_command(name='troca_chara')
 async def troca_chara_command(
     ctx: discord.ApplicationContext,
-    own_chara: discord.Option(str, autocomplete=get_collection, name='Chara'),
-    target_chara: discord.Option(str, autocomplete=get_their_collection, name='Chara')
+    own_chara: discord.Option(str, autocomplete=get_collection, name='chara'),
+    target_chara: discord.Option(str, autocomplete=get_their_collection, name='chara')
 ):
 
     ...
