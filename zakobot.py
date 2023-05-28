@@ -2327,14 +2327,14 @@ async def dailies():
 async def make_rolls():
 
     smaller_id = dbservice.select('rolls', ['id'], ' ORDER BY id ASC LIMIT 1')
+    
+    if smaller_id != []:
 
-    print(smaller_id)
+        print(smaller_id)
 
-    roll_info = dbservice.select('rolls', ['user', 'quantity'], '', {'id': smaller_id})
+        roll_info = dbservice.select('rolls', ['user', 'quantity'], '', {'id': smaller_id})
 
-    print(roll_info)
-
-    if roll_info != []:
+        print(roll_info)
 
         name = roll_info[0]
         user_id = dbservice.select('user', ['id'], '', {'name': name})
