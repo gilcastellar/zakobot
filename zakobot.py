@@ -2086,6 +2086,8 @@ async def get_collection(ctx):
 
     collection = dbservice.select('user_has_chara', ['chara_name'], '', {'user_id': str(user_id)})
 
+    collection = from_list_of_tuples_to_list(collection)
+
     return [name for name in collection if name.lower().startswith(ctx.value.lower())]
 
 @bot.slash_command(name='editar_coleção')
