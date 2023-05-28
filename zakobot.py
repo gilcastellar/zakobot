@@ -2193,10 +2193,6 @@ async def make_rolls():
     ...
 
 async def get_chara(ctx):
-    
-    #collection = database.selectall('SELECT chara_name FROM user_has_chara WHERE user_id="' + str(user_id) + '"', True)
-
-    #collection = dbservice.select('user_has_chara', ['chara_name'], '', {'user_id': str(user_id)})
 
     chara = dbservice.select('chara', ['name'], '')
 
