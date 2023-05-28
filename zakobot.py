@@ -2198,7 +2198,7 @@ async def get_chara(ctx):
 
     #collection = dbservice.select('user_has_chara', ['chara_name'], '', {'user_id': str(user_id)})
 
-    chara = dbservice.select('chara', ['chara_name'], '')
+    chara = dbservice.select('chara', ['name'], '')
 
     chara = from_list_of_tuples_to_list(chara)
 
