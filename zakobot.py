@@ -2213,7 +2213,7 @@ async def iniciar_oferta_command(
     
         id = dbservice.insert('chara_ofertas', ['from_id', 'to_id'], [from_id, to_id])
 
-        await send_message2(f'Uma janela de troca com {target} foi aberta. O ID dessa oferta é {str(id)}. Utilize o /ofertar e insire esse ID para realizar uma oferta.')
+        await send_message2(f'Uma janela de troca com {target} foi aberta. O ID dessa oferta é {str(id)}. Utilize o /ofertar e insire esse ID para realizar uma oferta.', rolls_channel)
 
 @bot.slash_command(name='ofertar')
 async def ofertar_command(
