@@ -2012,11 +2012,9 @@ async def roll_chara(user_name, user_id):
     media_id = chara[6]
     media_title = '[' + chara[8] + '](' + chara[7] + ')'
     
-    flair = ''
-
     #exists = database.check_if_exists_two(str(chara[0]), str(user_id), 'chara_id', 'user_id', 'user_has_chara')
 
-    exists = dbservice.update('user_has_chara', ['quantity'], [quantity+1], {'chara_id': str(chara[0]), 'user_id': str(user_id)})
+    exists = dbservice.check_existence('user_has_chara', {'chara_id': str(chara[0]), 'user_id': str(user_id)})
 
     if exists == 0:
 
@@ -2028,6 +2026,14 @@ async def roll_chara(user_name, user_id):
         dbservice.insert('user_has_chara', ['user_id', 'chara_id', 'chara_name', 'position', 'quantity'], (user_id, chara_id, name, 9999, 1))
 
         flair = '*new*'
+
+    else:
+
+        flair = ''
+
+        quantity = dbservice.select('user_has_chara', ['quantity'], '', {'chara_id': str(chara[0]), 'user_id': str(user_id)})
+
+        dbservice.update('user_has_chara', ['quantity'], [quantity+1], {'chara_id': str(chara[0]), 'user_id': str(user_id)})
 
     embed = discord.Embed(title=name, url=chara_url)
     if flair != '':
