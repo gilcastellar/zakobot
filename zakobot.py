@@ -2218,6 +2218,8 @@ async def troca_chara_command(
     target_chara: discord.Option(str, autocomplete=get_their_collection, name='Chara')
 ):
 
+    ...
+
 @tasks.loop(seconds=60)
 async def check_activities():
 
