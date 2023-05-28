@@ -2051,9 +2051,9 @@ async def roll_chara(user_name, user_id):
     if delay >= 1:
 
         for i in range(delay):
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(1)
             await send_message2('...', 1065847698214887496)
-            await asyncio.sleep(0.8)
+            await asyncio.sleep(0.6)
     
     else:
         await asyncio.sleep(0.5)
