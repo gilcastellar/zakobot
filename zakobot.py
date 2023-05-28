@@ -2153,6 +2153,70 @@ async def generate_collection(msg, user_id, page, characters):
         indice += 1
     
     await msg.edit(text, view=CollectionPagination(msg, user_id, page, characters))
+    
+@tasks.loop(seconds=1)
+async def make_rolls():
+
+    smaller_id = dbservice.select('rolls', ['id'], ' ORDER BY id ASC LIMIT 1')
+    
+    if smaller_id != []:
+
+        print(smaller_id)
+
+        roll_info = dbservice.select('rolls', ['user', 'quantity'], '', {'id': smaller_id})
+
+        print(roll_info)
+
+        name = roll_info[0]
+        user_id = dbservice.select('user', ['id'], '', {'name': name})
+        rolls = roll_info[1]
+
+        text = f'Trazendo {str(rolls)} rolls para {name})'
+
+        print(test)
+        #await send_message2(text, 1107765031245988060)
+
+        for i in range(rolls):
+
+            await roll_chara(name, user_id)
+
+        await asyncio.sleep(2)
+
+        dbservice.delete('rolls', {'id': smaller_id})
+
+        print('deleted ' + str(smaller_id))
+
+    ...
+
+async def get_their_collection(ctx):
+
+    user_id = dbservice.select
+    
+    #collection = database.selectall('SELECT chara_name FROM user_has_chara WHERE user_id="' + str(user_id) + '"', True)
+
+    collection = dbservice.select('user_has_chara', ['chara_name'], '', {'user_id': str(user_id)})
+
+    return [name for name in collection if name.lower().startswith(ctx.value.lower())]
+
+@bot.slash_command(name='iniciar_oferta')
+async def iniciar_oferta_command(
+    ctx: discord.ApplicationContext,
+    target: discord.Option(str, autocomplete=get_members_names, name='membro')
+):
+    
+    from_id = ctx.author.id
+    to_id = dbservice.select('user', ['id'], '', {'name': target})
+    
+    id = dbservice.insert('chara_ofertas', ['from_id', 'to_id'], [from_id, to_id])
+
+    print(id)
+
+@bot.slash_command(name='troca_chara')
+async def troca_chara_command(
+    ctx: discord.ApplicationContext,
+    own_chara: discord.Option(str, autocomplete=get_collection, name='Chara'),
+    target_chara: discord.Option(str, autocomplete=get_their_collection, name='Chara')
+):
 
 @tasks.loop(seconds=60)
 async def check_activities():
@@ -2350,59 +2414,7 @@ async def dailies():
     dbservice.update('dailies', ['daily', 'is_done'], ['media_update', 1], {'daily':'media_update'})
     
     print('daily finalizada ' + get_timestamp())
-
-@tasks.loop(seconds=1)
-async def make_rolls():
-
-    smaller_id = dbservice.select('rolls', ['id'], ' ORDER BY id ASC LIMIT 1')
     
-    if smaller_id != []:
-
-        print(smaller_id)
-
-        roll_info = dbservice.select('rolls', ['user', 'quantity'], '', {'id': smaller_id})
-
-        print(roll_info)
-
-        name = roll_info[0]
-        user_id = dbservice.select('user', ['id'], '', {'name': name})
-        rolls = roll_info[1]
-
-        text = f'Trazendo {str(rolls)} rolls para {name})'
-
-        print(test)
-        #await send_message2(text, 1107765031245988060)
-
-        for i in range(rolls):
-
-            await roll_chara(name, user_id)
-
-        await asyncio.sleep(2)
-
-        dbservice.delete('rolls', {'id': smaller_id})
-
-        print('deleted ' + str(smaller_id))
-
-    ...
-
-async def get_their_collection(ctx):
-
-    user_id = dbservice.select
-    
-    #collection = database.selectall('SELECT chara_name FROM user_has_chara WHERE user_id="' + str(user_id) + '"', True)
-
-    collection = dbservice.select('user_has_chara', ['chara_name'], '', {'user_id': str(user_id)})
-
-    return [name for name in collection if name.lower().startswith(ctx.value.lower())]
-
-
-#@bot.slash_command(name='troca_chara')
-#async def troca_chara_command(
-#    ctx: discord.ApplicationContext,
-#    own_chara: discord.Option(str, autocomplete=get_collection, name='Chara'),
-#    target_chara: discord.Option(str, autocomplete=get_their_collection, name='Chara')
-#):
-
 # Auxiliar command
 @bot.command(name='aux')
 async def aux_command(ctx):
