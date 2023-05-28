@@ -131,6 +131,8 @@ def execute(sql):
 
     cur = db.cursor()
     cur.execute(sql)
+    
+    db.commit()
 
 def check_existence(query):
     db = connect_db()
