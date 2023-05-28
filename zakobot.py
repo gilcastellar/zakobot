@@ -2054,7 +2054,7 @@ async def roll_chara(user_name, user_id):
 
         for i in range(delay):
             await asyncio.sleep(1)
-            await send_message2('!', 1065847698214887496)
+            await send_message2(text, 1065847698214887496)
             await asyncio.sleep(0.8)
             text += '!'
     
