@@ -2359,7 +2359,10 @@ async def make_rolls():
         user_id = dbservice.select('user', ['id'], '', {'name': name})
         rolls = roll_info[1]
 
-        print(f'Making {str(rolls)} rolls for {name} (ID {user_id})')
+        text = f'Trazendo {str(rolls)} rolls para {name})'
+
+        print(test)
+        #await send_message2(text, 1107765031245988060)
 
         for i in range(rolls):
 
