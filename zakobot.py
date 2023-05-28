@@ -2219,10 +2219,10 @@ async def iniciar_oferta_command(
 async def ofertar_command(
     ctx: discord.ApplicationContext,
     id: discord.Option(int, name='id'),
-    own_chara: discord.Option(str, autocomplete=get_collection, name='chara'),
-    own_quantity: discord.Option(int, name='quantidade'),
-    target_chara: discord.Option(str, autocomplete=get_chara, name='chara'),
-    target_quantity: discord.Option(int, name='quantidade')
+    own_chara: discord.Option(str, autocomplete=get_collection, name='seu_chara'),
+    own_quantity: discord.Option(int, name='sua_quantidade'),
+    target_chara: discord.Option(str, autocomplete=get_chara, name='chara_dele'),
+    target_quantity: discord.Option(int, name='quantidade_dele')
 ):
 
     print(id)
