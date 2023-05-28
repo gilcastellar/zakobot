@@ -2046,9 +2046,14 @@ async def roll_chara(user_name, user_id):
         delay = 1
 
     else:
-        delay = 0.5 #0.5
+        delay = 0.5
 
-    return embed, delay
+    if delay >= 1:
+        for i in range(delay)
+            await send_message2('...', 1065847698214887496)
+            asyncio.sleep(delay)
+
+    await send_embed2(embed, 1065847698214887496)
 
 async def get_collection(ctx):
 
@@ -2344,7 +2349,9 @@ async def make_rolls():
 
         print(f'Making {str(rolls)} rolls for {name} (ID {user_id})')
 
-        #await roll_chara()
+        for i in range(rolls):
+
+            await roll_chara(name, user_id)
 
         await asyncio.sleep(2)
 
