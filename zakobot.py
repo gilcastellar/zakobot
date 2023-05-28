@@ -2340,7 +2340,7 @@ async def make_rolls():
         user_id = dbservice.select('user', ['id'], '', {'name': name})
         rolls = roll_info[1]
 
-        print(f'Making {str(rolls)} for {name} (ID {user_id})')
+        print(f'Making {str(rolls)} rolls for {name} (ID {user_id})')
 
         #await roll_chara()
 
