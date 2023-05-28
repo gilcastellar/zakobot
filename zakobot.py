@@ -2040,7 +2040,7 @@ async def roll_chara(user_name, user_id):
 
     embed = discord.Embed(title=name, url=chara_url)
     if flair != '':
-        embed.add_field(name='', value=flair)
+        embed.add_field(name='', value=flair, inline=False)
     embed.add_field(name='', value=media_title)
     embed.set_image(url=image_url)
     embed.set_footer(text='Roll feito por ' + user_name)
