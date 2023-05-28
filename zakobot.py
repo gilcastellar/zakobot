@@ -2023,15 +2023,17 @@ async def roll_chara(user_name, user_id):
 
         #database.insert(sql, val)
 
-        dbservice.insert('user_has_chara', ['user_id', 'chara_id', 'chara_name', 'position'], (user_id, chara_id, name, 9999))
+        dbservice.insert('user_has_chara', ['user_id', 'chara_id', 'chara_name', 'position', 'quantity'], (user_id, chara_id, name, 9999, 1))
 
-        flair = '🌟'
+        flair = '*new*'
 
     else:
 
         flair = ''
 
-    embed = discord.Embed(title=name + ' ' + flair, url=chara_url)
+    embed = discord.Embed(title=name, url=chara_url)
+    if flair != '':
+        embed.add_field(name='', value=flair)
     embed.add_field(name='', value=media_title)
     embed.set_image(url=image_url)
     embed.set_footer(text='Roll feito por ' + user_name)
@@ -2375,6 +2377,24 @@ async def make_rolls():
         print('deleted ' + str(smaller_id))
 
     ...
+
+async def get_their_collection(ctx):
+
+    user_id = dbservice.select
+    
+    #collection = database.selectall('SELECT chara_name FROM user_has_chara WHERE user_id="' + str(user_id) + '"', True)
+
+    collection = dbservice.select('user_has_chara', ['chara_name'], '', {'user_id': str(user_id)})
+
+    return [name for name in collection if name.lower().startswith(ctx.value.lower())]
+
+
+#@bot.slash_command(name='troca_chara')
+#async def troca_chara_command(
+#    ctx: discord.ApplicationContext,
+#    own_chara: discord.Option(str, autocomplete=get_collection, name='Chara'),
+#    target_chara: discord.Option(str, autocomplete=get_their_collection, name='Chara')
+#):
 
 # Auxiliar command
 @bot.command(name='aux')
