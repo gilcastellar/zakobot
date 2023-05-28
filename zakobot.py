@@ -2330,6 +2330,12 @@ async def make_rolls():
 
     print(smaller_id)
 
+    roll_info = dbservice.select('rolls', ['user', 'quantity'], '', {'id': smaller_id})
+
+    print(roll_info)
+
+    #await roll_chara()
+
     await asyncio.sleep(2)
 
     dbservice.delete('rolls', {'id': smaller_id})
