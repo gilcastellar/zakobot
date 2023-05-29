@@ -2088,7 +2088,7 @@ async def generate_collection(msg, user_id, page):
         text += str(chara_info[0]) + ' | Posição: ' + str(position) + '\n'
         indice += 1
     
-    await msg.edit(text, view=CollectionPagination(msg, user_id, page, characters))
+    await msg.edit(text, view=CollectionPagination(msg, user_id, page))
     
 @tasks.loop(seconds=1)
 async def make_rolls():
