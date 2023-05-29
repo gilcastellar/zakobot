@@ -2174,7 +2174,7 @@ async def pesquisar_chara_command(
 
     #result = from_list_of_tuples_to_list(result)
 
-    text = '**target**\n'
+    text = '**' + target + '**\n'
     text += '```Usuário:            Cópias:\n'
     
     for user in result:
