@@ -86,11 +86,17 @@ def select(table, columns, extra, where=''):
 
     query = 'SELECT '
 
-    for column in columns:
+    if columns == []:
 
-        query += str(column) + ','
+        query += '*'
 
-    query = query.strip(',')
+    else:
+
+        for column in columns:
+
+            query += str(column) + ','
+
+        query = query.strip(',')
 
     query += ' FROM ' + table
 
