@@ -2226,8 +2226,8 @@ async def ofertas_enviadas_command(ctx):
             print(str(their_quantity))
 
             text += f'Oferta ID {str(offer[0])} para {user_name}\n'
-            text += f'Meu:     {str(my_quantity)}x  {my_chara}\n'
-            text ++ f'Dele(a): {str(their_quantity)}x  {their_chara}\n\n'
+            text += f'Meu     {str(my_quantity)}x - {my_chara}\n'
+            text ++ f'Dele {str(their_quantity)}x - {their_chara}\n\n'
             
         await send_message2(text, rolls_channel)
 
