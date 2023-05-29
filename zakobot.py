@@ -2178,7 +2178,14 @@ async def pesquisar_chara_command(
     text += '```Usuário:            Cópias:\n'
     
     for user in result:
+
         user_name = dbservice.select('user', ['name'], '', {'id': user[0]})
+        
+        quantity = user[1]
+
+        if quantity == None:
+            quantity = 1
+
         text += user_name + '            ' + str(user[1]) + '\n'
 
     text += '```'
