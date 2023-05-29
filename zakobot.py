@@ -2190,13 +2190,7 @@ async def pesquisar_chara_command(
 
     text += '```'
 
-    #embed = discord.Embed(title=target)
-    #embed.add_field(name='', value='')
-    #embed.add_field(name='', value='')
-
-    #for user in result:
-    #    embed.add_field(name='', value='')
-    #    embed.add_field(name='', value='')
+    await send_message2(text, rolls_channel)
 
 @tasks.loop(seconds=60)
 async def check_activities():
