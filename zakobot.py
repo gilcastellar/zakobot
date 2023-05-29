@@ -2186,7 +2186,7 @@ async def pesquisar_chara_command(
         if quantity == None:
             quantity = 1
 
-        text += user_name + '            ' + str(user[1]) + '\n'
+        text += user_name + '            ' + str(quantity) + '\n'
 
     text += '```'
 
