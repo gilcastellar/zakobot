@@ -238,6 +238,31 @@ async def get_members_names(ctx: discord.AutocompleteContext):
     #return [name for name in members_names if name.lower().startswith(ctx.value.lower())]
     return [name for name in members_names if ctx.value.lower() in name.lower()]
 
+# Get active members without youself
+async def get_members_names2(ctx: discord.AutocompleteContext):
+
+    #members = database.selectall('SELECT id, name, active, anime_list, receives, gives, obs FROM user ORDER BY active DESC, name')
+
+    user_name = dbservice.select('user', ['name'], '', {'id': ctx.author.id})
+
+    members = dbservice.select('user', ['id', 'name', 'active', 'anime_list', 'receives', 'gives', 'obs'], 'ORDER BY active DESC, name')
+
+    print(members)
+
+    #members = from_list_of_tuples_to_list(members)
+
+    #print(members)
+
+    members_names = []
+
+    for member in members:
+        members_names.append(member[1])
+
+    members_names.remove(user_name)
+
+    #return [name for name in members_names if name.lower().startswith(ctx.value.lower())]
+    return [name for name in members_names if ctx.value.lower() in name.lower()]
+
 # Get member info
 def get_member_info(name):
     
@@ -2126,7 +2151,7 @@ async def make_rolls():
 @bot.slash_command(name='iniciar_oferta')
 async def iniciar_oferta_command(
     ctx: discord.ApplicationContext,
-    target: discord.Option(str, autocomplete=get_members_names, name='membro')
+    target: discord.Option(str, autocomplete=get_members_names2, name='membro')
 ):
 
     if ctx.channel.id == rolls_channel:
