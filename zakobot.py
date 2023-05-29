@@ -107,8 +107,6 @@ class CollectionPagination(discord.ui.View): # Create a class called MyView that
         await generate_collection(self.msg, self.user_id, self.page, self.list)
         await interaction.response.send_message('')
 
-
-
 @bot.event
 async def on_ready():
     print(get_timestamp())
@@ -150,7 +148,6 @@ async def on_message(message):
 
                 roll_id = dbservice.insert('rolls', ['user', 'quantity'], [user_name, rolls])
             
-
 @tasks.loop(minutes=1)
 async def check_time():
 
@@ -197,74 +194,14 @@ def get_realtime():
     epoch = int(datetime.datetime.now().timestamp())
 
     date_time = datetime.datetime.fromtimestamp(epoch + 14400)
-
-    #tz_diff = 4
     
-    #dt = datetime.datetime.now()
-
-    #rt_hour = dt.hour + tz_diff
-
-    #rt_min = dt.minute
-
-    #if len(str(dt.minute)) == 1:
-    #    rt_min = '0' + str(dt.minute)
-    #else:
-    #    rt_min = dt.minute
-
-    #if dt.hour >= 21:
-    #    weekday = dt.weekday()
-    #    if weekday == 7:
-    #        weekday = 0
-    #    else:
-    #        weekday += 1
-    #    rt_weekday = get_weekday(weekday)
-    #    rt_day = dt.day + 1
-    #else:
-    #    rt_weekday = get_weekday(dt.weekday())
-    #    rt_day = dt.day
-
-    #rt = {'day': rt_day, 'weekday': rt_weekday, 'hour': rt_hour, 'minute': rt_min}
-
     return date_time
-
-def get_weekday(dt):
-
-    match dt:
-
-        case 0:
-            return 'Seg'
-
-        case 1:
-            return 'Ter'
-
-        case 2:
-            return 'Qua'
-
-        case 3:
-            return 'Qui'
-
-        case 4:
-            return 'Sex'
-
-        case 5:
-            return 'Sab'
-
-        case 6:
-            return 'Dom'
 
 def get_timestamp():
 
     epoch = int(datetime.datetime.now().timestamp())
 
     date_time = datetime.datetime.fromtimestamp(epoch + 14400)
-
-    #time.sleep(5)
-
-    #epoch = int(datetime.datetime.now().timestamp())
-
-    #date_time2 = datetime.datetime.fromtimestamp(epoch + 14400)
-
-    #print(date_time2 - date_time)
     
     date = date_time.strftime("%B %d, %Y")
     _time = date_time.strftime("%H:%M:%S")
@@ -280,6 +217,115 @@ async def fetch_user(id):
     user = await bot.fetch_user(id)
 
     return user
+
+# Get active members
+async def get_members_names(ctx: discord.AutocompleteContext):
+
+    #members = database.selectall('SELECT id, name, active, anime_list, receives, gives, obs FROM user ORDER BY active DESC, name')
+
+    members = dbservice.select('user', ['id', 'name', 'active', 'anime_list', 'receives', 'gives', 'obs'], 'ORDER BY active DESC, name')
+
+    print(members)
+
+    #members = from_list_of_tuples_to_list(members)
+
+    #print(members)
+
+    members_names = []
+
+    for member in members:
+        members_names.append(member[1])
+
+    #return [name for name in members_names if name.lower().startswith(ctx.value.lower())]
+    return [name for name in members_names if ctx.value.lower() in name.lower()]
+
+# Get member info
+def get_member_info(name):
+    
+    #member = database.selectall('SELECT id, name, active, anime_list, receives, gives, obs, zakoleta FROM user WHERE name="' + name + '"')
+
+    member = dbservice.select('user', ['id', 'name', 'active', 'anime_list', 'receives', 'gives', 'obs', 'zakoleta'], '', {'name': name})
+
+    print(member)
+
+    id = member[0]
+    active = member[2]
+    anime_list = member[3]
+    receives = member[4]
+    gives = member[5]
+    obs = member[6]
+    zakoleta = member[7]
+
+    return id, active, anime_list, receives, gives, obs, zakoleta
+
+# Get type and id from anilist link
+def get_type_and_id_from_anilist_link(link):
+
+    if 'https://' in link:
+
+        link = link.replace('https://','')
+
+    link_parts = link.split('/')
+
+    print(link_parts[1])
+
+    return link_parts[1], link_parts[2]
+
+# Get roulettes
+async def get_roletas(ctx: discord.AutocompleteContext):
+
+    #roletas = database.selectall('SELECT name FROM roleta ORDER BY id')
+    roletas = dbservice.select('roleta', ['name'], ' ORDER BY id')
+
+    roleta_names = []
+
+    for roleta in roletas:
+
+        roleta_names.append(roleta[0])
+
+    return [name for name in roleta_names if ctx.value.lower() in name.lower()]
+    #return roleta_names
+
+async def get_media_names(ctx: discord.AutocompleteContext):
+
+    #members = database.selectall('SELECT id, name, active, anime_list, receives, gives, obs FROM user ORDER BY active DESC, name')
+
+    medias = dbservice.select('media', ['title_romaji'], '')
+
+    #print(medias)
+
+    medias = from_list_of_tuples_to_list(medias)
+
+    #members = from_list_of_tuples_to_list(members)
+
+    #print(members)
+
+    media_names = []
+
+    for media in medias:
+        media_names.append(media)
+
+    return [name for name in media_names if ctx.value.lower() in name.lower()]
+
+async def get_collection(ctx):
+
+    user_id = ctx.interaction.user.id
+    
+    #collection = database.selectall('SELECT chara_name FROM user_has_chara WHERE user_id="' + str(user_id) + '"', True)
+
+    collection = dbservice.select('user_has_chara', ['chara_name'], '', {'user_id': str(user_id)})
+
+    collection = from_list_of_tuples_to_list(collection)
+
+    return [name for name in collection if ctx.value.lower() in name.lower()]
+
+async def get_chara(ctx):
+
+    chara = dbservice.select('chara', ['name'], '')
+
+    chara = from_list_of_tuples_to_list(chara)
+
+    return [name for name in chara if ctx.value.lower() in name.lower()]
 
 @bot.command(name='registro')
 async def registro_command(ctx):
@@ -342,46 +388,6 @@ async def configurar_command(
   else:
 
       await ctx.respond(f'Você está ativo e quer receber `{tipo_que_recebe.lower()}` e enviar `{tipo_que_envia.lower()}` na roleta!')
-
-# Get active members
-async def get_members_names(ctx: discord.AutocompleteContext):
-
-    #members = database.selectall('SELECT id, name, active, anime_list, receives, gives, obs FROM user ORDER BY active DESC, name')
-
-    members = dbservice.select('user', ['id', 'name', 'active', 'anime_list', 'receives', 'gives', 'obs'], 'ORDER BY active DESC, name')
-
-    print(members)
-
-    #members = from_list_of_tuples_to_list(members)
-
-    #print(members)
-
-    members_names = []
-
-    for member in members:
-        members_names.append(member[1])
-
-    #return [name for name in members_names if name.lower().startswith(ctx.value.lower())]
-    return [name for name in members_names if ctx.value.lower() in name.lower()]
-
-# Get member info
-def get_member_info(name):
-    
-    #member = database.selectall('SELECT id, name, active, anime_list, receives, gives, obs, zakoleta FROM user WHERE name="' + name + '"')
-
-    member = dbservice.select('user', ['id', 'name', 'active', 'anime_list', 'receives', 'gives', 'obs', 'zakoleta'], '', {'name': name})
-
-    print(member)
-
-    id = member[0]
-    active = member[2]
-    anime_list = member[3]
-    receives = member[4]
-    gives = member[5]
-    obs = member[6]
-    zakoleta = member[7]
-
-    return id, active, anime_list, receives, gives, obs, zakoleta
 
 @bot.slash_command(name='perfil')
 async def perfil_command(
@@ -905,20 +911,7 @@ def board_indications_manager(receiver_id, roleta_id):
     else:
 
         return ''
-
-# Get type and id from anilist link
-def get_type_and_id_from_anilist_link(link):
-
-    if 'https://' in link:
-
-        link = link.replace('https://','')
-
-    link_parts = link.split('/')
-
-    print(link_parts[1])
-
-    return link_parts[1], link_parts[2]
-
+    
 @bot.slash_command(name='indicar')
 async def indicar_command(
     ctx: discord.ApplicationContext,
@@ -989,21 +982,6 @@ async def indicar_command(
         dbservice.update('user_has_roleta', ['media_name'], [title], {'id_giver':ctx.author.id, 'id_roleta':roleta_atual})
     
     await board_update(roleta_atual)
-
-# Get roulettes
-async def get_roletas(ctx: discord.AutocompleteContext):
-
-    #roletas = database.selectall('SELECT name FROM roleta ORDER BY id')
-    roletas = dbservice.select('roleta', ['name'], ' ORDER BY id')
-
-    roleta_names = []
-
-    for roleta in roletas:
-
-        roleta_names.append(roleta[0])
-
-    return [name for name in roleta_names if ctx.value.lower() in name.lower()]
-    #return roleta_names
 
 @bot.slash_command(name='terminei')
 async def terminei_command(
@@ -1374,28 +1352,28 @@ async def utilidades_command(
 
 def anime_picker(ctx, user_name, status):
     query = '''query ($page: Int, $status_in: [MediaListStatus], $userName: String) {
-  Page(page: $page, perPage: 50) {
-    pageInfo {
-      total
-      currentPage
-      lastPage
-      hasNextPage
-      perPage
-    }
-    mediaList(status_in: $status_in, userName: $userName, type: ANIME) {
-      mediaId
-      id
-      userId
-      progress
-      status
-      media {
-        title {
-          romaji
-        }
-      }
-    }
-  }
-}'''
+              Page(page: $page, perPage: 50) {
+                pageInfo {
+                  total
+                  currentPage
+                  lastPage
+                  hasNextPage
+                  perPage
+                }
+                mediaList(status_in: $status_in, userName: $userName, type: ANIME) {
+                  mediaId
+                  id
+                  userId
+                  progress
+                  status
+                  media {
+                    title {
+                      romaji
+                    }
+                  }
+                }
+              }
+            }'''
 
     hasNextPage = True
     page = 1
@@ -1450,28 +1428,6 @@ def anime_picker(ctx, user_name, status):
     print(link)
 
     return title, link
-
-async def get_media_names(ctx: discord.AutocompleteContext):
-
-    #members = database.selectall('SELECT id, name, active, anime_list, receives, gives, obs FROM user ORDER BY active DESC, name')
-
-    medias = dbservice.select('media', ['title_romaji'], '')
-
-    #print(medias)
-
-    medias = from_list_of_tuples_to_list(medias)
-
-    #members = from_list_of_tuples_to_list(members)
-
-    #print(members)
-
-    media_names = []
-
-    for media in medias:
-        media_names.append(media)
-
-    return [name for name in media_names if ctx.value.lower() in name.lower()]
-
 
 @bot.slash_command(name='obra')
 async def obra_command(
@@ -1752,8 +1708,9 @@ async def generate_top(msg, page, list, type, minimum):
 
 @bot.command(name='manual_update_media')
 async def manual_update_media(ctx):
-    print('aqui?')
-    await update_media()
+    if ctx.author.id in admins:
+        print('aqui?')
+        await update_media()
 
 async def update_media():
     #users = database.selectall('SELECT link FROM daily_temp', True)
@@ -1865,22 +1822,6 @@ def from_list_of_tuples_to_list(list):
 
     return new_list
 
-#new_list = []
-
-#if type(list) == list:
-
-#    for tuple in list:
-
-#        if tuple[0] != None:
-
-#            new_list.append(tuple[0])
-
-#else:
-
-#    new_list.append(list)
-
-#return new_list
-
 @bot.slash_command(name='anilist_update')
 async def anilist_update_command(
     ctx: discord.ApplicationContext,
@@ -1914,7 +1855,6 @@ async def update_anilists():
             dbservice.insert('daily_temp', ['anilist_id'], (str(id),), True)
             
             print('lista terminada. ' + get_timestamp())
-
 
 async def update_list(id, format):
 
@@ -2078,19 +2018,7 @@ async def roll_chara(user_name, user_id):
         await asyncio.sleep(1)
 
     await send_embed2(embed, 1065847698214887496)
-
-async def get_collection(ctx):
-
-    user_id = ctx.interaction.user.id
     
-    #collection = database.selectall('SELECT chara_name FROM user_has_chara WHERE user_id="' + str(user_id) + '"', True)
-
-    collection = dbservice.select('user_has_chara', ['chara_name'], '', {'user_id': str(user_id)})
-
-    collection = from_list_of_tuples_to_list(collection)
-
-    return [name for name in collection if ctx.value.lower() in name.lower()]
-
 @bot.slash_command(name='editar_coleção')
 async def editar_coleção_command(
     ctx: discord.ApplicationContext,
@@ -2119,9 +2047,15 @@ async def c_command(ctx):
 
         msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
 
-        await generate_collection(msg, ctx.author.id, 1, characters)
+        await generate_collection(msg, ctx.author.id, 1)
 
-async def generate_collection(msg, user_id, page, characters):
+async def generate_collection(msg, user_id, page):
+
+    characters = dbservice.select('user_has_chara', ['chara_id'], ' ORDER BY position', {'user_id': str(ctx.author.id)})
+    
+    print(characters)
+
+    #characters = from_list_of_tuples_to_list(characters)
 
     batch = 25
 
@@ -2192,16 +2126,6 @@ async def make_rolls():
 
         print('deleted ' + str(smaller_id))
 
-    ...
-
-async def get_chara(ctx):
-
-    chara = dbservice.select('chara', ['name'], '')
-
-    chara = from_list_of_tuples_to_list(chara)
-
-    return [name for name in chara if ctx.value.lower() in name.lower()]
-
 @bot.slash_command(name='iniciar_oferta')
 async def iniciar_oferta_command(
     ctx: discord.ApplicationContext,
@@ -2237,6 +2161,13 @@ async def ofertar_command(
     dbservice.update('chara_ofertas', columns, values, {'id': id})
 
     await ctx.respond(f'Oferta realizada. O usuário <@' + str(user_id) + '> foi notificado. Não foi?')
+
+@bot.slash_command(name='pesquisar_chara')
+async def ofertar_command(
+    ctx: discord.ApplicationContext,
+    target: discord.Option(str, autocomplete=get_members_names, name='membro')
+):
+    await ctx.respond('Trazendo ')
 
 @tasks.loop(seconds=60)
 async def check_activities():
@@ -2423,8 +2354,7 @@ async def clean_dailies():
     dbservice.update('dailies', ['daily', 'is_done'], ['media_update', 0], {'daily':'media_update'})
     
     print('daily tables limpas ' + get_timestamp())
-
-
+    
 async def dailies():
 
     await update_anilists()
@@ -2440,20 +2370,7 @@ async def dailies():
 async def aux_command(ctx):
 
     if ctx.author.id in admins:
-
-        #epoch = int(datetime.datetime.now().timestamp())
-
-        #print('epoch:')
-        #print(epoch)
-
-        #await update_anilists()
-
-        #list = [125578, 124901, 122407, 110064, 12926, 8271]
-
-        #for i in list:
-
-        #    dbservice.update('user', ['last_list_update0'], [1685009000], {'anilist_id': i})
-
+        
         #for i in range(477,500):
 
         #    page = i
