@@ -2160,11 +2160,33 @@ async def ofertar_command(
     await ctx.respond(f'Oferta realizada. O usuário <@' + str(user_id) + '> foi notificado. Não foi?')
 
 @bot.slash_command(name='pesquisar_chara')
-async def ofertar_command(
+async def pesquisar_chara_command(
     ctx: discord.ApplicationContext,
-    target: discord.Option(str, autocomplete=get_members_names, name='membro')
+    target: discord.Option(str, autocomplete=get_chara, name='chara')
 ):
-    await ctx.respond('Trazendo ')
+    await ctx.respond('Buscando o personagem...')
+
+    result = dbservice.select('user_has_chara', ['user_id', 'quantity'], ' ORDER BY quantity DESC', {'chara_name': target})
+
+    print(result)
+
+    #result = from_list_of_tuples_to_list(result)
+
+    text = '**target**\n'
+    text += '```Usuário:            Cópias:\n'
+    
+    for user in result:
+        text += user[0] + '            ' + user[1] + '\n'
+
+    text += '```'
+
+    #embed = discord.Embed(title=target)
+    #embed.add_field(name='', value='')
+    #embed.add_field(name='', value='')
+
+    #for user in result:
+    #    embed.add_field(name='', value='')
+    #    embed.add_field(name='', value='')
 
 @tasks.loop(seconds=60)
 async def check_activities():
