@@ -2228,12 +2228,14 @@ async def ofertar_command(
 
     print(id)
 
+    user_id = dbservice.select('chara_ofertas', ['to_id'], '', {'id': id})
+
     columns = ['offering', 'offer_quantity', 'receiving', 'receive_quantity']
     values = [own_chara, own_quantity, target_chara, target_quantity]
 
     dbservice.update('chara_ofertas', columns, values, {'id': id})
 
-    await ctx.respond('Oferta realizada.')
+    await ctx.respond(f'Oferta realizada. O usuário <@' + str(user_id) + '> foi notificado. Não foi?')
 
 @tasks.loop(seconds=60)
 async def check_activities():
