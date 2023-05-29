@@ -2170,13 +2170,16 @@ async def pesquisar_chara_command(
 
     print(result)
 
+
+
     #result = from_list_of_tuples_to_list(result)
 
     text = '**target**\n'
     text += '```Usuário:            Cópias:\n'
     
     for user in result:
-        text += user[0] + '            ' + str(user[1]) + '\n'
+        user_name = dbservice.select('user', ['name'], '', {'id': user[0]})
+        text += user_name + '            ' + str(user[1]) + '\n'
 
     text += '```'
 
