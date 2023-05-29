@@ -243,7 +243,7 @@ async def get_members_names2(ctx: discord.AutocompleteContext):
 
     #members = database.selectall('SELECT id, name, active, anime_list, receives, gives, obs FROM user ORDER BY active DESC, name')
 
-    user_name = dbservice.select('user', ['name'], '', {'id': ctx.author.id})
+    user_name = dbservice.select('user', ['name'], '', {'id': ctx.interaction.user.id})
 
     members = dbservice.select('user', ['id', 'name', 'active', 'anime_list', 'receives', 'gives', 'obs'], 'ORDER BY active DESC, name')
 
