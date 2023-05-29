@@ -2037,7 +2037,7 @@ async def editar_coleção_command(
 @bot.command(name='c')
 async def c_command(ctx):
 
-    if ctx.channel.id == 1107765031245988060:
+    if ctx.channel.id == rolls_channel:
 
         await ctx.respond('Sua coleção:')
 
