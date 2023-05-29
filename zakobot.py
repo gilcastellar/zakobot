@@ -2177,7 +2177,7 @@ async def pesquisar_chara_command(
     text = '**' + target + '**\n'
     text += '```Usuário:            Cópias:\n'
     
-    if len(result) == 1:
+    if type(result) == tuple:
         result = [result]
 
     for user in result:
