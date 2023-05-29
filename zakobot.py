@@ -86,25 +86,24 @@ class TopPagination(discord.ui.View): # Create a class called MyView that subcla
         await interaction.response.send_message('')
 
 class CollectionPagination(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
-    def __init__(self, msg, user_id, page, list):
+    def __init__(self, msg, user_id, page):
         super().__init__()
         #self.ctx = ctx
         self.msg = msg
         self.user_id = user_id
         self.page = page
-        self.list = list
 
     @discord.ui.button(label="<<", row=0, style=discord.ButtonStyle.primary)
     async def first_button_callback(self, button, interaction):
         if self.page > 1:
             self.page -= 1
-        await generate_collection(self.msg, self.user_id, self.page, self.list)
+        await generate_collection(self.msg, self.user_id, self.page)
         await interaction.response.send_message('')
 
     @discord.ui.button(label=">>", row=0, style=discord.ButtonStyle.primary)
     async def second_button_callback(self, button, interaction):
         self.page += 1
-        await generate_collection(self.msg, self.user_id, self.page, self.list)
+        await generate_collection(self.msg, self.user_id, self.page)
         await interaction.response.send_message('')
 
 @bot.event
