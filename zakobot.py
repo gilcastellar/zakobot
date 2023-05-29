@@ -1002,7 +1002,7 @@ async def get_roletas(ctx: discord.AutocompleteContext):
 
         roleta_names.append(roleta[0])
 
-    return [name for name in roleta_names if name.startswith(ctx.value)]
+    return [name for name in roleta_names if ctx.value.lower() in name.lower()]
     #return roleta_names
 
 @bot.slash_command(name='terminei')
@@ -1470,7 +1470,7 @@ async def get_media_names(ctx: discord.AutocompleteContext):
     for media in medias:
         media_names.append(media)
 
-    return [name for name in media_names if name.lower().startswith(ctx.value.lower())]
+    return [name for name in media_names if ctx.value.lower() in name.lower()]
 
 
 @bot.slash_command(name='obra')
@@ -2089,7 +2089,7 @@ async def get_collection(ctx):
 
     collection = from_list_of_tuples_to_list(collection)
 
-    return [name for name in collection if name.lower().startswith(ctx.value.lower())]
+    return [name for name in collection if ctx.value.lower() in name.lower()]
 
 @bot.slash_command(name='editar_coleção')
 async def editar_coleção_command(
@@ -2200,7 +2200,7 @@ async def get_chara(ctx):
 
     chara = from_list_of_tuples_to_list(chara)
 
-    return [name for name in chara if name.lower().startswith(ctx.value.lower())]
+    return [name for name in chara if ctx.value.lower() in name.lower()]
 
 @bot.slash_command(name='iniciar_oferta')
 async def iniciar_oferta_command(
