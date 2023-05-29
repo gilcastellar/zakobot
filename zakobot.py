@@ -2198,7 +2198,7 @@ async def pesquisar_chara_command(
 @bot.command(name='ofertas_enviadas')
 async def ofertas_enviadas_command(ctx):
 
-    offers = dbservice.select('chara_ofertas', [], ' ORDER BY id ASC', {'from_id': ctx.author.id})
+    offers = dbservice.select('chara_ofertas', [], 'ORDER BY id ASC', {'from_id': ctx.author.id})
 
     print(offers)
 
@@ -2208,7 +2208,7 @@ async def ofertas_enviadas_command(ctx):
 @bot.command(name='ofertas_recebidas')
 async def ofertas_recebidas_command(ctx):
 
-    offers = dbservice.select('chara_ofertas', [], ' ORDER BY id ASC', {'to_id': ctx.author.id})
+    offers = dbservice.select('chara_ofertas', [], 'ORDER BY id ASC', {'to_id': ctx.author.id})
     
     print(offers)
 
