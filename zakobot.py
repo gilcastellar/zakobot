@@ -2202,6 +2202,12 @@ async def ofertas_enviadas_command(ctx):
 
     print(offers)
 
+    if offers != []:
+
+
+
+        ...
+
     ...
 
 
@@ -2211,6 +2217,12 @@ async def ofertas_recebidas_command(ctx):
     offers = dbservice.select('chara_ofertas', [], 'ORDER BY id ASC', {'to_id': ctx.author.id})
     
     print(offers)
+
+    if offers != []:
+
+
+
+        ...
 
     ...
 
