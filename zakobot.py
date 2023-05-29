@@ -2209,7 +2209,7 @@ async def ofertas_enviadas_command(ctx):
 
         for offer in offers:
 
-            to_id = offer[1]
+            to_id = offer[2]
 
             user_name = dbservice.select('user', ['name'], '', {'id': to_id})
 
@@ -2249,7 +2249,7 @@ async def ofertas_recebidas_command(ctx):
 
         for offer in offers:
 
-            from_id = offer[2]
+            from_id = offer[1]
 
             user_name = dbservice.select('user', ['name'], '', {'id': from_id})
 
