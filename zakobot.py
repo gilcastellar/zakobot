@@ -2042,16 +2042,14 @@ async def c_command(ctx):
         await ctx.respond('Sua coleção:')
 
         #characters = database.selectall('SELECT chara_id FROM user_has_chara WHERE user_id="' + str(ctx.author.id) + '" ORDER BY position', True)
-
-        characters = dbservice.select('user_has_chara', ['chara_id'], ' ORDER BY position', {'user_id': str(ctx.author.id)})
-
+        
         msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
 
         await generate_collection(msg, ctx.author.id, 1)
 
 async def generate_collection(msg, user_id, page):
 
-    characters = dbservice.select('user_has_chara', ['chara_id'], ' ORDER BY position', {'user_id': str(ctx.author.id)})
+    characters = dbservice.select('user_has_chara', ['chara_id'], ' ORDER BY position', {'user_id': str(user_id)})
     
     print(characters)
 
