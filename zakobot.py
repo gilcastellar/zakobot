@@ -2168,12 +2168,12 @@ async def ofertar_command(
     ctx: discord.ApplicationContext,
     id: discord.Option(int, name='id'),
     own_chara: discord.Option(str, autocomplete=get_collection, name='seu_chara'),
-    own_quantity: discord.Option(int, name='sua_quantidade'),
+    own_quantity: discord.Option(int, min_value=1, name='sua_quantidade'),
     target_chara: discord.Option(str, autocomplete=get_chara, name='chara_dele'),
-    target_quantity: discord.Option(int, name='quantidade_dele')
+    target_quantity: discord.Option(int, min_value=1, name='quantidade_dele')
 ):
-
-    print(id)
+    ... # needs to validate whether both offer and recipient
+    ... # have enough copies of the related characters
 
     user_id = dbservice.select('chara_ofertas', ['to_id'], '', {'id': id})
 
@@ -2295,6 +2295,38 @@ async def ofertas_recebidas_command(ctx):
         await send_message2(text, rolls_channel)
 
     ...
+
+@bot.slash_command(name='responder_oferta')
+async def responder_oferta_command(
+    ctx: discord.ApplicationContext,
+    id: discord.option(int, name='id'),
+    decision: discord.option(str, choices=['Aceitar','Recusar'])
+):
+    print(decision)
+
+    trade = dbservice.select('chara_ofertas', [], '', {'id': id})
+    
+    if str(ctx.author.id) == trade[2]:
+
+        match decision:
+        
+            case 'Aceitar':
+
+                ...
+
+                dbservice.delete('chara_ofertas', {'id': id})
+
+                await ctx.respond(f'Oferta de ID {str(id)} recusada.')
+
+            case 'Recusar':
+
+                dbservice.delete('chara_ofertas', {'id': id})
+
+                await ctx.respond(f'Oferta de ID {str(id)} recusada.')
+
+    else:
+
+        await ctx.respond('Você não pode aceitar ou recusar essa oferta pois ela não é direcionada par você.')
 
 @tasks.loop(seconds=60)
 async def check_activities():
