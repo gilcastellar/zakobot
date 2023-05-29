@@ -2176,7 +2176,7 @@ async def pesquisar_chara_command(
     text += '```Usuário:            Cópias:\n'
     
     for user in result:
-        text += user[0] + '            ' + user[1] + '\n'
+        text += user[0] + '            ' + str(user[1]) + '\n'
 
     text += '```'
 
