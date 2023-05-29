@@ -2177,6 +2177,9 @@ async def pesquisar_chara_command(
     text = '**' + target + '**\n'
     text += '```Usuário:            Cópias:\n'
     
+    if len(result) == 1:
+        result = [result]
+
     for user in result:
 
         user_name = dbservice.select('user', ['name'], '', {'id': user[0]})
@@ -2187,7 +2190,7 @@ async def pesquisar_chara_command(
             quantity = 1
 
         text += user_name + '            ' + str(quantity) + '\n'
-
+        
     text += '```'
 
     await send_message2(text, rolls_channel)
