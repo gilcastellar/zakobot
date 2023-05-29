@@ -361,7 +361,8 @@ async def get_members_names(ctx: discord.AutocompleteContext):
     for member in members:
         members_names.append(member[1])
 
-    return [name for name in members_names if name.lower().startswith(ctx.value.lower())]
+    #return [name for name in members_names if name.lower().startswith(ctx.value.lower())]
+    return [name for name in members_names if ctx.value.lower() in name.lower()]
 
 # Get member info
 def get_member_info(name):
