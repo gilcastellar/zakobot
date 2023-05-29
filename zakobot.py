@@ -2229,6 +2229,8 @@ async def ofertas_enviadas_command(ctx):
             text += f'Meu:     {str(my_quantity)}x - {my_chara}\n'
             text += f'Dele(a): {str(their_quantity)}x - {their_chara}\n\n'
             
+        text += '```'
+
         await send_message2(text, rolls_channel)
 
     ...
@@ -2263,6 +2265,8 @@ async def ofertas_recebidas_command(ctx):
             text += f'Meu:     {str(my_quantity)}x - {my_chara}\n'
             text += f'Dele(a): {str(their_quantity)}x - {their_chara}\n\n'
         
+        text += '```'
+
         await send_message2(text, rolls_channel)
 
     ...
