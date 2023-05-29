@@ -2195,6 +2195,25 @@ async def pesquisar_chara_command(
 
     await send_message2(text, rolls_channel)
 
+@bot.command(name='ofertas_enviadas')
+async def ofertas_enviadas_command(ctx):
+
+    offers = dbservice.select('chara_ofertas', [], ' ORDER BY id ASC', {'from_id': ctx.author.id})
+
+    print(offers)
+
+    ...
+
+
+@bot.command(name='ofertas_recebidas')
+async def ofertas_recebidas_command(ctx):
+
+    offers = dbservice.select('chara_ofertas', [], ' ORDER BY id ASC', {'to_id': ctx.author.id})
+    
+    print(offers)
+
+    ...
+
 @tasks.loop(seconds=60)
 async def check_activities():
 
