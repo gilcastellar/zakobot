@@ -2221,6 +2221,10 @@ async def ofertas_enviadas_command(ctx):
             
             their_quantity = offer[6]
 
+            print(their_quantity)
+            print(type(their_quantity))
+            print(str(their_quantity))
+
             text += f'Oferta ID {str(offer[0])} para {user_name}\n'
             text += f'Meu:     {str(my_quantity)}x - {my_chara}\n'
             text ++ f'Dele(a): {str(their_quantity)}x - {their_chara}\n\n'
