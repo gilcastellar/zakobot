@@ -2093,7 +2093,7 @@ async def generate_collection(msg, user_id, page):
 @tasks.loop(seconds=1)
 async def make_rolls():
 
-    smaller_id = dbservice.select('rolls', ['id'], ' ORDER BY id ASC LIMIT 1')
+    smaller_id = dbservice.select('rolls', ['id'], 'ORDER BY id ASC LIMIT 1')
     
     if smaller_id != []:
 
@@ -2175,7 +2175,7 @@ async def pesquisar_chara_command(
     #result = from_list_of_tuples_to_list(result)
 
     text = '**' + target + '**\n'
-    text += '```Usuário:            Cópias:\n'
+    text += '```Usuário:            Cópias:\n\n'
     
     if type(result) == tuple:
         result = [result]
@@ -2204,8 +2204,27 @@ async def ofertas_enviadas_command(ctx):
 
     if offers != []:
 
+        text = '**Ofertas enviadas:**\n\n```'
+        #text += 'Ofereci para       Personagem  #       Quero receber  # \n\n'
 
+        for offer in offers:
 
+            to_id = offer[1]
+
+            user_name = dbservice.select('user', ['name'], '', {'id': to_id})
+
+            my_chara = offer[3]
+                
+            my_quantity = offer[4]
+
+            their_chara = offer[5]
+            
+            their_quantity = offer[6]
+
+            text += f'Oferta ID {str(offer[0])} para {user_name}\n'
+            text += f'Meu:     {str(my_quantity)}x - {my_chara}\n'
+            text ++ f'Dele(a): {str(their_quantity)}x - {their_chara}\n\n'
+            
         ...
 
     ...
@@ -2220,8 +2239,25 @@ async def ofertas_recebidas_command(ctx):
 
     if offers != []:
 
+        text = '**Ofertas recebidas:**\n```'
 
+        for offer in offers:
 
+            from_id = offer[2]
+
+            user_name = dbservice.select('user', ['name'], '', {'id': from_id})
+
+            their_chara = offer[3]
+                
+            their_quantity = offer[4]
+
+            my_chara = offer[5]
+            
+            my_quantity = offer[6]
+
+            text += f'Oferta ID {str(offer[0])} de {user_name}\n'
+            text += f'Meu:     {str(my_quantity)}x - {my_chara}\n'
+            text ++ f'Dele(a): {str(their_quantity)}x - {their_chara}\n\n'
         ...
 
     ...
