@@ -1261,10 +1261,9 @@ def get_pendencies(user_id):
     else:
 
         pendencies = [pendencies]
-        
 
-    #sql = 'SELECT name FROM user WHERE id="' + str(user_id) + '"'
-    #name = database.select(sql)
+
+    print(pendencies)
 
     name = dbservice.select('user', ['name'], '', {'id': str(user_id)})
     
@@ -2330,6 +2329,8 @@ async def cancelar_oferta_command(
     if str(ctx.author.id) == trade[1]:
 
         dbservice.delete('chara_ofertas', {'id': id})
+
+        await ctx.respond(f'Oferta de ID {str(id)} cancelada.')
 
 
 @tasks.loop(seconds=60)
