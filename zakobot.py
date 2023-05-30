@@ -2224,6 +2224,9 @@ async def ofertas_enviadas_command(ctx):
 
     print(offers)
 
+    if type(offers) == tuple:
+        offers = [offers]
+
     if offers != []:
 
         text = '**Ofertas enviadas:**\n\n```'
