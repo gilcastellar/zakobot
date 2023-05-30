@@ -2175,6 +2175,9 @@ async def ofertar_command(
     max_own = dbservice.select('user_has_chara', ['quantity'], '', {'chara_name': own_chara})
     max_target = dbservice.select('user_has_chara', ['quantity'], '', {'chara_name': target_chara})
 
+    max_own = from_list_of_tuples_to_list(max_own)
+    max_target = from_list_of_tuples_to_list(max_target)
+
     if max_own == None:
         max_own = 1
 
