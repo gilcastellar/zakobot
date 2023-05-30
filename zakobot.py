@@ -506,7 +506,7 @@ async def sorteio_command(
     ctx: discord.ApplicationContext,
     name: discord.Option(str, name='nome'),
     delay: discord.Option(int, name='delay'),
-    real: discord.Option(str, name='recompensa', options=['True','False'])
+    real: discord.Option(str, name='real', options=['True','False'])
 ):
     
     if ctx.author.id in admins:
