@@ -506,7 +506,7 @@ async def sorteio_command(
     ctx: discord.ApplicationContext,
     name: discord.Option(str, name='nome'),
     delay: discord.Option(int, name='delay'),
-    reward: discord.Option(str, name='recompensa', options=['True','False'])
+    real: discord.Option(str, name='recompensa', options=['True','False'])
 ):
     
     if ctx.author.id in admins:
@@ -550,7 +550,7 @@ async def sorteio_command(
             giver = await fetch_user(giver)
             receiver = await fetch_user(receiver)
 
-            if reward == 'True':
+            if real == 'True':
                 
                 add_zakoleta(ctx.author.id, 50, ' +50 pela participação na roleta de ' + name)
 
