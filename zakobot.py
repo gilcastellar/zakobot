@@ -2299,7 +2299,7 @@ async def ofertas_recebidas_command(ctx):
 @bot.slash_command(name='responder_oferta')
 async def responder_oferta_command(
     ctx: discord.ApplicationContext,
-    id: discord.option(int, name='id'),
+    trade_id: discord.option(int, name='id'),
     decision: discord.option(str, choices=['Aceitar','Recusar'])
 ):
     print(decision)
