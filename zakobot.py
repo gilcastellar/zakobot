@@ -554,9 +554,9 @@ async def sorteio_command(
                 
                 add_zakoleta(ctx.author.id, 50, ' +50 pela participação na roleta de ' + name)
 
-            text = giver.display_name + ' -> ' + receiver.display_name
+                text = giver.display_name + ' -> ' + receiver.display_name
             
-            message = await send_message(ctx,text) # REALIZA O SORTEIO AO VIVO NO CHAT E RETORNA O OBJETO DA MENSAGEM
+                message = await send_message(ctx,text) # REALIZA O SORTEIO AO VIVO NO CHAT E RETORNA O OBJETO DA MENSAGEM
 
             dbservice.insert('user_has_roleta', ['idx', 'id_receiver', 'id_giver', 'id_roleta', 'status'], (index, str(receiver.id), str(giver.id), id+1, 'ongoing'))
             
