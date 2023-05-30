@@ -2174,6 +2174,10 @@ async def ofertar_command(
 
     max_own = dbservice.select('user_has_chara', ['quantity'], '', {'chara_name': own_chara})
     max_target = dbservice.select('user_has_chara', ['quantity'], '', {'chara_name': target_chara})
+    
+    print('max chara values:')
+    print(max_own)
+    print(max_target)
 
     if type(max_own) != int:
         max_own = from_list_of_tuples_to_list(max_own)
