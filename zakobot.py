@@ -2172,6 +2172,15 @@ async def ofertar_command(
     ... # needs to validate whether both offer and recipient
     ... # have enough copies of the related characters
 
+    max_own = dbservice.select('user_has_chara', ['quantity'], '', {'chara_name': own_chara})
+    max_target = dbservice.select('user_has_chara', ['quantity'], '', {'chara_name': target_chara})
+
+    print('max chara values:')
+    print(max_own)
+    print(max_target)
+
+    time.sleep(60)
+
     user_id = dbservice.select('chara_ofertas', ['to_id'], '', {'id': id})
 
     columns = ['offering', 'offer_quantity', 'receiving', 'receive_quantity']
