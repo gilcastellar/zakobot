@@ -537,6 +537,7 @@ async def sorteio_command(
 
         pairs = generate_pairs(result)
 
+        print('chamando o insert')
         dbservice.insert('roleta', ['id', 'name', 'draw', 'status'], (id+1, name, result_as_str, 'ongoing'))
         
         index = 1
