@@ -2319,6 +2319,19 @@ async def responder_oferta_command(
 
         await ctx.respond('Você não pode aceitar ou recusar essa oferta pois ela não é direcionada par você.')
 
+@bot.slash_command(name='cancelar_oferta')
+async def cancelar_oferta_command(
+    ctx: discord.ApplicationContext,
+    id: discord.Option(int, name='id')
+):
+
+    trade = dbservice.select('chara_ofertas', [], '', {'id': id})
+    
+    if str(ctx.author.id) == trade[1]:
+
+        dbservice.delete('chara_ofertas', {'id': id})
+
+
 @tasks.loop(seconds=60)
 async def check_activities():
 
