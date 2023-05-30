@@ -506,7 +506,7 @@ async def sorteio_command(
     ctx: discord.ApplicationContext,
     name: discord.Option(str, name='nome'),
     delay: discord.Option(int, name='delay'),
-    real: discord.Option(str, name='real', options=['True','False'])
+    real: discord.Option(str, name='real', choices=['True','False'])
 ):
     
     if ctx.author.id in admins:
@@ -763,11 +763,11 @@ def roulette_validator(list, last_two_draws):
         giver, receiver = pair.split(',',1)
 
         giver = giver.split('_')
-        print('giver:')
-        print(giver)
+        #print('giver:')
+        #print(giver)
         receiver = receiver.split('_')
-        print('receiver:')
-        print(receiver)
+        #print('receiver:')
+        #print(receiver)
 
         if '3' not in (giver[1], receiver[2]):
             if giver[1] != receiver[2]:
