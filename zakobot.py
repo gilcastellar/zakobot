@@ -2199,7 +2199,7 @@ async def ofertar_command(
     print(max_target)
 
     if own_quantity > max_own and target_quantity > max_target:
-        await ctx.respond('Você está tentando negociar mais cópias de personagem do que você e o outro usuário tem disponíveis.')
+        await ctx.respond('Você está tentando negociar mais cópias de personagem do que você e o outro usuário têm disponíveis.')
     
     elif own_quantity > max_own:
         await ctx.respond('Você está entando oferecer mais cópias de personagem do que tem disponível.')
