@@ -517,8 +517,6 @@ async def sorteio_command(
 
         print(draw_list)
 
-        time.sleep(10)
-
         draw_list = merge_id_with_type(draw_list)
 
         id = get_last_roulette_id()
@@ -531,8 +529,6 @@ async def sorteio_command(
         result_as_str = draw_to_str(result)
         print(result_as_str)
         print(type(result_as_str))
-
-        time.sleep(10)
 
         pairs = generate_pairs(result)
 
@@ -787,7 +783,7 @@ async def generate_board(info, message, id=0):
 
     name = dbservice.select('roleta', ['name'], '', {'id': str(id)})
 
-    name = parse_name(name)
+    #name = parse_name(name)
 
     board_text = name + '\n```'
 
