@@ -511,8 +511,7 @@ async def sorteio_command(
     
     if ctx.author.id in admins:
 
-        #sql = 'SELECT id, gives, receives FROM user WHERE active=1'
-        #draw_list = database.selectall(sql)
+        draw_channel = 1065847698214887496
 
         draw_list = dbservice.select('user', ['id', 'gives', 'receives'], '', {'active': 1})
 
@@ -563,21 +562,21 @@ async def sorteio_command(
             
             index += 1
 
-        #board_message = await create_placeholder_message(ctx, 1077070205987082281)
+        board_message = await create_placeholder_message(ctx, draw_channel)
 
-        #print(board_message)
+        print(board_message)
         
-        #board_message_id = board_message.id
-        #print('board_message_id:')
-        #print(board_message_id)
+        board_message_id = board_message.id
+        print('board_message_id:')
+        print(board_message_id)
 
-        #board_message_channel_id = board_message.channel.id
-        #print('board_message_channel_id:')
-        #print(board_message_channel_id)
+        board_message_channel_id = board_message.channel.id
+        print('board_message_channel_id:')
+        print(board_message_channel_id)
 
-        #dbservice.update('roleta', ['id_message', 'id_channel'], [board_message_id, board_message_channel_id], {'id': id+1})
+        dbservice.update('roleta', ['id_message', 'id_channel'], [board_message_id, board_message_channel_id], {'id': id+1})
 
-        #await board_update(id+1)
+        await board_update(id+1)
 
 # Merges ID with type values for the validation of a pair in the Sorteio function
 def merge_id_with_type(list):
