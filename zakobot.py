@@ -518,7 +518,7 @@ async def sorteio_command(
 
         print(draw_list)
 
-        time.sleep(20)
+        time.sleep(10)
 
         draw_list = merge_id_with_type(draw_list)
 
@@ -533,7 +533,7 @@ async def sorteio_command(
         print(result_as_str)
         print(type(result_as_str))
 
-        time.sleep(60)
+        time.sleep(10)
 
         pairs = generate_pairs(result)
 
@@ -643,6 +643,8 @@ def get_last_roulette_id():
     result = dbservice.select('roleta', ['id'], '')
 
     print(result)
+
+    result = from_list_of_tuples_to_list(result)
 
     last_roulette_id = max(result)
 
