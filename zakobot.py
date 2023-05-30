@@ -783,7 +783,7 @@ async def generate_board(info, message, id=0):
 
     name = dbservice.select('roleta', ['name'], '', {'id': str(id)})
 
-    #name = parse_name(name)
+    name = parse_name(name)
 
     board_text = name + '\n```'
 
