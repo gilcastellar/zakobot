@@ -518,6 +518,8 @@ async def sorteio_command(
 
         print(draw_list)
 
+        time.sleep(20)
+
         draw_list = merge_id_with_type(draw_list)
 
         id = get_last_roulette_id()
@@ -531,59 +533,50 @@ async def sorteio_command(
         print(result_as_str)
         print(type(result_as_str))
 
-        pairs = generate_pairs(result)
+        time.sleep(60)
 
-        #sql = 'INSERT INTO roleta (id, name, draw, status) VALUES (%s,%s,%s,%s)'
-        #val = (id+1, name, result_as_str, 'ongoing')
-        #database.insert(sql, val)
+        #pairs = generate_pairs(result)
 
-        dbservice.insert('roleta', ['id', 'name', 'draw', 'status'], (id+1, name, result_as_str, 'ongoing'))
+        #dbservice.insert('roleta', ['id', 'name', 'draw', 'status'], (id+1, name, result_as_str, 'ongoing'))
         
-        index = 1
+        #index = 1
 
-        for pair in pairs:
+        #for pair in pairs:
 
-            time.sleep(delay)
+        #    time.sleep(delay)
 
-            giver, receiver = pair.split(',')
+        #    giver, receiver = pair.split(',')
 
-            giver = await fetch_user(giver)
-            receiver = await fetch_user(receiver)
+        #    giver = await fetch_user(giver)
+        #    receiver = await fetch_user(receiver)
 
-            if reward == 'True':
+        #    if reward == 'True':
                 
-                add_zakoleta(ctx.author.id, 50, ' +50 pela participação na roleta de ' + name)
+        #        add_zakoleta(ctx.author.id, 50, ' +50 pela participação na roleta de ' + name)
 
-            text = giver.display_name + ' -> ' + receiver.display_name
+        #    text = giver.display_name + ' -> ' + receiver.display_name
             
-            message = await send_message(ctx,text) # REALIZA O SORTEIO AO VIVO NO CHAT E RETORNA O OBJETO DA MENSAGEM
+        #    message = await send_message(ctx,text) # REALIZA O SORTEIO AO VIVO NO CHAT E RETORNA O OBJETO DA MENSAGEM
+
+        #    dbservice.insert('user_has_roleta', ['idx', 'id_receiver', 'id_giver', 'id_roleta', 'status'], (index, str(receiver.id), str(giver.id), id+1, 'ongoing'))
             
-            #sql = 'INSERT INTO user_has_roleta (idx, id_receiver, id_giver, id_roleta, status) VALUES (%s,%s,%s,%s,%s)'
-            #val = (index, str(receiver.id), str(giver.id), id+1, 'ongoing')
-            #database.insert(sql, val)
+        #    index += 1
 
-            dbservice.insert('user_has_roleta', ['idx', 'id_receiver', 'id_giver', 'id_roleta', 'status'], (index, str(receiver.id), str(giver.id), id+1, 'ongoing'))
-            
-            index += 1
+        #board_message = await create_placeholder_message(ctx, 1077070205987082281)
 
-        board_message = await create_placeholder_message(ctx, 1077070205987082281)
-
-        print(board_message)
+        #print(board_message)
         
-        board_message_id = board_message.id
-        print('board_message_id:')
-        print(board_message_id)
+        #board_message_id = board_message.id
+        #print('board_message_id:')
+        #print(board_message_id)
 
-        board_message_channel_id = board_message.channel.id
-        print('board_message_channel_id:')
-        print(board_message_channel_id)
+        #board_message_channel_id = board_message.channel.id
+        #print('board_message_channel_id:')
+        #print(board_message_channel_id)
 
-        #sql = 'UPDATE roleta SET id_message="' + str(board_message_id) + '", id_channel="' + str(board_message_channel_id) + '" WHERE id="' + str(id+1) + '"'
-        #database.update(sql)
+        #dbservice.update('roleta', ['id_message', 'id_channel'], [board_message_id, board_message_channel_id], {'id': id+1})
 
-        dbservice.update('roleta', ['id_message', 'id_channel'], [board_message_id, board_message_channel_id], {'id': id+1})
-
-        await board_update(id+1)
+        #await board_update(id+1)
 
 # Merges ID with type values for the validation of a pair in the Sorteio function
 def merge_id_with_type(list):
