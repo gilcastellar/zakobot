@@ -2179,22 +2179,31 @@ async def ofertar_command(
         max_own = 1
 
     if max_target == None:
-        max_own = 1
+        max_target = 1
 
     print('max chara values:')
     print(max_own)
     print(max_target)
 
-    time.sleep(60)
+    if own_quantity > max_own and target_quantity > max_target:
+        await ctx.respond('Você está tentando negociar mais cópias de personagem do que você e o outro usuário tem disponíveis.')
+    
+    elif own_quantity > max_own:
+        await ctx.respond('Você está entando oferecer mais cópias de personagem do que tem disponível.')
 
-    user_id = dbservice.select('chara_ofertas', ['to_id'], '', {'id': id})
+    elif target_quantity > max_target:
+        await ctx.respond('O outro usuário não possui cópias suficientes do personagem selecionado.')
+        
+    else:
 
-    columns = ['offering', 'offer_quantity', 'receiving', 'receive_quantity']
-    values = [own_chara, own_quantity, target_chara, target_quantity]
+        user_id = dbservice.select('chara_ofertas', ['to_id'], '', {'id': id})
 
-    dbservice.update('chara_ofertas', columns, values, {'id': id})
+        columns = ['offering', 'offer_quantity', 'receiving', 'receive_quantity']
+        values = [own_chara, own_quantity, target_chara, target_quantity]
 
-    await ctx.respond(f'Oferta realizada. O usuário <@' + str(user_id) + '> foi notificado. Não foi?')
+        dbservice.update('chara_ofertas', columns, values, {'id': id})
+
+        await ctx.respond(f'Oferta realizada. O usuário <@' + str(user_id) + '> foi notificado. Não foi?')
 
 @bot.slash_command(name='pesquisar_chara')
 async def pesquisar_chara_command(
