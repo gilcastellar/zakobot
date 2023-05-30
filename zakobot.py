@@ -523,7 +523,7 @@ async def sorteio_command(
 
         last_two_draws = get_last_draws(id)
 
-        result = roulette_shuffle(draw_list, id, last_two_draws)
+        result = await roulette_shuffle(draw_list, id, last_two_draws)
         print(type(result))
 
         result_as_str = draw_to_str(result)
@@ -649,13 +649,13 @@ def get_last_roulette_id():
     return last_roulette_id
 
 # Roulette shuffle
-def roulette_shuffle(list, roulette_id, last_two_draws):
+async def roulette_shuffle(list, roulette_id, last_two_draws):
 
     while True:
 
         shuffle(list)
 
-        is_valid = roulette_validator(list, last_two_draws)
+        is_valid = await roulette_validator(list, last_two_draws)
 
         if is_valid:
 
@@ -728,7 +728,7 @@ def generate_pairs(list):
     return pairs
 
 # Roulette validator
-def roulette_validator(list, last_two_draws):
+async def roulette_validator(list, last_two_draws):
 
     ids_only_list = []
 
