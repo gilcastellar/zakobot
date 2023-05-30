@@ -2175,6 +2175,12 @@ async def ofertar_command(
     max_own = dbservice.select('user_has_chara', ['quantity'], '', {'chara_name': own_chara})
     max_target = dbservice.select('user_has_chara', ['quantity'], '', {'chara_name': target_chara})
 
+    if max_own == None:
+        max_own = 1
+
+    if max_target == None:
+        max_own = 1
+
     print('max chara values:')
     print(max_own)
     print(max_target)
