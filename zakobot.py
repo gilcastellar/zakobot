@@ -1260,49 +1260,56 @@ def get_pendencies(user_id):
 
     else:
 
-        pendencies = [pendencies]
+        if pendencies != None:
 
-
+            pendencies = [pendencies]
+            
     print(pendencies)
 
-    name = dbservice.select('user', ['name'], '', {'id': str(user_id)})
+    if pendencies != None:
+
+        name = dbservice.select('user', ['name'], '', {'id': str(user_id)})
     
-    pendencies_text = ''
+        pendencies_text = ''
 
-    print('I was tasked with getting ' + name + '\'s pendencies. They are below:')
-    for i in pendencies:
-        print(i)
+        print('I was tasked with getting ' + name + '\'s pendencies. They are below:')
+        for i in pendencies:
+            print(i)
 
-        if ',' in i:
+            if ',' in i:
 
-            medias = i.split(',')
+                medias = i.split(',')
 
-        else:
-
-            medias = [i]
-
-        for media in medias:
-
-            format, id = get_type_and_id_from_anilist_link(media)
-
-            if format == 'anime':
-
-                response = anilist.query_anime_id(id)
-                
             else:
 
-                response = anilist.query_manga_id(id)
+                medias = [i]
 
-            media_obj = response.json()
-            title = media_obj['data']['Media']['title']['romaji']
+            for media in medias:
 
-            pendencies_text += '[' + title + '](' + i + ') | '
+                format, id = get_type_and_id_from_anilist_link(media)
 
-        pendencies_text = pendencies_text.strip(' | ')
+                if format == 'anime':
 
-        pendencies_text += '\n'
+                    response = anilist.query_anime_id(id)
+                
+                else:
 
-        print(pendencies_text)
+                    response = anilist.query_manga_id(id)
+
+                media_obj = response.json()
+                title = media_obj['data']['Media']['title']['romaji']
+
+                pendencies_text += '[' + title + '](' + i + ') | '
+
+            pendencies_text = pendencies_text.strip(' | ')
+
+            pendencies_text += '\n'
+
+            print(pendencies_text)
+
+    else:
+
+        pendencies_text = ''
 
     return pendencies_text
 
