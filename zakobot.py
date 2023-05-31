@@ -1843,16 +1843,16 @@ def from_list_of_tuples_to_list(list):
 
     return new_list
 
-@bot.slash_command(name='anilist_update')
-async def anilist_update_command(
-    ctx: discord.ApplicationContext,
-    link: discord.Option(str, name='link', description="Link do Anilist"),
-    user_id: discord.Option(str, name='id', description="ID do Discord")
-):
-    if ctx.author.id in admins:
-        if 'anilist' in link:
-            await update_list('ANIME', link, user_id)
-            await update_list('MANGA', link, user_id)
+#@bot.slash_command(name='anilist_update')
+#async def anilist_update_command(
+#    ctx: discord.ApplicationContext,
+#    link: discord.Option(str, name='link', description="Link do Anilist"),
+#    user_id: discord.Option(str, name='id', description="ID do Discord")
+#):
+#    if ctx.author.id in admins:
+#        if 'anilist' in link:
+#            await update_list('ANIME', link, user_id)
+#            await update_list('MANGA', link, user_id)
 
 async def update_anilists():
 
@@ -2145,8 +2145,10 @@ async def make_rolls():
 
         print('deleted ' + str(smaller_id))
 
-@bot.slash_command(name='iniciar_oferta')
-async def iniciar_oferta_command(
+ofertas = bot.create_group('ofertas', 'Comandos de ofertas')
+
+@ofertas.slash_command(name='iniciar')
+async def iniciar_command(
     ctx: discord.ApplicationContext,
     target: discord.Option(str, autocomplete=get_members_names2, name='membro')
 ):
