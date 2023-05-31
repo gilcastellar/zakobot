@@ -2147,7 +2147,7 @@ async def make_rolls():
 
 ofertas = bot.create_group('ofertas', 'Comandos de ofertas')
 
-@ofertas.slash_command(name='iniciar')
+@ofertas.command(name='iniciar')
 async def iniciar_command(
     ctx: discord.ApplicationContext,
     target: discord.Option(str, autocomplete=get_members_names2, name='membro')
