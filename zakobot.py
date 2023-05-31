@@ -127,6 +127,31 @@ async def on_message(message):
 
     match command:
 
+        case ";registro":
+
+            user_id = message.author.id
+            #exists = database.check_if_exists(str(user_id), 'id', 'user')
+
+            exists = dbservice.check_existence('user', {'id': str(user_id)})
+
+            if exists == 0:
+
+                guild = 1059298932825538661
+                name = message.author.name
+                #database.insert('INSERT INTO user (id, id_guild, name) VALUES (%s,%s,%s)',(user_id, guild, name))
+
+                dbservice.insert('user', ['id', 'id_guild', 'name'], (user_id, guild, name))
+
+                await message.respond(f"Seja bem-vindo(a) à roleta, {name}!")
+
+            else:
+
+                await message.respond('Você já está cadastrado!')
+
+        case ";ajuda" | ";comandos" | ";help" | ";commands":
+
+            await message.respond(embed=help_embed())
+
         case ";r":
 
             if message.channel.id in [rolls_channel]:
@@ -147,6 +172,81 @@ async def on_message(message):
 
                 roll_id = dbservice.insert('rolls', ['user', 'quantity'], [user_name, rolls])
             
+        case ';enviadas':
+
+            offers = dbservice.select('chara_ofertas', [], 'ORDER BY id ASC', {'from_id': ctx.author.id})
+
+            print(offers)
+
+            if type(offers) == tuple:
+                offers = [offers]
+
+            if offers != []:
+
+                text = '**Ofertas enviadas:**\n\n```'
+                #text += 'Ofereci para       Personagem  #       Quero receber  # \n\n'
+
+                for offer in offers:
+
+                    to_id = offer[2]
+
+                    user_name = dbservice.select('user', ['name'], '', {'id': to_id})
+
+                    my_chara = offer[3]
+                
+                    my_quantity = offer[4]
+
+                    their_chara = offer[5]
+            
+                    their_quantity = offer[6]
+
+                    print(their_quantity)
+                    print(type(their_quantity))
+                    print(str(their_quantity))
+
+                    text += f'Oferta ID {str(offer[0])} para {user_name}\n'
+                    text += f'Meu:     {str(my_quantity)}x - {my_chara}\n'
+                    text += f'Dele(a): {str(their_quantity)}x - {their_chara}\n\n'
+            
+                text += '```'
+
+                await send_message2(text, rolls_channel)
+
+        case ';recebidas':
+
+            offers = dbservice.select('chara_ofertas', [], 'ORDER BY id ASC', {'to_id': ctx.author.id})
+    
+            print(offers)
+
+            if type(offers) == tuple:
+                offers = [offers]
+
+            if offers != []:
+
+                text = '**Ofertas recebidas:**\n```'
+
+                for offer in offers:
+
+                    from_id = offer[1]
+
+                    user_name = dbservice.select('user', ['name'], '', {'id': from_id})
+
+                    their_chara = offer[3]
+                
+                    their_quantity = offer[4]
+
+                    my_chara = offer[5]
+            
+                    my_quantity = offer[6]
+
+                    text += f'Oferta ID {str(offer[0])} de {user_name}\n'
+                    text += f'Meu:     {str(my_quantity)}x - {my_chara}\n'
+                    text += f'Dele(a): {str(their_quantity)}x - {their_chara}\n\n'
+        
+                text += '```'
+
+                await send_message2(text, rolls_channel)
+
 @tasks.loop(minutes=1)
 async def check_time():
 
@@ -351,27 +451,27 @@ async def get_chara(ctx):
 
     return [name for name in chara if ctx.value.lower() in name.lower()]
 
-@bot.command(name='registro')
-async def registro_command(ctx):
+#@bot.command(name='registro')
+#async def registro_command(ctx):
 
-    user_id = ctx.author.id
-    #exists = database.check_if_exists(str(user_id), 'id', 'user')
+#    user_id = ctx.author.id
+#    #exists = database.check_if_exists(str(user_id), 'id', 'user')
 
-    exists = dbservice.check_existence('user', {'id': str(user_id)})
+#    exists = dbservice.check_existence('user', {'id': str(user_id)})
 
-    if exists == 0:
+#    if exists == 0:
 
-        guild = 1059298932825538661
-        name = ctx.author.name
-        #database.insert('INSERT INTO user (id, id_guild, name) VALUES (%s,%s,%s)',(user_id, guild, name))
+#        guild = 1059298932825538661
+#        name = ctx.author.name
+#        #database.insert('INSERT INTO user (id, id_guild, name) VALUES (%s,%s,%s)',(user_id, guild, name))
 
-        dbservice.insert('user', ['id', 'id_guild', 'name'], (user_id, guild, name))
+#        dbservice.insert('user', ['id', 'id_guild', 'name'], (user_id, guild, name))
 
-        await ctx.respond(f"Seja bem-vindo(a) à roleta, {name}!")
+#        await ctx.respond(f"Seja bem-vindo(a) à roleta, {name}!")
 
-    else:
+#    else:
 
-        await ctx.respond('Você já está cadastrado!')
+#        await ctx.respond('Você já está cadastrado!')
 
 @bot.slash_command(name='editar_perfil')
 async def editar_perfil_command(ctx: discord.ApplicationContext):
@@ -1096,13 +1196,13 @@ def help_embed():
 
     return embed
 
-@bot.command(name='comandos')
-async def comandos_command(ctx):
-    await ctx.respond(embed=help_embed())
+#@bot.command(name='comandos')
+#async def comandos_command(ctx):
+#    await ctx.respond(embed=help_embed())
 
-@bot.command(name='ajuda')
-async def ajuda_command(ctx):
-    await ctx.respond(embed=help_embed())
+#@bot.command(name='ajuda')
+#async def ajuda_command(ctx):
+#    await ctx.respond(embed=help_embed())
 
 # Adds entry to obra table
 def add_to_obra(link):
