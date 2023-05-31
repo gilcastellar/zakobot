@@ -1727,11 +1727,11 @@ async def generate_top(msg, page, list, type, minimum):
     
     await msg.edit(text, view=TopPagination(msg, page, list, type, minimum))
 
-@bot.command(name='manual_update_media')
-async def manual_update_media(ctx):
-    if ctx.author.id in admins:
-        print('aqui?')
-        await update_media()
+#@bot.command(name='manual_update_media')
+#async def manual_update_media(ctx):
+#    if ctx.author.id in admins:
+#        print('aqui?')
+#        await update_media()
 
 async def update_media():
     #users = database.selectall('SELECT link FROM daily_temp', True)
