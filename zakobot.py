@@ -2055,8 +2055,8 @@ async def editar_coleção_command(
     await ctx.respond('Posição atualizada')
 
 
-@bot.command(name='c')
-async def c_command(ctx):
+@bot.command(name='coleção')
+async def coleção_command(ctx):
 
     if ctx.channel.id == rolls_channel:
 
@@ -2169,8 +2169,6 @@ async def ofertar_command(
     target_chara: discord.Option(str, autocomplete=get_chara, name='chara_dele'),
     target_quantity: discord.Option(int, min_value=1, name='quantidade_dele')
 ):
-    ... # needs to validate whether both offer and recipient
-    ... # have enough copies of the related characters
 
     own_id = str(ctx.author.id)
     target_id = dbservice.select('chara_ofertas', ['to_id'], '', {'id':id})
