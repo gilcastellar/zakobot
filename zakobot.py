@@ -2354,87 +2354,87 @@ async def pesquisar_chara_command(
 
     await send_message2(text, rolls_channel)
 
-@bot.command(name='ofertas_enviadas')
-async def ofertas_enviadas_command(ctx):
+#@bot.command(name='ofertas_enviadas')
+#async def ofertas_enviadas_command(ctx):
 
-    offers = dbservice.select('chara_ofertas', [], 'ORDER BY id ASC', {'from_id': ctx.author.id})
+#    offers = dbservice.select('chara_ofertas', [], 'ORDER BY id ASC', {'from_id': ctx.author.id})
 
-    print(offers)
+#    print(offers)
 
-    if type(offers) == tuple:
-        offers = [offers]
+#    if type(offers) == tuple:
+#        offers = [offers]
 
-    if offers != []:
+#    if offers != []:
 
-        text = '**Ofertas enviadas:**\n\n```'
-        #text += 'Ofereci para       Personagem  #       Quero receber  # \n\n'
+#        text = '**Ofertas enviadas:**\n\n```'
+#        #text += 'Ofereci para       Personagem  #       Quero receber  # \n\n'
 
-        for offer in offers:
+#        for offer in offers:
 
-            to_id = offer[2]
+#            to_id = offer[2]
 
-            user_name = dbservice.select('user', ['name'], '', {'id': to_id})
+#            user_name = dbservice.select('user', ['name'], '', {'id': to_id})
 
-            my_chara = offer[3]
+#            my_chara = offer[3]
                 
-            my_quantity = offer[4]
+#            my_quantity = offer[4]
 
-            their_chara = offer[5]
+#            their_chara = offer[5]
             
-            their_quantity = offer[6]
+#            their_quantity = offer[6]
 
-            print(their_quantity)
-            print(type(their_quantity))
-            print(str(their_quantity))
+#            print(their_quantity)
+#            print(type(their_quantity))
+#            print(str(their_quantity))
 
-            text += f'Oferta ID {str(offer[0])} para {user_name}\n'
-            text += f'Meu:     {str(my_quantity)}x - {my_chara}\n'
-            text += f'Dele(a): {str(their_quantity)}x - {their_chara}\n\n'
+#            text += f'Oferta ID {str(offer[0])} para {user_name}\n'
+#            text += f'Meu:     {str(my_quantity)}x - {my_chara}\n'
+#            text += f'Dele(a): {str(their_quantity)}x - {their_chara}\n\n'
             
-        text += '```'
+#        text += '```'
 
-        await send_message2(text, rolls_channel)
+#        await send_message2(text, rolls_channel)
 
-    ...
+#    ...
 
 
-@bot.command(name='ofertas_recebidas')
-async def ofertas_recebidas_command(ctx):
+#@bot.command(name='ofertas_recebidas')
+#async def ofertas_recebidas_command(ctx):
 
-    offers = dbservice.select('chara_ofertas', [], 'ORDER BY id ASC', {'to_id': ctx.author.id})
+#    offers = dbservice.select('chara_ofertas', [], 'ORDER BY id ASC', {'to_id': ctx.author.id})
     
-    print(offers)
+#    print(offers)
 
-    if type(offers) == tuple:
-        offers = [offers]
+#    if type(offers) == tuple:
+#        offers = [offers]
 
-    if offers != []:
+#    if offers != []:
 
-        text = '**Ofertas recebidas:**\n```'
+#        text = '**Ofertas recebidas:**\n```'
 
-        for offer in offers:
+#        for offer in offers:
 
-            from_id = offer[1]
+#            from_id = offer[1]
 
-            user_name = dbservice.select('user', ['name'], '', {'id': from_id})
+#            user_name = dbservice.select('user', ['name'], '', {'id': from_id})
 
-            their_chara = offer[3]
+#            their_chara = offer[3]
                 
-            their_quantity = offer[4]
+#            their_quantity = offer[4]
 
-            my_chara = offer[5]
+#            my_chara = offer[5]
             
-            my_quantity = offer[6]
+#            my_quantity = offer[6]
 
-            text += f'Oferta ID {str(offer[0])} de {user_name}\n'
-            text += f'Meu:     {str(my_quantity)}x - {my_chara}\n'
-            text += f'Dele(a): {str(their_quantity)}x - {their_chara}\n\n'
+#            text += f'Oferta ID {str(offer[0])} de {user_name}\n'
+#            text += f'Meu:     {str(my_quantity)}x - {my_chara}\n'
+#            text += f'Dele(a): {str(their_quantity)}x - {their_chara}\n\n'
         
-        text += '```'
+#        text += '```'
 
-        await send_message2(text, rolls_channel)
+#        await send_message2(text, rolls_channel)
 
-    ...
+#    ...
 
 @bot.slash_command(name='responder_oferta')
 async def responder_oferta_command(
