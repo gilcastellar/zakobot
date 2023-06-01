@@ -144,7 +144,7 @@ async def on_message(message):
 
                 dbservice.insert('user', ['id', 'id_guild', 'name'], (user_id, guild, name))
 
-                await send_message2(f"Seja bem-vindo(a) à roleta, {name}!", str(message.channel.id))
+                await send_message2(f"Seja bem-vindo(a) à roleta, {name}!", message.channel.id)
 
             else:
 
@@ -152,7 +152,7 @@ async def on_message(message):
 
         case ";ajuda" | ";comandos" | ";help" | ";commands":
 
-            await send_embed2(help_embed(), str(message.channel.id))
+            await send_embed2(help_embed(), message.channel.id)
 
         case ";r":
 
