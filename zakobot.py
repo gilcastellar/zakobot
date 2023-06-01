@@ -123,6 +123,8 @@ async def on_message(message):
 
     msg = message.content.split(' ')
 
+    print(message.channel.id)
+
     command = msg[0].lower()
 
     match command:
