@@ -150,7 +150,7 @@ async def on_message(message):
 
         case ";ajuda" | ";comandos" | ";help" | ";commands":
 
-            await send_embed2(embed=help_embed(), str(message.channel.id))
+            await send_embed2(help_embed(), str(message.channel.id))
 
         case ";r":
 
