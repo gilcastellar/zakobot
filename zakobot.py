@@ -2763,6 +2763,8 @@ async def aux_command(ctx):
 
         #        dbservice.insert('chara', columns, val, True)
 
+        message = await create_placeholder_message(ctx, 1077070205987082281)
+
         print(get_timestamp() + ': Done')
     
 config = configparser.RawConfigParser()
