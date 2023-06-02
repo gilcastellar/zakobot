@@ -1027,76 +1027,76 @@ def board_indications_manager(receiver_id, roleta_id):
 
         return ''
     
-@bot.slash_command(name='indicar')
-async def indicar_command(
-    ctx: discord.ApplicationContext,
-    media1: discord.Option(str, name='primeira_indicação', description='INSIRA O LINK DO ANILIST DA OBRA', required=True),
-    media2: discord.Option(str, name='segunda_indicação', description='INSIRA O LINK DO ANILIST DA OBRA', required=False),
-    media3: discord.Option(str, name='terceira_indicação', description='INSIRA O LINK DO ANILIST DA OBRA', required=False)
-):
-    await ctx.respond(f"Obrigado pela indicação!")
+#@bot.slash_command(name='indicar')
+#async def indicar_command(
+#    ctx: discord.ApplicationContext,
+#    media1: discord.Option(str, name='primeira_indicação', description='INSIRA O LINK DO ANILIST DA OBRA', required=True),
+#    media2: discord.Option(str, name='segunda_indicação', description='INSIRA O LINK DO ANILIST DA OBRA', required=False),
+#    media3: discord.Option(str, name='terceira_indicação', description='INSIRA O LINK DO ANILIST DA OBRA', required=False)
+#):
+#    await ctx.respond(f"Obrigado pela indicação!")
 
-    #roletas = database.selectall('SELECT id FROM roleta', True)
+#    #roletas = database.selectall('SELECT id FROM roleta', True)
 
-    roletas = dbservice.select('roleta', ['id'], '')
+#    roletas = dbservice.select('roleta', ['id'], '')
 
-    roleta_atual = max(roletas)
+#    roleta_atual = max(roletas)
 
-    roleta_atual = 5
+#    roleta_atual = 5
 
-    #sql = 'SELECT id_giver FROM user_has_roleta WHERE id_roleta="' + str(roleta_atual) + '"'
-    #allowed_givers = database.selectall(sql, True)
+#    #sql = 'SELECT id_giver FROM user_has_roleta WHERE id_roleta="' + str(roleta_atual) + '"'
+#    #allowed_givers = database.selectall(sql, True)
 
-    allowed_givers = dbservice.select('user_has_roleta', ['id_giver'], '', {'id_roleta': str(roleta_atual)})
+#    allowed_givers = dbservice.select('user_has_roleta', ['id_giver'], '', {'id_roleta': str(roleta_atual)})
 
-    medias = ''
-    medias += media1
+#    medias = ''
+#    medias += media1
 
-    if media2 != None:
+#    if media2 != None:
 
-        medias += ',' + media2
+#        medias += ',' + media2
 
-    if media3  != None:
+#    if media3  != None:
 
-        medias += ',' + media3
+#        medias += ',' + media3
 
-    if str(ctx.author.id) in allowed_givers:
+#    if str(ctx.author.id) in allowed_givers:
 
-        #sql = 'UPDATE user_has_roleta SET received_rec="' + medias + '" WHERE id_giver="' + str(ctx.author.id) + '" AND id_roleta=' + str(roleta_atual)
-        #database.update(sql)
+#        #sql = 'UPDATE user_has_roleta SET received_rec="' + medias + '" WHERE id_giver="' + str(ctx.author.id) + '" AND id_roleta=' + str(roleta_atual)
+#        #database.update(sql)
 
-        dbservice.update('user_has_roleta', ['received_rec'], [medias], {'id_giver':ctx.author.id, 'id_roleta':roleta_atual})
+#        dbservice.update('user_has_roleta', ['received_rec'], [medias], {'id_giver':ctx.author.id, 'id_roleta':roleta_atual})
 
-    list = []
+#    list = []
 
-    if ',' in medias:
-        list = medias.split(',')
-    else:
-        list.append(medias)
+#    if ',' in medias:
+#        list = medias.split(',')
+#    else:
+#        list.append(medias)
 
-    for media in list:
-        print('adding media_name to table user_has_roleta:')
-        print(media)
+#    for media in list:
+#        print('adding media_name to table user_has_roleta:')
+#        print(media)
 
-        type, id = get_type_and_id_from_anilist_link(media)
+#        type, id = get_type_and_id_from_anilist_link(media)
 
-        if type == 'anime':
+#        if type == 'anime':
 
-            response = anilist.query_anime_id(id)
+#            response = anilist.query_anime_id(id)
                 
-        else:
+#        else:
 
-            response = anilist.query_manga_id(id)
+#            response = anilist.query_manga_id(id)
 
-        media_obj = response.json()
-        title = media_obj['data']['Media']['title']['romaji']
+#        media_obj = response.json()
+#        title = media_obj['data']['Media']['title']['romaji']
 
-        #sql = 'UPDATE user_has_roleta SET media_name="' + title + '" WHERE id_giver="' + str(ctx.author.id) + '" AND id_roleta=' + str(roleta_atual)
-        #database.update(sql)
+#        #sql = 'UPDATE user_has_roleta SET media_name="' + title + '" WHERE id_giver="' + str(ctx.author.id) + '" AND id_roleta=' + str(roleta_atual)
+#        #database.update(sql)
 
-        dbservice.update('user_has_roleta', ['media_name'], [title], {'id_giver':ctx.author.id, 'id_roleta':roleta_atual})
+#        dbservice.update('user_has_roleta', ['media_name'], [title], {'id_giver':ctx.author.id, 'id_roleta':roleta_atual})
     
-    await board_update(roleta_atual)
+#    await board_update(roleta_atual)
 
 @bot.slash_command(name='terminei')
 async def terminei_command(
