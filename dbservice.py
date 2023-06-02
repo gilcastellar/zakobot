@@ -4,6 +4,8 @@ def update(table, columns, values, where):
 
     query = 'SELECT COUNT(1) FROM ' + str(table) + ' WHERE '
 
+    print(where)
+
     for i in where:
 
         query += i + '="' + str(where[i]) + '" AND '
