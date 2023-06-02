@@ -1042,7 +1042,7 @@ async def indicar_command(
 
     roletas = dbservice.select('roleta', ['id'], '')
 
-    roleta_atual = max(roletas)
+    roleta_atual = max(roletas)[0]
 
     print(roleta_atual)
 
