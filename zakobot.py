@@ -1051,6 +1051,8 @@ async def indicar_command(
 
     allowed_givers = dbservice.select('user_has_roleta', ['id_giver'], '', {'id_roleta': str(roleta_atual)})
 
+    allowed_givers = from_list_of_tuples_to_list(allowed_givers)
+
     medias = ''
     medias += media1
 
