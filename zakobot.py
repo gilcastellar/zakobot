@@ -1042,6 +1042,8 @@ async def indicar_command(
 
     roleta_atual = max(roletas)
 
+    print(roleta_atual)
+
     #sql = 'SELECT id_giver FROM user_has_roleta WHERE id_roleta="' + str(roleta_atual) + '"'
     #allowed_givers = database.selectall(sql, True)
 
