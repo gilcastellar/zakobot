@@ -12,6 +12,9 @@ def update(table, columns, values, where):
 
     exists = database.check_existence(query)
 
+    print('exists')
+    print(exists)
+
     if exists == 1:
 
         query = 'UPDATE ' + str(table) + ' SET '
