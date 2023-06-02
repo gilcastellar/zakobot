@@ -1076,6 +1076,8 @@ async def indicar_command(
     else:
         list.append(medias)
 
+    print(list)
+
     for media in list:
         print('adding media_name to table user_has_roleta:')
         print(media)
