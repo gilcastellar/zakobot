@@ -957,6 +957,8 @@ async def board_update(roleta_id, message=None):
     #sql = 'SELECT id_message, id_channel FROM roleta WHERE id=' + str(roleta_id)
     #message_info = database.selectall(sql)
 
+    print(roleta_id)
+
     message_info = dbservice.select('roleta', ['id_message', 'id_channel'], '', {'id': str(roleta_id)})
     
     print('printing message info twice')
