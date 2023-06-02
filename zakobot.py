@@ -601,7 +601,7 @@ async def perfil_command(
 
     await ctx.send(embed=embed)
 
-@bot.slash_command(name='sorteio')
+@bot.slash_command(name='sorteio', description='UTILIZAR NO CANAL #ROLETA-PLACAR')
 async def sorteio_command(
     ctx: discord.ApplicationContext,
     name: discord.Option(str, name='nome'),
