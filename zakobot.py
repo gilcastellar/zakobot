@@ -1048,8 +1048,8 @@ def board_indications_manager(receiver_id, roleta_id):
 async def indicar_command(
     ctx: discord.ApplicationContext,
     media1: discord.Option(str, name='primeira_indicação', description='INSIRA O LINK DO ANILIST DA OBRA', required=True),
-    media2: discord.Option(str, name='segunda_indicação', description='INSIRA O LINK DO ANILIST DA OBRA', required=False, default=''),
-    media3: discord.Option(str, name='terceira_indicação', description='INSIRA O LINK DO ANILIST DA OBRA', required=False, default='')
+    media2: discord.Option(str, name='segunda_indicação', description='INSIRA O LINK DO ANILIST DA OBRA', required=False),
+    media3: discord.Option(str, name='terceira_indicação', description='INSIRA O LINK DO ANILIST DA OBRA', required=False)
 ):
     #if not media1.startswith('https://anilist.co') or not media2.startswith('https://anilist.co') or not media3.startswith('https://anilist.co'):
 
