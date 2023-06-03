@@ -453,6 +453,8 @@ async def get_chara(ctx):
 
     chara = from_list_of_tuples_to_list(chara)
 
+    print(chara)
+
     return [name for name in chara if ctx.value.lower() in name.lower()]
 
 #@bot.command(name='registro')
@@ -2374,8 +2376,6 @@ async def pesquisar_chara_command(
     result = dbservice.select('user_has_chara', ['user_id', 'quantity'], ' ORDER BY quantity DESC', {'chara_name': target})
 
     print(result)
-
-
 
     #result = from_list_of_tuples_to_list(result)
 
