@@ -10,6 +10,7 @@ import json
 import time
 import datetime
 import asyncio
+from math import ceil
 
 intents = discord.Intents.default()
 intents.members = True
@@ -1854,7 +1855,7 @@ async def generate_top(msg, page, last_page, list, type, minimum):
 
     text += '```'
 
-    last_page = round(len(list) / 25)
+    last_page = ceil(len(list) / 25)
 
     #print('last_page')
     #print(last_page)
