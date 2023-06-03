@@ -1043,7 +1043,7 @@ async def indicar_command(
 ):
     if not media1.startswith('https://anilist.co') or not media2.startswith('https://anilist.co') or not media3.startswith('https://anilist.co'):
 
-        await ctx.respond('Suas indicações precisam ser links do Anilist.')
+        await ctx.respond('Você inseriu algo errado. Cada indicação deve conter apenas um link do Anilist.')
     
     else:
 
