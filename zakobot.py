@@ -1194,8 +1194,7 @@ async def placar_roleta_command(
     await ctx.respond("Carregando...")
 
     message = await create_placeholder_message(ctx, ctx.interaction.channel.id)
-    #roleta_id = database.select('SELECT id FROM roleta WHERE name="' + roleta + '"')
-
+    
     roleta_id = dbservice.select('roleta', ['id'], '', {'name': roleta})
 
     print(roleta_id)
