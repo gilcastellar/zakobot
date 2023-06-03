@@ -992,6 +992,8 @@ async def board_update(roleta_id, message=None):
 
     board_info = dbservice.select('user_has_roleta', ['idx', 'id_giver', 'id_receiver', 'received_rec', 'score', 'status'], 'ORDER BY idx', {'id_roleta': str(roleta_id)})
 
+    print(board_info)
+
     print('starting to generate board')
     print('roleta_id:')
     print(roleta_id)
@@ -1006,6 +1008,9 @@ def board_indications_manager(receiver_id, roleta_id):
     #medias = database.select('SELECT media_name FROM user_has_roleta WHERE id_receiver="' + receiver_id + '" AND id_roleta=' + str(roleta_id))
     
     medias = dbservice.select('user_has_roleta', ['media_name'], '', {'id_receiver': receiver_id, 'id_roleta': str(roleta_id)})
+
+    print('medias:')
+    print(medias)
 
     if medias != None:
 
