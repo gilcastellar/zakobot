@@ -1824,13 +1824,13 @@ async def generate_top(msg, page, last_page, list, type, minimum):
 
     idx = (page * 25) - 24
     
-    print("idx")
-    print(idx)
+    #print("idx")
+    #print(idx)
 
     batch = 25
 
-    print('batch:')
-    print(batch)
+    #print('batch:')
+    #print(batch)
 
     text = '```'
 
@@ -1853,13 +1853,13 @@ async def generate_top(msg, page, last_page, list, type, minimum):
 
     last_page = round(len(list) / 25)
 
-    print('last_page')
-    print(last_page)
+    #print('last_page')
+    #print(last_page)
 
-    print('text:')
-    print(text)
-    print('length of text:')
-    print(len(text))
+    #print('text:')
+    #print(text)
+    #print('length of text:')
+    #print(len(text))
 
     if page <= last_page:
     
