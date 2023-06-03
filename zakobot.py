@@ -453,7 +453,7 @@ async def get_chara(ctx):
 
     chara = from_list_of_tuples_to_list(chara)
 
-    print(chara)
+    #print(chara)
 
     return [name for name in chara if ctx.value.lower() in name.lower()]
 
