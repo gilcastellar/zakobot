@@ -63,28 +63,28 @@ top_page = 1
 top_list = []
 
 class TopPagination(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
-    def __init__(self, msg, page, list, type, min):
+    def __init__(self, msg, page, last_page, list, type, min):
         super().__init__()
         #self.ctx = ctx
         self.msg = msg
         self.page = page
+        self.last_page = last_page
         self.list = list
         self.type = type
         self.min = min
 
-
-    if page > 1:
-        @discord.ui.button(label="<<", row=0, style=discord.ButtonStyle.primary)
-        async def first_button_callback(self, button, interaction):
-            if self.page > 1:
-                self.page -= 1
-            await generate_top(self.msg, self.page, self.list, self.type, self.min)
-            await interaction.response.send_message('')
+        
+    @discord.ui.button(label="<<", row=0, style=discord.ButtonStyle.primary)
+    async def first_button_callback(self, button, interaction):
+        if self.page > 1:
+            self.page -= 1
+        await generate_top(self.msg, self.page, self.last_page, self.list, self.type, self.min)
+        await interaction.response.send_message('')
 
     @discord.ui.button(label=">>", row=0, style=discord.ButtonStyle.primary)
     async def second_button_callback(self, button, interaction):
         self.page += 1
-        await generate_top(self.msg, self.page, self.list, self.type, self.min)
+        await generate_top(self.msg, self.page, self.last_page, self.list, self.type, self.min)
         await interaction.response.send_message('')
 
 class CollectionPagination(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
@@ -1847,12 +1847,14 @@ async def generate_top(msg, page, list, type, minimum):
 
     text += '```'
 
+    last_page = round(len(list) / 25)
+
     print('text:')
     print(text)
     print('length of text:')
     print(len(text))
     
-    await msg.edit(text, view=TopPagination(msg, page, list, type, minimum))
+    await msg.edit(text, view=TopPagination(msg, page, last_page, list, type, minimum))
 
 #@bot.command(name='manual_update_media')
 #async def manual_update_media(ctx):
