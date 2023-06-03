@@ -88,24 +88,25 @@ class TopPagination(discord.ui.View): # Create a class called MyView that subcla
         await interaction.response.send_message('')
 
 class CollectionPagination(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
-    def __init__(self, msg, user_id, page):
+    def __init__(self, msg, user_id, page, last_page):
         super().__init__()
         #self.ctx = ctx
         self.msg = msg
         self.user_id = user_id
         self.page = page
+        self.last_page = last_page
 
     @discord.ui.button(label="<<", row=0, style=discord.ButtonStyle.primary)
     async def first_button_callback(self, button, interaction):
         if self.page > 1:
             self.page -= 1
-        await generate_collection(self.msg, self.user_id, self.page)
+        await generate_collection(self.msg, self.user_id, self.page, self.last_page)
         await interaction.response.send_message('')
 
     @discord.ui.button(label=">>", row=0, style=discord.ButtonStyle.primary)
     async def second_button_callback(self, button, interaction):
         self.page += 1
-        await generate_collection(self.msg, self.user_id, self.page)
+        await generate_collection(self.msg, self.user_id, self.page, self.last_page)
         await interaction.response.send_message('')
 
 @bot.event
@@ -2200,9 +2201,9 @@ async def coleção_command(ctx):
         
         msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
 
-        await generate_collection(msg, ctx.author.id, 1)
+        await generate_collection(msg, ctx.author.id, 1, 0)
 
-async def generate_collection(msg, user_id, page):
+async def generate_collection(msg, user_id, page, last_page):
 
     characters = dbservice.select('user_has_chara', ['chara_id'], ' ORDER BY position', {'user_id': str(user_id)})
     
@@ -2221,6 +2222,8 @@ async def generate_collection(msg, user_id, page):
 
     print('indice:')
     print(indice)
+
+    last_page = round(len(characters) / 25)
 
     for chara in characters[batch*(page-1):batch*page]:
 
@@ -2244,7 +2247,9 @@ async def generate_collection(msg, user_id, page):
         text += str(chara_info[0]) + ' | Posição: ' + str(position) + '\n'
         indice += 1
     
-    await msg.edit(text, view=CollectionPagination(msg, user_id, page))
+    if page <= last_page:
+
+        await msg.edit(text, view=CollectionPagination(msg, user_id, page, last_page))
     
 @tasks.loop(seconds=1)
 async def make_rolls():
