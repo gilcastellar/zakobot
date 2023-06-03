@@ -1198,6 +1198,8 @@ async def placar_roleta_command(
 
     roleta_id = dbservice.select('roleta', ['id'], {'name': roleta})
 
+    print(roleta_id)
+
     await board_update(roleta_id, message)
     
 # Help embed
