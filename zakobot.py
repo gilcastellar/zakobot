@@ -1819,6 +1819,9 @@ async def top_command(
 
 async def generate_top(msg, page, last_page, list, type, minimum):
 
+    print('len(list)')
+    print(len(list))
+
     idx = (page * 25) - 24
     
     print("idx")
