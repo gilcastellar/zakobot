@@ -2383,12 +2383,9 @@ async def pesquisar_chara_command(
     if type(result) == tuple:
         result = [result]
 
-    else:
-        result = from_list_of_tuples_to_list(result)
-
-    print(result)
-
     for user in result:
+
+        print(user)
 
         user_name = dbservice.select('user', ['name'], '', {'id': user[0]})
         
