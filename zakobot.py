@@ -2376,14 +2376,16 @@ async def pesquisar_chara_command(
 
     print(result)
 
-    #result = from_list_of_tuples_to_list(result)
-
     header = '**' + target + '**\n'
     body = header + '```Usuário:            Cópias:\n\n'
     text = ''
     
     if type(result) == tuple:
         result = [result]
+
+    else:
+
+        result = from_list_of_tuples_to_list(result)
 
     for user in result:
 
