@@ -1041,6 +1041,10 @@ async def indicar_command(
     media2: discord.Option(str, name='segunda_indicação', description='INSIRA O LINK DO ANILIST DA OBRA', required=False),
     media3: discord.Option(str, name='terceira_indicação', description='INSIRA O LINK DO ANILIST DA OBRA', required=False)
 ):
+    if not media1.startswith('https://anilist.co') or not media2.startswith('https://anilist.co') or not media3.startswith('https://anilist.co'):
+
+        await ctx.respond('Suas indicações precisam ser links do Anilist.')
+
     await ctx.respond(f"Obrigado pela indicação!")
 
     #roletas = database.selectall('SELECT id FROM roleta', True)
