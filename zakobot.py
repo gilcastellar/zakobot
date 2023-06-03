@@ -2384,8 +2384,9 @@ async def pesquisar_chara_command(
         result = [result]
 
     else:
-
         result = from_list_of_tuples_to_list(result)
+
+    print(result)
 
     for user in result:
 
