@@ -1087,6 +1087,8 @@ async def indicar_command(
 
     print(list)
 
+    title = ''
+
     for media in list:
         print('adding media_name to table user_has_roleta:')
         print(media)
@@ -1102,14 +1104,13 @@ async def indicar_command(
             response = anilist.query_manga_id(id)
 
         media_obj = response.json()
-        title = media_obj['data']['Media']['title']['romaji']
+        title += media_obj['data']['Media']['title']['romaji'] + ','
 
         print(title)
 
-        #sql = 'UPDATE user_has_roleta SET media_name="' + title + '" WHERE id_giver="' + str(ctx.author.id) + '" AND id_roleta=' + str(roleta_atual)
-        #database.update(sql)
+    title = title.rstrip(',')
 
-        dbservice.update('user_has_roleta', ['media_name'], [title], {'id_giver': ctx.author.id, 'id_roleta': roleta_atual})
+    dbservice.update('user_has_roleta', ['media_name'], [title], {'id_giver': ctx.author.id, 'id_roleta': roleta_atual})
     
     await board_update(roleta_atual)
 
