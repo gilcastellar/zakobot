@@ -1585,7 +1585,7 @@ def anime_picker(ctx, user_name, status):
 async def obra_command(
   ctx: discord.ApplicationContext,
   obra: discord.Option(str, name='obra', autocomplete=get_media_names, description="Link do Anilist"),
-  format: discord.Option(str, name='tipo', choices=['Anime', 'Manga'], description="Em caso de homonimos, diferencie o tipo da obra aqui", required=False)
+  format: discord.Option(str, name='tipo', choices=['Anime', 'Manga'], description="Em caso de homonimos, diferencie o tipo da obra aqui")
 ):
     if 'anilist.co/' in obra:
         await ctx.respond('Puxando dados...')
@@ -1634,7 +1634,6 @@ async def generate_stats(ctx, type, id):
     if format in ['TV', 'TV_SHORT', 'MOVIE', 'SPECIAL', 'OVA', 'ONA', 'MUSIC']:
         episodes = obj['data']['Media']['episodes']
     
-
     match format:
         case 'TV':
             format = 'Série'
