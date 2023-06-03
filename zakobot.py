@@ -2378,14 +2378,12 @@ async def pesquisar_chara_command(
 
     header = '**' + target + '**\n'
     body = header + '```Usuário:            Cópias:\n\n'
-    text = ''
     
     if type(result) == tuple:
         result = [result]
 
     for user in result:
-
-        print(user)
+        text = ''
 
         user_name = dbservice.select('user', ['name'], '', {'id': user[0]})
         
