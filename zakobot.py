@@ -72,12 +72,14 @@ class TopPagination(discord.ui.View): # Create a class called MyView that subcla
         self.type = type
         self.min = min
 
-    @discord.ui.button(label="<<", row=0, style=discord.ButtonStyle.primary)
-    async def first_button_callback(self, button, interaction):
-        if self.page > 1:
-            self.page -= 1
-        await generate_top(self.msg, self.page, self.list, self.type, self.min)
-        await interaction.response.send_message('')
+
+    if page > 1:
+        @discord.ui.button(label="<<", row=0, style=discord.ButtonStyle.primary)
+        async def first_button_callback(self, button, interaction):
+            if self.page > 1:
+                self.page -= 1
+            await generate_top(self.msg, self.page, self.list, self.type, self.min)
+            await interaction.response.send_message('')
 
     @discord.ui.button(label=">>", row=0, style=discord.ButtonStyle.primary)
     async def second_button_callback(self, button, interaction):
@@ -1191,7 +1193,7 @@ async def placar_roleta_command(
     ctx: discord.ApplicationContext,
     roleta: discord.Option(str, name='roleta', description='Escolha a roleta que quer visualizar', autocomplete=get_roletas, required=True)
 ):
-    await ctx.respond("Carregando...")
+    await ctx.respond("")
 
     message = await create_placeholder_message(ctx, ctx.interaction.channel.id)
     
