@@ -2405,7 +2405,7 @@ async def pesquisar_chara_command(
         
     body += '```'
 
-    await send_message2(text, rolls_channel)
+    await send_message2(body, rolls_channel)
 
 #@bot.command(name='ofertas_enviadas')
 #async def ofertas_enviadas_command(ctx):
