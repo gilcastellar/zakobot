@@ -1104,7 +1104,7 @@ async def indicar_command(
             response = anilist.query_manga_id(id)
 
         media_obj = response.json()
-        title += media_obj['data']['Media']['title']['romaji'] + ','
+        title += media_obj['data']['Media']['title']['romaji'] + '|'
 
         print(title)
 
