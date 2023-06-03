@@ -1849,6 +1849,9 @@ async def generate_top(msg, page, list, type, minimum):
 
     last_page = round(len(list) / 25)
 
+    print('last_page')
+    print(last_page)
+
     print('text:')
     print(text)
     print('length of text:')
