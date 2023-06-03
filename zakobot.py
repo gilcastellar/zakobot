@@ -2394,7 +2394,7 @@ async def pesquisar_chara_command(
             quantity = 1
 
         text += user_name
-        while len(text) < 20:
+        while len(text) != 20:
             text += ' '
 
         text += str(quantity) + '\n'
