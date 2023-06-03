@@ -1856,8 +1856,10 @@ async def generate_top(msg, page, last_page, list, type, minimum):
     print(text)
     print('length of text:')
     print(len(text))
+
+    if page <= last_page:
     
-    await msg.edit(text, view=TopPagination(msg, page, last_page, list, type, minimum))
+        await msg.edit(text, view=TopPagination(msg, page, last_page, list, type, minimum))
 
 #@bot.command(name='manual_update_media')
 #async def manual_update_media(ctx):
