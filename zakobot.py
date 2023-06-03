@@ -1110,6 +1110,8 @@ async def indicar_command(
 
     title = title.rstrip(',')
 
+    print(title)
+
     dbservice.update('user_has_roleta', ['media_name'], [title], {'id_giver': ctx.author.id, 'id_roleta': roleta_atual})
     
     await board_update(roleta_atual)
