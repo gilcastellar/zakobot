@@ -1823,6 +1823,7 @@ async def generate_top(msg, page, last_page, list, type, minimum):
     print(len(list))
 
     print(len(list) / 25)
+    print(round(len(list) / 25))
 
     idx = (page * 25) - 24
     
