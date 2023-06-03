@@ -2378,8 +2378,9 @@ async def pesquisar_chara_command(
 
     #result = from_list_of_tuples_to_list(result)
 
-    text = '**' + target + '**\n'
-    text += '```Usuário:            Cópias:\n\n'
+    header = '**' + target + '**\n'
+    body = '```Usuário:            Cópias:\n\n'
+    text = ''
     
     if type(result) == tuple:
         result = [result]
@@ -2400,8 +2401,10 @@ async def pesquisar_chara_command(
             text += ' '
 
         text += str(quantity) + '\n'
+
+        body += text
         
-    text += '```'
+    body += '```'
 
     await send_message2(text, rolls_channel)
 
