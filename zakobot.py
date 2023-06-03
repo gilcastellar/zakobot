@@ -2230,7 +2230,7 @@ async def generate_collection(msg, user_id, page, last_page):
     print('indice:')
     print(indice)
 
-    last_page = round(len(characters) / 25)
+    last_page = ceil(len(characters) / 25)
 
     for chara in characters[batch*(page-1):batch*page]:
 
