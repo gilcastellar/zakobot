@@ -1814,7 +1814,7 @@ async def top_command(
 
     message = await create_placeholder_message(ctx, ctx.interaction.channel.id)
 
-    await generate_top(message, 1, media_list, type, minimum)
+    await generate_top(message, 1, 0, media_list, type, minimum)
 
 async def generate_top(msg, page, last_page, list, type, minimum):
 
