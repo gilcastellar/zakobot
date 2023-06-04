@@ -2759,6 +2759,8 @@ async def change_values_command(
 ):
 
     if ctx.author.id in admins:
+        ...
+
 # Auxiliar command
 @bot.command(name='aux')
 async def aux_command(ctx):
