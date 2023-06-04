@@ -483,8 +483,8 @@ async def get_chara(ctx):
 
 #        await ctx.respond('Você já está cadastrado!')
 
-@bot.slash_command(name='editar_perfil')
-async def editar_perfil_command(ctx: discord.ApplicationContext):
+@bot.command(name='editar_perfil')
+async def editar_perfil_command(ctx):
     user_id = ctx.author.id
     modal = EditarPerfilModal(user_id, title="Editar perfil da roleta")
     await ctx.send_modal(modal)
@@ -2745,7 +2745,20 @@ async def dailies():
     dbservice.update('dailies', ['daily', 'is_done'], ['media_update', 1], {'daily':'media_update'})
     
     print('daily finalizada ' + get_timestamp())
-    
+
+def values_options():
+
+    values_options = ['episode', 'complete', 'random_episode', 'episode_combo', 'roleta_indicar', 'roleta_terminar', 'roleta_abandonar', 'roll']
+
+    return values_options
+
+@bot.slash_command(name='change_values')
+async def change_values_command(
+    ctx: discord.ApplicationContext,
+    value: discord.Option(str, choices=values_options())                            
+):
+
+    if ctx.author.id in admins:
 # Auxiliar command
 @bot.command(name='aux')
 async def aux_command(ctx):
