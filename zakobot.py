@@ -2757,9 +2757,8 @@ async def change_values_command(
     ctx: discord.ApplicationContext,
     value: discord.Option(str, choices=values_options())                            
 ):
-
     if ctx.author.id in admins:
-        ...
+        print('ok')
 
 # Auxiliar command
 @bot.command(name='aux')
