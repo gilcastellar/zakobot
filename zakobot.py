@@ -2748,17 +2748,18 @@ async def dailies():
 
 def values_options():
 
-    values_options = ['episode', 'complete', 'random_episode', 'episode_combo', 'roleta_indicar', 'roleta_terminar', 'roleta_abandonar', 'roll']
+    values_options = from_list_of_tuples_to_list(dbservice.select('values_chart', ['value_name'], ''))
 
     return values_options
 
 @bot.slash_command(name='change_values')
 async def change_values_command(
     ctx: discord.ApplicationContext,
-    value: discord.Option(str, choices=values_options())                            
+    value_to_change: discord.Option(str, choices=values_options(), name='value_name'),
+    value: discord.Option(int, name='value')
 ):
     if ctx.author.id in admins:
-        print('ok')
+        dbservice.update('values_chart', ['value_value'], [value], {'value_name': value_to_change})
 
 # Auxiliar command
 @bot.command(name='aux')
