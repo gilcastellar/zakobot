@@ -2845,7 +2845,9 @@ async def aux_command(ctx):
 
         #        dbservice.insert('chara', columns, val, True)
 
-        message = await create_placeholder_message(ctx, 1077070205987082281)
+        #message = await create_placeholder_message(ctx, 1077070205987082281)
+
+        print(dbservice.select('values_chart', ['value_value'], '', {'value_name': 'episode'}))
 
         print(get_timestamp() + ': Done')
     
