@@ -112,7 +112,7 @@ class CollectionPagination(discord.ui.View): # Create a class called MyView that
 
 @bot.event
 async def on_ready():
-    print(get_timestamp())
+    print(f'{get_timestamp()}: Started')
 
     check_time.start()
 
@@ -131,32 +131,15 @@ async def on_message(message):
 
     match command:
 
-        case ";registro":
+        case ";registro" | ';cadastro' | ';registrar' | ';cadastrar':
 
-            user_id = message.author.id
-            #exists = database.check_if_exists(str(user_id), 'id', 'user')
-
-            exists = dbservice.check_existence('user', {'id': str(user_id)})
-
-            if exists == 0:
-
-                guild = 1059298932825538661
-                name = message.author.name
-                #database.insert('INSERT INTO user (id, id_guild, name) VALUES (%s,%s,%s)',(user_id, guild, name))
-
-                dbservice.insert('user', ['id', 'id_guild', 'name'], (user_id, guild, name))
-
-                await send_message2(f"Seja bem-vindo(a) à roleta, {name}!", message.channel.id)
-
-            else:
-
-                await message.respond('Você já está cadastrado!')
+            await registro_command(msg)
 
         case ";ajuda" | ";comandos" | ";help" | ";commands":
 
             await send_embed2(help_embed(), message.channel.id)
 
-        case ";r":
+        case ";r" | ';roll':
 
             if message.channel.id in [rolls_channel]:
 
@@ -462,26 +445,25 @@ async def get_chara(ctx):
     return [name for name in chara if ctx.value.lower() in name.lower()]
 
 #@bot.command(name='registro')
-#async def registro_command(ctx):
+async def registro_command(message):
 
-#    user_id = ctx.author.id
-#    #exists = database.check_if_exists(str(user_id), 'id', 'user')
+    user_id = message.author.id
+            
+        exists = dbservice.check_existence('user', {'id': str(user_id)})
 
-#    exists = dbservice.check_existence('user', {'id': str(user_id)})
+        if exists == 0:
 
-#    if exists == 0:
+            guild = 1059298932825538661
+            name = message.author.name
+            #database.insert('INSERT INTO user (id, id_guild, name) VALUES (%s,%s,%s)',(user_id, guild, name))
 
-#        guild = 1059298932825538661
-#        name = ctx.author.name
-#        #database.insert('INSERT INTO user (id, id_guild, name) VALUES (%s,%s,%s)',(user_id, guild, name))
+            dbservice.insert('user', ['id', 'id_guild', 'name'], (user_id, guild, name))
 
-#        dbservice.insert('user', ['id', 'id_guild', 'name'], (user_id, guild, name))
+            await send_message2(f"Seja bem-vindo(a) à roleta, {name}!", message.channel.id)
 
-#        await ctx.respond(f"Seja bem-vindo(a) à roleta, {name}!")
+        else:
 
-#    else:
-
-#        await ctx.respond('Você já está cadastrado!')
+            await message.respond('Você já está cadastrado!')
 
 @bot.command(name='editar_perfil')
 async def editar_perfil_command(ctx):
