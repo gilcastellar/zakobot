@@ -1120,7 +1120,7 @@ async def indicar_command(
 
             print(title)
 
-        title = title.rstrip(',')
+        title = title.rstrip('|')
 
         print(title)
 
