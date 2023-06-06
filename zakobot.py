@@ -1189,8 +1189,8 @@ async def abandonei_command(
     name = parse_name(name)
 
     if status == 'ongoing':
-        add_zakoleta(ctx.author.id, 25, ' +25 por abandonar suas indicações de ' + name)
-        await ctx.send('Você recebeu Ƶ 25 por abandonar manualmente sua indicação.')
+        add_zakoleta(ctx.author.id, dbservice.select('values_chart', ['value_value'], '', {'value_name': 'roleta_abandonei'}), ' +20 por abandonar suas indicações de ' + name)
+        await ctx.send('Você recebeu Ƶ 20 por abandonar manualmente sua indicação.')
 
     #sql = 'UPDATE user_has_roleta SET status="abandoned" WHERE id_roleta=' + str(roleta_id) + ' AND id_receiver="' + str(ctx.author.id) + '"'
     #database.update(sql)
