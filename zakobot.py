@@ -2206,7 +2206,7 @@ async def editar_coleção_command(
 
 
 @bot.command(name='coleção')
-async def coleção_command(ctx):
+async def coleção(ctx):
 
     if ctx.channel.id == rolls_channel:
 
@@ -2230,7 +2230,7 @@ async def generate_collection(msg, user_id, page, last_page):
 
     indice = (page * 25) - 24
 
-    text = '```Personagem                                        #      Pos.\n\n'
+    text = '```Personagem                                          #      Pos.\n\n'
 
     print('page')
     print(page)
