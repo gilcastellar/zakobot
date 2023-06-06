@@ -2269,7 +2269,7 @@ async def generate_collection(msg, user_id, page, last_page):
         #if len(copies_text) > 1:
         #    chara_text = chara_text[:-len(copies_text)]
 
-        while len(copies_text) < 5:
+        while len(copies_text) < 7:
             copies_text += ' '
 
         position_text = str(position)
