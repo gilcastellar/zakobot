@@ -1085,8 +1085,6 @@ async def indicar_command(
 
         if str(ctx.author.id) in allowed_givers:
 
-            print('OI')
-
             sql = 'UPDATE user_has_roleta SET received_rec="' + medias + '" WHERE id_giver="' + str(ctx.author.id) + '" AND id_roleta=' + str(roleta_atual)
             database.update(sql)
 
