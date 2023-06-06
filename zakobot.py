@@ -2230,7 +2230,7 @@ async def generate_collection(msg, user_id, page, last_page):
 
     indice = (page * 25) - 24
 
-    text = ''
+    text = '```'
 
     print('page')
     print(page)
@@ -2261,6 +2261,8 @@ async def generate_collection(msg, user_id, page, last_page):
           
         text += str(chara_info[0]) + ' | Posição: ' + str(position) + '\n'
         indice += 1
+
+    text += '```'
     
     if page <= last_page:
 
