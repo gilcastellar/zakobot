@@ -2267,9 +2267,7 @@ async def generate_collection(msg, user_id, page, last_page):
         copies_text = str(copies)
 
         while len(copies_text) < len(str(copies)) - 1:
-            copies_text += ' '
-
-        copies_text += str(copies)
+            copies_text += ' ' + copies_text
 
         while len(copies_text) < 5:
             copies_text += ' '
