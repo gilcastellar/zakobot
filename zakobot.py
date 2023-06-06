@@ -2230,7 +2230,7 @@ async def generate_collection(msg, user_id, page, last_page):
 
     indice = (page * 25) - 24
 
-    text = '```Personagem                                         #     Posição\n\n'
+    text = '```Personagem                                        #     Posição\n\n'
 
     print('page')
     print(page)
@@ -2265,6 +2265,10 @@ async def generate_collection(msg, user_id, page, last_page):
             chara_text += ' '
 
         copies_text = str(copies)
+
+        if len(copies_text) > 1:
+            for i in range(len(copies_text) - 1):
+                chara_text -= ' '
 
         while len(copies_text) < 5:
             copies_text += ' '
