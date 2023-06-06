@@ -2230,7 +2230,7 @@ async def generate_collection(msg, user_id, page, last_page):
 
     indice = (page * 25) - 24
 
-    text = '``` Personagem:                                            Cópias:                           Posição:'
+    text = '``` Personagem:                                            Cópias:                           Posição:\n'
 
     print('page')
     print(page)
