@@ -1125,10 +1125,7 @@ async def indicar_command(
         print(title)
 
         is_new = dbservice.select('user_has_roleta', ['media_name'], '', {'id_giver': ctx.author.id, 'id_roleta': roleta_atual})
-
-        print('is_new')
-        print(is_new)
-
+        
         if is_new == None:
 
             add_zakoleta(ctx.author.id, dbservice.select('values_chart', ['value_value'], '', {'value_name': 'roleta_indicar'}), ' +50 pela participação na roleta de ' + ctx.author.name)
@@ -1137,8 +1134,8 @@ async def indicar_command(
         
         await board_update(roleta_atual)
 
-@bot.slash_command(name='terminei')
-async def terminei_command(
+@bot.slash_command(name='terminar')
+async def terminar_command(
     ctx: discord.ApplicationContext,
     roleta: discord.Option(str, name='roleta', description='Escolha a roleta', autocomplete=get_roletas, required=True),
     score: discord.Option(int, name='nota', description='Insira sua nota de 1 a 10', min_value=1, max_value=10, required=True)
@@ -1159,7 +1156,8 @@ async def terminei_command(
 
 
     if status == 'ongoing':
-        add_zakoleta(ctx.author.id, 50, ' +50 por terminar suas indicações de ' + name)
+
+        add_zakoleta(ctx.author.id, dbservice.select('values_chart', ['value_value'], '', {'value_name': 'roleta_terminei'}), ' +50 por terminar suas indicações de ' + name)
         await ctx.send('Você recebeu Ƶ 50 por finalizar sua indicação.')
 
     #sql = 'UPDATE user_has_roleta SET score=' + str(score) + ',status="finished"' + 'WHERE id_roleta=' + str(roleta_id) + ' AND id_receiver="' + str(ctx.author.id) + '"'
