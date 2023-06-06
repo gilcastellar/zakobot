@@ -2230,7 +2230,7 @@ async def generate_collection(msg, user_id, page, last_page):
 
     indice = (page * 25) - 24
 
-    text = '``` Personagem:                                            Cópias:                           Posição:\n'
+    text = '``` Personagem:                                            Cópias:     Posição:\n'
 
     print('page')
     print(page)
@@ -2265,7 +2265,7 @@ async def generate_collection(msg, user_id, page, last_page):
         while len(line) < 50: 
             line += ' '
 
-        line += '| ' + str(copies) + ' | ' + str(position) + '\n'
+        line += str(copies) + '    ' + str(position) + '\n'
 
         text += line 
         indice += 1
