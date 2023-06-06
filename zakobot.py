@@ -275,6 +275,10 @@ async def send_embed2(embed, channel_id):
     channel = bot.get_channel(channel_id)
     await channel.send(embed=embed)
 
+def print_user(ctx, extra):
+
+    print(f'{get_timestamp()}: {ctx.author.name} used {extra}.')
+
 def get_value(column):
 
     return dbservice.select('values', [column], '')
