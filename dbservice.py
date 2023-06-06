@@ -8,7 +8,7 @@ def update(table, columns, values, where):
 
     for i in where:
 
-        query += i + '="' + str(where[i]) + '" AND '
+        query += i + "='" + str(where[i]) + "' AND "
 
     query = query.rstrip(' AND ')
 
@@ -19,7 +19,7 @@ def update(table, columns, values, where):
 
     if exists == 1:
 
-        query = 'UPDATE ' + str(table) + ' SET '
+        query = "UPDATE " + str(table) + " SET "
 
         idx = 0
 
@@ -27,18 +27,18 @@ def update(table, columns, values, where):
 
             if idx != 0:
 
-                query += ', '
+                query += ", "
 
-            query += str(column) + '="' + str(values[idx]) + '"'
+            query += str(column) + "='" + str(values[idx]) + "'"
             idx += 1
 
-        query += ' WHERE '
+        query += " WHERE "
 
         for i in where:
 
-            query += i + '="' + str(where[i]) + '" AND '
+            query += i + "='" + str(where[i]) + "' AND "
 
-        query = query.rstrip(' AND ')
+        query = query.rstrip(" AND ")
 
         print(query)
     
