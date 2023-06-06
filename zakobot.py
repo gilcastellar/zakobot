@@ -449,21 +449,21 @@ async def registro_command(message):
 
     user_id = message.author.id
             
-        exists = dbservice.check_existence('user', {'id': str(user_id)})
+    exists = dbservice.check_existence('user', {'id': str(user_id)})
 
-        if exists == 0:
+    if exists == 0:
 
-            guild = 1059298932825538661
-            name = message.author.name
-            #database.insert('INSERT INTO user (id, id_guild, name) VALUES (%s,%s,%s)',(user_id, guild, name))
+        guild = 1059298932825538661
+        name = message.author.name
+        #database.insert('INSERT INTO user (id, id_guild, name) VALUES (%s,%s,%s)',(user_id, guild, name))
 
-            dbservice.insert('user', ['id', 'id_guild', 'name'], (user_id, guild, name))
+        dbservice.insert('user', ['id', 'id_guild', 'name'], (user_id, guild, name))
 
-            await send_message2(f"Seja bem-vindo(a) à roleta, {name}!", message.channel.id)
+        await send_message2(f"Seja bem-vindo(a) à roleta, {name}!", message.channel.id)
 
-        else:
+    else:
 
-            await message.respond('Você já está cadastrado!')
+        await message.respond('Você já está cadastrado!')
 
 @bot.command(name='editar_perfil')
 async def editar_perfil_command(ctx):
