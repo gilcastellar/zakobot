@@ -2260,7 +2260,7 @@ async def generate_collection(msg, user_id, page, last_page):
 
         position = dbservice.select('user_has_chara', ['position'], '', {'chara_id': str(chara), 'user_id': str(user_id)})
           
-        line = 'str(chara_info[0])'
+        line = str(chara_info[0])
 
         while len(line) < 50: 
             line += ' '
