@@ -275,7 +275,7 @@ async def send_embed2(embed, channel_id):
     channel = bot.get_channel(channel_id)
     await channel.send(embed=embed)
 
-def print_user(ctx, extra):
+def print_use(ctx, extra):
 
     print(f'{get_timestamp()}: {ctx.author.name} used {extra}.')
 
@@ -1035,6 +1035,8 @@ async def indicar_command(
     media2: discord.Option(str, name='segunda_indicação', description='INSIRA O LINK DO ANILIST DA OBRA', required=False),
     media3: discord.Option(str, name='terceira_indicação', description='INSIRA O LINK DO ANILIST DA OBRA', required=False)
 ):
+    print_use(ctx, '/indicar')
+
     if not media1.startswith('https://anilist.co'):
 
         await ctx.respond('Você inseriu algo errado. Cada indicação deve conter apenas um link do Anilist.')
