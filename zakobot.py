@@ -2242,7 +2242,6 @@ async def generate_collection(msg, user_id, page, last_page):
 
     for chara in characters[batch*(page-1):batch*page]:
 
-
         print(indice)
 
         print('chara')
@@ -2260,14 +2259,24 @@ async def generate_collection(msg, user_id, page, last_page):
 
         position = dbservice.select('user_has_chara', ['position'], '', {'chara_id': str(chara), 'user_id': str(user_id)})
           
-        line = str(chara_info[0])
+        chara_text = str(chara_info[0])
 
-        while len(line) < 50: 
-            line += ' '
+        while len(chara_text) < 50: 
+            chara_text += ' '
 
-        line += str(copies) + '       ' + str(position) + '\n'
+        line +=  + '       ' +  + '\n'
 
-        text += line 
+        copies_text = str(copies)
+
+        while len(copies_text) < 5:
+            copies_text += ' '
+
+        position_text = str(position)
+
+        while len(position_text) < 10:
+            position_text += ' '
+
+        text += chara_text + copies_text + position_text + '\n'
         indice += 1
 
     text += '```'
