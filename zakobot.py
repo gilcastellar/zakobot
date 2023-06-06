@@ -639,8 +639,6 @@ async def sorteio_command(
             receiver = await fetch_user(receiver)
 
             if real == 'True':
-                
-                add_zakoleta(ctx.author.id, 50, ' +50 pela participação na roleta de ' + name)
 
                 text = giver.display_name + ' -> ' + receiver.display_name
             
@@ -1122,8 +1120,14 @@ async def indicar_command(
 
         print(title)
 
-        dbservice.update('user_has_roleta', ['media_name'], [title], {'id_giver': ctx.author.id, 'id_roleta': roleta_atual})
+        is_new = dbservice.select('user_has_roleta', ['media_name'], '', {'id_giver': ctx.author.id, 'id_roleta': roleta_atual})
+
+        if is_new == None:
+
+            add_zakoleta(ctx.author.id, dbservice.select('values_chart', ['value_value'], '', {'value_name': 'roleta_indicar'}), ' +50 pela participação na roleta de ' + name)
     
+        dbservice.update('user_has_roleta', ['media_name'], [title], {'id_giver': ctx.author.id, 'id_roleta': roleta_atual})
+        
         await board_update(roleta_atual)
 
 @bot.slash_command(name='terminei')
