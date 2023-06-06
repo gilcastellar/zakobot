@@ -1131,7 +1131,7 @@ async def indicar_command(
 
         if is_new == None:
 
-            add_zakoleta(ctx.author.id, dbservice.select('values_chart', ['value_value'], '', {'value_name': 'roleta_indicar'}), ' +50 pela participação na roleta de ' + name)
+            add_zakoleta(ctx.author.id, dbservice.select('values_chart', ['value_value'], '', {'value_name': 'roleta_indicar'}), ' +50 pela participação na roleta de ' + ctx.author.name)
     
         dbservice.update('user_has_roleta', ['media_name'], [title], {'id_giver': ctx.author.id, 'id_roleta': roleta_atual})
         
