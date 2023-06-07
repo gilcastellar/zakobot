@@ -402,6 +402,7 @@ async def get_chara(ctx):
         name_collection.append(item[0] + ' (' + item[1] + ')')
 
     return [name for name in name_collection if ctx.value.lower() in name.lower()]
+
 #@bot.command(name='registro')
 async def registro_command(message):
 
