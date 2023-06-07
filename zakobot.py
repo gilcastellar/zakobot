@@ -2403,8 +2403,6 @@ async def ofertas_enviadas_command(message):
 
         await send_message2(text, rolls_channel)
 
-    ...
-
 
 #@bot.command(name='ofertas_recebidas')
 async def ofertas_recebidas_command(message):
@@ -2442,8 +2440,6 @@ async def ofertas_recebidas_command(message):
 
         await send_message2(text, rolls_channel)
 
-#    ...
-
 @bot.slash_command(name='responder_oferta')
 async def responder_oferta_command(
     ctx: discord.ApplicationContext,
@@ -2460,7 +2456,7 @@ async def responder_oferta_command(
         
             case 'Aceitar':
 
-                ...
+                await make_trade(trade)
 
                 dbservice.delete('chara_ofertas', {'id': id})
 
@@ -2475,6 +2471,66 @@ async def responder_oferta_command(
     else:
 
         await ctx.respond('Você não pode aceitar ou recusar essa oferta pois ela não é direcionada par você.')
+
+async def make_trade(trade):
+
+    user1 = trade[1]
+    user2 = trade[2]
+
+    user1_chara_name = trade[3]
+    user2_chara_name = trade[5]
+    
+    user1_chara_id = dbservice.select('chara', ['chara_id'], '', {'name': user1_chara_name})
+    user2_chara_id = dbservice.select('chara', ['chara_id'], '', {'name': user2_chara_name})
+
+    user1_chara_quantity = trade[4]
+    user2_chara_quantity = trade[6]
+
+    # USER 1
+
+    exists = dbservice.check_existence('user_has_chara', {'user_id': user1, 'chara_id': user2_chara_id})
+
+    if exists == 0:
+
+        columns = ['user_id', 'chara_id', 'position', 'chara_name', 'quantity']
+        val = [user1, user2_chara_id, 9999, user2_chara_name, user2_chara_quantity]
+
+        dbservice.insert('user_has_chara', columns, val)
+
+    else:
+
+        original_quantity = dbservice.select('user_has_chara', ['quantity'], '', {'user_id': user1, 'chara_id': user2_chara_id})
+
+        new_quantity = user2_chara_quantity + original_quantity
+
+        columns = ['quantity']
+        val = [new_quantity]
+        where = {'user_id': user1, 'chara_id': user2_chara_id}
+
+        dbservice.update('user_has_chara', columns, val, where)
+        
+    # USER 2
+
+    exists = dbservice.check_existence('user_has_chara', {'user_id': user2, 'chara_id': user1_chara_id})
+
+    if exists == 0:
+
+        columns = ['user_id', 'chara_id', 'position', 'chara_name', 'quantity']
+        val = [user2, user1_chara_id, 9999, user1_chara_name, user1_chara_quantity]
+
+        dbservice.insert('user_has_chara', columns, val)
+
+    else:
+
+        original_quantity = dbservice.select('user_has_chara', ['quantity'], '', {'user_id': user2, 'chara_id': user1_chara_id})
+
+        new_quantity = user1_chara_quantity + original_quantity
+
+        columns = ['quantity']
+        val = [new_quantity]
+        where = {'user_id': user2, 'chara_id': user1_chara_id}
+
+        dbservice.update('user_has_chara', columns, val, where)
 
 @bot.slash_command(name='cancelar_oferta')
 async def cancelar_oferta_command(
