@@ -391,13 +391,30 @@ async def get_collection(ctx):
 
 async def get_chara(ctx):
 
-    chara = dbservice.select('chara', ['name'], '')
+    name_collection = dbservice.select('chara', ['name'], '')
+    id_collection = dbservice.select('chara', ['chara_id'], '')
 
-    chara = from_list_of_tuples_to_list(chara)
+    id_collection = from_list_of_tuples_to_list(id_collection)
+    name_collection = from_list_of_tuples_to_list(name_collection)
 
-    #print(chara)
+    repeated = []
 
-    return [name for name in chara if ctx.value.lower() in name.lower()]
+    for idx, chara in enumerate(name_collection):
+
+        count = name_collection.count(chara)
+
+        if count > 1 or chara in repeated:
+
+            if chara not in repeated:
+
+                repeated.append(chara)
+
+            title = dbservice.select('chara', ['media_title'], '', {'chara_id': id_collection[idx]})
+
+            name_collection[idx] = chara + ' (' + title + ')'
+
+    return [name for name in name_collection if ctx.value.lower() in name.lower()]
+    #return [name for name in chara if ctx.value.lower() in name.lower()]
 
 #@bot.command(name='registro')
 async def registro_command(message):
