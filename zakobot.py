@@ -2361,8 +2361,7 @@ async def pesquisar_chara_command(
     body += '```'
 
     await send_message2(body, rolls_channel)
-
-#@bot.command(name='ofertas_enviadas')
+    
 async def ofertas_enviadas_command(message):
 
     offers = dbservice.select('chara_ofertas', [], 'ORDER BY id ASC', {'from_id': message.author.id})
@@ -2403,8 +2402,6 @@ async def ofertas_enviadas_command(message):
 
         await send_message2(text, rolls_channel)
 
-
-#@bot.command(name='ofertas_recebidas')
 async def ofertas_recebidas_command(message):
 
     offers = dbservice.select('chara_ofertas', [], 'ORDER BY id ASC', {'to_id': message.author.id})
@@ -2440,7 +2437,7 @@ async def ofertas_recebidas_command(message):
 
         await send_message2(text, rolls_channel)
 
-@bot.slash_command(name='responder_oferta')
+@ofertas.command(name='responder')
 async def responder_oferta_command(
     ctx: discord.ApplicationContext,
     id: discord.Option(int, name='id'),
@@ -2532,7 +2529,7 @@ async def make_trade(trade):
 
         dbservice.update('user_has_chara', columns, val, where)
 
-@bot.slash_command(name='cancelar_oferta')
+@ofertas.command(name='cancelar')
 async def cancelar_oferta_command(
     ctx: discord.ApplicationContext,
     id: discord.Option(int, name='id')
