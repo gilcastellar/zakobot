@@ -2529,6 +2529,37 @@ async def make_trade(trade):
 
         dbservice.update('user_has_chara', columns, val, where)
 
+    # deducting quantities
+    
+    user1_total = dbservice.select('user_has_chara', ['quantity'], '', {'user_id': user1, 'chara_id': user1_chara_id})
+    user2_total = dbservice.select('user_has_chara', ['quantity'], '', {'user_id': user2, 'chara_id': user2_chara_id})
+
+    if user1_chara_quantity == user1_total:
+
+        dbservice.delete('user_has_chara', {'user_id': user1, 'chara_id': user1_chara_id})
+
+    else:
+
+        columns = ['quantity']
+        val = user1_total - user1_chara_quantity
+        where = {'user_id': user1, 'chara_id': user1_chara_id}
+
+        dbservice.update('user_has_chara', columns, val, where)
+
+    if user2_chara_quantity == user2_total:
+
+        dbservice.delete('user_has_chara', {'user_id': user2, 'chara_id': user2_chara_id})
+
+    else:
+
+        columns = ['quantity']
+        val = user2_total - user2_chara_quantity
+        where = {'user_id': user2, 'chara_id': user2_chara_id}
+
+        dbservice.update('user_has_chara', columns, val, where)
+
+
+
 @ofertas.command(name='cancelar')
 async def cancelar_oferta_command(
     ctx: discord.ApplicationContext,
