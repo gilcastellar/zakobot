@@ -365,9 +365,11 @@ async def get_collection(ctx):
     
     #collection = database.selectall('SELECT chara_name FROM user_has_chara WHERE user_id="' + str(user_id) + '"', True)
 
-    collection = dbservice.select('user_has_chara', ['chara_name'], '', {'user_id': str(user_id)})
+    collection = dbservice.select('user_has_chara', ['chara_name', 'media_title'], '', {'user_id': str(user_id)})
 
-    collection = from_list_of_tuples_to_list(collection)
+    print(collection)
+
+    #collection = from_list_of_tuples_to_list(collection)
 
     return [name for name in collection if ctx.value.lower() in name.lower()]
 
