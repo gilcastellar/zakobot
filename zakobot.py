@@ -2457,7 +2457,7 @@ async def responder_oferta_command(
 
                 dbservice.delete('chara_ofertas', {'id': id})
 
-                await ctx.respond(f'Oferta de ID {str(id)} recusada.')
+                await ctx.respond(f'Oferta de ID {str(id)} aceita.')
 
             case 'Recusar':
 
