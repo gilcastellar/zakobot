@@ -371,11 +371,17 @@ async def get_collection(ctx):
     id_collection = from_list_of_tuples_to_list(id_collection)
     name_collection = from_list_of_tuples_to_list(name_collection)
 
+    repeated = []
+
     for idx, chara in enumerate(name_collection):
 
         count = name_collection.count(chara)
 
-        if count > 1:
+        if count > 1 or chara in repeated:
+
+            if chara not in repeated:
+
+                repeated.append(chara)
 
             title = dbservice.select('chara', ['media_title'], '', {'chara_id': id_collection[idx]})
 
