@@ -371,7 +371,7 @@ async def get_collection(ctx):
 
     for chara_id in collection:
 
-        info = dbservice.select('chara', ['chara_name', 'media_title'], '', {'chara_id': chara_id})
+        info = dbservice.select('chara', ['name', 'media_title'], '', {'chara_id': chara_id})
 
         print(info)
 
