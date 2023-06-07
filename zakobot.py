@@ -365,17 +365,23 @@ async def get_collection(ctx):
     
     #collection = database.selectall('SELECT chara_name FROM user_has_chara WHERE user_id="' + str(user_id) + '"', True)
 
-    collection = dbservice.select('user_has_chara', ['chara_id'], '', {'user_id': str(user_id)})
+    id_collection = dbservice.select('user_has_chara', ['chara_id'], '', {'user_id': str(user_id)})
+    name_collection = dbservice.select('user_has_chara', ['chara_name'], '', {'user_id': str(user_id)})
+    
+    id_collection = from_list_of_tuples_to_list(id_collection)
+    name_collection = from_list_of_tuples_to_list(name_collection)
 
-    collection = from_list_of_tuples_to_list(collection)
+    for idx, chara in enumerate(name_collection):
 
-    for chara_id in collection:
+        count = name_collection.count(chara)
 
-        info = dbservice.select('chara', ['name', 'media_title'], '', {'chara_id': chara_id})
+        if count > 1:
 
-        print(info)
+            title = dbservice.select('chara', ['media_title'], '', {'chara_id': id_collection[idx]})
 
-    return [name for name in collection if ctx.value.lower() in name.lower()]
+            name_collection[idx] = chara + ' (' + title + ')'
+
+    return [name for name in name_collection if ctx.value.lower() in name.lower()]
 
 async def get_chara(ctx):
 
