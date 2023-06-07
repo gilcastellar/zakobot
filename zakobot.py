@@ -2264,10 +2264,10 @@ async def iniciar_command(
     
         id = dbservice.insert('chara_ofertas', ['from_id', 'to_id'], [from_id, to_id])
 
-        await ctx.respond(f'Uma janela de troca com {target} foi aberta. O ID dessa oferta é {str(id)}. Utilize o /ofertar e insire esse ID para realizar uma oferta.')
+        await ctx.respond(f'Uma janela de troca com {target} foi aberta. O ID dessa oferta é {str(id)}. Utilize o "/ofertas finalizar" e insira esse ID para realizar uma oferta.')
 
-@bot.slash_command(name='ofertar')
-async def ofertar_command(
+@ofertas.command(name='finalizar')
+async def finalizar_oferta_command(
     ctx: discord.ApplicationContext,
     id: discord.Option(int, name='id'),
     own_chara: discord.Option(str, autocomplete=get_collection, name='seu_chara'),
