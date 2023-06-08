@@ -2224,7 +2224,7 @@ async def generate_collection(msg, user_id, page, last_page):
         chara_text = f'{str(chara_info[0])} ({chara_info[1]})'
 
         while len(chara_text) < 95: 
-            chara_text += ' '
+            chara_text += '-'
 
         copies_text = (' ' * (3 - len(str(copies)))) + str(copies)
 
