@@ -2303,60 +2303,68 @@ async def finalizar_oferta_command(
     target_quantity: discord.Option(int, min_value=1, name='quantidade_dele')
 ):
 
-    own_chara, own_title, own_chara_id = own_chara.split('(')
-    own_chara = own_chara.rstrip(' ')
-    own_chara_id = own_chara_id.rstrip(')')
+    exists = dbservice.check_existence('chara_ofertas', {'id': id})
 
-    target_chara, target_title, target_chara_id = target_chara.split('(')
-    target_chara = target_chara.rstrip(' ')
-    target_chara_id = target_chara_id.rstrip(')')
+    if exists == 1:
 
-    own_id = str(ctx.author.id)
-    target_id = dbservice.select('chara_ofertas', ['to_id'], '', {'id':id})
+        own_chara, own_title, own_chara_id = own_chara.split('(')
+        own_chara = own_chara.rstrip(' ')
+        own_chara_id = own_chara_id.rstrip(')')
 
-    max_own = dbservice.select('user_has_chara', ['quantity'], '', {'user_id': own_id, 'chara_id': own_chara_id})
-    max_target = dbservice.select('user_has_chara', ['quantity'], '', {'user_id': target_id, 'chara_id': target_chara_id})
+        target_chara, target_title, target_chara_id = target_chara.split('(')
+        target_chara = target_chara.rstrip(' ')
+        target_chara_id = target_chara_id.rstrip(')')
+
+        own_id = str(ctx.author.id)
+        target_id = dbservice.select('chara_ofertas', ['to_id'], '', {'id':id})
+
+        max_own = dbservice.select('user_has_chara', ['quantity'], '', {'user_id': own_id, 'chara_id': own_chara_id})
+        max_target = dbservice.select('user_has_chara', ['quantity'], '', {'user_id': target_id, 'chara_id': target_chara_id})
     
-    print('max chara values:')
-    print(max_own)
-    print(max_target)
+        print('max chara values:')
+        print(max_own)
+        print(max_target)
 
-    if type(max_own) != int:
-        max_own = from_list_of_tuples_to_list(max_own)
+        if type(max_own) != int:
+            max_own = from_list_of_tuples_to_list(max_own)
 
-    if type(max_target) != int:
-        max_target = from_list_of_tuples_to_list(max_target)
+        if type(max_target) != int:
+            max_target = from_list_of_tuples_to_list(max_target)
 
-    if max_own == None:
-        max_own = 1
+        if max_own == None:
+            max_own = 1
 
-    if max_target == None:
-        max_target = 1
+        if max_target == None:
+            max_target = 1
 
-    print('max chara values:')
-    print(max_own)
-    print(max_target)
+        print('max chara values:')
+        print(max_own)
+        print(max_target)
 
-    if own_quantity > max_own and target_quantity > max_target:
-        await ctx.respond('Você está tentando negociar mais cópias de personagem do que você e o outro usuário têm disponíveis.')
+        if own_quantity > max_own and target_quantity > max_target:
+            await ctx.respond('Você está tentando negociar mais cópias de personagem do que você e o outro usuário têm disponíveis.')
     
-    elif own_quantity > max_own:
-        await ctx.respond('Você está entando oferecer mais cópias de personagem do que tem disponível.')
+        elif own_quantity > max_own:
+            await ctx.respond('Você está entando oferecer mais cópias de personagem do que tem disponível.')
 
-    elif target_quantity > max_target:
-        await ctx.respond('O outro usuário não possui cópias suficientes do personagem selecionado.')
+        elif target_quantity > max_target:
+            await ctx.respond('O outro usuário não possui cópias suficientes do personagem selecionado.')
         
+        else:
+
+            user_id = dbservice.select('chara_ofertas', ['to_id'], '', {'id': id})
+
+            columns = ['offering', 'offer_quantity', 'receiving', 'receive_quantity']
+            values = [own_chara_id, own_quantity, target_chara_id, target_quantity]
+
+            dbservice.update('chara_ofertas', columns, values, {'id': id})
+
+            #await ctx.respond(f'Oferta realizada. O usuário <@' + str(user_id) + '> foi notificado. Não foi?')
+            await ctx.respond(f'Oferta realizada.')
+
     else:
 
-        user_id = dbservice.select('chara_ofertas', ['to_id'], '', {'id': id})
-
-        columns = ['offering', 'offer_quantity', 'receiving', 'receive_quantity']
-        values = [own_chara_id, own_quantity, target_chara_id, target_quantity]
-
-        dbservice.update('chara_ofertas', columns, values, {'id': id})
-
-        #await ctx.respond(f'Oferta realizada. O usuário <@' + str(user_id) + '> foi notificado. Não foi?')
-        await ctx.respond(f'Oferta realizada.')
+        await ctx.respond(f'A oferta de ID {str(id)} não existe. Por favor corrija ou crie uma oferta utilizando /ofertas iniciar.')
 
 @bot.slash_command(name='pesquisar_chara')
 async def pesquisar_chara_command(
