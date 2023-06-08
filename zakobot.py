@@ -377,7 +377,7 @@ async def get_collection(ctx):
 
         title_and_id = dbservice.select('chara', ['media_title', 'chara_id'], '', {'chara_id': id_collection[idx]})
 
-        name_collection[idx] = chara + ' (' + title_and_id[0] + ') ID:' + str(title_and_id[1])
+        name_collection[idx] = chara + ' (' + title_and_id[0] + ') ID (' + str(title_and_id[1] + ')')
 
     return [name for name in name_collection if ctx.value.lower() in name.lower()]
 
@@ -391,7 +391,7 @@ async def get_chara(ctx):
 
     for idx, item in enumerate(collection):
 
-        name_collection.append(item[0] + ' (' + item[1] + ') ID:' + str(item[2]))
+        name_collection.append(item[0] + ' (' + item[1] + ') ID (' + str(item[2]) + ')')
 
     return [name for name in name_collection if ctx.value.lower() in name.lower()]
 
@@ -2290,10 +2290,10 @@ async def finalizar_oferta_command(
     target_quantity: discord.Option(int, min_value=1, name='quantidade_dele')
 ):
 
-    own_chara, own_title = own_chara.split('(')
+    own_chara, own_title, own_chara_id = own_chara.split('(')
     own_chara = own_chara.rstrip(' ')
 
-    target_chara, target_title = target_chara.split('(')
+    target_chara, target_title, target_chara_id = target_chara.split('(')
     target_chara = target_chara.rstrip(' ')
 
     own_id = str(ctx.author.id)
