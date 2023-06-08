@@ -2164,7 +2164,7 @@ async def coleção(
 
             await ctx.respond(f'Coleção de {target}')
 
-            user_id = dbservice.select('user', ['id'], '', {'name': target})
+            user_id = int(dbservice.select('user', ['id'], '', {'name': target}))
 
         else:
 
