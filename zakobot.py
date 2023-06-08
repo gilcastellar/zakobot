@@ -2338,7 +2338,7 @@ async def finalizar_oferta_command(
         user_id = dbservice.select('chara_ofertas', ['to_id'], '', {'id': id})
 
         columns = ['offering', 'offer_quantity', 'receiving', 'receive_quantity']
-        values = [own_chara, own_quantity, target_chara, target_quantity]
+        values = [own_chara_id, own_quantity, target_chara_id, target_quantity]
 
         dbservice.update('chara_ofertas', columns, values, {'id': id})
 
