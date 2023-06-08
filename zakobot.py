@@ -2221,7 +2221,7 @@ async def generate_collection(msg, user_id, page, last_page):
 
         position = dbservice.select('user_has_chara', ['position'], '', {'chara_id': str(chara), 'user_id': str(user_id)})
           
-        chara_text = f'{str(chara_info[0])} ({chara_info[1]})'
+        chara_text = f'{str(chara_info[0])} ({chara_info[1]}) '
 
         while len(chara_text) < 95: 
             chara_text += '-'
