@@ -2610,8 +2610,6 @@ async def make_trade(trade):
 
         dbservice.update('user_has_chara', columns, val, where)
 
-
-
 @ofertas.command(name='cancelar')
 async def cancelar_oferta_command(
     ctx: discord.ApplicationContext,
@@ -2626,6 +2624,46 @@ async def cancelar_oferta_command(
 
         await ctx.respond(f'Oferta de ID {str(id)} cancelada.')
 
+corrigir = bot.create_group('corrigir', 'Comandos para correções diversas')
+@corrigir.command(name='personagem')
+async def corrigir_personagem_command(
+    ctx: discord.ApplicationContext,
+    chara: discord.Option(str, autocomplete=get_chara, name='personagem'),
+    correct_media: discord.Option(str, name='midia_correta', description='apenas o link da obra no anilist')
+):
+    await ctx.respond('Obrigado pela correção!')
+
+    # adicionar zakoleta
+    add_zakoleta(ctx.author.id, dbservice.select('values_chart', ['value_value'], '', {'value_name': 'chara_correction'}), '+1 Zakoleta por corrigir a mídia de um personagem')
+
+    # realizar a correção
+    type, id = get_type_and_id_from_anilist_link(correct_media)]
+
+    if type == 'ANIME':
+
+        result = anilist.query_anime_id(id)
+
+    else:
+
+        result = anilist.query_manga_id(id)
+
+    result = result.json()
+
+    print(result)
+
+    media_title = result['data']['Media']['title']['romaji']
+
+    chara, old_title, chara_id = chara.split('(')
+    chara = chara.rstrip(' ')
+    chara_id = chara_id.rstrip(')')
+
+    column = ['media_title']
+
+    value = [media_title]
+
+    where = {'chara_id': chara_id}
+
+    dbservice.update('chara', column, value, where)
 
 @tasks.loop(seconds=60)
 async def check_activities():
