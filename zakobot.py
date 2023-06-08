@@ -2213,7 +2213,7 @@ async def generate_collection(msg, user_id, page, last_page):
         
         #chara_info = database.selectall('SELECT name, chara_url FROM chara WHERE chara_id=' + str(chara))[0]
 
-        chara_info = dbservice.select('chara', ['name', 'chara_url'], '', {'chara_id': str(chara)})
+        chara_info = dbservice.select('chara', ['name', 'media_title'], '', {'chara_id': str(chara)})
 
         print(chara_info)
 
@@ -2221,9 +2221,9 @@ async def generate_collection(msg, user_id, page, last_page):
 
         position = dbservice.select('user_has_chara', ['position'], '', {'chara_id': str(chara), 'user_id': str(user_id)})
           
-        chara_text = str(chara_info[0])
+        chara_text = f'{str(chara_info[0])} ({chara_info[1]})'
 
-        while len(chara_text) < 50: 
+        while len(chara_text) < 80: 
             chara_text += ' '
 
         copies_text = (' ' * (3 - len(str(copies)))) + str(copies)
