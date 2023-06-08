@@ -84,7 +84,8 @@ class TopPagination(discord.ui.View): # Create a class called MyView that subcla
 
     @discord.ui.button(label=">>", row=0, style=discord.ButtonStyle.primary)
     async def second_button_callback(self, button, interaction):
-        self.page += 1
+        if self.page < self.last_page:
+            self.page += 1
         await generate_top(self.msg, self.page, self.last_page, self.list, self.type, self.min)
         await interaction.response.send_message('')
 
@@ -106,7 +107,8 @@ class CollectionPagination(discord.ui.View): # Create a class called MyView that
 
     @discord.ui.button(label=">>", row=0, style=discord.ButtonStyle.primary)
     async def second_button_callback(self, button, interaction):
-        self.page += 1
+        if self.page < self.last_page:
+            self.page += 1
         await generate_collection(self.msg, self.user_id, self.page, self.last_page)
         await interaction.response.send_message('')
 
