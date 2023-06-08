@@ -2188,7 +2188,7 @@ async def generate_collection(msg, user_id, page, last_page):
 
     #characters = from_list_of_tuples_to_list(characters)
 
-    batch = 20
+    batch = 10
 
     indice = (page * batch) - (batch - 1)
 
