@@ -2342,7 +2342,8 @@ async def finalizar_oferta_command(
 
         dbservice.update('chara_ofertas', columns, values, {'id': id})
 
-        await ctx.respond(f'Oferta realizada. O usuário <@' + str(user_id) + '> foi notificado. Não foi?')
+        #await ctx.respond(f'Oferta realizada. O usuário <@' + str(user_id) + '> foi notificado. Não foi?')
+        await ctx.respond(f'Oferta realizada.')
 
 @bot.slash_command(name='pesquisar_chara')
 async def pesquisar_chara_command(
