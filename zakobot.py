@@ -375,15 +375,15 @@ async def get_collection(ctx):
 
     for idx, chara in enumerate(name_collection):
 
-        title = dbservice.select('chara', ['media_title'], '', {'chara_id': id_collection[idx]})
+        title_and_id = dbservice.select('chara', ['media_title', 'chara_id'], '', {'chara_id': id_collection[idx]})
 
-        name_collection[idx] = chara + ' (' + title + ')'
+        name_collection[idx] = chara + ' (' + title_and_id[0] + ') ID:' + str(title_and_id[1])
 
     return [name for name in name_collection if ctx.value.lower() in name.lower()]
 
 async def get_chara(ctx):
 
-    collection = dbservice.select('chara', ['name', 'media_title'], '')
+    collection = dbservice.select('chara', ['name', 'media_title', 'chara_id'], '')
 
     print(collection)
 
@@ -391,7 +391,7 @@ async def get_chara(ctx):
 
     for idx, item in enumerate(collection):
 
-        name_collection.append(item[0] + ' (' + item[1] + ')')
+        name_collection.append(item[0] + ' (' + item[1] + ') ID:' + str(item[2]))
 
     return [name for name in name_collection if ctx.value.lower() in name.lower()]
 
@@ -2290,11 +2290,17 @@ async def finalizar_oferta_command(
     target_quantity: discord.Option(int, min_value=1, name='quantidade_dele')
 ):
 
+    own_chara, own_title = own_chara.split('(')
+    own_chara = own_chara.rstrip(' ')
+
+    target_chara, target_title = target_chara.split('(')
+    target_chara = target_chara.rstrip(' ')
+
     own_id = str(ctx.author.id)
     target_id = dbservice.select('chara_ofertas', ['to_id'], '', {'id':id})
 
-    max_own = dbservice.select('user_has_chara', ['quantity'], '', {'user_id': own_id, 'chara_name': own_chara})
-    max_target = dbservice.select('user_has_chara', ['quantity'], '', {'user_id': target_id, 'chara_name': target_chara})
+    max_own = dbservice.select('user_has_chara', ['quantity'], '', {'user_id': own_id, 'chara_id': own_chara_id})
+    max_target = dbservice.select('user_has_chara', ['quantity'], '', {'user_id': target_id, 'chara_id': target_chara_id})
     
     print('max chara values:')
     print(max_own)
