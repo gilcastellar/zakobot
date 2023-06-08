@@ -2192,7 +2192,7 @@ async def generate_collection(msg, user_id, page, last_page):
 
     indice = (page * batch) - (batch - 1)
 
-    text = '```Personagem                                                                   #      Pos.\n\n'
+    text = '```Personagem                                                                                      #      Pos.\n\n'
 
     print('page')
     print(page)
@@ -2223,7 +2223,7 @@ async def generate_collection(msg, user_id, page, last_page):
           
         chara_text = f'{str(chara_info[0])} ({chara_info[1]})'
 
-        while len(chara_text) < 80: 
+        while len(chara_text) < 100: 
             chara_text += ' '
 
         copies_text = (' ' * (3 - len(str(copies)))) + str(copies)
