@@ -2160,13 +2160,23 @@ async def coleção(
 
     if ctx.channel.id == rolls_channel:
 
-        await ctx.respond('Sua coleção:')
+        if target != None:
+
+            await ctx.respond(f'Coleção de {target}')
+
+            user_id = dbservice.select('user', ['id'], '', {'name': target})
+
+        else:
+
+            await ctx.respond('Sua coleção:')
+
+            user_id = ctx.author.id
 
         #characters = database.selectall('SELECT chara_id FROM user_has_chara WHERE user_id="' + str(ctx.author.id) + '" ORDER BY position', True)
         
         msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
 
-        await generate_collection(msg, ctx.author.id, 1, 0)
+        await generate_collection(msg, user_id, 1, 0)
 
 async def generate_collection(msg, user_id, page, last_page):
 
