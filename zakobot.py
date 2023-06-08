@@ -2192,7 +2192,7 @@ async def generate_collection(msg, user_id, page, last_page):
 
     indice = (page * batch) - (batch - 1)
 
-    text = '```Personagem                                                                                        #      Pos.\n\n'
+    text = '```Personagem                                                                                        #     Pos.\n\n'
 
     print('page')
     print(page)
