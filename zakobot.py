@@ -391,7 +391,7 @@ async def get_chara(ctx):
 
     for idx, item in enumerate(collection):
 
-        name_collection.append(item[0] + ' (' + item[1] + ') ID (' + str(item[2]) + ')')
+        name_collection.append(item[0] + ' (' + item[1] + ') ID (' + str(item[2]) + ')'
 
     return [name for name in name_collection if ctx.value.lower() in name.lower()]
 
