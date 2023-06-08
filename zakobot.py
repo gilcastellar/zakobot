@@ -375,17 +375,9 @@ async def get_collection(ctx):
 
     for idx, chara in enumerate(name_collection):
 
-        count = name_collection.count(chara)
+        title = dbservice.select('chara', ['media_title'], '', {'chara_id': id_collection[idx]})
 
-        if count > 1 or chara in repeated:
-
-            if chara not in repeated:
-
-                repeated.append(chara)
-
-            title = dbservice.select('chara', ['media_title'], '', {'chara_id': id_collection[idx]})
-
-            name_collection[idx] = chara + ' (' + title + ')'
+        name_collection[idx] = chara + ' (' + title + ')'
 
     return [name for name in name_collection if ctx.value.lower() in name.lower()]
 
