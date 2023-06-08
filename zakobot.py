@@ -2396,7 +2396,7 @@ async def ofertas_enviadas_command(message):
 
     if offers != []:
 
-        text = '**Ofertas enviadas:**\n\n```'
+        text = '**Ofertas enviadas:**\n```'
         #text += 'Ofereci para       Personagem  #       Quero receber  # \n\n'
 
         for offer in offers:
