@@ -2188,9 +2188,9 @@ async def generate_collection(msg, user_id, page, last_page):
 
     #characters = from_list_of_tuples_to_list(characters)
 
-    batch = 25
+    batch = 20
 
-    indice = (page * 25) - 24
+    indice = (page * batch) - (batch - 1)
 
     text = '```Personagem                                          #      Pos.\n\n'
 
@@ -2200,7 +2200,7 @@ async def generate_collection(msg, user_id, page, last_page):
     print('indice:')
     print(indice)
 
-    last_page = ceil(len(characters) / 25)
+    last_page = ceil(len(characters) / batch)
 
     for chara in characters[batch*(page-1):batch*page]:
 
