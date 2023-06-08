@@ -2292,11 +2292,11 @@ async def finalizar_oferta_command(
 
     own_chara, own_title, own_chara_id = own_chara.split('(')
     own_chara = own_chara.rstrip(' ')
-    own_chara_id = own_chara_id.strip(')')
+    own_chara_id = own_chara_id.rstrip(')')
 
     target_chara, target_title, target_chara_id = target_chara.split('(')
     target_chara = target_chara.rstrip(' ')
-    target_chara = target_chara.strip(')')
+    target_chara_id = target_chara_id.rstrip(')')
 
     own_id = str(ctx.author.id)
     target_id = dbservice.select('chara_ofertas', ['to_id'], '', {'id':id})
