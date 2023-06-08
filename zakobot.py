@@ -2448,17 +2448,21 @@ async def ofertas_recebidas_command(message):
 
             user_name = dbservice.select('user', ['name'], '', {'id': from_id})
 
-            their_chara = offer[3]
+            their_chara_id = offer[3]
                 
             their_quantity = offer[4]
+            
+            their_chara_info = dbservice.select('chara', ['name', 'media_title'], '', {'chara_id': their_chara_id})
 
-            my_chara = offer[5]
+            my_chara_id = offer[5]
             
             my_quantity = offer[6]
 
+            my_chara_info = dbservice.select('chara', ['name', 'media_title'], '', {'chara_id': my_chara_id})
+
             text += f'Oferta ID {str(offer[0])} de {user_name}\n'
-            text += f'Meu:     {str(my_quantity)}x - {my_chara}\n'
-            text += f'Dele(a): {str(their_quantity)}x - {their_chara}\n\n'
+            text += f'Meu:     {str(my_quantity)}x - {my_chara_info[0]} ({my_chara_info[1]})\n'
+            text += f'Dele(a): {str(their_quantity)}x - {their_chara_info[0]} ({their_chara_info[1]})\n\n'
         
         text += '```'
 
