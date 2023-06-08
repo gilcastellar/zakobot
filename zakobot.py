@@ -266,7 +266,7 @@ async def get_members_names(ctx: discord.AutocompleteContext):
     #return [name for name in members_names if name.lower().startswith(ctx.value.lower())]
     return [name for name in members_names if ctx.value.lower() in name.lower()]
 
-# Get active members without youself
+# Get active members without the user own's name
 async def get_members_names2(ctx: discord.AutocompleteContext):
 
     #members = database.selectall('SELECT id, name, active, anime_list, receives, gives, obs FROM user ORDER BY active DESC, name')
@@ -2152,8 +2152,11 @@ async def editar_coleção_command(
     await ctx.respond('Posição atualizada')
 
 
-@bot.command(name='coleção')
-async def coleção(ctx):
+@bot.slash_command(name='coleção')
+async def coleção(
+    ctx: discord.ApplicationContext,
+    target: discord.Option(str, autocomplete=get_members_names2, required=False)
+):
 
     if ctx.channel.id == rolls_channel:
 
