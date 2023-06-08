@@ -2637,7 +2637,7 @@ async def corrigir_personagem_command(
     add_zakoleta(ctx.author.id, dbservice.select('values_chart', ['value_value'], '', {'value_name': 'chara_correction'}), '+1 Zakoleta por corrigir a mídia de um personagem')
 
     # realizar a correção
-    type, id = get_type_and_id_from_anilist_link(correct_media)]
+    type, id = get_type_and_id_from_anilist_link(correct_media)
 
     if type == 'ANIME':
 
