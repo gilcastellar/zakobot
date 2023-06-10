@@ -475,3 +475,23 @@ def query_characters(page):
 def query(query, variables=''):
 
     return requests.post('https://graphql.anilist.co', json={'query': query, 'variables': variables})
+
+def query_duration(media_id):
+
+    query = '''
+    query ($id: Int) {
+      Media (id: $id, type: ANIME) {
+        duration
+      }
+    }
+    '''
+
+    # Define our query variables and values that will be used in the query request
+    variables = {
+        'id': media_id
+    }
+
+    url = 'https://graphql.anilist.co'
+
+    # Make the HTTP Api request
+    return requests.post(url, json={'query': query, 'variables': variables})

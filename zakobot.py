@@ -145,6 +145,8 @@ async def on_message(message):
 
             if message.channel.id in [rolls_channel]:
 
+                roll_cost = dbservice.select('values_chart', ['value_value'], '', {'value_name': 'roll'})
+
                 if len(msg) > 1:
                 
                     if int(msg[1]) >= 10:
@@ -157,6 +159,18 @@ async def on_message(message):
 
                     rolls = 1
 
+                wallet = dbservice.select('user', ['zakoleta'], '', {'id': message.author.id})
+
+                total_cost = roll_cost * rolls
+
+                if wallet < total_cost:
+                    
+                    send_message2('Você não tem Zakoleta o suficiente para realizar esse roll.')
+
+                else:
+                    ...
+                    #add_zakoleta(str(message.author.id), total_cost, f' -{str(total_cost)} por rodar {str(rolls)} vezes.', 'sub')
+                    
                 user_name = dbservice.select('user', ['name'], '', {'id': message.author.id})
 
                 roll_id = dbservice.insert('rolls', ['user', 'quantity'], [user_name, rolls])
@@ -1077,7 +1091,9 @@ async def indicar_command(
         
         if is_new == None:
 
-            add_zakoleta(ctx.author.id, dbservice.select('values_chart', ['value_value'], '', {'value_name': 'roleta_indicar'}), ' +50 pela participação na roleta de ' + ctx.author.name)
+            reward = dbservice.select('values_chart', ['value_value'], '', {'value_name': 'roleta_indicar'})
+
+            add_zakoleta(ctx.author.id, reward, f' +{str(reward)} pela participação na roleta de ' + ctx.author.name, 'add')
     
         dbservice.update('user_has_roleta', ['media_name'], [title], {'id_giver': ctx.author.id, 'id_roleta': roleta_atual})
         
@@ -1106,8 +1122,10 @@ async def terminar_command(
 
     if status == 'ongoing':
 
-        add_zakoleta(ctx.author.id, dbservice.select('values_chart', ['value_value'], '', {'value_name': 'roleta_terminei'}), ' +50 por terminar suas indicações de ' + name)
-        await ctx.send('Você recebeu Ƶ 50 por finalizar sua indicação.')
+        reward = dbservice.select('values_chart', ['value_value'], '', {'value_name': 'roleta_terminei'})
+
+        add_zakoleta(ctx.author.id, reward, f' +{str(reward)} por terminar suas indicações de ' + name, 'add')
+        await ctx.send(f'Você recebeu Ƶ {str(reward)} por finalizar sua indicação.')
 
     #sql = 'UPDATE user_has_roleta SET score=' + str(score) + ',status="finished"' + 'WHERE id_roleta=' + str(roleta_id) + ' AND id_receiver="' + str(ctx.author.id) + '"'
     #database.update(sql)
@@ -1138,8 +1156,11 @@ async def abandonei_command(
     name = parse_name(name)
 
     if status == 'ongoing':
-        add_zakoleta(ctx.author.id, dbservice.select('values_chart', ['value_value'], '', {'value_name': 'roleta_abandonei'}), ' +20 por abandonar suas indicações de ' + name)
-        await ctx.send('Você recebeu Ƶ 20 por abandonar manualmente sua indicação.')
+
+        reward = dbservice.select('values_chart', ['value_value'], '', {'value_name': 'roleta_abandonei'})
+
+        add_zakoleta(ctx.author.id, reward, f' +{str(reward)} por abandonar suas indicações de ' + name, 'add')
+        await ctx.send(f'Você recebeu Ƶ {str(reward)} por abandonar manualmente sua indicação.')
 
     #sql = 'UPDATE user_has_roleta SET status="abandoned" WHERE id_roleta=' + str(roleta_id) + ' AND id_receiver="' + str(ctx.author.id) + '"'
     #database.update(sql)
@@ -1224,18 +1245,13 @@ def add_to_obra(link):
         print('obra já existe na tabela obra')
 
 # Add zakoletas
-def add_zakoleta(user_id, quantity, text):
+def add_zakoleta(user_id, quantity, text, type):
     
     datetime = get_timestamp()
 
     full_text = ',' + datetime + text
 
-    #sql = 'UPDATE user SET zakoleta=zakoleta+' + str(quantity) + ', zakoleta_log=concat(zakoleta_log, "' + full_text + '") WHERE id="' + str(user_id) + '"'
-    #database.update(sql)
-
-    #dbservice.update('user', ['zakoleta', 'zakoleta_log'], ['zakoleta + ' + str(quantity), 'concat(zakoleta_log, "' + full_text], {'id': user_id})
-
-    dbservice.update_zakoleta('user', quantity, full_text, user_id, 'add')
+    dbservice.update_zakoleta('user', quantity, full_text, user_id, type)
 
     print(full_text)
 
@@ -2636,7 +2652,10 @@ async def corrigir_personagem_command(
     await ctx.respond('Obrigado pela correção!')
 
     # adicionar zakoleta
-    add_zakoleta(ctx.author.id, dbservice.select('values_chart', ['value_value'], '', {'value_name': 'chara_correction'}), '+1 Zakoleta por corrigir a mídia de um personagem')
+
+    reward = dbservice.select('values_chart', ['value_value'], '', {'value_name': 'chara_correction'})
+
+    add_zakoleta(ctx.author.id, reward, f'+{str(reward)} Zakoleta por corrigir a mídia de um personagem', 'add')
 
     # realizar a correção
     type, id = get_type_and_id_from_anilist_link(correct_media)
@@ -2739,6 +2758,8 @@ async def check_activities():
             createdAt = act['createdAt']
             url = act['media']['siteUrl']
 
+            calculate_reward(user_id, url)
+
             match _status:
 
                 case 'watched episode' | 'read chapter':
@@ -2769,6 +2790,8 @@ async def check_activities():
 
             rt = from_epoch_to_rt(createdAt)
 
+            quantity = 0
+
             exists = dbservice.check_existence('user_has_media', {'media_id': media_id, 'anilist_id': id})
 
             if exists == 1:
@@ -2787,6 +2810,8 @@ async def check_activities():
                     print('previous progress: ' + str(previous))
 
                     diff = int(progress) - int(previous)
+
+                    quantity = diff
 
                     print('diff: ' + str(diff))
 
@@ -2838,10 +2863,44 @@ async def check_activities():
                 
                 await send_embed2(embed, 1110011052025983047)
 
+        
 
         dbservice.update('user', ['last_list_update'], [now], {'anilist_id': id})
 
     print(get_timestamp())
+
+def calculate_reward(user_id, media_url, quantity=None):
+
+    type, media_id = get_type_and_id_from_anilist_link(media_url)
+
+    exists = dbservice.check_existence('user_has_media', {'media_id': media_id, 'user_id': user_id})
+
+    if exists == 1:
+
+        if quantity == None:
+
+            previous_progress = dbservice.select('user_has_media', ['progress'], '', {'media_id': media_id, 'user_id': user_id})
+
+            user_name = dbservice.select('user', 'anime_list', '', {'id': user_id}).lstrip('https://anilist.co/user/').rstrip('/')
+
+            print(user_name)
+
+            new_progress = anilist.check_progress(media_id, )
+        
+
+    #if status != None:
+
+    #    match status:
+
+    #        case 'watched episode':
+
+    #            result = anilist.query_duration(media_id)
+
+    #            result = result.json()
+
+    #            duration = 
+
+    ...
 
 async def clean_dailies():
 
@@ -2964,7 +3023,10 @@ async def aux_command(ctx):
 
         #message = await create_placeholder_message(ctx, 1077070205987082281)
 
-        print(dbservice.select('values_chart', ['value_value'], '', {'value_name': 'episode'}))
+        
+        user_name = dbservice.select('user', 'anime_list', '', {'id': '1050904689685831760'}).lstrip('https://anilist.co/user/').rstrip('/')
+
+        print(user_name)
 
         print(get_timestamp() + ': Done')
     
