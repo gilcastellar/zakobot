@@ -295,7 +295,7 @@ def check_max_episodes(anime_id):
 
     return o['data']['Media']['episodes']
 
-def check_episode(anime_id, user_name):
+def check_progress(anime_id, user_name):
     
     response = query_user_list(anime_id, user_name)
     print(json.dumps(response.json(), indent=2))
