@@ -3024,7 +3024,7 @@ async def aux_command(ctx):
         #message = await create_placeholder_message(ctx, 1077070205987082281)
 
         
-        user_name = dbservice.select('user', 'anime_list', '', {'id': '1050904689685831760'}).lstrip('https://anilist.co/user/').rstrip('/')
+        user_name = dbservice.select('user', ['anime_list'], '', {'id': '1050904689685831760'}).lstrip('https://anilist.co/user/').rstrip('/')
 
         print(user_name)
 
