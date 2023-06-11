@@ -1451,9 +1451,6 @@ async def utilidades_command(
 
         case 'Escolha uma obra do meu Watching':
 
-            #link = database.select('SELECT anime_list FROM user WHERE id="' + str(ctx.author.id) + '"')
-            #print(link)
-
             link = dbservice.select('user', ['anime_list'], '', {'id': str(ctx.author.id)})
             
             user_name = get_anilist_user_from_link(link)
@@ -1463,8 +1460,6 @@ async def utilidades_command(
             await ctx.send('Que tal assistir um episódio de ' + anime + '? Link: ' + anime_link)
 
         case 'Escolha uma obra do meu Planning':
-
-            #link = database.select('SELECT anime_list FROM user WHERE id="' + str(ctx.author.id) + '"')
             
             link = dbservice.select('user', ['anime_list'], '', {'id': str(ctx.author.id)})
             user_name = get_anilist_user_from_link(link)
@@ -2874,33 +2869,63 @@ def calculate_reward(user_id, media_url, quantity=None):
     type, media_id = get_type_and_id_from_anilist_link(media_url)
 
     exists = dbservice.check_existence('user_has_media', {'media_id': media_id, 'user_id': user_id})
+    
+    if quantity == None:
 
-    if exists == 1:
-
-        if quantity == None:
+        user_name = dbservice.select('user', ['anime_list'], '', {'id': user_id}).lstrip('https://anilist.co/user/').rstrip('/')
+        
+        if exists == 1:
 
             previous_progress = dbservice.select('user_has_media', ['progress'], '', {'media_id': media_id, 'user_id': user_id})
+            
+            new_progress = anilist.check_progress(media_id, user_name)
 
-            user_name = dbservice.select('user', 'anime_list', '', {'id': user_id}).lstrip('https://anilist.co/user/').rstrip('/')
+            quantity = new_progress - previous_progress
 
-            print(user_name)
+        else:
 
-            new_progress = anilist.check_progress(media_id, )
-        
+            quantity = anilist.check_progress(media_id, user_name)
+    
+    if type == 'ANIME':
 
-    #if status != None:
+        result = anilist.query_anime_id(media_id)
 
-    #    match status:
+        result = result.json()
 
-    #        case 'watched episode':
+        duration = result['data']['Media']['duration']
+        format = result['data']['Media']['format']
 
-    #            result = anilist.query_duration(media_id)
+        if duration <= 9:
+            size = 'shorter'
 
-    #            result = result.json()
+        elif duration <= 19:
+            size = 'short'
 
-    #            duration = 
+        elif duration <= 29:
+            size = 'common'
 
-    ...
+        if size in ['shorter', 'short', 'common']:
+
+            size = 'episode_' + size
+
+            multiplier = 1
+
+        else:
+
+            size = 'episode_common'
+
+            multiplier = ceil(duration / 30)
+
+        reward = dbservice.select('values_chart', ['value_value'], '', {'value_name': size}) * multiplier
+    
+    else:
+
+        reward = dbservice.select('values_chart', ['value_value'], '', {'value_name': 'chapter'})
+
+    total = reward * quantity
+
+    # needs to check if media was chosen in the /random and if media is their roulette indication
+    
 
 async def clean_dailies():
 
