@@ -1451,6 +1451,28 @@ async def utilidades_command(
 
         case 'Escolha uma obra do meu Watching':
 
+            random_media = dbservice.select('user', ['random_anime'], '', {'id': ctx.author.id})
+
+            if random_media != 0:
+
+                anime_url = 'https://anilist.co/anime/' + str(random_media)
+
+                exists = dbservice.check_existence('media', {'url': anime_url})
+
+                if exists == 1:
+
+                    media_title = dbservice.select('media', ['title_romaji'], '', {'url': anime_url})
+
+                else:
+
+                    result = anilist.query_anime_id(str(random_media))
+
+                    result = result.json()
+
+                    media_title = result['data']['Media']['title']['romaji']
+
+                await ctx.send(f'Na última vez que pediu uma indicação, recomendei {media_title} mas pelo que vi você ainda não assistiu ao episódio. Caso tenha visto, utilize o comando /vi ou /li. Caso queira uma nova indicação, utilize o comando "/utilidades resetar" e resete a opção anime por 3 zakoletas.')
+
             link = dbservice.select('user', ['anime_list'], '', {'id': str(ctx.author.id)})
             
             user_name = get_anilist_user_from_link(link)
@@ -1459,7 +1481,7 @@ async def utilidades_command(
 
             await ctx.send('Que tal assistir um episódio de ' + anime + '? Link: ' + anime_link)
 
-        case 'Escolha uma obra do meu Planning':
+        case 'Escolha uma obra do meu Planning To Watch':
             
             link = dbservice.select('user', ['anime_list'], '', {'id': str(ctx.author.id)})
             user_name = get_anilist_user_from_link(link)
@@ -2924,8 +2946,38 @@ def calculate_reward(user_id, media_url, quantity=None):
 
     total = reward * quantity
 
-    # needs to check if media was chosen in the /random and if media is their roulette indication
+    # needs to check if media was chosen in the /random
+
+    roulette_bonus = dbservice.select('values_chart', ['value_value'], '', {'value_name': 'roleta_episode'})
+
+    last_roulette_id = get_last_roulette_id()
+
+    roulette_media = dbservice.select('user_has_roleta', ['received_rec'], '', {'id_roleta': last_roulette_id, 'id_receiver': user_id})
     
+    if ',' in roulette_media:
+        recs = roulette_media.split(',')
+
+        for media in recs:
+
+            type, id = get_type_and_id_from_anilist_link(media)
+
+            if str(id) == str(media_id):
+
+                total += roulette_bonus
+
+    else:
+
+        type, id = get_type_and_id_from_anilist_link(roulette_media)
+
+        if str(id) == str(media_id):
+
+            total += roulette_bonus
+
+    if total > 0:
+
+        add_zakoleta(user_id, total, f'+ {str(total)} zakoletas adicionar por ver/ler algo.', 'add')
+
+
 
 async def clean_dailies():
 
