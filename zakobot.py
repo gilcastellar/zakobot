@@ -15,7 +15,7 @@ from math import ceil
 intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
-bot = discord.Client(intents=intents)
+bot = discord.Bot(intents=intents)
 
 admins = [906937520254758973,628466603486478336,1050904689685831760,98410347597139968]
 
