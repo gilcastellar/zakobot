@@ -1,6 +1,6 @@
 from random import choice,choices, shuffle, randint
 
-import discord
+#import discord
 from discord.ext import tasks
 import configparser
 import database
