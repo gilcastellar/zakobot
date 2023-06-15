@@ -1,7 +1,6 @@
 from random import choice,choices, shuffle, randint
 
 import discord
-from discord import Bot
 from discord.ext import tasks
 import configparser
 import database
@@ -16,7 +15,7 @@ from math import ceil
 intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
-bot = Bot(intents=intents)
+bot = discord.Bot(intents=intents)
 
 admins = [906937520254758973,628466603486478336,1050904689685831760,98410347597139968]
 
