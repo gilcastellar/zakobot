@@ -1016,6 +1016,9 @@ async def indicar_command(
 ):
     print_use(ctx, '/indicar')
 
+    print(media1)
+    print(media2)
+
     if not media1.startswith('https://anilist.co'):
 
         await ctx.respond('Você inseriu algo errado. Cada indicação deve conter apenas um link do Anilist.')
