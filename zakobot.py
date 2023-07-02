@@ -586,7 +586,7 @@ async def sorteio_command(
     
     if ctx.author.id in admins:
 
-        draw_channel = 1077070205987082281
+        draw_channel = 1065408178923245589
 
         draw_list = dbservice.select('user', ['id', 'gives', 'receives'], '', {'active': 1})
 
