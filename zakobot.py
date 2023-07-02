@@ -1281,14 +1281,18 @@ async def get_user_avg(user):
 
     scores_given = dbservice.select('user_has_roleta', ['score'], 'ORDER BY id_roleta', {'id_receiver': str(user.id)})
     print(scores_given)
+    
+    if scores_given != None:
 
-    #scores_given = from_list_of_tuples_to_list(scores_given)
+        scores_given = from_list_of_tuples_to_list(scores_given)
 
-    print(scores_given)
+    else:
+
+        scores_given = [None]
 
     print('I was tasked with getting ' + str(user.display_name) + '\'s given scores. They are below:')
     print(scores_given)
-
+    
     quantity = 0
     total = 0
 
