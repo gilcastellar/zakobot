@@ -1036,7 +1036,7 @@ async def indicar_command(
 
             await ctx.respond('Você inseriu algo errado. Cada indicação deve conter apenas um link do Anilist.')
     
-    else:
+    if media1 != None:
 
         print('ok')
 
