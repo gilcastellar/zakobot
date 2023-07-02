@@ -1018,6 +1018,7 @@ async def indicar_command(
 
     print(media1)
     print(media2)
+    print(media3)
 
     if not media1.startswith('https://anilist.co'):
 
