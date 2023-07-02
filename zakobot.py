@@ -1037,6 +1037,8 @@ async def indicar_command(
     
     else:
 
+        print('ok')
+
         await ctx.respond(f"Obrigado pela indicação!")
 
         roletas = database.selectall('SELECT id FROM roleta', True)
