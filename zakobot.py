@@ -38,7 +38,7 @@ key = False
 
 
 
-rolls_channel = 1065847698214887496
+rolls_channel = 1107765031245988060
 
 # Edit profile modal
 class EditarPerfilModal(discord.ui.Modal):
@@ -1211,7 +1211,7 @@ def help_embed():
 
     embed = discord.Embed(title='Lista de comandos')
     embed.add_field(name='Comandos para participar da roleta:',value='',inline=False)
-    embed.add_field(name='/registro',value='Se nunca participou de uma roleta, utilize esse comando para se cadastrar',inline=False)
+    embed.add_field(name=';registro',value='Se nunca participou de uma roleta, utilize esse comando para se cadastrar',inline=False)
     embed.add_field(name='/configurar',value='Utilize esse comando para configurar sua situação na roleta.\n Permite se ativar/desativar e selecionar o tipo de obra que gostaria de receber e indicar.',inline=False)
     embed.add_field(name='/editar_perfil',value='Utilize esse comando para adicionar informações como link do seu MAL/anilist ao seu perfil da roleta.',inline=False)
     embed.add_field(name='',value='',inline=False)
