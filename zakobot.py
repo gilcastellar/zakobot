@@ -448,7 +448,7 @@ async def registro_command(message):
 
     else:
 
-        await message.respond('Você já está cadastrado!')
+        await send_message2('Você já está cadastrado!', message.channel.id)
 
 @bot.command(name='editar_perfil')
 async def editar_perfil_command(ctx):
