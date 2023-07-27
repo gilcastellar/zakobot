@@ -430,7 +430,7 @@ async def get_chara(ctx):
 #@bot.command(name='registro')
 async def registro_command(message):
 
-    print message.author.id
+    #print message.author.id
 
     user_id = message.author.id
             
