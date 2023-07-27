@@ -151,7 +151,7 @@ async def on_message(message):
 
         case ";registro" | ';cadastro' | ';registrar' | ';cadastrar':
 
-            await registro_command(msg)
+            await registro_command(message)
 
         case ";ajuda" | ";comandos" | ";help" | ";commands":
 
@@ -429,6 +429,8 @@ async def get_chara(ctx):
 
 #@bot.command(name='registro')
 async def registro_command(message):
+
+    print message.author.id
 
     user_id = message.author.id
             
