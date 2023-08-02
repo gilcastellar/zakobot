@@ -1289,6 +1289,8 @@ async def get_user_avg(user):
     #sql = 'SELECT score FROM user_has_roleta WHERE id_receiver="' + str(user.id) + '" ORDER BY id_roleta'
     #scores_given = database.selectall(sql, True)
 
+    print(dbservice.select('user_has_roleta', ['score'], 'ORDER BY id_roleta', {'id_receiver': str(user.id)}))
+
     scores_given = dbservice.select('user_has_roleta', ['score'], 'ORDER BY id_roleta', {'id_receiver': str(user.id)})
 
     scores_given = from_list_of_tuples_to_list(scores_given)
