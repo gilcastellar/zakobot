@@ -1289,9 +1289,10 @@ async def get_user_avg(user):
     #sql = 'SELECT score FROM user_has_roleta WHERE id_receiver="' + str(user.id) + '" ORDER BY id_roleta'
     #scores_given = database.selectall(sql, True)
 
-    print(dbservice.select('user_has_roleta', ['score'], 'ORDER BY id_roleta', {'id_receiver': str(user.id)}))
-
     scores_given = dbservice.select('user_has_roleta', ['score'], 'ORDER BY id_roleta', {'id_receiver': str(user.id)})
+
+    if scores_given == None:
+        scores_given = []
 
     scores_given = from_list_of_tuples_to_list(scores_given)
 
@@ -1333,6 +1334,9 @@ async def get_user_avg(user):
     #scores_received = database.selectall(sql, True)
     
     scores_received = dbservice.select('user_has_roleta', ['score'], 'ORDER BY id_roleta', {'id_giver': str(user.id)})
+    
+    if scores_received == None:
+        scores_received = []
 
     scores_received = from_list_of_tuples_to_list(scores_received)
 
