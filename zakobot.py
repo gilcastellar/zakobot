@@ -1198,7 +1198,7 @@ async def placar_roleta_command(
     ctx: discord.ApplicationContext,
     roleta: discord.Option(str, name='roleta', description='Escolha a roleta que quer visualizar', autocomplete=get_roletas, required=True)
 ):
-    await ctx.respond("")
+    #await ctx.respond("")
 
     print(ctx.interaction.channel.id)
 
