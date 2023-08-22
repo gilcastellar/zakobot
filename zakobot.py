@@ -51,7 +51,7 @@ class EditarPerfilModal(discord.ui.Modal):
         _obs = list_and_obs[1]
 
         self.add_item(discord.ui.InputText(label="Link do perfil do MAL/Anilist (opcional)", required=False, value=_list))
-        self.add_item(discord.ui.InputText(label="Suas observações", style=discord.InputTextStyle.long, required=False, value=_obs))
+        self.add_item(discord.ui.InputText(label="Suas observações", style=discord.InputTextStyle.long, required=False, value=_obs, max_length=900))
 
     async def callback(self, interaction: discord.Interaction):
         #await interaction.response.send_message('Editando...')
