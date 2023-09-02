@@ -633,7 +633,7 @@ async def sorteio_command(
             
             index += 1
 
-        board_message = await create_placeholder_message(ctx, draw_channel)
+        board_message = await create_placeholder_message(ctx, 1077070205987082281)
 
         print(board_message)
         
@@ -3136,9 +3136,7 @@ async def aux_command(ctx):
         #message = await create_placeholder_message(ctx, 1077070205987082281)
 
         
-        user_name = dbservice.select('user', ['anime_list'], '', {'id': '1050904689685831760'}).lstrip('https://anilist.co/user/').rstrip('/')
-
-        print(user_name)
+        await send_message2('ok', 1077070205987082281)
 
         print(get_timestamp() + ': Done')
     
