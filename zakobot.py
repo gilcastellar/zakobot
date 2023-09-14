@@ -199,6 +199,26 @@ async def on_message(message):
 
             await ofertas_recebidas_command(message)
 
+    rag_commands = ['classe', 'stat']
+
+    classe1 = ['super aprendiz', 'espadachim', 'gatuno', 'mago', 'noviço', 'mercador', 'arqueiro', 'taekwon', 'justiceiro', 'ninja']
+
+    stats = ['força', 'agilidade', 'vitalidade', 'inteligencia', 'destreza', 'sorte']
+
+    if command in rag_commands:
+
+        if message.channel.id == 1151990929864007680:
+
+            if command == 'classe':
+
+                result = choice(classe1)
+
+            elif command == 'stat':
+
+                result = choice(stats)
+
+            send_message2(result, 1151990929864007680)
+
 @tasks.loop(minutes=1)
 async def check_time():
 
@@ -3048,6 +3068,7 @@ async def change_values_command(
 ):
     if ctx.author.id in admins:
         dbservice.update('values_chart', ['value_value'], [value], {'value_name': value_to_change})
+
 
 # Auxiliar command
 @bot.command(name='aux')
