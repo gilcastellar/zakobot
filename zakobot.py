@@ -217,7 +217,7 @@ async def on_message(message):
 
                 result = choice(stats)
 
-            send_message2(result, 1151990929864007680)
+            await send_message2(result, 1151990929864007680)
 
 @tasks.loop(minutes=1)
 async def check_time():
