@@ -222,10 +222,16 @@ async def on_message(message):
 
                 print(random.randint(1,7))
 
-            elif command == 'skill':
+            if command == 'skill':
 
-                result = 'coluna ' + str(random.randint(1,7)) + ' e fileira ' + str(random.randint(1,6))
+                rag_col = random.randint(1,7)
 
+                rag_fil = random.randint(1,6)
+
+                result = 'coluna ' + str(rag_col) + ' e fileira ' + str(rag_fil)
+
+                print(rag_col)
+                print(resurag_fillt)
                 print(result)
 
             await send_message2(result, 1151990929864007680)
