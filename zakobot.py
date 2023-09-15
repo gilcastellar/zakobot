@@ -12,6 +12,7 @@
 ####################################################################################################################################################
 
 from random import choice,choices, shuffle, randint
+import random
 
 import discord
 from discord.ext import tasks
@@ -216,6 +217,10 @@ async def on_message(message):
             elif command == 'stat':
 
                 result = choice(stats)
+
+            elif command == 'skill':
+
+                result = 'coluna ' + str(random.randint(1,7)) + ' e fileira ' + str(random.randint(1,6))
 
             await send_message2(result, 1151990929864007680)
 
