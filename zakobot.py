@@ -200,7 +200,7 @@ async def on_message(message):
 
             await ofertas_recebidas_command(message)
 
-    rag_commands = ['classe', 'stat']
+    rag_commands = ['classe', 'stat', 'skill']
 
     classe1 = ['super aprendiz', 'espadachim', 'gatuno', 'mago', 'noviço', 'mercador', 'arqueiro', 'taekwon', 'justiceiro', 'ninja']
 
@@ -222,7 +222,7 @@ async def on_message(message):
 
                 print(random.randint(1,7))
 
-            elif command == 'habilidade':
+            elif command == 'skill':
 
                 rag_col = random.randint(1,7)
 
