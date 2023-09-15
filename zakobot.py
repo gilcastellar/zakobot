@@ -231,7 +231,7 @@ async def on_message(message):
                 result = 'coluna ' + str(rag_col) + ' e fileira ' + str(rag_fil)
 
                 print(rag_col)
-                print(resurag_fillt)
+                print(rag_fil)
                 print(result)
 
             await send_message2(result, 1151990929864007680)
