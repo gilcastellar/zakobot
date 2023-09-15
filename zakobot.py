@@ -222,7 +222,7 @@ async def on_message(message):
 
                 print(random.randint(1,7))
 
-            if command == 'skill':
+            elif command == 'habilidade':
 
                 rag_col = random.randint(1,7)
 
