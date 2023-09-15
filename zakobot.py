@@ -214,9 +214,13 @@ async def on_message(message):
 
                 result = choice(classe1)
 
+                print(random.randint(1,7))
+
             elif command == 'stat':
 
                 result = choice(stats)
+
+                print(random.randint(1,7))
 
             elif command == 'skill':
 
