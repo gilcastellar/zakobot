@@ -222,6 +222,8 @@ async def on_message(message):
 
                 result = 'coluna ' + str(random.randint(1,7)) + ' e fileira ' + str(random.randint(1,6))
 
+                print(result)
+
             await send_message2(result, 1151990929864007680)
 
 @tasks.loop(minutes=1)
