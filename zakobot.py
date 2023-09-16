@@ -226,7 +226,7 @@ async def on_message(message):
 
                 rag_col = random.randint(1,7)
 
-                rag_fil = random.randint(1,6)
+                rag_fil = random.randint(1,8)
 
                 result = 'coluna ' + str(rag_col) + ' e fileira ' + str(rag_fil)
 
