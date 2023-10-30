@@ -36,9 +36,6 @@ admins = [906937520254758973,628466603486478336,1050904689685831760,984103475971
 
 test = 'eita'
 key = False
-
-
-
 rolls_channel = 1107765031245988060
 
 # Edit profile modal
@@ -647,7 +644,8 @@ async def sorteio_command(
         pairs = generate_pairs(result)
 
         print('chamando o insert')
-        dbservice.insert('roleta', ['id', 'name', 'draw', 'status'], (id+1, name, result_as_str, 'ongoing'))
+        if real == True:
+            dbservice.insert('roleta', ['id', 'name', 'draw', 'status'], (id+1, name, result_as_str, 'ongoing'))
         
         index = 1
 
@@ -665,8 +663,9 @@ async def sorteio_command(
                 text = giver.display_name + ' -> ' + receiver.display_name
             
                 message = await send_message(ctx,text) # REALIZA O SORTEIO AO VIVO NO CHAT E RETORNA O OBJETO DA MENSAGEM
-
-            dbservice.insert('user_has_roleta', ['idx', 'id_receiver', 'id_giver', 'id_roleta', 'status'], (index, str(receiver.id), str(giver.id), id+1, 'ongoing'))
+            
+            if real = True:
+                dbservice.insert('user_has_roleta', ['idx', 'id_receiver', 'id_giver', 'id_roleta', 'status'], (index, str(receiver.id), str(giver.id), id+1, 'ongoing'))
             
             index += 1
 
