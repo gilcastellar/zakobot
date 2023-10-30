@@ -662,9 +662,9 @@ async def sorteio_command(
 
                 text = giver.display_name + ' -> ' + receiver.display_name
             
-                message = await send_message(ctx,text) # REALIZA O SORTEIO AO VIVO NO CHAT E RETORNA O OBJETO DA MENSAGEM
+                message = await send_message(ctx, text) # REALIZA O SORTEIO AO VIVO NO CHAT E RETORNA O OBJETO DA MENSAGEM
             
-            if real = True:
+            if real == True:
                 dbservice.insert('user_has_roleta', ['idx', 'id_receiver', 'id_giver', 'id_roleta', 'status'], (index, str(receiver.id), str(giver.id), id+1, 'ongoing'))
             
             index += 1
