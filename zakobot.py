@@ -644,6 +644,7 @@ async def sorteio_command(
         pairs = generate_pairs(result)
 
         print('chamando o insert')
+
         if real == True:
             dbservice.insert('roleta', ['id', 'name', 'draw', 'status'], (id+1, name, result_as_str, 'ongoing'))
         
@@ -3100,3 +3101,27 @@ config = configparser.RawConfigParser()
 config.read('app.properties')
 token = config.get('Discord', 'token')
 bot.run(token)
+
+
+## TO DO ##
+#
+# Project: create a functional animanga market
+#
+# Confirmed features:
+#
+# - The bot should populate the market every X days with new random animanga
+# - The users should be able to insert animanga through zakoletas + free inserts
+# - The users should be able to acquire animanga from the market
+# - By finishing the bought animanga they always get more zakoleta than they've spent
+# 
+# "Might happen" features:
+#
+# - The worth of animanga grows larger with time
+# - The users will be able to abandon and throw an aniamnga back to the market
+# - Previously abandoned animanga are worth more
+#
+# Stuff that needs to be decided
+#
+# - The frequency in which the bot adds animanga
+# - The cost of acquiring animanga from the market
+# - The formula to determine the reward. Probably something like an arbitraty value x * number of episodes * time mod * abandoned mod
