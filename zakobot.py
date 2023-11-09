@@ -3119,6 +3119,7 @@ bot.run(token)
 # - The worth of animanga grows larger with time
 # - The users will be able to abandon and throw an aniamnga back to the market
 # - Previously abandoned animanga are worth more
+# - A way for users to report wrongly chosen animanga by the bot
 #
 # Stuff that needs to be decided
 #
