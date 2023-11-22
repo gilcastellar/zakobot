@@ -3093,9 +3093,23 @@ async def mercado_inserir_command(
     ctx: discord.ApplicationContext,
     insertion: discord.Option(str, name='obra')
 ):
-    if ctx.author.id in admins:
-        if insertion.startswith('||') and insertion.endswith("||"):
+    #if insertion.startswith('||') and insertion.endswith("||"):
+
+    type, anilist_id = get_type_and_id_from_anilist_link(insertion)
+
+    if insertion.contains('anilist.co'):
+        exists = dbservice.check_existence('mercado', {'id_anilist': str(anilist_id), 'is_available': str('True')})
+
+        if exists == 0:
+
             await send_message(ctx, 'inserindo ' + str(insertion))
+
+        else:
+
+            await send_message(ctx, 'Obra já disponível no mercado.')
+
+    else:
+        await send_message(ctx, 'É preciso inserir um link do Anilist.')
 
 
 # Auxiliar command
