@@ -3096,6 +3096,7 @@ async def mercado_inserir_command(
     #if insertion.startswith('||') and insertion.endswith("||"):
 
     type, anilist_id = get_type_and_id_from_anilist_link(insertion)
+    sender = str(ctx.author.id)
 
     if insertion.contains('anilist.co'):
         exists = dbservice.check_existence('mercado', {'id_anilist': str(anilist_id), 'is_available': str('True')})
@@ -3103,6 +3104,8 @@ async def mercado_inserir_command(
         if exists == 0:
 
             await send_message(ctx, 'inserindo ' + str(insertion))
+
+            dbservice.insert('mercado', ['id_anilist', 'item_url', 'item_type', 'sender', 'is_available', 'value'], [anilist_id, insertion, type, sender, 'True', 0])
 
         else:
 
