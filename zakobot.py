@@ -3084,7 +3084,17 @@ async def change_values_command(
     value: discord.Option(int, name='value')
 ):
     if ctx.author.id in admins:
-        dbservice.update('values_chart', ['value_value'], [value], {'value_name': value_to_change})
+        dbservice.update('values_chart', ['value_value'], [value], {'value_name': value_to_change})@bot.slash_command(name='change_values')
+
+mercado = bot.create_group('mercado', 'Comandos do mercado')
+
+@mercado.command(name='inserir')
+async def mercado_inserir_command(
+    ctx: discord.ApplicationContext,
+    insertion: discord.Option(str, name='obra')
+):
+    if ctx.author.id in admins:
+        await send_message(ctx, 'inserindo ' + str(insertion))
 
 
 # Auxiliar command
@@ -3119,7 +3129,8 @@ bot.run(token)
 # - The worth of animanga grows larger with time
 # - The users will be able to abandon and throw an aniamnga back to the market
 # - Previously abandoned animanga are worth more
-# - A way for users to report wrongly chosen animanga by the bot
+# - A way for users to report wrongly chosen animanga by the bot and get rewarded
+# - The users should use spoiler tags to insert animanga and the bot will delete then immediatelly
 #
 # Stuff that needs to be decided
 #
