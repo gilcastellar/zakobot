@@ -3097,22 +3097,35 @@ async def mercado_inserir_command(
 
     type, anilist_id = get_type_and_id_from_anilist_link(insertion)
     sender = str(ctx.author.id)
+    reward = 0
 
     if 'anilist.co' in insertion:
         exists = dbservice.check_existence('mercado', {'id_anilist': str(anilist_id), 'is_available': str('true')})
 
         if exists == 0:
-
             await send_message(ctx, 'inserindo ' + str(insertion))
 
-            dbservice.insert('mercado', ['id_anilist', 'item_url', 'item_type', 'sender', 'is_available', 'value'], [anilist_id, insertion, type, sender, 'true', 0])
+            dbservice.insert('mercado', ['id_anilist', 'item_url', 'item_type', 'sender', 'is_available', 'value'], [anilist_id, insertion, type, sender, 'true', reward])
 
         else:
-
             await send_message(ctx, 'Obra já disponível no mercado.')
 
     else:
         await send_message(ctx, 'É preciso inserir um link do Anilist.')
+
+def mercado_options():
+
+    mercado_options = from_list_of_tuples_to_list(dbservice.select('mercado', ['item_name'], ''))
+
+    return mercado_options
+
+@mercado.command(name='comprar')
+async def mercado_comprar_command(
+    ctx: discord.ApplicationContext,
+    order: discord.Option(str, choices=mercado_options(), name='obras')
+    ):
+    
+    await send_message(ctx, order)
 
 
 # Auxiliar command
