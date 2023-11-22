@@ -3094,7 +3094,8 @@ async def mercado_inserir_command(
     insertion: discord.Option(str, name='obra')
 ):
     if ctx.author.id in admins:
-        await send_message(ctx, 'inserindo ' + str(insertion))
+        if insertion.startswith('||'):
+            await send_message(ctx, 'inserindo ' + str(insertion))
 
 
 # Auxiliar command
