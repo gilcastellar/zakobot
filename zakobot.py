@@ -3099,13 +3099,13 @@ async def mercado_inserir_command(
     sender = str(ctx.author.id)
 
     if 'anilist.co' in insertion:
-        exists = dbservice.check_existence('mercado', {'id_anilist': str(anilist_id), 'is_available': str('True')})
+        exists = dbservice.check_existence('mercado', {'id_anilist': str(anilist_id), 'is_available': str('true')})
 
         if exists == 0:
 
             await send_message(ctx, 'inserindo ' + str(insertion))
 
-            dbservice.insert('mercado', ['id_anilist', 'item_url', 'item_type', 'sender', 'is_available', 'value'], [anilist_id, insertion, type, sender, 'True', 0])
+            dbservice.insert('mercado', ['id_anilist', 'item_url', 'item_type', 'sender', 'is_available', 'value'], [anilist_id, insertion, type, sender, 'true', 0])
 
         else:
 
