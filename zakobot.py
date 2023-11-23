@@ -3123,7 +3123,7 @@ def mercado_options():
 async def mercado_comprar_command(
     ctx: discord.ApplicationContext,
     order: discord.Option(str, choices=mercado_options(), name='obras')
-    ):
+):
     
     await send_message(ctx, order)
 
