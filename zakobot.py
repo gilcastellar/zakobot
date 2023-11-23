@@ -3113,11 +3113,11 @@ async def mercado_inserir_command(
     else:
         await send_message(ctx, 'É preciso inserir um link do Anilist.')
 
-def mercado_options():
+# def mercado_options():
 
-    mercado_options = from_list_of_tuples_to_list(dbservice.select('mercado', ['item_name'], ''))
+#     mercado_options = from_list_of_tuples_to_list(dbservice.select('mercado', ['item_name'], ''))
 
-    return mercado_options
+#     return mercado_options
 
 @mercado.command(name='comprar')
 async def mercado_comprar_command(
