@@ -3122,7 +3122,7 @@ async def mercado_inserir_command(
 @mercado.command(name='comprar')
 async def mercado_comprar_command(
     ctx: discord.ApplicationContext,
-    order: discord.Option(str, choices=mercado_options(), name='obras')
+    order: discord.Option(str, choices=values_options(), name='obras')
     ):
     
     await send_message(ctx, order)
