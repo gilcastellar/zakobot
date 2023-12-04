@@ -3086,7 +3086,34 @@ async def change_values_command(
     if ctx.author.id in admins:
         dbservice.update('values_chart', ['value_value'], [value], {'value_name': value_to_change})@bot.slash_command(name='change_values')
 
+## MERCADO TO DO ##
+#
+# Project: create a functional animanga market
+#
+# Confirmed features:
+#
+# - The users should be able to insert animanga through zakoletas + free inserts
+# - The users should be able to acquire animanga from the market
+# - By finishing the bought animanga they always get more zakoleta than they've spent
+# 
+# "Might happen" features:
+#
+# - The bot should populate the market every X days with new random animanga
+# - The worth of animanga grows larger with time
+# - The users will be able to abandon and throw an aniamnga back to the market
+# - Previously abandoned animanga are worth more
+# - A way for users to report wrongly chosen animanga by the bot and get rewarded
+# - The users should use spoiler tags to insert animanga and the bot will delete then immediatelly
+#
+# Stuff that needs to be decided
+#
+# - The frequency in which the bot adds animanga
+# - The cost of acquiring animanga from the market
+# - The formula to determine the reward. Probably something like an arbitraty value x * number of episodes * time mod * abandoned mod
+
 mercado = bot.create_group('mercado', 'Comandos do mercado')
+
+# mercado_commands = ['Colocar à venda', 'Comprar', 'Terminar', 'Abandonar', 'Calcular valor']
 
 @mercado.command(name='inserir')
 async def mercado_inserir_command(
@@ -3095,11 +3122,13 @@ async def mercado_inserir_command(
 ):
     #if insertion.startswith('||') and insertion.endswith("||"):
 
-    type, anilist_id = get_type_and_id_from_anilist_link(insertion)
     sender = str(ctx.author.id)
     reward = 0
 
     if 'anilist.co' in insertion:
+        
+        type, anilist_id = get_type_and_id_from_anilist_link(insertion)
+        
         exists = dbservice.check_existence('mercado', {'id_anilist': str(anilist_id), 'is_available': str('true')})
 
         if exists == 0:
@@ -3115,7 +3144,9 @@ async def mercado_inserir_command(
 
 def mercado_options():
 
-    mercado_options = from_list_of_tuples_to_list(dbservice.select('mercado', ['item_name'], ''))
+    mercado_options = from_list_of_tuples_to_list(dbservice.select('mercado', ['item_name'], '', {'is_available': 'true'})) 
+    
+    # NEED TO ADD AUTOCOMPLETE
 
     return mercado_options
 
@@ -3125,8 +3156,31 @@ async def mercado_comprar_command(
     order: discord.Option(str, choices=mercado_options(), name='obras')
 ):
     
+    # needs to check if user can buy
+    # if OK, should put the user as buyer in the db
+    
     await send_message(ctx, order)
+    
+   
+@mercado.command(name='terminar')
+async def mercado_terminar_command(
+    ctx: discord.ApplicationContext,
+    to_finish: discord.Option(str, name='obra')
 
+):
+    # then check db to see if user has possession of this item
+    # if everything is OK, then calculates profit, gives profit to seller and buyer and cleans the db
+    
+    user = str(ctx.author.id)
+    reward = 0
+
+    if 'anilist.co' in to_finish:
+        
+        type, anilist_id = get_type_and_id_from_anilist_link(to_finish)
+        
+        if dbservice.select('mercado', 'is_available', '', {'buyer': user}):
+            
+            await send_message(ctx, 'Você terminou essa obra! ')
 
 # Auxiliar command
 @bot.command(name='aux')
@@ -3144,27 +3198,4 @@ token = config.get('Discord', 'token')
 bot.run(token)
 
 
-## TO DO ##
-#
-# Project: create a functional animanga market
-#
-# Confirmed features:
-#
-# - The bot should populate the market every X days with new random animanga
-# - The users should be able to insert animanga through zakoletas + free inserts
-# - The users should be able to acquire animanga from the market
-# - By finishing the bought animanga they always get more zakoleta than they've spent
-# 
-# "Might happen" features:
-#
-# - The worth of animanga grows larger with time
-# - The users will be able to abandon and throw an aniamnga back to the market
-# - Previously abandoned animanga are worth more
-# - A way for users to report wrongly chosen animanga by the bot and get rewarded
-# - The users should use spoiler tags to insert animanga and the bot will delete then immediatelly
-#
-# Stuff that needs to be decided
-#
-# - The frequency in which the bot adds animanga
-# - The cost of acquiring animanga from the market
-# - The formula to determine the reward. Probably something like an arbitraty value x * number of episodes * time mod * abandoned mod
+
