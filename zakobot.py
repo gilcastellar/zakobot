@@ -3178,7 +3178,9 @@ async def mercado_terminar_command(
         
         type, anilist_id = get_type_and_id_from_anilist_link(to_finish)
         
-        if dbservice.check_existence('mercado', {'buyer': user, 'id_anilist': anilist_id}) == 1:
+        exists = dbservice.check_existence('mercado', {'buyer': user, 'id_anilist': anilist_id}):
+        
+        if exists == 1:
             
             await send_message(ctx, 'Você terminou essa obra! ')
 
