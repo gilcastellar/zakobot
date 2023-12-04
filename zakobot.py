@@ -3178,7 +3178,7 @@ async def mercado_terminar_command(
         
         type, anilist_id = get_type_and_id_from_anilist_link(to_finish)
         
-        exists = dbservice.check_existence('mercado', {'buyer': user, 'id_anilist': anilist_id}):
+        exists = dbservice.check_existence('mercado', {'buyer': user, 'id_anilist': anilist_id})
         
         if exists == 1:
             
