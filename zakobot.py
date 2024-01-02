@@ -3199,8 +3199,10 @@ async def mercado_inserir_command(
             duration_factor = 1 + (total_duration * 0.003)
             
             reward = ceil(100 * duration_factor)
+            
+            print(time.localtime)
 
-            dbservice.insert('mercado', ['id_anilist', 'item_url', 'item_name', 'item_type', 'sender', 'is_available', 'value'], [anilist_id, insertion, title, type, sender, 'true', reward])
+            dbservice.insert('mercado', ['id_anilist', 'item_url', 'item_name', 'item_type', 'sender', 'is_available', 'value', 'date_inserted'], [anilist_id, insertion, title, type, sender, 'true', reward, 0])
 
         else:
             await send_message(ctx, 'Obra já disponível no mercado.')
@@ -3337,6 +3339,7 @@ async def aux_command(ctx):
 
         print(get_timestamp() + ': Done')
     
+print(time.localtime)
 config = configparser.RawConfigParser()
 config.read('app.properties')
 token = config.get('Discord', 'token')
