@@ -3228,7 +3228,7 @@ async def mercado_comprar_command(
     
     user_id = ctx.author.id
 
-    available_money = dbservice.select('user', ['zakoleta'], '')
+    available_money = dbservice.select('user', ['zakoleta'], '', {'id': str(user_id)})
     
     print(available_money)
     
