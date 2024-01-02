@@ -3339,7 +3339,7 @@ async def aux_command(ctx):
 
         print(get_timestamp() + ': Done')
     
-print(datetime.date.today()-1)
+print(datetime..timestamp())
 
 config = configparser.RawConfigParser()
 config.read('app.properties')
