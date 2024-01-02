@@ -3206,7 +3206,7 @@ async def mercado_inserir_command(
 
 async def get_mercado_options(ctx: discord.AutocompleteContext):
     
-    mercado_options = dbservice.select('mercado', ['item_name'], '')
+    mercado_options = dbservice.select('mercado', ['item_name', 'value'], '')
 
     print(mercado_options)
 
@@ -3214,7 +3214,7 @@ async def get_mercado_options(ctx: discord.AutocompleteContext):
 
     for name in mercado_options:
 
-        names.append(name[0])
+        names.append(name[0] + ' ($' + name[1] + ')')
 
     print(names)
 
