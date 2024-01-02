@@ -3194,7 +3194,7 @@ async def get_mercado_options(ctx: discord.AutocompleteContext):
 
     print(names)
 
-    return [name for name in mercado_options if ctx.value.lower() in name.lower()]
+    return [name for name in names if ctx.value.lower() in name.lower()]
 
 @mercado.command(name='comprar')
 async def mercado_comprar_command(
