@@ -3251,14 +3251,13 @@ async def mercado_comprar_command(
         new_money = available_money - int(value)
 
         dbservice.update('user', ['zakoleta'], [new_money], {'id': str(user_id)})
+        
+        dbservice.update('mercado', ['buyer'], [user_id], {'item_name': real_name})
 
         await send_message(ctx, 'Compra efetuada!')
 
 
-    # needs to check if user can buy
-    # if OK, should put the user as buyer in the db
-
-    await send_message(ctx, order)
+        
     
 @mercado.command(name='terminar')
 async def mercado_terminar_command(
