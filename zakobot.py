@@ -3339,6 +3339,12 @@ async def aux_command(ctx):
         print(datetime.datetime.now(ZoneInfo('America/Sao_Paulo')))
         
         print(str(datetime.datetime.now() - dbservice.select('mercado', ['date_inserted'], '', {'id_item': 1})))
+        
+        date = str(datetime.datetime.now() - dbservice.select('mercado', ['date_inserted'], '', {'id_item': 1}))
+
+        days, trash = date.split(' day')
+
+        print(str(datetime.datetime.now() - dbservice.select('mercado', ['date_inserted'], '', {'id_item': 1})).split(' day'))
     
         
         # await send_message2('ok', 1077070205987082281)
