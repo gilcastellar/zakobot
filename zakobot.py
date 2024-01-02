@@ -3318,7 +3318,7 @@ async def mercado_terminar_command(
             
         else:
 
-            await send_message(ctx, 'Você não é o dono dessa obra.')
+            await send_message(ctx, 'Você não é o dono dessa obra ou ela não existe no mercado.')
 
 # Auxiliar command
 @bot.command(name='aux')
