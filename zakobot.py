@@ -3226,12 +3226,15 @@ async def mercado_comprar_command(
     order: discord.Option(str, autocomplete=get_mercado_options, name='obras')
 ):
     
+    available_money = dbservice.select('user', ['zakoleta'], '')
+
+    real_name = order.split(' ($')
+    
+    order_price = dbservice.select('mercado', ['value'], '', {'item_name': real_name}))
+
     # needs to check if user can buy
     # if OK, should put the user as buyer in the db
 
-
-
-    
     await send_message(ctx, order)
     
 @mercado.command(name='terminar')
