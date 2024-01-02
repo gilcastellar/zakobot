@@ -11,6 +11,7 @@
 ####################################################################################################################################################
 ####################################################################################################################################################
 
+from html.entities import name2codepoint
 from random import choice,choices, shuffle, randint
 import random
 from re import X
@@ -3158,8 +3159,20 @@ async def mercado_inserir_command(
 
         if exists == 0:
             await send_message(ctx, 'inserindo ' + str(insertion))
+            
+            if type == 'anime':
 
-            dbservice.insert('mercado', ['id_anilist', 'item_url', 'item_type', 'sender', 'is_available', 'value'], [anilist_id, insertion, type, sender, 'true', reward])
+                response = anilist.query_anime_id(id)
+                
+            else:
+
+                response = anilist.query_manga_id(id)
+
+            media_obj = response.json()
+            
+            title = media_obj['data']['Media']['title']['romaji']
+
+            dbservice.insert('mercado', ['id_anilist', 'item_url', 'item_name', 'item_type', 'sender', 'is_available', 'value'], [anilist_id, insertion, title, type, sender, 'true', reward])
 
         else:
             await send_message(ctx, 'Obra já disponível no mercado.')
