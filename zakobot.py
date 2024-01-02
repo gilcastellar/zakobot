@@ -3229,6 +3229,10 @@ async def mercado_comprar_command(
     user_id = ctx.author.id
 
     available_money = dbservice.select('user', ['zakoleta'], '')
+    
+    print(available_money)
+    
+    # available_money = from_list_of_tuples_to_list
 
     real_name, value = order.split(' ($')
     
