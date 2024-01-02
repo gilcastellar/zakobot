@@ -3076,7 +3076,7 @@ async def dailies():
     await update_media()
     dbservice.update('dailies', ['daily', 'is_done'], ['media_update', 1], {'daily':'media_update'})
 
-    await update_mercado()
+    # await update_mercado()
     
     print('daily finalizada ' + get_timestamp())
 
