@@ -3190,7 +3190,7 @@ async def mercado_inserir_command(
 
             title = media_obj['data']['Media']['title']['romaji']
 
-            duration_factor = 1 + ceil(duration * 0.003)
+            duration_factor = 1 + ceil(total_duration * 0.003)
             
             reward = 100 * duration_factor
 
