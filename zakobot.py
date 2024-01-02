@@ -3192,9 +3192,9 @@ async def mercado_inserir_command(
 
             title = media_obj['data']['Media']['title']['romaji']
 
-            duration_factor = 1 + int(total_duration * 0.003)
+            duration_factor = 1 + (total_duration * 0.003)
             
-            reward = 100 * duration_factor
+            reward = 100 * ceil(duration_factor)
 
             dbservice.insert('mercado', ['id_anilist', 'item_url', 'item_name', 'item_type', 'sender', 'is_available', 'value'], [anilist_id, insertion, title, type, sender, 'true', reward])
 
