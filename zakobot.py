@@ -3201,7 +3201,7 @@ async def mercado_inserir_command(
             
             reward = ceil(100 * duration_factor)
 
-            date = datetime.datetime.now()
+            date = datetime.datetime.now(ZoneInfo('America/Sao_Paulo'))
 
             dbservice.insert('mercado', ['id_anilist', 'item_url', 'item_name', 'item_type', 'sender', 'is_available', 'value', 'date_inserted'], [anilist_id, insertion, title, type, sender, 'true', reward, date])
 
