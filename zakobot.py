@@ -3169,7 +3169,7 @@ async def mercado_inserir_command(
 
 async def get_mercado_options(ctx: discord.AutocompleteContext):
     
-    mercado_options = dbservice.select('mercado', ['item_name'])
+    mercado_options = dbservice.select('mercado', ['item_name'], '')
 
     print(mercado_options)
 
@@ -3183,6 +3183,8 @@ async def mercado_comprar_command(
     
     # needs to check if user can buy
     # if OK, should put the user as buyer in the db
+
+
     
     await send_message(ctx, order)
     
@@ -3190,8 +3192,8 @@ async def mercado_comprar_command(
 async def mercado_terminar_command(
     ctx: discord.ApplicationContext,
     to_finish: discord.Option(str, name='obra')
-
 ):
+    
     # needs to calculate profit, give profit to seller and buyer and clean the db
     
     user = str(ctx.author.id)
