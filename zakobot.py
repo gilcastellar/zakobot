@@ -3258,7 +3258,7 @@ async def mercado_comprar_command(
     else:
         buyer_slots = len(buyer_slots)
     
-    # print('slots: ' + str(len(buyer_slots)))
+    print('slots: ' + str(buyer_slots))
 
     
     if buyer_slots >= int(dbservice.select('user', ['market_buying_slots'], '', {'id': user_id})):
