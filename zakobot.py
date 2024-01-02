@@ -3307,16 +3307,21 @@ async def mercado_terminar_command(
         
         if exists == 1:
             
+            sender_id = dbservice.select('mercado', ['sender'], '', {'id_anilist': anilist_id})
+            
             buyer_reward = dbservice.select('mercado', ['value'], '', {'id_anilist': anilist_id})
-            seller_reward = ceil(buyer_reward / 2)
+            sender_reward = ceil(buyer_reward / 2)
             
             print('rewards: ')
             print(buyer_reward)
-            print(seller_reward)
+            print(sender_reward)
+            
+            dbservice.update_zakoleta('user', sender_reward, '+' + str(sender_reward) + ' zakoletas por uma venda no mercado', sender_id, 'add')
+            dbservice.update_zakoleta('user', buyer_reward, '+' + str(buyer_reward) + ' zakoletas por uma venda no mercado', user, 'add')
 
             dbservice.delete('mercado', {'buyer': user, 'id_anilist': anilist_id})
             
-            await send_message(ctx, 'Você terminou essa obra! ')
+            await send_message(ctx, 'Você terminou essa obra!')
             
         else:
 
