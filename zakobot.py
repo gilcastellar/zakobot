@@ -3168,8 +3168,6 @@ async def mercado_inserir_command(
         await send_message(ctx, 'É preciso inserir um link do Anilist.')
 
 async def get_mercado_options(ctx: discord.AutocompleteContext):
-
-    mercado_options = from_list_of_tuples_to_list(dbservice.select('mercado', ['item_name'], '', {'is_available': 'true'})) 
     
     mercado_options = dbservice.select('mercado', ['item_name'])
 
