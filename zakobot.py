@@ -3165,6 +3165,8 @@ async def mercado_inserir_command(
 
     if 'anilist.co' in insertion:
         
+        # needs to check if the user has selling slots available
+        
         type, anilist_id = get_type_and_id_from_anilist_link(insertion)
         
         exists = dbservice.check_existence('mercado', {'id_anilist': str(anilist_id), 'is_available': str('true')})
@@ -3232,6 +3234,14 @@ async def mercado_comprar_command(
     
     user_id = ctx.author.id
 
+    sender_id = dbservice.select('mercado', ['sender'], '', {'item_name': real_name})
+
+    # needs to check if the user has buying slots available
+
+    buyer_slots = dbservice.select('mercado', ['buyer'], '', {'buyer': user_id})
+    
+    print(len(buyer_slots))
+
     available_money = dbservice.select('user', ['zakoleta'], '', {'id': str(user_id)})
     
     print(available_money)
@@ -3250,21 +3260,21 @@ async def mercado_comprar_command(
        
     else:
         
-        if user_id != int(dbservice.select('mercado', ['sender'], '', {'item_name': real_name})):
+        if user_id != int(sender_id):
             new_money = available_money - int(value)
 
             dbservice.update('user', ['zakoleta'], [new_money], {'id': str(user_id)})
         
             dbservice.update('mercado', ['buyer'], [user_id], {'item_name': real_name})
             dbservice.update('mercado', ['is_available'], ['false'], {'item_name': real_name})
+            
+            dbservice.update_zakoleta('user', 50, '+50 zakoletas por uma venda no mercado', sender_id, 'add')
         
             await send_message(ctx, 'Compra efetuada!')
         
         else:  
             await send_message(ctx, 'Você é quem enviou essa obra!')
 
-
-        
     
 @mercado.command(name='terminar')
 async def mercado_terminar_command(
