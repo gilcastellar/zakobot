@@ -3248,8 +3248,6 @@ async def mercado_comprar_command(
     
     sender_id = dbservice.select('mercado', ['sender'], '', {'item_name': real_name})
 
-    # needs to check if the user has buying slots available
-
     buyer_slots = dbservice.select('mercado', ['buyer'], '', {'buyer': user_id})
 
     if buyer_slots == str(user_id):
@@ -3300,7 +3298,6 @@ async def mercado_terminar_command(
     # needs to calculate profit, give profit to seller and buyer and clean the db
     
     user = str(ctx.author.id)
-    reward = 0
 
     if 'anilist.co' in to_finish:
         
@@ -3309,6 +3306,13 @@ async def mercado_terminar_command(
         exists = dbservice.check_existence('mercado', {'buyer': user, 'id_anilist': anilist_id})
         
         if exists == 1:
+            
+            buyer_reward = dbservice.select('mercado', ['value'], '', {'id_anilist': anilist_id})
+            seller_reward = ceil((buyer_reward / 2) - 50)
+            
+            print('rewards: ')
+            print(buyer_reward)
+            print(seller_reward)
             
             await send_message(ctx, 'Você terminou essa obra! ')
 
