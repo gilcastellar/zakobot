@@ -3251,6 +3251,8 @@ async def mercado_comprar_command(
     # needs to check if the user has buying slots available
 
     buyer_slots = dbservice.select('mercado', ['buyer'], '', {'buyer': user_id})
+
+    print(buyer_slots)
     
     print('slots: ' + str(len(buyer_slots)))
 
