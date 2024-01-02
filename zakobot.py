@@ -11,6 +11,7 @@
 ####################################################################################################################################################
 ####################################################################################################################################################
 
+from faulthandler import dump_traceback
 from html.entities import name2codepoint
 from random import choice,choices, shuffle, randint
 import random
@@ -27,7 +28,7 @@ import json
 import time
 import datetime
 import asyncio
-from math import ceil
+from math import ceil, e
 
 intents = discord.Intents.default()
 intents.members = True
@@ -3114,6 +3115,8 @@ async def change_values_command(
 
 # limites = 3 venda / 2 compra
 
+# FATOR DURAÇÃO
+
 # 0 minutos = fator 1
 
 # 5 min = fator 1.06
@@ -3122,6 +3125,13 @@ async def change_values_command(
 
 # 150 min = fator 1.5
 
+# FATOR VALORIZAÇÃO
+
+# momento 0 = fator 1
+
+# momento 1 dia = fator 1.03
+
+# momento 1 mês = fator 2
 
 # 
 # "Might happen" features:
@@ -3149,7 +3159,6 @@ async def mercado_inserir_command(
     insertion: discord.Option(str, name='obra')
 ):
     sender = str(ctx.author.id)
-    reward = 0
 
     if 'anilist.co' in insertion:
         
@@ -3164,13 +3173,21 @@ async def mercado_inserir_command(
 
                 response = anilist.query_anime_id(anilist_id)
                 
+                duration = media_obj['data']['Media']['duration']
+                
             else:
 
                 response = anilist.query_manga_id(anilist_id)
+                
+                duration = 1
 
             media_obj = response.json()
             
             title = media_obj['data']['Media']['title']['romaji']
+
+            duration_factor = 1 + ceil(duration * 0.005)
+            
+            reward = 100 * duration_factor
 
             dbservice.insert('mercado', ['id_anilist', 'item_url', 'item_name', 'item_type', 'sender', 'is_available', 'value'], [anilist_id, insertion, title, type, sender, 'true', reward])
 
@@ -3204,6 +3221,7 @@ async def mercado_comprar_command(
     
     # needs to check if user can buy
     # if OK, should put the user as buyer in the db
+
 
 
     
