@@ -16,6 +16,7 @@ from html.entities import name2codepoint
 from random import choice,choices, shuffle, randint
 import random
 from re import X
+from xml.dom.expatbuilder import theDOMImplementation
 
 import discord
 from discord.ext import tasks
@@ -3177,6 +3178,8 @@ async def mercado_inserir_command(
                 
                 duration = media_obj['data']['Media']['duration']
                 
+                total_duration = duration * media_obj['data']['Media']['episodes']
+                
             else:
 
                 response = anilist.query_manga_id(anilist_id)
@@ -3187,7 +3190,7 @@ async def mercado_inserir_command(
 
             title = media_obj['data']['Media']['title']['romaji']
 
-            duration_factor = 1 + ceil(duration * 0.005)
+            duration_factor = 1 + ceil(duration * 0.003)
             
             reward = 100 * duration_factor
 
