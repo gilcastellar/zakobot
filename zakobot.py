@@ -3232,6 +3232,8 @@ async def mercado_comprar_command(
     
     order_price = dbservice.select('mercado', ['value'], '', {'item_name': real_name})
 
+    print(order_price)
+
     # needs to check if user can buy
     # if OK, should put the user as buyer in the db
 
