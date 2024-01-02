@@ -3339,7 +3339,8 @@ async def aux_command(ctx):
 
         print(get_timestamp() + ': Done')
     
-print(time.localtime)
+print(datetime.date)
+
 config = configparser.RawConfigParser()
 config.read('app.properties')
 token = config.get('Discord', 'token')
