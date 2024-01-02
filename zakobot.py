@@ -13,6 +13,7 @@
 
 from random import choice,choices, shuffle, randint
 import random
+from re import X
 
 import discord
 from discord.ext import tasks
@@ -3092,9 +3093,35 @@ async def change_values_command(
 #
 # Confirmed features:
 #
-# - The users should be able to insert animanga through zakoletas + free inserts
-# - The users should be able to acquire animanga from the market
-# - By finishing the bought animanga they always get more zakoleta than they've spent
+# - The users should be able to insert animanga through zakoletas <
+# - The users should be able to acquire animanga from the market + free buys <
+# - By finishing the bought animanga they always get more zakoleta than they've spent <
+# - Insertions will be anonymous
+# - rewarding is 50/50
+# - custo pra compra = 100 / lucro = proporcional ao tamanho
+
+# custo_inserção = 100 (fixo)
+
+# custo_compra = 100 (base fixa)
+
+# lucro_vendedor = (50% do fixo + x/2 no término), onde x = lucro_comprador
+
+# lucro_comprador = (100 * fator_duração * fator_valorização (min 101)) no término
+
+# valor_inicial = 100
+# fator_valorização = 1.x
+
+# limites = 3 venda / 2 compra
+
+# 0 minutos = fator 1
+
+# 5 min = fator 1.06
+
+# 300 min (1 cour) = fator 2
+
+# 150 min = fator 1.5
+
+
 # 
 # "Might happen" features:
 #
@@ -3120,8 +3147,6 @@ async def mercado_inserir_command(
     ctx: discord.ApplicationContext,
     insertion: discord.Option(str, name='obra')
 ):
-    #if insertion.startswith('||') and insertion.endswith("||"):
-
     sender = str(ctx.author.id)
     reward = 0
 
@@ -3142,18 +3167,45 @@ async def mercado_inserir_command(
     else:
         await send_message(ctx, 'É preciso inserir um link do Anilist.')
 
-def mercado_options():
+async def get_mercado_options(ctx: discord.AutocompleteContext):
 
     mercado_options = from_list_of_tuples_to_list(dbservice.select('mercado', ['item_name'], '', {'is_available': 'true'})) 
     
+    mercado_options = dbservice.select('mercado', ['item_name'])
+
+    print(mercado_options)
+
+    return [name for name in mercado_options if ctx.value.lower() in name.lower()]
+    
     # NEED TO ADD AUTOCOMPLETE
+
+# Get active members
+async def get_members_names(ctx: discord.AutocompleteContext):
+
+    #members = database.selectall('SELECT id, name, active, anime_list, receives, gives, obs FROM user ORDER BY active DESC, name')
+
+    members = dbservice.select('user', ['id', 'name', 'active', 'anime_list', 'receives', 'gives', 'obs'], 'ORDER BY active DESC, name')
+
+    print(members)
+
+    #members = from_list_of_tuples_to_list(members)
+
+    #print(members)
+
+    members_names = []
+
+    for member in members:
+        members_names.append(member[1])
+
+    #return [name for name in members_names if name.lower().startswith(ctx.value.lower())]
+    return [name for name in members_names if ctx.value.lower() in name.lower()]
 
     return mercado_options
 
 @mercado.command(name='comprar')
 async def mercado_comprar_command(
     ctx: discord.ApplicationContext,
-    order: discord.Option(str, choices=mercado_options(), name='obras')
+    order: discord.Option(str, choices=get_mercado_options, name='obras')
 ):
     
     # needs to check if user can buy
@@ -3168,8 +3220,7 @@ async def mercado_terminar_command(
     to_finish: discord.Option(str, name='obra')
 
 ):
-    # then check db to see if user has possession of this item
-    # if everything is OK, then calculates profit, gives profit to seller and buyer and cleans the db
+    # needs to calculate profit, give profit to seller and buyer and clean the db
     
     user = str(ctx.author.id)
     reward = 0
