@@ -3209,6 +3209,8 @@ async def mercado_inserir_command(
             date = date_time.strftime("%B %d, %Y")
             print(date)
 
+            date = datetime.datetime.now()
+
             dbservice.insert('mercado', ['id_anilist', 'item_url', 'item_name', 'item_type', 'sender', 'is_available', 'value', 'date_inserted'], [anilist_id, insertion, title, type, sender, 'true', reward, date])
 
         else:
