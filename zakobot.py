@@ -22,6 +22,8 @@ import discord
 from discord.ext import tasks
 from discord.ext import commands
 import configparser
+
+from discord.ext.commands.flags import F
 import database
 import dbservice
 import anilist
@@ -3206,16 +3208,18 @@ async def mercado_inserir_command(
 
 async def get_mercado_options(ctx: discord.AutocompleteContext):
     
-    mercado_options = dbservice.select('mercado', ['item_name', 'value'], '')
+    mercado_options = dbservice.select('mercado', ['item_name', 'value', 'is_available'], '')
 
     print(mercado_options)
 
     names = []
 
     for name in mercado_options:
+        
+        if name[2] == 'true':
 
-        names.append(name[0] + ' ($' + str(name[1]) + ')')
-
+            names.append(name[0] + ' ($' + str(name[1]) + ')')
+            
     print(names)
 
     return [name for name in names if ctx.value.lower() in name.lower()]
@@ -3231,8 +3235,6 @@ async def mercado_comprar_command(
     available_money = dbservice.select('user', ['zakoleta'], '', {'id': str(user_id)})
     
     print(available_money)
-    
-    # available_money = from_list_of_tuples_to_list
 
     real_name, value = order.split(' ($')
     
@@ -3247,14 +3249,20 @@ async def mercado_comprar_command(
         await send_message(ctx, 'Você não tem zakoletas o suficiente para realizar essa compra.')
        
     else:
-
-        new_money = available_money - int(value)
-
-        dbservice.update('user', ['zakoleta'], [new_money], {'id': str(user_id)})
         
-        dbservice.update('mercado', ['buyer'], [user_id], {'item_name': real_name})
+        if user_id != dbservice.select('mercado', ['sender'], '', {'item_name': real_name})
 
-        await send_message(ctx, 'Compra efetuada!')
+            new_money = available_money - int(value)
+
+            dbservice.update('user', ['zakoleta'], [new_money], {'id': str(user_id)})
+        
+            dbservice.update('mercado', ['buyer'], [user_id], {'item_name': real_name})
+            dbservice.update('mercado', ['is_available'], ['false'], {'item_name': real_name})
+        
+            await send_message(ctx, 'Compra efetuada!')
+        
+        else:  
+            await send_message(ctx, 'Você é quem enviou essa obra!')
 
 
         
