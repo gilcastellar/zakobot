@@ -3250,8 +3250,7 @@ async def mercado_comprar_command(
        
     else:
         
-        if user_id != dbservice.select('mercado', ['sender'], '', {'item_name': real_name})
-
+        if user_id != dbservice.select('mercado', ['sender'], '', {'item_name': real_name}):
             new_money = available_money - int(value)
 
             dbservice.update('user', ['zakoleta'], [new_money], {'id': str(user_id)})
