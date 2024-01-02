@@ -3348,6 +3348,12 @@ async def aux_command(ctx):
         
         print(old_time)
         print(datetime.datetime.now() - old_time)
+
+        str_date = str(datetime.datetime.now() - old_time)
+        
+        str_date = str_date.split(' day')
+        
+        print(str_date)
         
         await send_message2('ok', 1077070205987082281)
 
