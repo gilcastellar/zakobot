@@ -3240,7 +3240,7 @@ async def mercado_comprar_command(
 
     buyer_slots = dbservice.select('mercado', ['buyer'], '', {'buyer': user_id})
     
-    print(len(buyer_slots))
+    print('slots: ' + str(len(buyer_slots)))
 
     available_money = dbservice.select('user', ['zakoleta'], '', {'id': str(user_id)})
     
