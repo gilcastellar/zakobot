@@ -3226,6 +3226,8 @@ async def mercado_comprar_command(
     order: discord.Option(str, autocomplete=get_mercado_options, name='obras')
 ):
     
+    user_id = ctx.author.id
+
     available_money = dbservice.select('user', ['zakoleta'], '')
 
     real_name, value = order.split(' ($')
@@ -3233,10 +3235,21 @@ async def mercado_comprar_command(
     value, trash = value.split(')')
 
     print(real_name)
-    
-    # order_price = dbservice.select('mercado', ['value'], '', {'item_name': real_name})
 
     print(str(value))
+
+    if available_money < value:
+        
+        await send_message(ctx, 'Você não tem zakoletas o suficiente para realizar essa compra.')
+       
+    else:
+
+        new_money = available_money - value
+
+        dbservice.update('user', ['zakoleta'], [new_money], {'id': str(user_id)})
+
+        await send_message(ctx, 'Compra efetuada!')
+
 
     # needs to check if user can buy
     # if OK, should put the user as buyer in the db
