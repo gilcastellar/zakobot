@@ -3343,6 +3343,11 @@ async def mercado_terminar_command(
 async def aux_command(ctx):
 
     if ctx.author.id in admins:
+
+        old_time = dbservice.select('mercado', ['date_inserted'], '', {'id_anilist': '338'})
+        
+        print(old_time)
+        print(datetime.datetime.now() - old_time)
         
         await send_message2('ok', 1077070205987082281)
 
