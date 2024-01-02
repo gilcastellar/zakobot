@@ -3253,8 +3253,10 @@ async def mercado_comprar_command(
     buyer_slots = dbservice.select('mercado', ['buyer'], '', {'buyer': user_id})
     
     print('slots: ' + str(len(buyer_slots)))
+
+    buyer_slots = len(buyer_slots)
     
-    if int(buyer_slots) >= int(dbservice.select('user', ['market_buying_slots'], '', {'id': user_id})):
+    if buyer_slots >= int(dbservice.select('user', ['market_buying_slots'], '', {'id': user_id})):
         
         await send_message(ctx, 'Você não tem espaço para comprar uma nova obra.')
     
