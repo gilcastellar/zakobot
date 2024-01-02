@@ -3201,8 +3201,15 @@ async def mercado_inserir_command(
             reward = ceil(100 * duration_factor)
             
             print(time.localtime)
+            
+            epoch = int(datetime.datetime.now().timestamp())
 
-            dbservice.insert('mercado', ['id_anilist', 'item_url', 'item_name', 'item_type', 'sender', 'is_available', 'value', 'date_inserted'], [anilist_id, insertion, title, type, sender, 'true', reward, 0])
+            date_time = datetime.datetime.fromtimestamp(epoch + 14400)
+    
+            date = date_time.strftime("%B %d, %Y")
+            print(date)
+
+            dbservice.insert('mercado', ['id_anilist', 'item_url', 'item_name', 'item_type', 'sender', 'is_available', 'value', 'date_inserted'], [anilist_id, insertion, title, type, sender, 'true', reward, date])
 
         else:
             await send_message(ctx, 'Obra já disponível no mercado.')
@@ -3338,8 +3345,6 @@ async def aux_command(ctx):
         await send_message2('ok', 1077070205987082281)
 
         print(get_timestamp() + ': Done')
-    
-print(datetime.datetime.now().timestamp())
 
 config = configparser.RawConfigParser()
 config.read('app.properties')
