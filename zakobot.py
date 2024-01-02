@@ -3176,31 +3176,6 @@ async def get_mercado_options(ctx: discord.AutocompleteContext):
     print(mercado_options)
 
     return [name for name in mercado_options if ctx.value.lower() in name.lower()]
-    
-    # NEED TO ADD AUTOCOMPLETE
-
-# Get active members
-async def get_members_names(ctx: discord.AutocompleteContext):
-
-    #members = database.selectall('SELECT id, name, active, anime_list, receives, gives, obs FROM user ORDER BY active DESC, name')
-
-    members = dbservice.select('user', ['id', 'name', 'active', 'anime_list', 'receives', 'gives', 'obs'], 'ORDER BY active DESC, name')
-
-    print(members)
-
-    #members = from_list_of_tuples_to_list(members)
-
-    #print(members)
-
-    members_names = []
-
-    for member in members:
-        members_names.append(member[1])
-
-    #return [name for name in members_names if name.lower().startswith(ctx.value.lower())]
-    return [name for name in members_names if ctx.value.lower() in name.lower()]
-
-    return mercado_options
 
 @mercado.command(name='comprar')
 async def mercado_comprar_command(
