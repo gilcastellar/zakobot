@@ -3075,6 +3075,8 @@ async def dailies():
     
     await update_media()
     dbservice.update('dailies', ['daily', 'is_done'], ['media_update', 1], {'daily':'media_update'})
+
+    await update_mercado()
     
     print('daily finalizada ' + get_timestamp())
 
@@ -3337,6 +3339,8 @@ async def aux_command(ctx):
     if ctx.author.id in admins:
         
         print(datetime.datetime.now(ZoneInfo('America/Sao_Paulo')))
+
+        dbservice.update('dailies', ['is_done'], [1], {'daily':'mercado_update'})
         
         # await send_message2('ok', 1077070205987082281)
 
