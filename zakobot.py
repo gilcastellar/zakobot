@@ -3229,6 +3229,8 @@ async def mercado_comprar_command(
     available_money = dbservice.select('user', ['zakoleta'], '')
 
     real_name = order.split(' ($')
+
+    print(real_name)
     
     order_price = dbservice.select('mercado', ['value'], '', {'item_name': real_name})
 
