@@ -3179,6 +3179,8 @@ async def mercado_inserir_command(
                 duration = media_obj['data']['Media']['duration']
                 
                 total_duration = duration * media_obj['data']['Media']['episodes']
+
+                print(total_duration)
                 
             else:
 
