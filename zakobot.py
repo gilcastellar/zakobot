@@ -3250,8 +3250,8 @@ async def mercado_comprar_command(
        
     else:
 
-        print(user_id)
-        print(dbservice.select('mercado', ['sender'], '', {'item_name': real_name}))
+        print(type(user_id))
+        print(type(dbservice.select('mercado', ['sender'], '', {'item_name': real_name})))
         
         if user_id != dbservice.select('mercado', ['sender'], '', {'item_name': real_name}):
             new_money = available_money - int(value)
