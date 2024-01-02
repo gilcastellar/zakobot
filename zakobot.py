@@ -3194,7 +3194,7 @@ async def mercado_inserir_command(
 
             duration_factor = 1 + (total_duration * 0.003)
             
-            reward = 100 * ceil(duration_factor)
+            reward = ceil(100 * duration_factor)
 
             dbservice.insert('mercado', ['id_anilist', 'item_url', 'item_name', 'item_type', 'sender', 'is_available', 'value'], [anilist_id, insertion, title, type, sender, 'true', reward])
 
