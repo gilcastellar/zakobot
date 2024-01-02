@@ -3162,11 +3162,11 @@ async def mercado_inserir_command(
             
             if type == 'anime':
 
-                response = anilist.query_anime_id(id)
+                response = anilist.query_anime_id(anilist_id)
                 
             else:
 
-                response = anilist.query_manga_id(id)
+                response = anilist.query_manga_id(anilist_id)
 
             media_obj = response.json()
             
