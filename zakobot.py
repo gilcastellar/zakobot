@@ -3199,15 +3199,6 @@ async def mercado_inserir_command(
             duration_factor = 1 + (total_duration * 0.003)
             
             reward = ceil(100 * duration_factor)
-            
-            print(time.localtime)
-            
-            epoch = int(datetime.datetime.now().timestamp())
-
-            date_time = datetime.datetime.fromtimestamp(epoch + 14400)
-    
-            date = date_time.strftime("%B %d, %Y")
-            print(date)
 
             date = datetime.datetime.now()
 
@@ -3343,19 +3334,10 @@ async def mercado_terminar_command(
 async def aux_command(ctx):
 
     if ctx.author.id in admins:
-
-        old_time = dbservice.select('mercado', ['date_inserted'], '', {'id_anilist': '338'})
         
-        print(old_time)
-        print(datetime.datetime.now() - old_time)
-
-        str_date = str(datetime.datetime.now() - old_time)
+        print(datetime.datetime.today())
         
-        str_date, trash = str_date.split(' day')
-        
-        print(str_date)
-        
-        await send_message2('ok', 1077070205987082281)
+        # await send_message2('ok', 1077070205987082281)
 
         print(get_timestamp() + ': Done')
 
