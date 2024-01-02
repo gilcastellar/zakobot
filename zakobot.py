@@ -3252,11 +3252,11 @@ async def mercado_comprar_command(
 
     buyer_slots = dbservice.select('mercado', ['buyer'], '', {'buyer': user_id})
 
-    if len(buyer_slots) == 1:
-        buyer_slots = 1
+    if buyer_slots > 1:
+        buyer_slots = len(buyer_slots)
         
     else:
-        buyer_slots = len(buyer_slots)
+        buyer_slots = 1
     
     print('slots: ' + str(buyer_slots))
 
