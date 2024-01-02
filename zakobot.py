@@ -3249,6 +3249,9 @@ async def mercado_comprar_command(
         await send_message(ctx, 'Você não tem zakoletas o suficiente para realizar essa compra.')
        
     else:
+
+        print(user_id)
+        print(dbservice.select('mercado', ['sender'], '', {'item_name': real_name}))
         
         if user_id != dbservice.select('mercado', ['sender'], '', {'item_name': real_name}):
             new_money = available_money - int(value)
