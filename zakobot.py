@@ -3313,6 +3313,8 @@ async def mercado_terminar_command(
             print('rewards: ')
             print(buyer_reward)
             print(seller_reward)
+
+            dbservice.delete('mercado', {'buyer': user, 'id_anilist': anilist_id})
             
             await send_message(ctx, 'Você terminou essa obra! ')
             
