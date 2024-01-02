@@ -3351,7 +3351,7 @@ async def aux_command(ctx):
 
         str_date = str(datetime.datetime.now() - old_time)
         
-        str_date = str_date.split(' day')
+        str_date, trash = str_date.split(' day')
         
         print(str_date)
         
