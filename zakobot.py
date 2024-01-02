@@ -3234,14 +3234,6 @@ async def mercado_comprar_command(
     
     user_id = ctx.author.id
 
-    sender_id = dbservice.select('mercado', ['sender'], '', {'item_name': real_name})
-
-    # needs to check if the user has buying slots available
-
-    buyer_slots = dbservice.select('mercado', ['buyer'], '', {'buyer': user_id})
-    
-    print('slots: ' + str(len(buyer_slots)))
-
     available_money = dbservice.select('user', ['zakoleta'], '', {'id': str(user_id)})
     
     print(available_money)
@@ -3253,6 +3245,14 @@ async def mercado_comprar_command(
     print(real_name)
 
     print(str(value))
+    
+    sender_id = dbservice.select('mercado', ['sender'], '', {'item_name': real_name})
+
+    # needs to check if the user has buying slots available
+
+    buyer_slots = dbservice.select('mercado', ['buyer'], '', {'buyer': user_id})
+    
+    print('slots: ' + str(len(buyer_slots)))
 
     if available_money < int(value):
         
