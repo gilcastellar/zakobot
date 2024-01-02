@@ -3315,6 +3315,10 @@ async def mercado_terminar_command(
             print(seller_reward)
             
             await send_message(ctx, 'Você terminou essa obra! ')
+            
+        else:
+
+            await send_message(ctx, 'Você não é o dono dessa obra.')
 
 # Auxiliar command
 @bot.command(name='aux')
