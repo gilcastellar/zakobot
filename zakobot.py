@@ -3178,7 +3178,7 @@ async def get_mercado_options(ctx: discord.AutocompleteContext):
 @mercado.command(name='comprar')
 async def mercado_comprar_command(
     ctx: discord.ApplicationContext,
-    order: discord.Option(str, choices=get_mercado_options, name='obras')
+    order: discord.Option(str, autocomplete=get_mercado_options, name='obras')
 ):
     
     # needs to check if user can buy
@@ -3186,7 +3186,6 @@ async def mercado_comprar_command(
     
     await send_message(ctx, order)
     
-   
 @mercado.command(name='terminar')
 async def mercado_terminar_command(
     ctx: discord.ApplicationContext,
