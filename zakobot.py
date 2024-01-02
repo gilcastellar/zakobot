@@ -30,6 +30,7 @@ import anilist
 import json
 import time
 import datetime
+import pytz
 import asyncio
 from math import ceil, e
 
@@ -3335,7 +3336,7 @@ async def aux_command(ctx):
 
     if ctx.author.id in admins:
         
-        print(datetime.datetime.today())
+        print(datetime.datetime.now(pytz.timezone('America/Sao_Paulo'))
         
         # await send_message2('ok', 1077070205987082281)
 
