@@ -3075,8 +3075,6 @@ async def dailies():
     
     await update_media()
     dbservice.update('dailies', ['daily', 'is_done'], ['media_update', 1], {'daily':'media_update'})
-
-    # await update_mercado()
     
     print('daily finalizada ' + get_timestamp())
 
@@ -3225,7 +3223,7 @@ async def get_mercado_options(ctx: discord.AutocompleteContext):
         
         if name[2] == 'true':
 
-            names.append(name[0] + ' ($' + str(name[1]) + ')')
+            names.append(name[0])
             
     print(names)
 
@@ -3243,13 +3241,13 @@ async def mercado_comprar_command(
     
     print(available_money)
 
-    real_name, value = order.split(' ($')
-    
-    value, trash = value.split(')')
+    real_name = order
 
     print(real_name)
 
-    print(str(value))
+    value = dbservice.select('mercado', ['value'], '', {'item_name': real_name})
+                                                        
+    days_passed = str(datetime.datetime.now(ZoneInfo('America/Sao_Paulo')) - dbservice.select('mercado', ['date_inserted'], '', {'item_name': real_name}))
     
     sender_id = dbservice.select('mercado', ['sender'], '', {'item_name': real_name})
 
@@ -3339,8 +3337,9 @@ async def aux_command(ctx):
     if ctx.author.id in admins:
         
         print(datetime.datetime.now(ZoneInfo('America/Sao_Paulo')))
-
-        dbservice.update('dailies', ['is_done'], [1], {'daily':'mercado_update'})
+        
+        print(str(datetime.datetime.now(ZoneInfo('America/Sao_Paulo')) - dbservice.select('mercado', ['date_inserted'], '', {'id_item': 1})))
+    
         
         # await send_message2('ok', 1077070205987082281)
 
