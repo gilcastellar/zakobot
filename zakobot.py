@@ -3214,7 +3214,7 @@ async def get_mercado_options(ctx: discord.AutocompleteContext):
 
     for name in mercado_options:
 
-        names.append(name[0] + ' ($' + name[1] + ')')
+        names.append(name[0] + ' ($' + str(name[1]) + ')')
 
     print(names)
 
