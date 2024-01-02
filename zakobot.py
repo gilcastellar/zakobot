@@ -3308,7 +3308,7 @@ async def mercado_terminar_command(
         if exists == 1:
             
             buyer_reward = dbservice.select('mercado', ['value'], '', {'id_anilist': anilist_id})
-            seller_reward = ceil((buyer_reward / 2) - 50)
+            seller_reward = ceil((buyer_reward - 50) / 2)
             
             print('rewards: ')
             print(buyer_reward)
