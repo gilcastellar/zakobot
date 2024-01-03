@@ -3249,6 +3249,8 @@ async def mercado_comprar_command(
                                                         
     days_passed = str(datetime.datetime.now(ZoneInfo('America/Sao_Paulo')) - dbservice.select('mercado', ['date_inserted'], '', {'item_name': real_name}))
     
+    print(days_passed)
+
     sender_id = dbservice.select('mercado', ['sender'], '', {'item_name': real_name})
 
     buyer_slots = dbservice.select('mercado', ['buyer'], '', {'buyer': user_id})
@@ -3261,7 +3263,6 @@ async def mercado_comprar_command(
     
     print('slots: ' + str(buyer_slots))
 
-    
     if buyer_slots >= int(dbservice.select('user', ['market_buying_slots'], '', {'id': user_id})):
 
         print(dbservice.select('user', ['market_buying_slots'], '', {'id': user_id}))
@@ -3269,27 +3270,29 @@ async def mercado_comprar_command(
         await send_message(ctx, 'Você não tem espaço para comprar uma nova obra.')
     
     else:
-
-        if available_money < int(value):
         
-            await send_message(ctx, 'Você não tem zakoletas o suficiente para realizar essa compra.')
+        ctx.response.send_message("Text", ephemeral=True)
+
+        # if available_money < int(value):
+        
+        #     await send_message(ctx, 'Você não tem zakoletas o suficiente para realizar essa compra.')
        
-        else:
+        # else:
         
-            if user_id != int(sender_id):
-                new_money = available_money - int(value)
+        #     if user_id != int(sender_id):
+        #         new_money = available_money - int(value)
 
-                dbservice.update('user', ['zakoleta'], [new_money], {'id': str(user_id)})
+        #         dbservice.update('user', ['zakoleta'], [new_money], {'id': str(user_id)})
         
-                dbservice.update('mercado', ['buyer'], [user_id], {'item_name': real_name})
-                dbservice.update('mercado', ['is_available'], ['false'], {'item_name': real_name})
+        #         dbservice.update('mercado', ['buyer'], [user_id], {'item_name': real_name})
+        #         dbservice.update('mercado', ['is_available'], ['false'], {'item_name': real_name})
             
-                dbservice.update_zakoleta('user', 50, '+50 zakoletas por uma venda no mercado', sender_id, 'add')
+        #         dbservice.update_zakoleta('user', 50, '+50 zakoletas por uma venda no mercado', sender_id, 'add')
         
-                await send_message(ctx, 'Compra efetuada!')
+        #         await send_message(ctx, 'Compra efetuada!')
         
-            else:  
-                await send_message(ctx, 'Você é quem enviou essa obra!')
+        #     else:  
+        #         await send_message(ctx, 'Você é quem enviou essa obra!')
 
     
 @mercado.command(name='terminar')
