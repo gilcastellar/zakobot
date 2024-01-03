@@ -3244,6 +3244,7 @@ class MyTest(discord.ui.View): # Create a class called MyView that subclasses di
     async def button_callback(self, button, interaction):
         # await btn_comprar()
         await interaction.response.send_message("You clicked the button!") # Send a message when the button is clicked
+        return
 
 async def btn_comprar():
     ...
