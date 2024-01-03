@@ -3231,11 +3231,31 @@ async def get_mercado_options(ctx: discord.AutocompleteContext):
     return [name for name in names if ctx.value.lower() in name.lower()]
 
 class MyTest(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
+    def __init__(self, value, available_money, user_id, sender_id, real_name):
+        super().__init__()
+        #self.ctx = ctx
+        self.value = value
+        self.available_money = available_money
+        self.user_id = user_id
+        self.sender_id = sender_id
+        self.real_name = real_name
+
     @discord.ui.button(label="Comprar", style=discord.ButtonStyle.primary, emoji="💰") # Create a button with the label "😎 Click me!" with color Blurple
     async def button_callback(self, button, interaction):
-        await interaction.response.send_message("Verificando se ainda está disponível...") # Send a message when the button is clicked
-        return
+        await interaction.response.send_message("Verificando se ainda está disponível...", ephemeral=True) # Send a message when the button is clicked
+        
+        is_available = dbservice.select('mercado', ['is_available'], '', {'item_name':self.real_name})
+        
+        if is_available == 'false':
+            await interaction.response.send_message("A obra já foi vendida.", ephemeral=True) # Send a message when the button is clicked
+        else:
+            new_money = self.available_money - int(self.value)
+            dbservice.update('mercado', ['buyer'], [self.user_id], {'item_name': self.real_name})
+            dbservice.update('mercado', ['is_available'], ['false'], {'item_name': self.real_name})
 
+            dbservice.update('user', ['zakoleta'], [new_money], {'id': str(self.user_id)})
+            
+            dbservice.update_zakoleta('user', 50, '+50 zakoletas por uma venda no mercado', self.sender_id, 'add')
 
 @mercado.command(name='comprar')
 async def mercado_comprar_command(
@@ -3291,18 +3311,9 @@ async def mercado_comprar_command(
         
             else:
             
-                await ctx.response.send_message('A obra ' + real_name + ' custará $' + str(value) + ' e você tem $' + str(available_money) + '. Para formalizar a compra, clique no botão abaixo.', ephemeral=True, view=MyTest())
+                await ctx.response.send_message('A obra ' + real_name + ' custará $' + str(value) + ' e você tem $' + str(available_money) + '. Para formalizar a compra, clique no botão abaixo.', ephemeral=True, view=MyTest(value, available_money, user_id, sender_id, real_name))
 
-                new_money = available_money - int(value)
-        
-                dbservice.update('mercado', ['buyer'], [user_id], {'item_name': real_name})
-                dbservice.update('mercado', ['is_available'], ['false'], {'item_name': real_name})
-
-                dbservice.update('user', ['zakoleta'], [new_money], {'id': str(user_id)})
-            
-                dbservice.update_zakoleta('user', 50, '+50 zakoletas por uma venda no mercado', sender_id, 'add')
-        
-                await send_message(ctx, 'Compra efetuada!')
+               
 
 def calculate_market_value(base_value, days_passed):
     
