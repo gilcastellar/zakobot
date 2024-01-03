@@ -3519,6 +3519,8 @@ async def classificados_command(
 async def gerar_classificados(msg, page, last_page):
     data = dbservice.select('mercado', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], '', {'is_available':'true'})
 
+    print(data)
+
     batch = 10
 
     indice = (page * batch) - (batch - 1)
@@ -3542,7 +3544,7 @@ async def gerar_classificados(msg, page, last_page):
         
         text += obra[1] + '\n'
             
-        text += obra[2] + ' \n Valor: ' + str(obra[3]) + '\n\n'
+        text += obra[2] + ' \nValor: ' + str(obra[3]) + '\n\n'
 
     #     obra = obra[0]
         
