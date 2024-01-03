@@ -3271,7 +3271,7 @@ async def mercado_comprar_command(
     
     else:
         
-        ctx.response.send_message("Text", ephemeral=True)
+        await ctx.response.send_message("Text", ephemeral=True)
 
         # if available_money < int(value):
         
