@@ -3388,96 +3388,96 @@ async def mercado_terminar_command(
 
             await send_message(ctx, 'Você não é o dono dessa obra ou ela não existe no mercado.')
 
-@bot.slash_command(name='coleção')
-async def coleção(
-    ctx: discord.ApplicationContext,
-    target: discord.Option(str, autocomplete=get_members_names2, required=False)
-):
+# @bot.slash_command(name='coleção')
+# async def coleção(
+#     ctx: discord.ApplicationContext,
+#     target: discord.Option(str, autocomplete=get_members_names2, required=False)
+# ):
 
-    if ctx.channel.id == rolls_channel:
+#     if ctx.channel.id == rolls_channel:
 
-        if target != None:
+#         if target != None:
 
-            await ctx.respond(f'Coleção de {target}')
+#             await ctx.respond(f'Coleção de {target}')
 
-            user_id = int(dbservice.select('user', ['id'], '', {'name': target}))
+#             user_id = int(dbservice.select('user', ['id'], '', {'name': target}))
 
-        else:
+#         else:
 
-            await ctx.respond('Sua coleção:')
+#             await ctx.respond('Sua coleção:')
 
-            user_id = ctx.author.id
+#             user_id = ctx.author.id
 
-        #characters = database.selectall('SELECT chara_id FROM user_has_chara WHERE user_id="' + str(ctx.author.id) + '" ORDER BY position', True)
+#         #characters = database.selectall('SELECT chara_id FROM user_has_chara WHERE user_id="' + str(ctx.author.id) + '" ORDER BY position', True)
         
-        msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
+#         msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
 
-        await generate_collection(msg, user_id, 1, 0)
+#         await generate_collection(msg, user_id, 1, 0)
 
-async def generate_collection(msg, user_id, page, last_page):
+# async def generate_collection(msg, user_id, page, last_page):
 
-    characters = dbservice.select('user_has_chara', ['chara_id'], ' ORDER BY position', {'user_id': str(user_id)})
+#     characters = dbservice.select('user_has_chara', ['chara_id'], ' ORDER BY position', {'user_id': str(user_id)})
     
-    print(characters)
+#     print(characters)
 
-    #characters = from_list_of_tuples_to_list(characters)
+#     #characters = from_list_of_tuples_to_list(characters)
 
-    batch = 10
+#     batch = 10
 
-    indice = (page * batch) - (batch - 1)
+#     indice = (page * batch) - (batch - 1)
 
-    text = '```Personagem                                                                                        #     Pos.\n\n'
+#     text = '```Personagem                                                                                        #     Pos.\n\n'
 
-    print('page')
-    print(page)
+#     print('page')
+#     print(page)
 
-    print('indice:')
-    print(indice)
+#     print('indice:')
+#     print(indice)
 
-    last_page = ceil(len(characters) / batch)
+#     last_page = ceil(len(characters) / batch)
 
-    for chara in characters[batch*(page-1):batch*page]:
+#     for chara in characters[batch*(page-1):batch*page]:
 
-        print(indice)
+#         print(indice)
 
-        print('chara')
-        print(chara)
+#         print('chara')
+#         print(chara)
 
-        chara = chara[0]
+#         chara = chara[0]
         
-        #chara_info = database.selectall('SELECT name, chara_url FROM chara WHERE chara_id=' + str(chara))[0]
+#         #chara_info = database.selectall('SELECT name, chara_url FROM chara WHERE chara_id=' + str(chara))[0]
 
-        chara_info = dbservice.select('chara', ['name', 'media_title'], '', {'chara_id': str(chara)})
+#         chara_info = dbservice.select('chara', ['name', 'media_title'], '', {'chara_id': str(chara)})
 
-        print(chara_info)
+#         print(chara_info)
 
-        copies = dbservice.select('user_has_chara', ['quantity'], '', {'chara_id': str(chara), 'user_id': str(user_id)})
+#         copies = dbservice.select('user_has_chara', ['quantity'], '', {'chara_id': str(chara), 'user_id': str(user_id)})
 
-        position = dbservice.select('user_has_chara', ['position'], '', {'chara_id': str(chara), 'user_id': str(user_id)})
+#         position = dbservice.select('user_has_chara', ['position'], '', {'chara_id': str(chara), 'user_id': str(user_id)})
           
-        chara_text = f'{str(chara_info[0])} ({chara_info[1]}) '
+#         chara_text = f'{str(chara_info[0])} ({chara_info[1]}) '
 
-        while len(chara_text) < 95: 
-            chara_text += '-'
+#         while len(chara_text) < 95: 
+#             chara_text += '-'
 
-        copies_text = ' ' + (' ' * (3 - len(str(copies)))) + str(copies)
+#         copies_text = ' ' + (' ' * (3 - len(str(copies)))) + str(copies)
 
-        while len(copies_text) < 9:
-            copies_text += ' '
+#         while len(copies_text) < 9:
+#             copies_text += ' '
 
-        position_text = str(position)
+#         position_text = str(position)
 
-        while len(position_text) < 10:
-            position_text += ' '
+#         while len(position_text) < 10:
+#             position_text += ' '
 
-        text += chara_text + copies_text + position_text + '\n'
-        indice += 1
+#         text += chara_text + copies_text + position_text + '\n'
+#         indice += 1
 
-    text += '```'
+#     text += '```'
     
-    if page <= last_page:
+#     if page <= last_page:
 
-        await msg.edit(text, view=CollectionPagination(msg, user_id, page, last_page))
+#         await msg.edit(text, view=CollectionPagination(msg, user_id, page, last_page))
 
 @mercado.command(name='classificados')
 async def classificados_command(
