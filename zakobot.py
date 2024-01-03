@@ -3301,7 +3301,7 @@ async def mercado_comprar_command(
         
         else:
             
-            await ctx.response.send_message('A obra ' + real_name + ' custará $' + str(value) + ' e você tem $' + str(available_money) + '. Para formalizar a compra, clique no botão abaixo.', ephemeral=True, view=MyTest(msg, ))
+            await ctx.response.send_message('A obra ' + real_name + ' custará $' + str(value) + ' e você tem $' + str(available_money) + '. Para formalizar a compra, clique no botão abaixo.', ephemeral=True, view=MyTest())
 
         print('FUNCIONOU')
         
