@@ -3258,7 +3258,9 @@ async def mercado_comprar_command(
                                                         
     days_passed = datetime.datetime.now() - dbservice.select('mercado', ['date_inserted'], '', {'item_name': real_name})
     
-    print(days_passed)
+    days, trash = date.split(' day')
+
+    print('days: ' + days)
 
     sender_id = dbservice.select('mercado', ['sender'], '', {'item_name': real_name})
 
@@ -3280,7 +3282,7 @@ async def mercado_comprar_command(
     
     else:
 
-        calculate_market_value(value, days_passed)
+        calculate_market_value(value, days)
         
         await ctx.response.send_message('A obra ' + real_name + ' custará $' + value + ' e você tem $' + available_money + '. Para formalizar a compra, clique no botão abaixo.', ephemeral=True, view=MyTest())
 
