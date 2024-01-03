@@ -3231,23 +3231,11 @@ async def get_mercado_options(ctx: discord.AutocompleteContext):
     return [name for name in names if ctx.value.lower() in name.lower()]
 
 class MyTest(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
-    # def __init__(self, msg, page, last_page, list, type, min):
-    #     super().__init__()
-    #     #self.ctx = ctx
-    #     self.msg = msg
-    #     self.page = page
-    #     self.last_page = last_page
-    #     self.list = list
-    #     self.type = type
-    #     self.min = min
     @discord.ui.button(label="Comprar", style=discord.ButtonStyle.primary, emoji="💰") # Create a button with the label "😎 Click me!" with color Blurple
     async def button_callback(self, button, interaction):
-        # await btn_comprar()
-        await interaction.response.send_message("You clicked the button!") # Send a message when the button is clicked
+        await interaction.response.send_message("Verificando se ainda está disponível...") # Send a message when the button is clicked
         return
 
-async def btn_comprar():
-    ...
 
 @mercado.command(name='comprar')
 async def mercado_comprar_command(
@@ -3258,71 +3246,63 @@ async def mercado_comprar_command(
     user_id = ctx.author.id
 
     available_money = dbservice.select('user', ['zakoleta'], '', {'id': str(user_id)})
-    
-    print(available_money)
 
     real_name = order
 
-    print(real_name)
-
-    value = dbservice.select('mercado', ['value'], '', {'item_name': real_name})
-                                                        
-    days_passed = str(datetime.datetime.now() - dbservice.select('mercado', ['date_inserted'], '', {'item_name': real_name}))
-    
-    days, trash = days_passed.split(' day')
-
-    print('days: ' + days)
-
     sender_id = dbservice.select('mercado', ['sender'], '', {'item_name': real_name})
-
-    buyer_slots = dbservice.select('mercado', ['buyer'], '', {'buyer': user_id})
-
-    if buyer_slots == str(user_id):
-        buyer_slots = 1
+    
+    if user_id == int(sender_id):
+        
+        await send_message(ctx, "Você não pode comprar uma obra que você mesmo enviou.")
         
     else:
-        buyer_slots = len(buyer_slots)
+
+        value = dbservice.select('mercado', ['value'], '', {'item_name': real_name})
+                                                        
+        days_passed = str(datetime.datetime.now() - dbservice.select('mercado', ['date_inserted'], '', {'item_name': real_name}))
     
-    print('slots: ' + str(buyer_slots))
+        days, trash = days_passed.split(' day')
 
-    if buyer_slots >= int(dbservice.select('user', ['market_buying_slots'], '', {'id': user_id})):
+        print('days: ' + days)
 
-        print(dbservice.select('user', ['market_buying_slots'], '', {'id': user_id}))
-        
-        await send_message(ctx, 'Você não tem espaço para comprar uma nova obra.')
-    
-    else:
+        buyer_slots = dbservice.select('mercado', ['buyer'], '', {'buyer': user_id})
 
-        calculate_market_value(value, days)
-        
-        if available_money < int(value):
-            
-            await send_message(ctx, 'A obra ' + real_name + ' custará $' + str(value) + ' e você tem $' + str(available_money) + '. Por isso você não consegue realizar essa compra.')
+        if buyer_slots == str(user_id):
+            buyer_slots = 1
         
         else:
-            
-            await ctx.response.send_message('A obra ' + real_name + ' custará $' + str(value) + ' e você tem $' + str(available_money) + '. Para formalizar a compra, clique no botão abaixo.', ephemeral=True, view=MyTest())
+            buyer_slots = len(buyer_slots)
+    
+        print('slots: ' + str(buyer_slots))
 
-        print('FUNCIONOU')
-        
-        #     await send_message(ctx, 'Você não tem zakoletas o suficiente para realizar essa compra.')
-       
-        # else:
-        
-        #     if user_id != int(sender_id):
-        #         new_money = available_money - int(value)
+        if buyer_slots >= int(dbservice.select('user', ['market_buying_slots'], '', {'id': user_id})):
 
-        #         dbservice.update('user', ['zakoleta'], [new_money], {'id': str(user_id)})
+            print(dbservice.select('user', ['market_buying_slots'], '', {'id': user_id}))
         
-        #         dbservice.update('mercado', ['buyer'], [user_id], {'item_name': real_name})
-        #         dbservice.update('mercado', ['is_available'], ['false'], {'item_name': real_name})
+            await send_message(ctx, 'Você não tem espaço para comprar uma nova obra.')
+    
+        else:
+
+            calculate_market_value(value, days)
+        
+            if available_money < int(value):
             
-        #         dbservice.update_zakoleta('user', 50, '+50 zakoletas por uma venda no mercado', sender_id, 'add')
+                await send_message(ctx, 'A obra ' + real_name + ' custará $' + str(value) + ' e você tem $' + str(available_money) + '. Por isso você não consegue realizar essa compra.')
         
-        #         await send_message(ctx, 'Compra efetuada!')
+            else:
+            
+                await ctx.response.send_message('A obra ' + real_name + ' custará $' + str(value) + ' e você tem $' + str(available_money) + '. Para formalizar a compra, clique no botão abaixo.', ephemeral=True, view=MyTest())
+
+            new_money = available_money - int(value)
+
+            dbservice.update('user', ['zakoleta'], [new_money], {'id': str(user_id)})
         
-        #     else:  
-        #         await send_message(ctx, 'Você é quem enviou essa obra!')
+            dbservice.update('mercado', ['buyer'], [user_id], {'item_name': real_name})
+            dbservice.update('mercado', ['is_available'], ['false'], {'item_name': real_name})
+            
+            dbservice.update_zakoleta('user', 50, '+50 zakoletas por uma venda no mercado', sender_id, 'add')
+        
+            await send_message(ctx, 'Compra efetuada!')
 
 def calculate_market_value(base_value, days_passed):
     
