@@ -23,8 +23,8 @@ from discord.ext import tasks
 from discord.ext import commands
 import configparser
 
-from discord.ext.commands.flags import F
-from discord.utils import P
+# from discord.ext.commands.flags import F
+# from discord.utils import P
 import database
 import dbservice
 import anilist
