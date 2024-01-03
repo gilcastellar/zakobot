@@ -34,6 +34,8 @@ from zoneinfo import ZoneInfo
 import asyncio
 from math import ceil, e
 
+from symbol import factor
+
 intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
@@ -3230,10 +3232,12 @@ async def get_mercado_options(ctx: discord.AutocompleteContext):
     return [name for name in names if ctx.value.lower() in name.lower()]
 
 class MyTest(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
-    @discord.ui.button(label="Click me!", style=discord.ButtonStyle.primary, emoji="😎") # Create a button with the label "😎 Click me!" with color Blurple
+    @discord.ui.button(label="Comprar", style=discord.ButtonStyle.primary, emoji="😎") # Create a button with the label "😎 Click me!" with color Blurple
     async def button_callback(self, button, interaction):
         await interaction.response.send_message("You clicked the button!") # Send a message when the button is clicked
 
+async def btn_comprar():
+    ...
 
 @mercado.command(name='comprar')
 async def mercado_comprar_command(
@@ -3276,8 +3280,10 @@ async def mercado_comprar_command(
         await send_message(ctx, 'Você não tem espaço para comprar uma nova obra.')
     
     else:
+
+        calculate_market_value(value, days_passed)
         
-        await ctx.response.send_message("Text", ephemeral=True, view=MyTest())
+        await ctx.response.send_message('A obra ' + real_name + ' custará $' + value + ' e você tem $' + available_money + '. Para formalizar a compra, clique no botão abaixo.', ephemeral=True, view=MyTest())
 
         # if available_money < int(value):
         
@@ -3300,7 +3306,13 @@ async def mercado_comprar_command(
         #     else:  
         #         await send_message(ctx, 'Você é quem enviou essa obra!')
 
-    
+def calculate_market_value(base_value, days_passed):
+
+    for day in range(days_passed):
+        print(day+1)
+
+    ...
+
 @mercado.command(name='terminar')
 async def mercado_terminar_command(
     ctx: discord.ApplicationContext,
