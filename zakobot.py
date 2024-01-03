@@ -3308,11 +3308,16 @@ async def mercado_comprar_command(
         #         await send_message(ctx, 'Você é quem enviou essa obra!')
 
 def calculate_market_value(base_value, days_passed):
+    
+    value = base_value
+
+    factor = 1
 
     for day in range(int(days_passed)):
-        print(day+1)
-
-    ...
+        factor += 0.0235
+        value = value * factor
+        print(value)
+    
 
 @mercado.command(name='terminar')
 async def mercado_terminar_command(
