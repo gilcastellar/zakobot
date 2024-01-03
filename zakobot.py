@@ -3205,51 +3205,67 @@ async def mercado_inserir_command(
 ):
     sender = str(ctx.author.id)
 
-    if 'anilist.co' in insertion:
-        
-        # needs to check if the user has selling slots available
-        
-        type, anilist_id = get_type_and_id_from_anilist_link(insertion)
-        
-        exists = dbservice.check_existence('mercado', {'id_anilist': str(anilist_id), 'is_available': str('true')})
+    seller_slots = dbservice.select('mercado', ['buyer'], '', {'buyer': sender})
 
-        if exists == 0:
+    if seller_slots == str(sender):
+        seller_slots = 1
+        
+    else:
+        seller_slots = len(seller_slots)
+    
+    print('slots: ' + str(seller_slots))
+
+    if seller_slots >= int(dbservice.select('user', ['market_selling_slots'], '', {'id': sender})):
+
+        print(dbservice.select('user', ['market_selling_slots'], '', {'id': sender}))
+        
+        await send_message(ctx, 'Você não tem espaço para vender uma nova obra.')
+    
+    else:
+
+        if 'anilist.co' in insertion:
+        
+            type, anilist_id = get_type_and_id_from_anilist_link(insertion)
+        
+            exists = dbservice.check_existence('mercado', {'id_anilist': str(anilist_id), 'is_available': str('true')})
+
+            if exists == 0:
             
-            if type == 'anime':
+                if type == 'anime':
 
-                response = anilist.query_anime_id(anilist_id)
+                    response = anilist.query_anime_id(anilist_id)
                 
-                media_obj = response.json()
+                    media_obj = response.json()
                 
-                duration = media_obj['data']['Media']['duration']
+                    duration = media_obj['data']['Media']['duration']
                 
-                total_duration = duration * media_obj['data']['Media']['episodes']
+                    total_duration = duration * media_obj['data']['Media']['episodes']
 
-                print(total_duration)
+                    print(total_duration)
                 
+                else:
+
+                    response = anilist.query_manga_id(anilist_id)
+
+                    media_obj = response.json()
+                
+                    duration = 1
+
+                title = media_obj['data']['Media']['title']['romaji']
+
+                duration_factor = 1 + (total_duration * 0.003)
+            
+                reward = ceil(100 * duration_factor)
+
+                date = datetime.datetime.now(ZoneInfo('America/Sao_Paulo'))
+            
+                await ctx.response.send_message('A obra ' + title + ' valerá $' + str(reward) + '. Para formalizar a inserção no mercado, clique no botão abaixo.', ephemeral=True, view=SellingBtn(anilist_id, insertion, type, reward, sender, title, date))
+
             else:
-
-                response = anilist.query_manga_id(anilist_id)
-
-                media_obj = response.json()
-                
-                duration = 1
-
-            title = media_obj['data']['Media']['title']['romaji']
-
-            duration_factor = 1 + (total_duration * 0.003)
-            
-            reward = ceil(100 * duration_factor)
-
-            date = datetime.datetime.now(ZoneInfo('America/Sao_Paulo'))
-            
-            await ctx.response.send_message('A obra ' + title + ' valerá $' + str(reward) + '. Para formalizar a inserção no mercado, clique no botão abaixo.', ephemeral=True, view=SellingBtn(anilist_id, insertion, type, reward, sender, title, date))
+                await ctx.response.send_message("A obra já existe no mercado.", ephemeral=True)
 
         else:
-            await ctx.response.send_message("A obra já existe no mercado.", ephemeral=True)
-
-    else:
-        await send_message(ctx, 'É preciso inserir um link do Anilist.')
+            await send_message(ctx, 'É preciso inserir um link do Anilist.')
 
 async def get_mercado_options(ctx: discord.AutocompleteContext):
     
@@ -3376,8 +3392,6 @@ async def mercado_terminar_command(
     to_finish: discord.Option(str, name='obra')
 ):
     
-    # needs to calculate profit, give profit to seller and buyer and clean the db
-    
     user = str(ctx.author.id)
 
     if 'anilist.co' in to_finish:
@@ -3432,7 +3446,6 @@ async def gerar_classificados(msg, page, last_page):
 
     indice = (page * batch) - (batch - 1)
 
-    # text = '```'
     text = ''
 
     print('page')
@@ -3467,38 +3480,6 @@ async def gerar_classificados(msg, page, last_page):
         text += '**' + obra[1] + '**\n'
             
         text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
-
-    #     obra = obra[0]
-        
-    #     #chara_info = database.selectall('SELECT name, chara_url FROM chara WHERE chara_id=' + str(chara))[0]
-
-    #     chara_info = dbservice.select('chara', ['name', 'media_title'], '', {'chara_id': str(chara)})
-
-    #     print(chara_info)
-
-    #     copies = dbservice.select('user_has_chara', ['quantity'], '', {'chara_id': str(chara), 'user_id': str(user_id)})
-
-    #     position = dbservice.select('user_has_chara', ['position'], '', {'chara_id': str(chara), 'user_id': str(user_id)})
-          
-    #     chara_text = f'{str(chara_info[0])} ({chara_info[1]}) '
-
-    #     while len(chara_text) < 95: 
-    #         chara_text += '-'
-
-    #     copies_text = ' ' + (' ' * (3 - len(str(copies)))) + str(copies)
-
-    #     while len(copies_text) < 9:
-    #         copies_text += ' '
-
-    #     position_text = str(position)
-
-    #     while len(position_text) < 10:
-    #         position_text += ' '
-
-    #     text += chara_text + copies_text + position_text + '\n'
-    #     indice += 1
-
-    # text += '```'
     
     if page <= last_page:
 
