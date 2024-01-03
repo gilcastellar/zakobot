@@ -3231,8 +3231,18 @@ async def get_mercado_options(ctx: discord.AutocompleteContext):
     return [name for name in names if ctx.value.lower() in name.lower()]
 
 class MyTest(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
-    @discord.ui.button(label="Comprar", style=discord.ButtonStyle.primary, emoji="😎") # Create a button with the label "😎 Click me!" with color Blurple
+    def __init__(self, msg, page, last_page, list, type, min):
+        super().__init__()
+        #self.ctx = ctx
+        self.msg = msg
+        self.page = page
+        self.last_page = last_page
+        self.list = list
+        self.type = type
+        self.min = min
+    @discord.ui.button(label="Comprar", style=discord.ButtonStyle.primary, emoji="💰") # Create a button with the label "😎 Click me!" with color Blurple
     async def button_callback(self, button, interaction):
+        # await btn_comprar()
         await interaction.response.send_message("You clicked the button!") # Send a message when the button is clicked
 
 async def btn_comprar():
@@ -3284,9 +3294,15 @@ async def mercado_comprar_command(
 
         calculate_market_value(value, days)
         
-        await ctx.response.send_message('A obra ' + real_name + ' custará $' + str(value) + ' e você tem $' + str(available_money) + '. Para formalizar a compra, clique no botão abaixo.', ephemeral=True, view=MyTest())
+        if available_money < int(value):
+            
+            await send_message(ctx, 'A obra ' + real_name + ' custará $' + str(value) + ' e você tem $' + str(available_money) + '. Por isso você não consegue realizar essa compra.')
+        
+        else:
+            
+            await ctx.response.send_message('A obra ' + real_name + ' custará $' + str(value) + ' e você tem $' + str(available_money) + '. Para formalizar a compra, clique no botão abaixo.', ephemeral=True, view=MyTest(msg, ))
 
-        # if available_money < int(value):
+        print('FUNCIONOU')
         
         #     await send_message(ctx, 'Você não tem zakoletas o suficiente para realizar essa compra.')
        
