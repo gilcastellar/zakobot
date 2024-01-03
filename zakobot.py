@@ -3410,63 +3410,6 @@ async def classificados_command(
 
     await ctx.send(embed=embed)
 
-    #print(member)
-
-    id, active, anime_list, receives, gives, obs, zakoletas = get_member_info(member)
-
-    print(id)
-
-    user = await bot.fetch_user(id)
-
-    member = ctx.guild.get_member(int(id))
-
-    print(member)
-    avatar = user.avatar
-    
-    print(get_timestamp() + ': O usuário ' + ctx.author.display_name + ' usou requeriu o /perfil de ' + user.display_name)
-
-    #if member.is_
-    print('Status: ' + str(member.is_on_mobile()))
-    if anime_list != None:
-        if ',' in anime_list:
-            list = anime_list.split(',')
-            anime_list = list[0]
-            anime_list_text = ''
-            for anime in list:
-                anime_list_text += anime + ' | '
-            anime_list_text = anime_list_text.strip("| ")
-        else:
-            anime_list_text = anime_list
-
-    if active == 1:
-
-        _ativo = 'Ativo(a)'
-
-    else:
-
-        _ativo = 'Inativo(a)'
-
-    if zakoletas == None:
-        zakoletas = 0
-
-    user_avg = await get_user_avg(user)
-
-    user_given_avg = 'Sem amostragem'
-    user_received_avg = 'Sem amostragem'
-
-    if user_avg != False:
-        if user_avg[0] != None:
-            user_given_avg = str(user_avg[0]) + '/10'
-        if user_avg[1] != None:
-            user_received_avg = str(user_avg[1]) + '/10'
-
-    print(id)
-
-    pendencies = get_pendencies(id)
-
-    if pendencies == '':
-        pendencies = 'Nenhuma'
-        
     
 
 # Auxiliar command
