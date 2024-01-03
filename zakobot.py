@@ -3510,13 +3510,13 @@ async def aux_command(ctx):
         
         date = str(datetime.datetime.now() - dbservice.select('mercado', ['date_inserted'], '', {'id_item': 1}))
 
-        if 'day' in str(days_passed):
+        # if 'day' in str(days_passed):
     
-            days, trash = days_passed.split(' day')
+        #     days, trash = days_passed.split(' day')
             
-        else:
+        # else:
             
-            days = 0
+        #     days = 0
         
         print(days)
 
