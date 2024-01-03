@@ -3314,6 +3314,8 @@ class BuyingBtn(discord.ui.View): # Create a class called MyView that subclasses
             
             date = datetime.datetime.now(ZoneInfo('America/Sao_Paulo'))
             
+            print(date)
+            
             dbservice.update('mercado', ['date_bought'], [date], {'item_name': self.real_name})
             
             dbservice.update_zakoleta('user', 50, '+50 zakoletas por uma venda no mercado', self.sender_id, 'add')
