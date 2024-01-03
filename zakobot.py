@@ -3195,7 +3195,7 @@ class SellingBtn(discord.ui.View): # Create a class called MyView that subclasse
     async def button_callback(self, button, interaction):
         dbservice.insert('mercado', ['id_anilist', 'item_url', 'item_name', 'item_type', 'sender', 'is_available', 'value', 'date_inserted'], [self.anilist_id, self.insertion, self.title, self.type, self.sender, 'true', self.reward, self.date])
 
-        db
+        # db
 
         await interaction.response.send_message("Obra inserida no mercado com sucesso.", ephemeral=True) # Send a message when the button is clicked
         
