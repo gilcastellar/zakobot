@@ -3311,10 +3311,9 @@ def calculate_market_value(base_value, days_passed):
     
     value = base_value
 
-    factor = 1
+    factor = 1.0235
 
     for day in range(int(days_passed)):
-        factor += 0.0235
         value = ceil(value * factor)
         print(value)
     
