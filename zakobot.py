@@ -3517,7 +3517,7 @@ async def classificados_command(
     await gerar_classificados(msg, 1, 0)
     
 async def gerar_classificados(msg, page, last_page):
-    data = dbservice.select('mercado', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], '', {'is_available':'true'})
+    data = dbservice.select('mercado', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], ' ORDER BY date_inserted', {'is_available':'true'})
 
     print(data)
 
