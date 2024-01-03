@@ -3293,16 +3293,16 @@ async def mercado_comprar_command(
             
                 await ctx.response.send_message('A obra ' + real_name + ' custará $' + str(value) + ' e você tem $' + str(available_money) + '. Para formalizar a compra, clique no botão abaixo.', ephemeral=True, view=MyTest())
 
-            new_money = available_money - int(value)
+                new_money = available_money - int(value)
         
-            dbservice.update('mercado', ['buyer'], [user_id], {'item_name': real_name})
-            dbservice.update('mercado', ['is_available'], ['false'], {'item_name': real_name})
+                dbservice.update('mercado', ['buyer'], [user_id], {'item_name': real_name})
+                dbservice.update('mercado', ['is_available'], ['false'], {'item_name': real_name})
 
-            dbservice.update('user', ['zakoleta'], [new_money], {'id': str(user_id)})
+                dbservice.update('user', ['zakoleta'], [new_money], {'id': str(user_id)})
             
-            dbservice.update_zakoleta('user', 50, '+50 zakoletas por uma venda no mercado', sender_id, 'add')
+                dbservice.update_zakoleta('user', 50, '+50 zakoletas por uma venda no mercado', sender_id, 'add')
         
-            await send_message(ctx, 'Compra efetuada!')
+                await send_message(ctx, 'Compra efetuada!')
 
 def calculate_market_value(base_value, days_passed):
     
