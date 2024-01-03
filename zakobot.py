@@ -3497,6 +3497,12 @@ async def gerar_classificados(msg, page, last_page):
 
         await msg.edit(text, view=ClassificadosPagination(msg, page, last_page))
 
+# to do
+
+# comando para ver suas compras
+
+# melhoras o comando de terminar
+
 # Auxiliar command
 @bot.command(name='aux')
 async def aux_command(ctx):
