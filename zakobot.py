@@ -3308,7 +3308,7 @@ class BuyingBtn(discord.ui.View): # Create a class called MyView that subclasses
         if is_available == 'false':
             await interaction.response.send_message("A obra já foi vendida.", ephemeral=True) # Send a message when the button is clicked
         else:
-            new_money = self.available_money - int(self.value)
+            new_money = self.available_money - 100
             dbservice.update('mercado', ['buyer'], [self.user_id], {'item_name': self.real_name})
             dbservice.update('mercado', ['is_available'], ['false'], {'item_name': self.real_name})
 
