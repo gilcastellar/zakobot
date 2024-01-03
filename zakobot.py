@@ -3343,7 +3343,13 @@ async def mercado_comprar_command(
                                                         
         days_passed = str(datetime.datetime.now() - dbservice.select('mercado', ['date_inserted'], '', {'item_name': real_name}))
     
-        days, trash = days_passed.split(' day')
+        if 'day' in str(days_passed):
+    
+            days, trash = days_passed.split(' day')
+            
+        else:
+            
+            days = 0
 
         print('days: ' + days)
 
