@@ -3433,7 +3433,7 @@ async def mercado_terminar_command(
             
         else:
 
-            await send_message(ctx, 'Você não é o dono dessa obra ou ela não existe no mercado.')
+            await interaction.response.send_message('Você não é o dono dessa obra ou ela não existe no mercado.', ephemeral=True)
 
 @mercado.command(name='classificados')
 async def classificados_command(
