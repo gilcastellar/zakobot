@@ -3388,29 +3388,171 @@ async def mercado_terminar_command(
 
             await send_message(ctx, 'Você não é o dono dessa obra ou ela não existe no mercado.')
 
+@bot.slash_command(name='coleção')
+async def coleção(
+    ctx: discord.ApplicationContext,
+    target: discord.Option(str, autocomplete=get_members_names2, required=False)
+):
+
+    if ctx.channel.id == rolls_channel:
+
+        if target != None:
+
+            await ctx.respond(f'Coleção de {target}')
+
+            user_id = int(dbservice.select('user', ['id'], '', {'name': target}))
+
+        else:
+
+            await ctx.respond('Sua coleção:')
+
+            user_id = ctx.author.id
+
+        #characters = database.selectall('SELECT chara_id FROM user_has_chara WHERE user_id="' + str(ctx.author.id) + '" ORDER BY position', True)
+        
+        msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
+
+        await generate_collection(msg, user_id, 1, 0)
+
+async def generate_collection(msg, user_id, page, last_page):
+
+    characters = dbservice.select('user_has_chara', ['chara_id'], ' ORDER BY position', {'user_id': str(user_id)})
+    
+    print(characters)
+
+    #characters = from_list_of_tuples_to_list(characters)
+
+    batch = 10
+
+    indice = (page * batch) - (batch - 1)
+
+    text = '```Personagem                                                                                        #     Pos.\n\n'
+
+    print('page')
+    print(page)
+
+    print('indice:')
+    print(indice)
+
+    last_page = ceil(len(characters) / batch)
+
+    for chara in characters[batch*(page-1):batch*page]:
+
+        print(indice)
+
+        print('chara')
+        print(chara)
+
+        chara = chara[0]
+        
+        #chara_info = database.selectall('SELECT name, chara_url FROM chara WHERE chara_id=' + str(chara))[0]
+
+        chara_info = dbservice.select('chara', ['name', 'media_title'], '', {'chara_id': str(chara)})
+
+        print(chara_info)
+
+        copies = dbservice.select('user_has_chara', ['quantity'], '', {'chara_id': str(chara), 'user_id': str(user_id)})
+
+        position = dbservice.select('user_has_chara', ['position'], '', {'chara_id': str(chara), 'user_id': str(user_id)})
+          
+        chara_text = f'{str(chara_info[0])} ({chara_info[1]}) '
+
+        while len(chara_text) < 95: 
+            chara_text += '-'
+
+        copies_text = ' ' + (' ' * (3 - len(str(copies)))) + str(copies)
+
+        while len(copies_text) < 9:
+            copies_text += ' '
+
+        position_text = str(position)
+
+        while len(position_text) < 10:
+            position_text += ' '
+
+        text += chara_text + copies_text + position_text + '\n'
+        indice += 1
+
+    text += '```'
+    
+    if page <= last_page:
+
+        await msg.edit(text, view=CollectionPagination(msg, user_id, page, last_page))
+
 @mercado.command(name='classificados')
 async def classificados_command(
     ctx: discord.ApplicationContext
 ):
-    await ctx.respond(f"Trazendo o perfil escolhido...")
     
     data = dbservice.select('mercado', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], '', {'is_available':'true'})
 
     print(data)
     
-    embed=discord.Embed(title='MERCADÃO', color=0xe84545)
-    embed.add_field(name='Obra:',value='',inline=True)
-    embed.add_field(name="Tipo:", value='', inline=True)
-    embed.add_field(name='Valor:',value='',inline=True)
-    for item in data:
-        embed.add_field(name='', value=item[1], inline=True)
-        embed.add_field(name='', value=item[2], inline=True)
-        embed.add_field(name='', value=item[3], inline=True)
-    embed.set_footer(text="--------------------------------------------------------------------------------------------")
-
-    await ctx.send(embed=embed)
-
+    await ctx.respond(f'CLASSIFICADOS')
     
+    msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
+
+    await gerar_classificados(msg, 1, 0)
+    
+async def gerar_classificados(msg, page, last_page):
+    data = dbservice.select('mercado', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], '', {'is_available':'true'})
+
+    batch = 10
+
+    indice = (page * batch) - (batch - 1)
+
+    text = '```Obra                                                                                        Tipo     Valor\n\n'
+
+    print('page')
+    print(page)
+
+    print('indice:')
+    print(indice)
+
+    last_page = ceil(len(data) / batch)
+
+    for obra in data[batch*(page-1):batch*page]:
+
+        print(indice)
+
+        print('obra')
+        print(obra)
+
+    #     obra = obra[0]
+        
+    #     #chara_info = database.selectall('SELECT name, chara_url FROM chara WHERE chara_id=' + str(chara))[0]
+
+    #     chara_info = dbservice.select('chara', ['name', 'media_title'], '', {'chara_id': str(chara)})
+
+    #     print(chara_info)
+
+    #     copies = dbservice.select('user_has_chara', ['quantity'], '', {'chara_id': str(chara), 'user_id': str(user_id)})
+
+    #     position = dbservice.select('user_has_chara', ['position'], '', {'chara_id': str(chara), 'user_id': str(user_id)})
+          
+    #     chara_text = f'{str(chara_info[0])} ({chara_info[1]}) '
+
+    #     while len(chara_text) < 95: 
+    #         chara_text += '-'
+
+    #     copies_text = ' ' + (' ' * (3 - len(str(copies)))) + str(copies)
+
+    #     while len(copies_text) < 9:
+    #         copies_text += ' '
+
+    #     position_text = str(position)
+
+    #     while len(position_text) < 10:
+    #         position_text += ' '
+
+    #     text += chara_text + copies_text + position_text + '\n'
+    #     indice += 1
+
+    # text += '```'
+    
+    # if page <= last_page:
+
+    #     await msg.edit(text, view=CollectionPagination(msg, user_id, page, last_page))
 
 # Auxiliar command
 @bot.command(name='aux')
