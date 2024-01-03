@@ -111,6 +111,28 @@ class TopPagination(discord.ui.View): # Create a class called MyView that subcla
         await generate_top(self.msg, self.page, self.last_page, self.list, self.type, self.min)
         await interaction.response.send_message('')
 
+class ClassificadosPagination(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
+    def __init__(self, msg, page, last_page):
+        super().__init__()
+        #self.ctx = ctx
+        self.msg = msg
+        self.page = page
+        self.last_page = last_page
+
+    @discord.ui.button(label="<<", row=0, style=discord.ButtonStyle.primary)
+    async def first_button_callback(self, button, interaction):
+        if self.page > 1:
+            self.page -= 1
+        await gerar_classificados(self.msg, self.page, self.last_page)
+        await interaction.response.send_message('')
+
+    @discord.ui.button(label=">>", row=0, style=discord.ButtonStyle.primary)
+    async def second_button_callback(self, button, interaction):
+        if self.page < self.last_page:
+            self.page += 1
+        await gerar_classificados(self.msg, self.page, self.last_page)
+        await interaction.response.send_message('')
+        
 class CollectionPagination(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
     def __init__(self, msg, user_id, page, last_page):
         super().__init__()
@@ -3550,9 +3572,9 @@ async def gerar_classificados(msg, page, last_page):
 
     # text += '```'
     
-    # if page <= last_page:
+    if page <= last_page:
 
-    #     await msg.edit(text, view=CollectionPagination(msg, user_id, page, last_page))
+        await msg.edit(text, view=ClassificadosPagination(msg, page, last_page))
 
 # Auxiliar command
 @bot.command(name='aux')
