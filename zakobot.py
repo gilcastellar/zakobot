@@ -3373,7 +3373,7 @@ async def mercado_comprar_command(
             print(dbservice.select('user', ['market_buying_slots'], '', {'id': user_id}))
         
             # await send_message(ctx, 'Você não tem espaço para comprar uma nova obra.')
-        await ctx.response.send_message('Você não tem espaço para comprar uma nova obra.', ephemeral=True)
+            await ctx.response.send_message('Você não tem espaço para comprar uma nova obra.', ephemeral=True)
     
         else:
 
@@ -3381,11 +3381,11 @@ async def mercado_comprar_command(
         
             if available_money < int(value):
             
-                await ctx.response.send_message('A obra ' + real_name + ' custa $' + str(value) + ' e você tem $' + str(available_money) + '. Por isso você não consegue realizar essa compra.', ephemeral=True)
+                await ctx.response.send_message('A obra ' + real_name + ' custará $' + str(value) + ' e você tem $' + str(available_money) + '. Por isso você não consegue realizar essa compra.', ephemeral=True)
         
             else:
             
-                await ctx.response.send_message('A obra ' + real_name + ' custa $100 e você tem $' + str(available_money) + '. Para formalizar a compra, clique no botão abaixo.', ephemeral=True, view=BuyingBtn(value, available_money, user_id, sender_id, real_name))
+                await ctx.response.send_message('A obra ' + real_name + ' custará $100 e você tem $' + str(available_money) + '. Para formalizar a compra, clique no botão abaixo.', ephemeral=True, view=BuyingBtn(value, available_money, user_id, sender_id, real_name))
 
 def calculate_market_value(base_value, days_passed):
     
