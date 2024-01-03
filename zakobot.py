@@ -3545,7 +3545,7 @@ async def gerar_classificados(msg, page, last_page):
         while len(text) < 90: 
             text += '-'
             
-        text += obra[2] + '  ' + obra[3]
+        text += obra[2] + '  ' + str(obra[3])
 
     #     obra = obra[0]
         
