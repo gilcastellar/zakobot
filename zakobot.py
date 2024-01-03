@@ -3351,7 +3351,7 @@ async def mercado_comprar_command(
             
             days = 0
 
-        print('days: ' + days)
+        print('days: ' + str(days))
 
         buyer_slots = dbservice.select('mercado', ['buyer'], '', {'buyer': user_id})
 
