@@ -24,6 +24,7 @@ from discord.ext import commands
 import configparser
 
 from discord.ext.commands.flags import F
+from discord.utils import P
 import database
 import dbservice
 import anilist
@@ -3316,6 +3317,7 @@ class BuyingBtn(discord.ui.View): # Create a class called MyView that subclasses
             
             date = datetime.datetime.now(ZoneInfo('America/Sao_Paulo'))
             
+            print('data da compra:')
             print(date)
             
             dbservice.update('mercado', ['date_bought'], [date], {'item_name': self.real_name})
