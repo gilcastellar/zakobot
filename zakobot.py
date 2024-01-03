@@ -3271,6 +3271,10 @@ class BuyingBtn(discord.ui.View): # Create a class called MyView that subclasses
 
             dbservice.update('user', ['zakoleta'], [new_money], {'id': str(self.user_id)})
             
+            date = datetime.datetime.now(ZoneInfo('America/Sao_Paulo'))
+            
+            dbservice.update('mercado', ['date_bought'], [date], {'item_name': self.real_name})
+            
             dbservice.update_zakoleta('user', 50, '+50 zakoletas por uma venda no mercado', self.sender_id, 'add')
             await interaction.response.send_message("Compra realizada com sucesso.", ephemeral=True) # Send a message when the button is clicked
         
@@ -3378,9 +3382,92 @@ async def mercado_terminar_command(
             
             await send_message(ctx, 'Você terminou essa obra!')
             
+            # precisa revelar quem botou a venda e talvez marcar a pessoa
+            
         else:
 
             await send_message(ctx, 'Você não é o dono dessa obra ou ela não existe no mercado.')
+
+@mercado.command(name='classificados')
+async def classificados_command(
+    ctx: discord.ApplicationContext
+):
+    await ctx.respond(f"Trazendo o perfil escolhido...")
+    
+    data = dbservice.select('mercado', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], '', {'is_available':'true'})
+
+    print(data)
+    
+    embed=discord.Embed(title='MERCADÃO', color=0xe84545)
+    embed.add_field(name='Obra:',value='',inline=True)
+    embed.add_field(name="Tipo:", value='', inline=True)
+    embed.add_field(name='Valor:',value='',inline=True)
+    for item in data:
+        embed.add_field(name='', value=item[1], inline=True)
+        embed.add_field(name='', value=item[2], inline=True)
+        embed.add_field(name='', value=item[3], inline=True)
+    embed.set_footer(text="--------------------------------------------------------------------------------------------")
+
+    await ctx.send(embed=embed)
+
+    #print(member)
+
+    id, active, anime_list, receives, gives, obs, zakoletas = get_member_info(member)
+
+    print(id)
+
+    user = await bot.fetch_user(id)
+
+    member = ctx.guild.get_member(int(id))
+
+    print(member)
+    avatar = user.avatar
+    
+    print(get_timestamp() + ': O usuário ' + ctx.author.display_name + ' usou requeriu o /perfil de ' + user.display_name)
+
+    #if member.is_
+    print('Status: ' + str(member.is_on_mobile()))
+    if anime_list != None:
+        if ',' in anime_list:
+            list = anime_list.split(',')
+            anime_list = list[0]
+            anime_list_text = ''
+            for anime in list:
+                anime_list_text += anime + ' | '
+            anime_list_text = anime_list_text.strip("| ")
+        else:
+            anime_list_text = anime_list
+
+    if active == 1:
+
+        _ativo = 'Ativo(a)'
+
+    else:
+
+        _ativo = 'Inativo(a)'
+
+    if zakoletas == None:
+        zakoletas = 0
+
+    user_avg = await get_user_avg(user)
+
+    user_given_avg = 'Sem amostragem'
+    user_received_avg = 'Sem amostragem'
+
+    if user_avg != False:
+        if user_avg[0] != None:
+            user_given_avg = str(user_avg[0]) + '/10'
+        if user_avg[1] != None:
+            user_received_avg = str(user_avg[1]) + '/10'
+
+    print(id)
+
+    pendencies = get_pendencies(id)
+
+    if pendencies == '':
+        pendencies = 'Nenhuma'
+        
+    
 
 # Auxiliar command
 @bot.command(name='aux')
