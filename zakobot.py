@@ -3302,8 +3302,6 @@ class BuyingBtn(discord.ui.View): # Create a class called MyView that subclasses
 
     @discord.ui.button(label="Comprar", style=discord.ButtonStyle.primary, emoji="💰") # Create a button with the label "😎 Click me!" with color Blurple
     async def button_callback(self, button, interaction):
-        await interaction.response.send_message("Verificando se ainda está disponível...", ephemeral=True) # Send a message when the button is clicked
-        
         is_available = dbservice.select('mercado', ['is_available'], '', {'item_name':self.real_name})
         
         if is_available == 'false':
@@ -3315,7 +3313,7 @@ class BuyingBtn(discord.ui.View): # Create a class called MyView that subclasses
 
             dbservice.update('user', ['zakoleta'], [new_money], {'id': str(self.user_id)})
             
-            dbservice.update_zakoleta('user', 50, '+50 zakoletas por uma venda no mercado', self.sender_id, 'add')
+            # dbservice.update_zakoleta('user', 50, '+50 zakoletas por uma venda no mercado', self.sender_id, 'add')
             await interaction.response.send_message("Compra realizada com sucesso.", ephemeral=True) # Send a message when the button is clicked
             
             date = datetime.datetime.now(ZoneInfo('America/Sao_Paulo'))
