@@ -3315,16 +3315,15 @@ class BuyingBtn(discord.ui.View): # Create a class called MyView that subclasses
 
             dbservice.update('user', ['zakoleta'], [new_money], {'id': str(self.user_id)})
             
+            dbservice.update_zakoleta('user', 50, '+50 zakoletas por uma venda no mercado', self.sender_id, 'add')
+            await interaction.response.send_message("Compra realizada com sucesso.", ephemeral=True) # Send a message when the button is clicked
+            
             date = datetime.datetime.now(ZoneInfo('America/Sao_Paulo'))
             
             print('data da compra:')
             print(date)
             
             dbservice.update('mercado', ['date_bought'], [date], {'item_name': self.real_name})
-            
-            dbservice.update_zakoleta('user', 50, '+50 zakoletas por uma venda no mercado', self.sender_id, 'add')
-            await interaction.response.send_message("Compra realizada com sucesso.", ephemeral=True) # Send a message when the button is clicked
-        
 
 @mercado.command(name='comprar')
 async def mercado_comprar_command(
