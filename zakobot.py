@@ -3221,7 +3221,8 @@ async def mercado_inserir_command(
 
         print(dbservice.select('user', ['market_selling_slots'], '', {'id': sender}))
         
-        await send_message(ctx, 'Você não tem espaço para vender uma nova obra.')
+        # await send_message(ctx, 'Você não tem espaço para vender uma nova obra.')
+        await ctx.response.send_message('Você não tem espaço para vender uma nova obra.', ephemeral=True)
     
     else:
 
