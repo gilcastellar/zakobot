@@ -3544,6 +3544,8 @@ async def gerar_classificados(msg, page, last_page):
         print(obra)
         
         days_passed = str(datetime.datetime.now() - obra[4])
+        
+        print(days_passed)
     
         days, trash = days_passed.split(' day')
         
