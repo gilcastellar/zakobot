@@ -3570,7 +3570,7 @@ async def gerar_classificados(msg, page, last_page):
     #     text += chara_text + copies_text + position_text + '\n'
     #     indice += 1
 
-    # text += '```'
+    text += '```'
     
     if page <= last_page:
 
