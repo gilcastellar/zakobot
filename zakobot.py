@@ -3229,6 +3229,12 @@ async def get_mercado_options(ctx: discord.AutocompleteContext):
 
     return [name for name in names if ctx.value.lower() in name.lower()]
 
+class MyTest(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
+    @discord.ui.button(label="Click me!", style=discord.ButtonStyle.primary, emoji="😎") # Create a button with the label "😎 Click me!" with color Blurple
+    async def button_callback(self, button, interaction):
+        await interaction.response.send_message("You clicked the button!") # Send a message when the button is clicked
+
+
 @mercado.command(name='comprar')
 async def mercado_comprar_command(
     ctx: discord.ApplicationContext,
@@ -3271,7 +3277,7 @@ async def mercado_comprar_command(
     
     else:
         
-        await ctx.response.send_message("Text", ephemeral=True)
+        await ctx.response.send_message("Text", ephemeral=True, view=MyTest())
 
         # if available_money < int(value):
         
