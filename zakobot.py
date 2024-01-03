@@ -3256,6 +3256,8 @@ class MyTest(discord.ui.View): # Create a class called MyView that subclasses di
             dbservice.update('user', ['zakoleta'], [new_money], {'id': str(self.user_id)})
             
             dbservice.update_zakoleta('user', 50, '+50 zakoletas por uma venda no mercado', self.sender_id, 'add')
+            await interaction.response.send_message("Compra realizada com sucesso.", ephemeral=True) # Send a message when the button is clicked
+        
 
 @mercado.command(name='comprar')
 async def mercado_comprar_command(
