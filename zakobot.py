@@ -3544,7 +3544,7 @@ async def gerar_classificados(msg, page, last_page):
         
         text += obra[1] + '\n'
             
-        text += obra[2].capitalize() + ' \nValor: ' + str(obra[3]) + '\n\n'
+        text += obra[2].capitalize() + ' \nRecompensa: ' + str(obra[3]) + '\n\n'
 
     #     obra = obra[0]
         
