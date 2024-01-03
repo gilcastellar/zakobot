@@ -3158,6 +3158,31 @@ mercado = bot.create_group('mercado', 'Comandos do mercado')
 
 # mercado_commands = ['Colocar à venda', 'Comprar', 'Terminar', 'Abandonar', 'Calcular valor']
 
+class SellingBtn(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
+    def __init__(self, anilist_id, insertion, type, reward, sender, title, date):
+        super().__init__()
+        self.anilist_id = anilist_id
+        self.insertion = insertion
+        self.type = type
+        self.reward = reward
+        self.sender = sender
+        self.title = title
+        self.date = date
+        
+    @discord.ui.button(label="Botar à venda", style=discord.ButtonStyle.primary, emoji="📋") # Create a button with the label "😎 Click me!" with color Blurple
+    async def button_callback(self, button, interaction):
+        await interaction.response.send_message("Verificando se ainda está disponível...", ephemeral=True) # Send a message when the button is clicked
+        
+        exists = dbservice.check_existence('mercado', {'id_anilist':self.anilist_id})
+        
+        if exists == 1:
+            await interaction.response.send_message("A obra já foi vendida.", ephemeral=True) # Send a message when the button is clicked
+        else:
+            dbservice.insert('mercado', ['id_anilist', 'item_url', 'item_name', 'item_type', 'sender', 'is_available', 'value', 'date_inserted'], [self.anilist_id, self.insertion, self.title, self.type, self.sender, 'true', self.reward, self.date])
+
+            await interaction.response.send_message("Compra realizada com sucesso.", ephemeral=True) # Send a message when the button is clicked
+        
+
 @mercado.command(name='inserir')
 async def mercado_inserir_command(
     ctx: discord.ApplicationContext,
@@ -3203,8 +3228,8 @@ async def mercado_inserir_command(
             reward = ceil(100 * duration_factor)
 
             date = datetime.datetime.now(ZoneInfo('America/Sao_Paulo'))
-
-            dbservice.insert('mercado', ['id_anilist', 'item_url', 'item_name', 'item_type', 'sender', 'is_available', 'value', 'date_inserted'], [anilist_id, insertion, title, type, sender, 'true', reward, date])
+            
+            await ctx.response.send_message('A obra ' + title + ' valerá $' + str(reward) + '. Para formalizar a inserção no mercado, clique no botão abaixo.', ephemeral=True, view=SellingBtn(anilist_id, insertion, type, reward, sender, title, date))
 
         else:
             await send_message(ctx, 'Obra já disponível no mercado.')
@@ -3230,10 +3255,9 @@ async def get_mercado_options(ctx: discord.AutocompleteContext):
 
     return [name for name in names if ctx.value.lower() in name.lower()]
 
-class MyTest(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
+class BuyingBtn(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
     def __init__(self, value, available_money, user_id, sender_id, real_name):
         super().__init__()
-        #self.ctx = ctx
         self.value = value
         self.available_money = available_money
         self.user_id = user_id
@@ -3313,9 +3337,7 @@ async def mercado_comprar_command(
         
             else:
             
-                await ctx.response.send_message('A obra ' + real_name + ' custará $' + str(value) + ' e você tem $' + str(available_money) + '. Para formalizar a compra, clique no botão abaixo.', ephemeral=True, view=MyTest(value, available_money, user_id, sender_id, real_name))
-
-               
+                await ctx.response.send_message('A obra ' + real_name + ' custará $' + str(value) + ' e você tem $' + str(available_money) + '. Para formalizar a compra, clique no botão abaixo.', ephemeral=True, view=BuyingBtn(value, available_money, user_id, sender_id, real_name))
 
 def calculate_market_value(base_value, days_passed):
     
