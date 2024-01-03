@@ -3546,8 +3546,14 @@ async def gerar_classificados(msg, page, last_page):
         days_passed = str(datetime.datetime.now() - obra[4])
         
         print(days_passed)
+        
+        if 'day' in str(days_passed):
     
-        days, trash = days_passed.split(' day')
+            days, trash = days_passed.split(' day')
+            
+        else:
+            
+            days = 0
         
         value = calculate_market_value(obra[3], days)
         
