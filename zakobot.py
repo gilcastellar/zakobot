@@ -3246,10 +3246,8 @@ async def mercado_comprar_command(
     print(real_name)
 
     value = dbservice.select('mercado', ['value'], '', {'item_name': real_name})
-    print(type(datetime.datetime.now(ZoneInfo('America/Sao_Paulo'))))
-    print(type(dbservice.select('mercado', ['date_inserted'], '', {'item_name': real_name})))
                                                         
-    days_passed = datetime.datetime.now(ZoneInfo('America/Sao_Paulo') - dbservice.select('mercado', ['date_inserted'], '', {'item_name': real_name}))
+    days_passed = datetime.datetime.now(ZoneInfo('America/Sao_Paulo')) - dbservice.select('mercado', ['date_inserted'], '', {'item_name': real_name})
     
     print(days_passed)
 
