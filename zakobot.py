@@ -3303,7 +3303,7 @@ async def mercado_comprar_command(
     
         else:
 
-            calculate_market_value(value, days)
+            value = calculate_market_value(value, days)
         
             if available_money < int(value):
             
@@ -3324,6 +3324,8 @@ def calculate_market_value(base_value, days_passed):
     for day in range(int(days_passed)):
         value = ceil(value * factor)
         print(value)
+
+    return value
     
 
 @mercado.command(name='terminar')
