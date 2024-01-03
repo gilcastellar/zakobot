@@ -3256,7 +3256,7 @@ async def mercado_comprar_command(
 
     value = dbservice.select('mercado', ['value'], '', {'item_name': real_name})
                                                         
-    days_passed = datetime.datetime.now() - dbservice.select('mercado', ['date_inserted'], '', {'item_name': real_name})
+    days_passed = str(datetime.datetime.now() - dbservice.select('mercado', ['date_inserted'], '', {'item_name': real_name}))
     
     days, trash = days_passed.split(' day')
 
