@@ -3340,7 +3340,7 @@ async def mercado_comprar_command(
     
     if user_id == int(sender_id):
         
-        await send_message(ctx, "Você não pode comprar uma obra que você mesmo enviou.")
+        await ctx.response.send_message("Você não pode comprar uma obra que você mesmo enviou.", ephemeral=True)
         
     else:
 
@@ -3372,7 +3372,6 @@ async def mercado_comprar_command(
 
             print(dbservice.select('user', ['market_buying_slots'], '', {'id': user_id}))
         
-            # await send_message(ctx, 'Você não tem espaço para comprar uma nova obra.')
             await ctx.response.send_message('Você não tem espaço para comprar uma nova obra.', ephemeral=True)
     
         else:
