@@ -3171,12 +3171,12 @@ class SellingBtn(discord.ui.View): # Create a class called MyView that subclasse
         
     @discord.ui.button(label="Botar à venda", style=discord.ButtonStyle.primary, emoji="📋") # Create a button with the label "😎 Click me!" with color Blurple
     async def button_callback(self, button, interaction):
-        await interaction.response.send_message("Verificando se ainda está disponível...", ephemeral=True) # Send a message when the button is clicked
+        await interaction.response.send_message("Verificando se é possível inserir a obra...", ephemeral=True) # Send a message when the button is clicked
         
         exists = dbservice.check_existence('mercado', {'id_anilist':self.anilist_id})
         
         if exists == 1:
-            await interaction.response.send_message("A obra já foi vendida.", ephemeral=True) # Send a message when the button is clicked
+            await interaction.response.send_message("A obra já existe no mercado.", ephemeral=True) # Send a message when the button is clicked
         else:
             dbservice.insert('mercado', ['id_anilist', 'item_url', 'item_name', 'item_type', 'sender', 'is_available', 'value', 'date_inserted'], [self.anilist_id, self.insertion, self.title, self.type, self.sender, 'true', self.reward, self.date])
 
