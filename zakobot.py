@@ -621,9 +621,9 @@ async def perfil_command(
     embed=discord.Embed(title=member, url=anime_list, color=0xe84545)
     embed.set_thumbnail(url=avatar)
     embed.add_field(name=_ativo,value='',inline=True)
-    if zakoletas > 0:
-        embed.add_field(name="Ƶ " + str(zakoletas), value="", inline=True)
-        embed.add_field(name=" ­­", value=" ", inline=True)
+    # if zakoletas > 0:
+    #     embed.add_field(name="Ƶ " + str(zakoletas), value="", inline=True)
+    #     embed.add_field(name=" ­­", value=" ", inline=True)
     if anime_list != None:
         embed.add_field(name="Perfil do MAL/Anilist", value=anime_list_text, inline=False)
         embed.add_field(name="", value="", inline=False)
