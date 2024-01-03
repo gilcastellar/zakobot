@@ -3523,7 +3523,7 @@ async def gerar_classificados(msg, page, last_page):
 
     indice = (page * batch) - (batch - 1)
 
-    text = '```Obra                                                                                        Tipo     Valor\n\n'
+    text = '```Obra                                                                                   Tipo     Valor\n\n'
 
     print('page')
     print(page)
