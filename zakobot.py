@@ -3402,7 +3402,7 @@ async def mercado_terminar_command(
 
             dbservice.delete('mercado', {'buyer': user, 'id_anilist': anilist_id})
             
-            await send_message(ctx, 'Você terminou a obra enviada por <@' + str(sender_id) + '>!')
+            await send_message(ctx, 'Parabéns! <@' + str(user) + '> terminou a obra enviada por <@' + str(sender_id) + '>!')
             
         else:
 
