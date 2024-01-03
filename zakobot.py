@@ -3241,8 +3241,10 @@ async def mercado_inserir_command(
                     media_obj = response.json()
                 
                     duration = media_obj['data']['Media']['duration']
+
+                    episodes = media_obj['data']['Media']['episodes']
                 
-                    total_duration = duration * media_obj['data']['Media']['episodes']
+                    total_duration = duration * episodes
 
                     print(total_duration)
                 
@@ -3378,7 +3380,7 @@ async def mercado_comprar_command(
         
             if available_money < int(value):
             
-                await send_message(ctx, 'A obra ' + real_name + ' custará $' + str(value) + ' e você tem $' + str(available_money) + '. Por isso você não consegue realizar essa compra.')
+                await ctx.response.send_message('A obra ' + real_name + ' custará $' + str(value) + ' e você tem $' + str(available_money) + '. Por isso você não consegue realizar essa compra.', ephemeral=True)
         
             else:
             
