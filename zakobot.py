@@ -3543,9 +3543,15 @@ async def gerar_classificados(msg, page, last_page):
         print('obra')
         print(obra)
         
+        days_passed = str(datetime.datetime.now() - obra[4]
+    
+        days, trash = days_passed.split(' day')
+        
+        value = calculate_market_value(obra[3], days)
+        
         text += '**' + obra[1] + '**\n'
             
-        text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(obra[3]) + '\n\n'
+        text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
 
     #     obra = obra[0]
         
