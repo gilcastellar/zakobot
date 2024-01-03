@@ -3173,14 +3173,10 @@ class SellingBtn(discord.ui.View): # Create a class called MyView that subclasse
     async def button_callback(self, button, interaction):
         await interaction.response.send_message("Verificando se é possível inserir a obra...", ephemeral=True) # Send a message when the button is clicked
         
-        exists = dbservice.check_existence('mercado', {'id_anilist':self.anilist_id})
         
-        if exists == 1:
-            await interaction.response.send_message("A obra já existe no mercado.", ephemeral=True) # Send a message when the button is clicked
-        else:
-            dbservice.insert('mercado', ['id_anilist', 'item_url', 'item_name', 'item_type', 'sender', 'is_available', 'value', 'date_inserted'], [self.anilist_id, self.insertion, self.title, self.type, self.sender, 'true', self.reward, self.date])
+        dbservice.insert('mercado', ['id_anilist', 'item_url', 'item_name', 'item_type', 'sender', 'is_available', 'value', 'date_inserted'], [self.anilist_id, self.insertion, self.title, self.type, self.sender, 'true', self.reward, self.date])
 
-            await interaction.response.send_message("Obra inserida no mercado com sucesso.", ephemeral=True) # Send a message when the button is clicked
+        await interaction.response.send_message("Obra inserida no mercado com sucesso.", ephemeral=True) # Send a message when the button is clicked
         
 
 @mercado.command(name='inserir')
@@ -3232,7 +3228,7 @@ async def mercado_inserir_command(
             await ctx.response.send_message('A obra ' + title + ' valerá $' + str(reward) + '. Para formalizar a inserção no mercado, clique no botão abaixo.', ephemeral=True, view=SellingBtn(anilist_id, insertion, type, reward, sender, title, date))
 
         else:
-            await send_message(ctx, 'Obra já disponível no mercado.')
+            await interaction.response.send_message("A obra já existe no mercado.", ephemeral=True)
 
     else:
         await send_message(ctx, 'É preciso inserir um link do Anilist.')
