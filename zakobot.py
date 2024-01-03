@@ -3231,15 +3231,15 @@ async def get_mercado_options(ctx: discord.AutocompleteContext):
     return [name for name in names if ctx.value.lower() in name.lower()]
 
 class MyTest(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
-    def __init__(self, msg, page, last_page, list, type, min):
-        super().__init__()
-        #self.ctx = ctx
-        self.msg = msg
-        self.page = page
-        self.last_page = last_page
-        self.list = list
-        self.type = type
-        self.min = min
+    # def __init__(self, msg, page, last_page, list, type, min):
+    #     super().__init__()
+    #     #self.ctx = ctx
+    #     self.msg = msg
+    #     self.page = page
+    #     self.last_page = last_page
+    #     self.list = list
+    #     self.type = type
+    #     self.min = min
     @discord.ui.button(label="Comprar", style=discord.ButtonStyle.primary, emoji="💰") # Create a button with the label "😎 Click me!" with color Blurple
     async def button_callback(self, button, interaction):
         # await btn_comprar()
