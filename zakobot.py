@@ -34,7 +34,6 @@ from zoneinfo import ZoneInfo
 import asyncio
 from math import ceil, e
 
-from symbol import factor
 
 intents = discord.Intents.default()
 intents.members = True
