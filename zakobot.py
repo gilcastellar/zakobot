@@ -3309,7 +3309,7 @@ async def mercado_comprar_command(
 
 def calculate_market_value(base_value, days_passed):
 
-    for day in range(days_passed):
+    for day in range(int(days_passed)):
         print(day+1)
 
     ...
