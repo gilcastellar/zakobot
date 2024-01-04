@@ -264,16 +264,16 @@ async def on_message(message):
 
             await send_message2(result, 1151990929864007680)
 
-@tasks.loop(minutes=1)
-async def check_time():
+# @tasks.loop(minutes=1)
+# async def check_time():
 
-    realtime = get_realtime()
+#     realtime = get_realtime()
 
-    if realtime.hour == 4 and realtime.minute in range(54,58):
-        await clean_dailies()
+#     if realtime.hour == 4 and realtime.minute in range(54,58):
+#         await clean_dailies()
         
-    if realtime.hour == 5:
-        await dailies()
+#     if realtime.hour == 5:
+#         await dailies()
 
 # Send message
 async def send_message(ctx, text, channel_id=''):
@@ -3196,11 +3196,8 @@ class SellingBtn(discord.ui.View): # Create a class called MyView that subclasse
     async def button_callback(self, button, interaction):
         dbservice.insert('mercado', ['id_anilist', 'item_url', 'item_name', 'item_type', 'sender', 'is_available', 'value', 'date_inserted'], [self.anilist_id, self.insertion, self.title, self.type, self.sender, 'true', self.reward, self.date])
 
-        # db
-
         await interaction.response.send_message("Obra inserida no mercado com sucesso.", ephemeral=True) # Send a message when the button is clicked
         
-
 @mercado.command(name='inserir')
 async def mercado_inserir_command(
     ctx: discord.ApplicationContext,
@@ -3539,7 +3536,7 @@ async def aux_command(ctx):
             
         #     days = 0
         
-        print(days)
+        # print(days)
 
         print(str(datetime.datetime.now() - dbservice.select('mercado', ['date_inserted'], '', {'id_item': 1})).split(' day'))
     
