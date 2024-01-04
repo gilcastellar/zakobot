@@ -3242,6 +3242,8 @@ async def mercado_inserir_command(
                     duration = media_obj['data']['Media']['duration']
 
                     episodes = media_obj['data']['Media']['episodes']
+                    print(duration)
+                    print(episodes)
 
                     if int(duration) != duration:
                         await ctx.response.send_message('Você provavelmente tentou inserir uma obra sem a informação de duração no Anilist.', ephemeral=True)
