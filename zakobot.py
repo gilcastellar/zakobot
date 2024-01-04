@@ -3539,7 +3539,7 @@ async def inventario_command(
             
         text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
     
-        await ctx.response.send_message(text, ephemeral=True)
+    await ctx.response.send_message(text, ephemeral=True)
     
 async def gerar_inventario(msg, page, last_page, user_id):
 
