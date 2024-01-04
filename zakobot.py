@@ -3572,6 +3572,9 @@ async def inventario_command(
 
         for i in obra:
             print(i)
+            
+        print('agora')
+        print(datetime.datetime.now().timestamp())
         
         print('abaixo')
         print('criado')
