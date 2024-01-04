@@ -3371,7 +3371,7 @@ async def mercado_comprar_command(
 
         value = dbservice.select('mercado', ['value'], '', {'item_name': real_name})
                                                         
-        time_passed = datetime.datetime.now().timestamp() - dbservice.select('mercado', ['date_inserted'], '', {'item_name': real_name})
+        time_passed = int(datetime.datetime.now().timestamp()) - dbservice.select('mercado', ['date_inserted'], '', {'item_name': real_name})
     
         days = floor(time_passed / 1440)
 
@@ -3514,7 +3514,7 @@ async def gerar_inventario(msg, page, last_page, user_id):
         print(datetime.datetime.now().timestamp())
         print(obra[4])
         
-        time_passed = datetime.datetime.now().timestamp() - obra[4]
+        time_passed = int(datetime.datetime.now().timestamp()) - obra[4]
         
         days = floor(time_passed / 1440)
         
