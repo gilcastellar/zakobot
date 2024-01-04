@@ -3194,14 +3194,14 @@ class SellingBtn(discord.ui.View): # Create a class called MyView that subclasse
         self.title = title
         self.date = date
         
-    @discord.ui.button(label="Botar à venda", style=discord.ButtonStyle.primary, emoji="📋") # Create a button with the label "😎 Click me!" with color Blurple
+    @discord.ui.button(label="Criar quest", style=discord.ButtonStyle.primary, emoji="📋") # Create a button with the label "😎 Click me!" with color Blurple
     async def button_callback(self, button, interaction):
-        dbservice.insert('mercado', ['id_anilist', 'item_url', 'item_name', 'item_type', 'sender', 'is_available', 'value', 'date_inserted'], [self.anilist_id, self.insertion, self.title, self.type, self.sender, 'true', self.reward, self.date])
+        dbservice.insert('quests', ['id_anilist', 'item_url', 'item_name', 'item_type', 'sender', 'is_available', 'value', 'date_inserted'], [self.anilist_id, self.insertion, self.title, self.type, self.sender, 'true', self.reward, self.date])
 
-        await interaction.response.send_message("Obra inserida no mercado com sucesso.", ephemeral=True) # Send a message when the button is clicked
+        await interaction.response.send_message("Quest criada com sucesso.", ephemeral=True) # Send a message when the button is clicked
         
 @guilda.command(name='criar')
-async def mercado_inserir_command(
+async def guilda_inserir_command(
     ctx: discord.ApplicationContext,
     insertion: discord.Option(str, name='obra')
 ):
@@ -3230,7 +3230,7 @@ async def mercado_inserir_command(
         
             type, anilist_id = get_type_and_id_from_anilist_link(insertion)
         
-            exists = dbservice.check_existence('mercado', {'id_anilist': str(anilist_id), 'is_available': str('true')})
+            exists = dbservice.check_existence('quests', {'id_anilist': str(anilist_id), 'is_available': str('true')})
 
             if exists == 0:
             
@@ -3292,10 +3292,10 @@ async def mercado_inserir_command(
                 
                 timestamp = int(datetime.datetime.now().timestamp())
             
-                await ctx.response.send_message('A obra ' + title + ' valerá $' + str(reward) + '. Para formalizar a inserção no mercado, clique no botão abaixo.', ephemeral=True, view=SellingBtn(anilist_id, insertion, type, reward, sender, title, timestamp))
+                await ctx.response.send_message('A obra ' + title + ' valerá $' + str(reward) + '. Para formalizar a criação da quest, clique no botão abaixo.', ephemeral=True, view=SellingBtn(anilist_id, insertion, type, reward, sender, title, timestamp))
 
             else:
-                await ctx.response.send_message("A obra já existe no mercado.", ephemeral=True)
+                await ctx.response.send_message("A quest já existe.", ephemeral=True)
 
         else:
             await send_message(ctx, 'É preciso inserir um link do Anilist.')
@@ -3351,7 +3351,7 @@ class BuyingBtn(discord.ui.View): # Create a class called MyView that subclasses
             dbservice.update('quests', ['date_bought'], [date], {'item_name': self.real_name})
 
 @guilda.command(name='adquirir')
-async def mercado_comprar_command(
+async def guilda_adquirir_command(
     ctx: discord.ApplicationContext,
     order: discord.Option(str, autocomplete=get_quests_options, name='quests')
 ):
@@ -3419,7 +3419,7 @@ def calculate_quest_reward(base_value, days_passed):
     return value 
 
 @guilda.command(name='completar')
-async def mercado_completar_command(
+async def guilda_completar_command(
     ctx: discord.ApplicationContext,
     to_finish: discord.Option(str, name='quest')
 ):
@@ -3680,9 +3680,9 @@ async def aux_command(ctx):
         
         print(datetime.datetime.now(ZoneInfo('America/Sao_Paulo')))
         
-        print(str(datetime.datetime.now() - dbservice.select('mercado', ['date_inserted'], '', {'id_item': 1})))
+        print(str(datetime.datetime.now() - dbservice.select('quests', ['date_inserted'], '', {'id_item': 1})))
         
-        date = str(datetime.datetime.now() - dbservice.select('mercado', ['date_inserted'], '', {'id_item': 1}))
+        date = str(datetime.datetime.now() - dbservice.select('quests', ['date_inserted'], '', {'id_item': 1}))
 
         # if 'day' in str(days_passed):
     
@@ -3694,7 +3694,7 @@ async def aux_command(ctx):
         
         # print(days)
 
-        print(str(datetime.datetime.now() - dbservice.select('mercado', ['date_inserted'], '', {'id_item': 1})).split(' day'))
+        print(str(datetime.datetime.now() - dbservice.select('quests', ['date_inserted'], '', {'id_item': 1})).split(' day'))
     
         
         # await send_message2('ok', 1077070205987082281)
