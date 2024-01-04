@@ -3580,6 +3580,8 @@ async def inventario_command(
         print(obra[6])
         
         time_passed = int(obra[6]) - int(obra[4])
+        print('time_passed')
+        print(time_passed)
         
         days = floor(time_passed / 1440)
         print('days')
