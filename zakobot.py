@@ -3183,6 +3183,8 @@ guilda = bot.create_group('guilda', 'Comandos da guilda')
 
 # mercado_commands = ['Colocar à venda', 'Comprar', 'Terminar', 'Abandonar', 'Calcular valor']
 
+quest_flavors = [['Enfrente ', ' e saia vivo para contar ao mundo!'], ['Procure pela cidade perdida de ', ' pelo cálice sagrado!'], ['Vasculhe as ruínas de ',' atrás de ouro!'], ['Passe por ',' sem tomar dano!'], ['Sobreviva a ',''], ['',''], ['',''], ['',''], ['',''], ['',''], ['',''], ['',''], ['','']]
+
 class SellingBtn(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
     def __init__(self, anilist_id, insertion, type, reward, sender, title, date):
         super().__init__()
@@ -3222,7 +3224,7 @@ async def guilda_inserir_command(
         print(dbservice.select('user', ['quest_selling_slots'], '', {'id': sender}))
         
         # await send_message(ctx, 'Você não tem espaço para vender uma nova obra.')
-        await ctx.response.send_message('Você não tem espaço para vender uma nova obra.', ephemeral=True)
+        await ctx.response.send_message('Você não tem espaço para criar uma nova quest.', ephemeral=True)
     
     else:
 
@@ -3302,7 +3304,7 @@ async def guilda_inserir_command(
 
 async def get_quests_options(ctx: discord.AutocompleteContext):
     
-    quests_options = dbservice.select('quests', ['item_name', 'value', 'is_available'], '')
+    quests_options = dbservice.select('quests', ['item_name', 'value', 'is_available', 'item_type'], '')
 
     print(quests_options)
 
@@ -3317,7 +3319,7 @@ async def get_quests_options(ctx: discord.AutocompleteContext):
         
         if name[2] == 'true':
 
-            names.append(name[0])
+            names.append(name[0] + name[3])
             
     print(names)
 
