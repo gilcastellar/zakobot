@@ -3451,7 +3451,7 @@ async def inventario_command(
 ):
     user_id = ctx.author.id    
 
-    data = dbservice.select('mercado', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], '', {'is_available':'true', 'buyer': user_id})
+    data = dbservice.select('mercado', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], '', {'buyer': user_id})
 
     print(data)
     
