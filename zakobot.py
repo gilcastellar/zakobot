@@ -3450,12 +3450,10 @@ async def guilda_completar_command(
             
             dbservice.update_zakoleta('user', sender_reward, '+' + str(sender_reward) + ' zakoletas porque alguém finalizou sua quest.', sender_id, 'add')
             dbservice.update_zakoleta('user', buyer_reward, '+' + str(buyer_reward) + ' zakoletas por completar uma quest.', user, 'add')
-
-            dbservice.delete('quests', {'buyer': user, 'id_anilist': anilist_id})
             
             obra = dbservice.select('quests', ['item_name'], '', {'buyer': user, 'id_anilist': anilist_id})
-            print("testesss:")
-            print(obra)
+            
+            dbservice.delete('quests', {'buyer': user, 'id_anilist': anilist_id})
             
             await ctx.response.send_message('Parabéns! <@' + str(user) + '> terminou a quest ' + obra + ' enviada por <@' + str(sender_id) + '>!')
             
