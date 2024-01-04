@@ -3245,11 +3245,11 @@ async def mercado_inserir_command(
 
                     if int(duration) != duration:
                         await ctx.response.send_message('Você provavelmente tentou inserir uma obra sem a informação de duração no Anilist.', ephemeral=True)
-                        break                        
+                        return                        
 
                     elif int(episodes) != episodes:
                         await ctx.response.send_message('Você provavelmente tentou inserir uma obra que não contém o número de episódios/capítulos no Anilist.', ephemeral=True)
-                        break
+                        return
                     
                     else:
                         total_duration = duration * episodes
