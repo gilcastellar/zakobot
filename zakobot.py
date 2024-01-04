@@ -3183,7 +3183,20 @@ guilda = bot.create_group('guilda', 'Comandos da guilda')
 
 # mercado_commands = ['Colocar à venda', 'Comprar', 'Terminar', 'Abandonar', 'Calcular valor']
 
-quest_flavors = [['Enfrente ', ' e saia vivo para contar ao mundo!'], ['Procure pela cidade perdida de ', ' pelo cálice sagrado!'], ['Vasculhe as ruínas de ',' atrás de ouro!'], ['Passe por ',' sem tomar dano!'], ['Sobreviva a ',''], ['',''], ['',''], ['',''], ['',''], ['',''], ['',''], ['',''], ['','']]
+quest_flavors = [
+    ['Enfrente ', ' e saia vivo para contar ao mundo!'], 
+    ['Procure pela cidade perdida de ', ' pelo cálice sagrado!'], 
+    ['Vasculhe as ruínas de ',' atrás de ouro!'], 
+    ['Passe por ',' sem tomar dano!'], 
+    ['Sobreviva a ','!'], 
+    ['Pecorra as masmorras de ',' e salve a princesa!'], 
+    ['Decifre os textos rúnicos de ',' e obtenha a sabedoria suprema!'], 
+    ['Derrote ',' e conquiste suas terras!'], 
+    ['Desvende os segredos de ','!'], 
+    ['Subjugue as forças de ',' e salve o mundo!'], 
+    ['Liberte o mundo das forças malignas de ','!'], 
+    ['Faça uma peregrinação espiritual por ',' e traga a paz mundial!'], 
+    ['','']]
 
 class SellingBtn(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
     def __init__(self, anilist_id, insertion, type, reward, sender, title, date):
@@ -3319,7 +3332,7 @@ async def get_quests_options(ctx: discord.AutocompleteContext):
         
         if name[2] == 'true':
 
-            names.append(name[0] + ' (' + name[3]) + ')'
+            names.append(name[0] + ' (' + name[3] + ')'
             
     print(names)
 
