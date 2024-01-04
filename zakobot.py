@@ -3189,7 +3189,7 @@ quest_flavors = [
     'Vasculhe as ruínas de * atrás de ouro!', 
     'Passe por * sem tomar dano!', 
     'Sobreviva a *!', 
-    'Pecorra as masmorras de * e salve a princesa!', 
+    'Percorra as masmorras de * e salve a princesa!', 
     'Decifre os textos rúnicos de * e obtenha a sabedoria suprema!', 
     'Derrote * e conquiste suas terras!', 
     'Desvende os segredos de *!', 
