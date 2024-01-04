@@ -3483,7 +3483,7 @@ async def guilda_completar_command(
             
             dbservice.delete('quests', {'buyer': user, 'id_anilist': anilist_id})
             
-            await ctx.response.send_message('Parabéns! <@' + str(user) + '> terminou a quest ' + flavor1 + obra + flavor2 + ' enviada por <@' + str(sender_id) + '>!')
+            await ctx.response.send_message('Parabéns! <@' + str(user) + '> terminou a quest ' + flavor1 + '**' + obra + '**' + flavor2 + ' enviada por <@' + str(sender_id) + '>!')
             
         else:
 
