@@ -3471,6 +3471,11 @@ async def classificados_command(
     if len(data) < 1:
         await ctx.response.send_message(text + 'Não existem quests disponíveis.', ephemeral=True)
         return
+
+    if not isinstance(data, list):
+        data = [data]
+        print('test:')
+        print(data)
     
     await ctx.respond(f'QUESTS')
     
