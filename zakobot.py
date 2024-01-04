@@ -3245,11 +3245,11 @@ async def mercado_inserir_command(
                     print(duration)
                     print(episodes)
 
-                    if int(duration) != duration:
+                    if duration == None:
                         await ctx.response.send_message('Você provavelmente tentou inserir uma obra sem a informação de duração no Anilist.', ephemeral=True)
                         return                        
 
-                    elif int(episodes) != episodes:
+                    elif episodes == None::
                         await ctx.response.send_message('Você provavelmente tentou inserir uma obra que não contém o número de episódios/capítulos no Anilist.', ephemeral=True)
                         return
                     
