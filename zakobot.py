@@ -3485,6 +3485,9 @@ async def gerar_classificados(msg, page, last_page, data):
 
         print('obra')
         print(obra)
+
+        for i in obra:
+            print(i)
         
         print(obra[4])
         
