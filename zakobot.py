@@ -3484,7 +3484,9 @@ async def gerar_inventario(msg, page, last_page, user_id):
 
     data = dbservice.select('mercado', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], '', {'buyer': user_id})
 
+    print('data info:')
     print(data)
+    print(len(data))
 
     batch = 10
 
