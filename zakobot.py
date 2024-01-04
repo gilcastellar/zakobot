@@ -3575,7 +3575,7 @@ async def inventario_command(
         
         print('abaixo')
         print('criado')
-        print(obra[6])
+        print(obra[4])
         print('adquirido')
         print(obra[6])
         
