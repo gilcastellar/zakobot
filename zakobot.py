@@ -3440,6 +3440,9 @@ async def guilda_adquirir_command(
 
 def calculate_quest_reward(base_value, days_passed):
     
+    print('days_passed')
+    print(days_passed)
+    
     value = base_value
 
     factor = 1.0235
@@ -3708,9 +3711,7 @@ async def gerar_quest_board(msg, page, last_page, data):
     
 # to do
 
-# melhorar o comando de terminar
-
-# rebranding
+# verificar os valores
 
 ##############################
 #
