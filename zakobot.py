@@ -34,7 +34,7 @@ import datetime
 from zoneinfo import ZoneInfo
 import asyncio
 import re
-from math import ceil, e
+from math import ceil, e, floor
 
 
 intents = discord.Intents.default()
@@ -3572,6 +3572,8 @@ async def gerar_classificados(msg, page, last_page, data):
         
         time_passed = int(datetime.datetime.now().timestamp()) - obra[4]
         print('time elapsed: ' + str(time_passed))
+        
+        days = floor(time_passed / 1440)
         
         # if 'day' in str(days_passed):
     
