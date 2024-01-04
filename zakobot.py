@@ -3479,6 +3479,7 @@ async def guilda_completar_command(
             dbservice.update_zakoleta('user', buyer_reward, '+' + str(buyer_reward) + ' zakoletas por completar uma quest.', user, 'add')
             
             obra = dbservice.select('quests', ['item_name'], '', {'buyer': user, 'id_anilist': anilist_id})
+            flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': user, 'id_anilist': anilist_id})
             
             dbservice.delete('quests', {'buyer': user, 'id_anilist': anilist_id})
             
