@@ -3263,7 +3263,7 @@ async def mercado_inserir_command(
                     response = anilist.query_manga_id(anilist_id)
 
                     media_obj = response.json()
-                    chapters = media_obj['data']['Media']['episodes']
+                    chapters = media_obj['data']['Media']['chapters']
                     duration = 5
                     
                     if chapters == None:
