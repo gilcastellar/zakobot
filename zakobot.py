@@ -3259,7 +3259,7 @@ async def mercado_inserir_command(
                 
                 print(title)
                 
-                re.sub('/', '', title)
+                title = re.sub('/', '', title)
                 
                 print(title)
 
