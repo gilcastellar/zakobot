@@ -3674,7 +3674,7 @@ class MyView(discord.ui.View):
 
 @bot.command()
 async def flavor(ctx):
-    await ctx.send("Choose a flavor!", view=MyView(), ephemeral=True)
+    await ctx.response.send_message("Choose a flavor!", view=MyView(), ephemeral=True)
     
 # to do
 
