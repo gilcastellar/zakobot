@@ -3268,7 +3268,7 @@ async def mercado_inserir_command(
                     duration = 7
                     
                     if chapters == None:
-                        await ctx.response.send_message('Você provavelmente tentou inserir uma obra que não contém o número de episódios/capítulos no Anilist.', ephemeral=True)
+                        await ctx.response.send_message('Você provavelmente tentou inserir uma obra que não contém o número de episódios/capítulos ou está em lançamento no Anilist.', ephemeral=True)
                         return
                     
                     total_duration = chapters * duration
