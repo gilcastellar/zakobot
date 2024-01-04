@@ -3455,7 +3455,7 @@ async def inventario_command(
     
     msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
 
-    await gerar_inventario(msg, 1, 0,)
+    await gerar_inventario(msg, 1, 0)
     
 async def gerar_inventario(msg, page, last_page, user_id):
 
