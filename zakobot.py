@@ -3574,7 +3574,7 @@ async def inventario_command(
             print(i)
             
         print('agora')
-        print(str(datetime.datetime.now().timestamp()))
+        print(str(datetime.datetime.now().timestamp())
         
         print('abaixo')
         print('criado')
@@ -3586,7 +3586,7 @@ async def inventario_command(
         print('time_passed')
         print(time_passed)
         
-        days = floor(time_passed / 1440)
+        days = floor(time_passed / 86400)
         print('days')
         print(days)
         
@@ -3701,7 +3701,7 @@ async def gerar_quest_board(msg, page, last_page, data):
         time_passed = int(datetime.datetime.now().timestamp()) - int(obra[4])
         print('time elapsed: ' + str(time_passed))
         
-        days = floor(time_passed / 1440)
+        days = floor(time_passed / 86400)
         print('days: ' + str(days))
         
         value = calculate_quest_reward(obra[3], days)
