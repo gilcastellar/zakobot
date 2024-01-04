@@ -3592,7 +3592,7 @@ async def inventario_command(
     
 async def gerar_inventario(msg, page, last_page, user_id):
 
-    data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], '', {'buyer': user_id})
+    data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], '', {'buyer': user_id})
 
     print('data info:')
     print(data)
@@ -3637,7 +3637,9 @@ async def gerar_inventario(msg, page, last_page, user_id):
         
         value = calculate_quest_reward(obra[3], days)
         
-        text += '**' + obra[1] + '**\n'
+        flavor1, flavor2 = obra[5].split('*')
+        
+        text += flavor1 + '**' + obra[1] + '**' + flavor2 + '\n'
             
         text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
     
@@ -3689,7 +3691,9 @@ async def gerar_quest_board(msg, page, last_page, data):
         
         value = calculate_quest_reward(obra[3], days)
         
-        text += '**' + obra[1] + '**\n'
+        flavor1, flavor2 = obra[5].split('*')
+        
+        text += flavor1 + '**' + obra[1] + '**' + flavor2 + '\n'
             
         text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
     
