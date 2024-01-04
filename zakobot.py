@@ -3579,7 +3579,9 @@ async def inventario_command(
         
         value = calculate_quest_reward(obra[3], days)
         
-        text += '**' + obra[1] + '**\n'
+        flavor1, flavor2 = obra[5].split('*')
+        
+        text += flavor1 + '**' + obra[1] + '**' + flavor2 + '\n'
             
         text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
     
@@ -3590,62 +3592,62 @@ async def inventario_command(
     #     await msg.edit(text, view=ClassificadosPagination(msg, page, last_page))
     await ctx.response.send_message(text, ephemeral=True)
     
-async def gerar_inventario(msg, page, last_page, user_id):
+# async def gerar_inventario(msg, page, last_page, user_id):
 
-    data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], '', {'buyer': user_id})
+#     data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], '', {'buyer': user_id})
 
-    print('data info:')
-    print(data)
-    print(len(data))
+#     print('data info:')
+#     print(data)
+#     print(len(data))
     
-    if not isinstance(data, list):
-        data = [data]
-        print('test:')
-        print(data)
+#     if not isinstance(data, list):
+#         data = [data]
+#         print('test:')
+#         print(data)
 
-    batch = 10
+#     batch = 10
 
-    indice = (page * batch) - (batch - 1)
+#     indice = (page * batch) - (batch - 1)
 
-    text = ''
+#     text = ''
 
-    print('page')
-    print(page)
+#     print('page')
+#     print(page)
 
-    print('indice:')
-    print(indice)
+#     print('indice:')
+#     print(indice)
 
-    last_page = ceil(len(data) / batch)
+#     last_page = ceil(len(data) / batch)
 
-    for obra in data[batch*(page-1):batch*page]:
+#     for obra in data[batch*(page-1):batch*page]:
 
-        print(indice)
+#         print(indice)
 
-        print('obra')
-        print(obra)
+#         print('obra')
+#         print(obra)
 
-        for i in obra:
-            print(i)
+#         for i in obra:
+#             print(i)
         
-        print('abaixo')
-        print(datetime.datetime.now().timestamp())
-        print(obra[4])
+#         print('abaixo')
+#         print(datetime.datetime.now().timestamp())
+#         print(obra[4])
         
-        time_passed = int(datetime.datetime.now().timestamp()) - int(obra[4])
+#         time_passed = int(datetime.datetime.now().timestamp()) - int(obra[4])
         
-        days = floor(time_passed / 1440)
+#         days = floor(time_passed / 1440)
         
-        value = calculate_quest_reward(obra[3], days)
+#         value = calculate_quest_reward(obra[3], days)
         
-        flavor1, flavor2 = obra[5].split('*')
+#         flavor1, flavor2 = obra[5].split('*')
         
-        text += flavor1 + '**' + obra[1] + '**' + flavor2 + '\n'
+#         text += flavor1 + '**' + obra[1] + '**' + flavor2 + '\n'
             
-        text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
+#         text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
     
-    if page <= last_page:
+#     if page <= last_page:
 
-        await msg.edit(text, view=QuestBoardPagination(msg, page, last_page))
+#         await msg.edit(text, view=QuestBoardPagination(msg, page, last_page))
             
 async def gerar_quest_board(msg, page, last_page, data):
     
