@@ -3272,7 +3272,7 @@ async def mercado_inserir_command(
                         return
                     
                     total_duration = chapters * duration
-                    type_factor = 0.0045
+                    type_factor = 0.004
 
                 title = media_obj['data']['Media']['title']['romaji']
                 
