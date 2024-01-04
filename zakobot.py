@@ -3242,20 +3242,28 @@ async def mercado_inserir_command(
                     duration = media_obj['data']['Media']['duration']
 
                     episodes = media_obj['data']['Media']['episodes']
-                
-                    total_duration = duration * episodes
 
-                    print(total_duration)
+                    if int(duration) != duration:
+                        await ctx.response.send_message('Você provavelmente tentou inserir uma obra sem a informação de duração no Anilist.', ephemeral=True)
+                        break                        
+
+                    elif int(episodes) != episodes:
+                        await ctx.response.send_message('Você provavelmente tentou inserir uma obra que não contém o número de episódios/capítulos no Anilist.', ephemeral=True)
+                        break
+                    
+                    else:
+                        total_duration = duration * episodes
+
+                        print(total_duration)
                 
                 else:
 
                     response = anilist.query_manga_id(anilist_id)
 
                     media_obj = response.json()
-                
-                    duration = 1
 
                 title = media_obj['data']['Media']['title']['romaji']
+                episodes = media_obj['data']['Media']['episodes']
                 
                 print(title)
                 
