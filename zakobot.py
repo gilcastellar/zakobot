@@ -3479,8 +3479,10 @@ async def inventario_command(
     grana = dbservice.select('user', ['zakoleta'], '', {'id': user_id})
     
     await ctx.respond(f'MEU INVENTÁRIO')
+
+    text = '$' + str(grana) + '\n'
     if len(data) < 1:
-        ctx.respond.send_message('$' + str(grana) + '\nVocê não tem nada em seu inventáiro.', ephemeral=True)
+        ctx.respond.send_message(text + 'Você não tem nada em seu inventáiro.', ephemeral=True)
         return
     
     msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
@@ -3503,8 +3505,6 @@ async def inventario_command(
     batch = 10
 
     indice = (page * batch) - (batch - 1)
-
-    text = ''
 
     print('page')
     print(page)
