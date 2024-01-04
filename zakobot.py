@@ -3306,6 +3306,11 @@ async def get_quests_options(ctx: discord.AutocompleteContext):
 
     print(quests_options)
 
+    if not isinstance(quests_options, list):
+        quests_options = [quests_options]
+        print('test:')
+        print(quests_options)
+
     names = []
 
     for name in quests_options:
