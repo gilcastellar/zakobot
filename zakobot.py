@@ -3417,7 +3417,26 @@ def calculate_market_value(base_value, days_passed):
         print(value)
 
     return value
-    
+
+class MyViewTerminar(discord.ui.View):
+    def __init__(self, user_id):
+        super().__init__()
+        #self.ctx = ctx
+        self.user_id = user_id
+        
+    @discord.ui.select( # the decorator that lets you specify the properties of the select menu
+        placeholder = "Escolha a obra que quer terminar", # the placeholder text that will be displayed if nothing is selected
+        min_values = 1, # the minimum number of values that must be selected by the users
+        max_values = 1, # the maximum number of values that can be selected by the users
+        options = dbservice.select('mercado', ['item_name'], '', {'buyer': str(self.user_id)})
+    )
+    async def select_callback(self, select, interaction): # the function called when the user is done selecting options
+        await interaction.response.send_message(f"Awesome! I like {select.values[0]} too!", ephemeral=True)
+
+@mercado.command()
+async def terminar(ctx):
+    user_id = ctx.author.id
+    await ctx.response.send_message("Choose a flavor!", view=MyViewTerminar(user_id), ephemeral=True)    
 
 @mercado.command(name='terminar')
 async def mercado_terminar_command(
@@ -3649,32 +3668,6 @@ async def gerar_classificados(msg, page, last_page, data):
         await msg.edit(text, view=ClassificadosPagination(msg, page, last_page))
 
 
-class MyView(discord.ui.View):
-    @discord.ui.select( # the decorator that lets you specify the properties of the select menu
-        placeholder = "Choose a Flavor!", # the placeholder text that will be displayed if nothing is selected
-        min_values = 1, # the minimum number of values that must be selected by the users
-        max_values = 1, # the maximum number of values that can be selected by the users
-        options = [ # the list of options from which users can choose, a required field
-            discord.SelectOption(
-                label="Vanilla",
-                description="Pick this if you like vanilla!"
-            ),
-            discord.SelectOption(
-                label="Chocolate",
-                description="Pick this if you like chocolate!"
-            ),
-            discord.SelectOption(
-                label="Strawberry",
-                description="Pick this if you like strawberry!"
-            )
-        ]
-    )
-    async def select_callback(self, select, interaction): # the function called when the user is done selecting options
-        await interaction.response.send_message(f"Awesome! I like {select.values[0]} too!", ephemeral=True)
-
-@bot.command()
-async def flavor(ctx):
-    await ctx.response.send_message("Choose a flavor!", view=MyView(), ephemeral=True)
     
 # to do
 
