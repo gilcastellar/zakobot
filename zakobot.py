@@ -3481,6 +3481,8 @@ async def inventario_command(
     await send_message(ctx, f'MEU INVENTÁRIO')
 
     text = '**$' + str(grana) + '**\n\n'
+    print('length of data')
+    print(len(data))
     if len(data) < 1:
         await ctx.response.send_message(text + 'Você não tem nada em seu inventário.', ephemeral=True)
         return
