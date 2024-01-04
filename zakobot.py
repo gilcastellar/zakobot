@@ -3396,9 +3396,9 @@ async def guilda_adquirir_command(
         
     else:
 
-        value = dbservice.select('quests', ['value'], '', {'item_name': real_name})
+        value = dbservice.select('quests', ['value'], '', {'item_name': real_name, 'item_type': _type}})
                                                         
-        time_passed = int(datetime.datetime.now().timestamp()) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': real_name}))
+        time_passed = int(datetime.datetime.now().timestamp()) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': real_name, 'item_type': _type}}))
     
         days = floor(time_passed / 1440)
 
