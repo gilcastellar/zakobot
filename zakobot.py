@@ -3478,7 +3478,63 @@ async def inventario_command(
     
     msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
 
-    await gerar_inventario(msg, 1, 0, user_id)
+    # await gerar_inventario(msg, 1, 0, user_id)
+    
+    page = 1
+    last_page = 0
+
+    data = dbservice.select('mercado', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], '', {'buyer': user_id})
+
+    print('data info:')
+    print(data)
+    print(len(data))
+    
+    if not isinstance(data, list):
+        data = [data]
+        print('test:')
+        print(data)
+
+    batch = 10
+
+    indice = (page * batch) - (batch - 1)
+
+    text = ''
+
+    print('page')
+    print(page)
+
+    print('indice:')
+    print(indice)
+
+    last_page = ceil(len(data) / batch)
+
+    for obra in data[batch*(page-1):batch*page]:
+
+        print(indice)
+
+        print('obra')
+        print(obra)
+
+        for i in obra:
+            print(i)
+        
+        print('abaixo')
+        print(datetime.datetime.now().timestamp())
+        print(obra[4])
+        
+        time_passed = int(datetime.datetime.now().timestamp()) - int(obra[4])
+        
+        days = floor(time_passed / 1440)
+        
+        value = calculate_market_value(obra[3], days)
+        
+        text += '**' + obra[1] + '**\n'
+            
+        text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
+    
+    if page <= last_page:
+
+        await msg.edit(text, view=ClassificadosPagination(msg, page, last_page))
     
 async def gerar_inventario(msg, page, last_page, user_id):
 
@@ -3571,14 +3627,6 @@ async def gerar_classificados(msg, page, last_page, data):
         days = floor(time_passed / 1440)
         print('days: ' + str(days))
         
-        # if 'day' in str(days_passed):
-    
-        #     days, trash = days_passed.split(' day')
-            
-        # else:
-            
-        #     days = 0
-        
         value = calculate_market_value(obra[3], days)
         
         text += '**' + obra[1] + '**\n'
@@ -3591,9 +3639,7 @@ async def gerar_classificados(msg, page, last_page, data):
 
 # to do
 
-# melhoras o comando de terminar
-
-# consertar sistema de data
+# melhorar o comando de terminar
 
 # rebranding
 
