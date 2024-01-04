@@ -3266,6 +3266,10 @@ async def mercado_inserir_command(
                     chapters = media_obj['data']['Media']['episodes']
                     duration = 5
                     
+                    if chapters == None:
+                        await ctx.response.send_message('Você provavelmente tentou inserir uma obra que não contém o número de episódios/capítulos no Anilist.', ephemeral=True)
+                        return
+                    
                     total_duration = chapters * duration
 
                 title = media_obj['data']['Media']['title']['romaji']
