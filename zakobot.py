@@ -3449,18 +3449,68 @@ async def classificados_command(
 async def inventario_command(
     ctx: discord.ApplicationContext
 ):
-    user_id = ctx.author.id    
-
-    data = dbservice.select('mercado', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], '', {'buyer': user_id})
-
-    print(data)
+    user_id = ctx.author.id   
     
     await ctx.respond(f'MEU INVENTÁRIO')
     
     msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
 
-    await gerar_classificados(msg, 1, 0, data)
+    await gerar_inventario(msg, 1, 0,)
     
+async def gerar_inventario(msg, page, last_page, user_id):
+
+    data = dbservice.select('mercado', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], '', {'buyer': user_id})
+
+    print(data)
+
+    batch = 10
+
+    indice = (page * batch) - (batch - 1)
+
+    text = ''
+
+    print('page')
+    print(page)
+
+    print('indice:')
+    print(indice)
+
+    last_page = ceil(len(data) / batch)
+
+    for obra in data[batch*(page-1):batch*page]:
+
+        print(indice)
+
+        print('obra')
+        print(obra)
+
+        for i in obra:
+            print(i)
+        
+        print(obra[4])
+        
+        days_passed = str(datetime.datetime.now() - obra[4])
+        
+        print(days_passed)
+        
+        if 'day' in str(days_passed):
+    
+            days, trash = days_passed.split(' day')
+            
+        else:
+            
+            days = 0
+        
+        value = calculate_market_value(obra[3], days)
+        
+        text += '**' + obra[1] + '**\n'
+            
+        text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
+    
+    if page <= last_page:
+
+        await msg.edit(text, view=ClassificadosPagination(msg, page, last_page))
+            
 async def gerar_classificados(msg, page, last_page, data):
 
     print(data)
