@@ -3574,6 +3574,7 @@ async def gerar_classificados(msg, page, last_page, data):
         print('time elapsed: ' + str(time_passed))
         
         days = floor(time_passed / 1440)
+        print('days: ' + str(days))
         
         # if 'day' in str(days_passed):
     
