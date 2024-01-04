@@ -3358,8 +3358,8 @@ class BuyingBtn(discord.ui.View): # Create a class called MyView that subclasses
             await interaction.response.send_message("A quest já foi pega por outra pessoa.", ephemeral=True) # Send a message when the button is clicked
         else:
             new_money = self.available_money - 100
-            dbservice.update('quests', ['buyer'], [self.user_id], {'item_name': self.real_name})
-            dbservice.update('quests', ['is_available'], ['false'], {'item_name': self.real_name})
+            dbservice.update('quests', ['buyer'], [self.user_id], {'item_name': self.real_name, 'item_type': self._type})
+            dbservice.update('quests', ['is_available'], ['false'], {'item_name': self.real_name, 'item_type': self._type})
 
             dbservice.update('user', ['zakoleta'], [new_money], {'id': str(self.user_id)})
             
