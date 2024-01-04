@@ -3207,7 +3207,7 @@ async def mercado_inserir_command(
 ):
     sender = str(ctx.author.id)
 
-    seller_slots = dbservice.select('mercado', ['sender'], '', {'sender': sender, 'is_available': true})
+    seller_slots = dbservice.select('mercado', ['sender'], '', {'sender': sender, 'is_available': 'true'})
 
     if seller_slots == str(sender):
         seller_slots = 1
