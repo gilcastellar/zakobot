@@ -3488,7 +3488,7 @@ async def inventario_command(
         await ctx.response.send_message(text + 'Você não tem nada em seu inventário.', ephemeral=True)
         return
     
-    msg = await ctx.response.send_message(' ', ephemeral=True)
+    msg = await ctx.response.send_message('Carregando...', ephemeral=True)
 
     # await gerar_inventario(msg, 1, 0, user_id)
     
