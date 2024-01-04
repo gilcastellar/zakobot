@@ -3217,9 +3217,9 @@ async def guilda_inserir_command(
     
     print('slots: ' + str(seller_slots))
 
-    if seller_slots >= int(dbservice.select('user', ['market_selling_slots'], '', {'id': sender})):
+    if seller_slots >= int(dbservice.select('user', ['quest_selling_slots'], '', {'id': sender})):
 
-        print(dbservice.select('user', ['market_selling_slots'], '', {'id': sender}))
+        print(dbservice.select('user', ['quest_selling_slots'], '', {'id': sender}))
         
         # await send_message(ctx, 'Você não tem espaço para vender uma nova obra.')
         await ctx.response.send_message('Você não tem espaço para vender uma nova obra.', ephemeral=True)
@@ -3462,7 +3462,13 @@ async def classificados_command(
 ):
     data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], ' ORDER BY date_inserted', {'is_available':'true'})
 
+    text = 'QUESTS \n\n'
+    
+    
     print(data)
+    if len(data) < 1:
+        await ctx.response.send_message(text + 'Não existem quests disponíveis.', ephemeral=True)
+        return
     
     await ctx.respond(f'QUESTS')
     
