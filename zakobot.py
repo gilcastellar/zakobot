@@ -3574,8 +3574,10 @@ async def inventario_command(
             print(i)
         
         print('abaixo')
-        print(datetime.datetime.now().timestamp())
-        print(obra[4])
+        print('criado')
+        print(obra[6])
+        print('adquirido')
+        print(obra[6])
         
         time_passed = int(obra[6]) - int(obra[4])
         
