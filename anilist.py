@@ -182,7 +182,7 @@ def query_manga_id(id):
       Media (id: $id, type: MANGA) {
         id
         format
-        episodes
+        chapters
         duration
         popularity
         status
