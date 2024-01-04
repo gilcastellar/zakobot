@@ -3422,7 +3422,7 @@ def calculate_market_value(base_value, days_passed):
 @mercado.command(name='terminar')
 async def mercado_terminar_command(
     ctx: discord.ApplicationContext,
-    to_finish: discord.Option(str, choices=dbservice.select('mercado', ['item_name'], '', {'buyer': ctx.author.id}))
+    to_finish: discord.Option(str, name='obra')
 ):
     
     user = str(ctx.author.id)
