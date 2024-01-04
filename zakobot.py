@@ -3435,8 +3435,7 @@ async def mercado_terminar_command(
 async def classificados_command(
     ctx: discord.ApplicationContext
 ):
-    
-    data = dbservice.select('mercado', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], '', {'is_available':'true'})
+    data = dbservice.select('mercado', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], ' ORDER BY date_inserted', {'is_available':'true'})
 
     print(data)
     
@@ -3444,10 +3443,9 @@ async def classificados_command(
     
     msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
 
-    await gerar_classificados(msg, 1, 0)
+    await gerar_classificados(msg, 1, 0, data)
     
-async def gerar_classificados(msg, page, last_page):
-    data = dbservice.select('mercado', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], ' ORDER BY date_inserted', {'is_available':'true'})
+async def gerar_classificados(msg, page, last_page, data):
 
     print(data)
 
@@ -3514,7 +3512,7 @@ async def inventario_command(
     
     msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
 
-    await gerar_classificados(msg, 1, 0)
+    await gerar_classificados(msg, 1, 0, data)
 
 # Auxiliar command
 @bot.command(name='aux')
