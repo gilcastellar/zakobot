@@ -3291,7 +3291,7 @@ async def mercado_inserir_command(
                 
                 timestamp = int(datetime.datetime.now().timestamp())
             
-                await ctx.response.send_message('A obra ' + title + ' valerá $' + str(reward) + '. Para formalizar a inserção no mercado, clique no botão abaixo.', ephemeral=True, view=SellingBtn(anilist_id, insertion, type, reward, sender, title, date))
+                await ctx.response.send_message('A obra ' + title + ' valerá $' + str(reward) + '. Para formalizar a inserção no mercado, clique no botão abaixo.', ephemeral=True, view=SellingBtn(anilist_id, insertion, type, reward, sender, title, timestamp))
 
             else:
                 await ctx.response.send_message("A obra já existe no mercado.", ephemeral=True)
