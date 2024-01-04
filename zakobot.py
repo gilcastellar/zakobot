@@ -3383,6 +3383,9 @@ async def guilda_adquirir_command(
 
     real_name = order
 
+    print(real_name)
+    print(real_name)
+
     sender_id = dbservice.select('quests', ['sender'], '', {'item_name': real_name})
 
     print('sender_id')
