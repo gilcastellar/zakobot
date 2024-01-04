@@ -3309,8 +3309,10 @@ async def guilda_inserir_command(
                 date = datetime.datetime.now(ZoneInfo('America/Sao_Paulo'))
                 
                 timestamp = int(datetime.datetime.now().timestamp())
+
+                flavor = random.choice(quest_flavors)
             
-                await ctx.response.send_message('A quest ' + title + ' terá uma recompensa de $' + str(reward) + '. Para formalizar a criação da quest, clique no botão abaixo.', ephemeral=True, view=SellingBtn(anilist_id, insertion, type, reward, sender, title, timestamp))
+                await ctx.response.send_message('A quest ' + title + ' terá uma recompensa de $' + str(reward) + '. Para formalizar a criação da quest, clique no botão abaixo.', ephemeral=True, view=SellingBtn(anilist_id, insertion, type, reward, sender, title, timestamp, flavor))
 
             else:
                 await ctx.response.send_message("A quest já existe.", ephemeral=True)
