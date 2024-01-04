@@ -3263,9 +3263,12 @@ async def mercado_inserir_command(
                     response = anilist.query_manga_id(anilist_id)
 
                     media_obj = response.json()
+                    chapters = media_obj['data']['Media']['episodes']
+                    duration = 5
+                    
+                    total_duration = chapters * duration
 
                 title = media_obj['data']['Media']['title']['romaji']
-                episodes = media_obj['data']['Media']['episodes']
                 
                 print(title)
                 
