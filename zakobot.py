@@ -3375,7 +3375,7 @@ class BuyingBtn(discord.ui.View): # Create a class called MyView that subclasses
             print('data da compra:')
             print(date)
             
-            dbservice.update('quests', ['date_bought'], [date], {'item_name': self.real_name})
+            dbservice.update('quests', ['date_bought'], [int(date)], {'item_name': self.real_name, 'item_type': self._type})
 
 @guilda.command(name='adquirir')
 async def guilda_adquirir_command(
