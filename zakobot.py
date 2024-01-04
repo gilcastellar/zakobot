@@ -3474,7 +3474,13 @@ async def inventario_command(
 ):
     user_id = ctx.author.id   
     
+    data = dbservice.select('mercado', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], '', {'buyer': user_id})
+    
+    grana = dbservice.select('user', ['zakoleta'], '', {'id': user_id})
+    
     await ctx.respond(f'MEU INVENTÁRIO')
+    if len(data) < 1:
+        ctx.respond.send_message('$' +  + 'Você não tem ', ephemeral=True)
     
     msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
 
@@ -3483,11 +3489,10 @@ async def inventario_command(
     page = 1
     last_page = 0
 
-    data = dbservice.select('mercado', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], '', {'buyer': user_id})
-
     print('data info:')
     print(data)
     print(len(data))
+        
     
     if not isinstance(data, list):
         data = [data]
