@@ -3482,7 +3482,7 @@ async def inventario_command(
 
     text = '**$' + str(grana) + '**\n\n'
     if len(data) < 1:
-        ctx.respond.send_message(text + 'Você não tem nada em seu inventário.', ephemeral=True)
+        await ctx.respond.send_message(text + 'Você não tem nada em seu inventário.', ephemeral=True)
         return
     
     msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
