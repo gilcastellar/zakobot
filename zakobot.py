@@ -3255,6 +3255,11 @@ async def mercado_inserir_command(
                     duration = 1
 
                 title = media_obj['data']['Media']['title']['romaji']
+                
+                if "'" in title:
+                    title.strip("'")
+                if "/" in title:
+                    title.strip("/")
 
                 duration_factor = 1 + (total_duration * 0.003)
             
