@@ -3492,7 +3492,7 @@ async def guilda_completar_command(
 async def classificados_command(
     ctx: discord.ApplicationContext
 ):
-    data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], ' ORDER BY date_inserted', {'is_available':'true'})
+    data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], ' ORDER BY date_inserted', {'is_available':'true'})
 
     text = 'QUESTS \n\n'
     
@@ -3519,7 +3519,7 @@ async def inventario_command(
 ):
     user_id = ctx.author.id   
     
-    data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], '', {'buyer': user_id})
+    data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], '', {'buyer': user_id})
     
     grana = dbservice.select('user', ['zakoleta'], '', {'id': user_id})
     
