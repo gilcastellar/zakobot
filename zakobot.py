@@ -3487,8 +3487,6 @@ async def inventario_command(
     if len(data) < 1:
         await ctx.response.send_message(text + 'Você não tem nada em seu inventário.', ephemeral=True)
         return
-    
-    msg = await ctx.response.send_message('Carregando...', ephemeral=True)
 
     # await gerar_inventario(msg, 1, 0, user_id)
     
@@ -3541,9 +3539,7 @@ async def inventario_command(
             
         text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
     
-    if page <= last_page:
-
-        await msg.edit(text, view=ClassificadosPagination(msg, page, last_page))
+        await ctx.response.send_message(text, ephemeral=True)
     
 async def gerar_inventario(msg, page, last_page, user_id):
 
