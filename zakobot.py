@@ -3263,10 +3263,8 @@ async def mercado_inserir_command(
                     response = anilist.query_manga_id(anilist_id)
 
                     media_obj = response.json()
-                    print(media_obj)
                     chapters = media_obj['data']['Media']['chapters']
                     duration = 5
-                    print(chapters)
                     
                     if chapters == None:
                         await ctx.response.send_message('Você provavelmente tentou inserir uma obra que não contém o número de episódios/capítulos no Anilist.', ephemeral=True)
