@@ -3332,7 +3332,7 @@ async def get_quests_options(ctx: discord.AutocompleteContext):
         
         if name[2] == 'true':
 
-            names.append(name[0] + ' (' + name[3] + ')'
+            names.append(name[0] + ' (' + name[3] + ')')
             
     print(names)
 
