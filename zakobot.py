@@ -3538,12 +3538,12 @@ async def inventario_command(
             
         text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
     
-    msg = await ctx.response.send_message(text, ephemeral=True)
+    # msg = await ctx.response.send_message(text, ephemeral=True)
     
-    if page <= last_page:
+    # if page <= last_page:
 
-        await msg.edit(text, view=ClassificadosPagination(msg, page, last_page))
-    # await ctx.response.send_message(text, ephemeral=True)
+    #     await msg.edit(text, view=ClassificadosPagination(msg, page, last_page))
+    await ctx.response.send_message(text, ephemeral=True)
     
 async def gerar_inventario(msg, page, last_page, user_id):
 
