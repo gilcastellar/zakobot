@@ -3523,7 +3523,7 @@ async def inventario_command(
 ):
     user_id = ctx.author.id   
     
-    data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], '', {'buyer': user_id})
+    data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'date_bought'], '', {'buyer': user_id})
     
     grana = dbservice.select('user', ['zakoleta'], '', {'id': user_id})
     
@@ -3577,7 +3577,7 @@ async def inventario_command(
         print(datetime.datetime.now().timestamp())
         print(obra[4])
         
-        time_passed = int(datetime.datetime.now().timestamp()) - int(obra[4])
+        time_passed = int(obra[6]) - int(obra[4])
         
         days = floor(time_passed / 1440)
         print('days')
