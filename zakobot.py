@@ -3265,6 +3265,7 @@ async def mercado_inserir_command(
                     media_obj = response.json()
                     chapters = media_obj['data']['Media']['chapters']
                     duration = 5
+                    print(chapters)
                     
                     if chapters == None:
                         await ctx.response.send_message('Você provavelmente tentou inserir uma obra que não contém o número de episódios/capítulos no Anilist.', ephemeral=True)
