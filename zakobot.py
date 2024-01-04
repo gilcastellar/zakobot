@@ -3502,7 +3502,7 @@ async def inventario_command(
         print('test:')
         print(data)
 
-    batch = 1
+    batch = 10
 
     indice = (page * batch) - (batch - 1)
 
