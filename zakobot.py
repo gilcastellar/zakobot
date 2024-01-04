@@ -3257,7 +3257,11 @@ async def mercado_inserir_command(
 
                 title = media_obj['data']['Media']['title']['romaji']
                 
+                print(title)
+                
                 re.sub('/', '', title)
+                
+                print(title)
 
                 duration_factor = 1 + (total_duration * 0.003)
             
