@@ -113,7 +113,7 @@ class TopPagination(discord.ui.View): # Create a class called MyView that subcla
         await generate_top(self.msg, self.page, self.last_page, self.list, self.type, self.min)
         await interaction.response.send_message('')
 
-class ClassificadosPagination(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
+class QuestBoardPagination(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
     def __init__(self, msg, page, last_page):
         super().__init__()
         #self.ctx = ctx
@@ -3179,7 +3179,7 @@ async def change_values_command(
 # - The cost of acquiring animanga from the market
 # - The formula to determine the reward. Probably something like an arbitraty value x * number of episodes * time mod * abandoned mod
 
-mercado = bot.create_group('mercado', 'Comandos do mercado')
+guilda = bot.create_group('guilda', 'Comandos da guilda')
 
 # mercado_commands = ['Colocar à venda', 'Comprar', 'Terminar', 'Abandonar', 'Calcular valor']
 
@@ -3200,7 +3200,7 @@ class SellingBtn(discord.ui.View): # Create a class called MyView that subclasse
 
         await interaction.response.send_message("Obra inserida no mercado com sucesso.", ephemeral=True) # Send a message when the button is clicked
         
-@mercado.command(name='inserir')
+@guilda.command(name='criar')
 async def mercado_inserir_command(
     ctx: discord.ApplicationContext,
     insertion: discord.Option(str, name='obra')
@@ -3300,15 +3300,15 @@ async def mercado_inserir_command(
         else:
             await send_message(ctx, 'É preciso inserir um link do Anilist.')
 
-async def get_mercado_options(ctx: discord.AutocompleteContext):
+async def get_quests_options(ctx: discord.AutocompleteContext):
     
-    mercado_options = dbservice.select('mercado', ['item_name', 'value', 'is_available'], '')
+    quests_options = dbservice.select('quests', ['item_name', 'value', 'is_available'], '')
 
-    print(mercado_options)
+    print(quests_options)
 
     names = []
 
-    for name in mercado_options:
+    for name in quests_options:
         
         if name[2] == 'true':
 
@@ -3327,33 +3327,33 @@ class BuyingBtn(discord.ui.View): # Create a class called MyView that subclasses
         self.sender_id = sender_id
         self.real_name = real_name
 
-    @discord.ui.button(label="Comprar", style=discord.ButtonStyle.primary, emoji="💰") # Create a button with the label "😎 Click me!" with color Blurple
+    @discord.ui.button(label="Aceitar", style=discord.ButtonStyle.primary, emoji="🤝") # Create a button with the label "😎 Click me!" with color Blurple
     async def button_callback(self, button, interaction):
-        is_available = dbservice.select('mercado', ['is_available'], '', {'item_name':self.real_name})
+        is_available = dbservice.select('quests', ['is_available'], '', {'item_name':self.real_name})
         
         if is_available == 'false':
-            await interaction.response.send_message("A obra já foi vendida.", ephemeral=True) # Send a message when the button is clicked
+            await interaction.response.send_message("A missão já foi pega por outra pessoa.", ephemeral=True) # Send a message when the button is clicked
         else:
             new_money = self.available_money - 100
-            dbservice.update('mercado', ['buyer'], [self.user_id], {'item_name': self.real_name})
-            dbservice.update('mercado', ['is_available'], ['false'], {'item_name': self.real_name})
+            dbservice.update('quests', ['buyer'], [self.user_id], {'item_name': self.real_name})
+            dbservice.update('quests', ['is_available'], ['false'], {'item_name': self.real_name})
 
             dbservice.update('user', ['zakoleta'], [new_money], {'id': str(self.user_id)})
             
             # dbservice.update_zakoleta('user', 50, '+50 zakoletas por uma venda no mercado', self.sender_id, 'add')
-            await interaction.response.send_message("Compra realizada com sucesso.", ephemeral=True) # Send a message when the button is clicked
+            await interaction.response.send_message("Quest aceita com sucesso.", ephemeral=True) # Send a message when the button is clicked
             
             date = datetime.datetime.now(ZoneInfo('America/Sao_Paulo'))
             
             print('data da compra:')
             print(date)
             
-            dbservice.update('mercado', ['date_bought'], [date], {'item_name': self.real_name})
+            dbservice.update('quests', ['date_bought'], [date], {'item_name': self.real_name})
 
-@mercado.command(name='comprar')
+@guilda.command(name='adquirir')
 async def mercado_comprar_command(
     ctx: discord.ApplicationContext,
-    order: discord.Option(str, autocomplete=get_mercado_options, name='obras')
+    order: discord.Option(str, autocomplete=get_quests_options, name='quests')
 ):
     
     user_id = ctx.author.id
@@ -3362,23 +3362,23 @@ async def mercado_comprar_command(
 
     real_name = order
 
-    sender_id = dbservice.select('mercado', ['sender'], '', {'item_name': real_name})
+    sender_id = dbservice.select('quests', ['sender'], '', {'item_name': real_name})
     
     if user_id == int(sender_id):
         
-        await ctx.response.send_message("Você não pode comprar uma obra que você mesmo enviou.", ephemeral=True)
+        await ctx.response.send_message("Você não pode adquirir uma quest que você mesmo enviou.", ephemeral=True)
         
     else:
 
-        value = dbservice.select('mercado', ['value'], '', {'item_name': real_name})
+        value = dbservice.select('quests', ['value'], '', {'item_name': real_name})
                                                         
-        time_passed = int(datetime.datetime.now().timestamp()) - int(dbservice.select('mercado', ['date_inserted'], '', {'item_name': real_name}))
+        time_passed = int(datetime.datetime.now().timestamp()) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': real_name}))
     
         days = floor(time_passed / 1440)
 
         print('days: ' + str(days))
 
-        buyer_slots = dbservice.select('mercado', ['buyer'], '', {'buyer': user_id})
+        buyer_slots = dbservice.select('quests', ['buyer'], '', {'buyer': user_id})
 
         if buyer_slots == str(user_id):
             buyer_slots = 1
@@ -3388,25 +3388,25 @@ async def mercado_comprar_command(
     
         print('slots: ' + str(buyer_slots))
 
-        if buyer_slots >= int(dbservice.select('user', ['market_buying_slots'], '', {'id': user_id})):
+        if buyer_slots >= int(dbservice.select('user', ['quest_buying_slots'], '', {'id': user_id})):
 
-            print(dbservice.select('user', ['market_buying_slots'], '', {'id': user_id}))
+            print(dbservice.select('user', ['quest_buying_slots'], '', {'id': user_id}))
         
-            await ctx.response.send_message('Você não tem espaço para comprar uma nova obra.', ephemeral=True)
+            await ctx.response.send_message('Você não tem espaço para adquirir uma nova quest.', ephemeral=True)
     
         else:
 
-            value = calculate_market_value(value, days)
+            value = calculate_quest_reward(value, days)
         
             if available_money < 100:
             
-                await ctx.response.send_message('A obra ' + real_name + ' custará $100 e você tem $' + str(available_money) + '. Por isso você não consegue realizar essa compra.', ephemeral=True)
+                await ctx.response.send_message('A aquisição da quest ' + real_name + ' custará $100 e você tem $' + str(available_money) + '. Você não tem zakoletas o suficiente para prosseguir.', ephemeral=True)
         
             else:
             
-                await ctx.response.send_message('A obra ' + real_name + ' custará $100 e você tem $' + str(available_money) + '. Para formalizar a compra, clique no botão abaixo.', ephemeral=True, view=BuyingBtn(value, available_money, user_id, sender_id, real_name))
+                await ctx.response.send_message('A aquisição da quest ' + real_name + ' custará $100 e você tem $' + str(available_money) + '. Para formalizar a aquisição da quest, clique no botão abaixo.', ephemeral=True, view=BuyingBtn(value, available_money, user_id, sender_id, real_name))
 
-def calculate_market_value(base_value, days_passed):
+def calculate_quest_reward(base_value, days_passed):
     
     value = base_value
 
@@ -3418,10 +3418,10 @@ def calculate_market_value(base_value, days_passed):
 
     return value 
 
-@mercado.command(name='terminar')
-async def mercado_terminar_command(
+@guilda.command(name='completar')
+async def mercado_completar_command(
     ctx: discord.ApplicationContext,
-    to_finish: discord.Option(str, name='obra')
+    to_finish: discord.Option(str, name='quest')
 ):
     
     user = str(ctx.author.id)
@@ -3430,51 +3430,53 @@ async def mercado_terminar_command(
         
         type, anilist_id = get_type_and_id_from_anilist_link(to_finish)
         
-        exists = dbservice.check_existence('mercado', {'buyer': user, 'id_anilist': anilist_id})
+        exists = dbservice.check_existence('quests', {'buyer': user, 'id_anilist': anilist_id})
         
         if exists == 1:
             
-            sender_id = dbservice.select('mercado', ['sender'], '', {'id_anilist': anilist_id})
+            sender_id = dbservice.select('quests', ['sender'], '', {'id_anilist': anilist_id})
             
-            buyer_reward = dbservice.select('mercado', ['value'], '', {'id_anilist': anilist_id})
+            buyer_reward = dbservice.select('quests', ['value'], '', {'id_anilist': anilist_id})
             sender_reward = ceil(buyer_reward / 2)
             
             print('rewards: ')
             print(buyer_reward)
             print(sender_reward)
             
-            dbservice.update_zakoleta('user', sender_reward, '+' + str(sender_reward) + ' zakoletas por uma venda no mercado', sender_id, 'add')
-            dbservice.update_zakoleta('user', buyer_reward, '+' + str(buyer_reward) + ' zakoletas por uma venda no mercado', user, 'add')
+            dbservice.update_zakoleta('user', sender_reward, '+' + str(sender_reward) + ' zakoletas porque alguém finalizou sua quest.', sender_id, 'add')
+            dbservice.update_zakoleta('user', buyer_reward, '+' + str(buyer_reward) + ' zakoletas por completar uma quest.', user, 'add')
 
-            dbservice.delete('mercado', {'buyer': user, 'id_anilist': anilist_id})
+            dbservice.delete('quests', {'buyer': user, 'id_anilist': anilist_id})
             
-            await ctx.response.send_message('Parabéns! <@' + str(user) + '> terminou a obra enviada por <@' + str(sender_id) + '>!')
+            obra = dbservice.select('quests', ['item_name'], '', {'buyer': user, 'id_anilist': anilist_id})
+            
+            await ctx.response.send_message('Parabéns! <@' + str(user) + '> terminou a quest ' + obra + ' enviada por <@' + str(sender_id) + '>!')
             
         else:
 
-            await ctx.response.send_message('Você não é o dono dessa obra ou ela não existe no mercado.', ephemeral=True)
+            await ctx.response.send_message('Você não é o dono dessa quest ou ela não existe.', ephemeral=True)
 
-@mercado.command(name='classificados')
+@guilda.command(name='quadro')
 async def classificados_command(
     ctx: discord.ApplicationContext
 ):
-    data = dbservice.select('mercado', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], ' ORDER BY date_inserted', {'is_available':'true'})
+    data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], ' ORDER BY date_inserted', {'is_available':'true'})
 
     print(data)
     
-    await ctx.respond(f'CLASSIFICADOS')
+    await ctx.respond(f'QUESTS')
     
     msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
 
-    await gerar_classificados(msg, 1, 0, data)
+    await gerar_quest_board(msg, 1, 0, data)
 
-@mercado.command(name='inventario')
+@guilda.command(name='inventario')
 async def inventario_command(
     ctx: discord.ApplicationContext
 ):
     user_id = ctx.author.id   
     
-    data = dbservice.select('mercado', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], '', {'buyer': user_id})
+    data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], '', {'buyer': user_id})
     
     grana = dbservice.select('user', ['zakoleta'], '', {'id': user_id})
     
@@ -3484,7 +3486,7 @@ async def inventario_command(
     print('length of data')
     print(len(data))
     if len(data) < 1:
-        await ctx.response.send_message(text + 'Você não tem nada em seu inventário.', ephemeral=True)
+        await ctx.response.send_message(text + 'Você não tem nada em seu inventário de quests.', ephemeral=True)
         return
 
     # await gerar_inventario(msg, 1, 0, user_id)
@@ -3532,7 +3534,7 @@ async def inventario_command(
         
         days = floor(time_passed / 1440)
         
-        value = calculate_market_value(obra[3], days)
+        value = calculate_quest_reward(obra[3], days)
         
         text += '**' + obra[1] + '**\n'
             
@@ -3547,7 +3549,7 @@ async def inventario_command(
     
 async def gerar_inventario(msg, page, last_page, user_id):
 
-    data = dbservice.select('mercado', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], '', {'buyer': user_id})
+    data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], '', {'buyer': user_id})
 
     print('data info:')
     print(data)
@@ -3590,7 +3592,7 @@ async def gerar_inventario(msg, page, last_page, user_id):
         
         days = floor(time_passed / 1440)
         
-        value = calculate_market_value(obra[3], days)
+        value = calculate_quest_reward(obra[3], days)
         
         text += '**' + obra[1] + '**\n'
             
@@ -3598,9 +3600,9 @@ async def gerar_inventario(msg, page, last_page, user_id):
     
     if page <= last_page:
 
-        await msg.edit(text, view=ClassificadosPagination(msg, page, last_page))
+        await msg.edit(text, view=QuestBoardPagination(msg, page, last_page))
             
-async def gerar_classificados(msg, page, last_page, data):
+async def gerar_quest_board(msg, page, last_page, data):
     
     print(data)
     print(len(data))
@@ -3642,7 +3644,7 @@ async def gerar_classificados(msg, page, last_page, data):
         days = floor(time_passed / 1440)
         print('days: ' + str(days))
         
-        value = calculate_market_value(obra[3], days)
+        value = calculate_quest_reward(obra[3], days)
         
         text += '**' + obra[1] + '**\n'
             
@@ -3650,7 +3652,7 @@ async def gerar_classificados(msg, page, last_page, data):
     
     if page <= last_page:
 
-        await msg.edit(text, view=ClassificadosPagination(msg, page, last_page))
+        await msg.edit(text, view=QuestBoardPagination(msg, page, last_page))
 
 
     
