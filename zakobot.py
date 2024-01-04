@@ -3292,7 +3292,7 @@ async def guilda_inserir_command(
                 
                 timestamp = int(datetime.datetime.now().timestamp())
             
-                await ctx.response.send_message('A obra ' + title + ' valerá $' + str(reward) + '. Para formalizar a criação da quest, clique no botão abaixo.', ephemeral=True, view=SellingBtn(anilist_id, insertion, type, reward, sender, title, timestamp))
+                await ctx.response.send_message('A quest ' + title + ' terá uma recompensa de $' + str(reward) + '. Para formalizar a criação da quest, clique no botão abaixo.', ephemeral=True, view=SellingBtn(anilist_id, insertion, type, reward, sender, title, timestamp))
 
             else:
                 await ctx.response.send_message("A quest já existe.", ephemeral=True)
@@ -3332,7 +3332,7 @@ class BuyingBtn(discord.ui.View): # Create a class called MyView that subclasses
         is_available = dbservice.select('quests', ['is_available'], '', {'item_name':self.real_name})
         
         if is_available == 'false':
-            await interaction.response.send_message("A missão já foi pega por outra pessoa.", ephemeral=True) # Send a message when the button is clicked
+            await interaction.response.send_message("A quest já foi pega por outra pessoa.", ephemeral=True) # Send a message when the button is clicked
         else:
             new_money = self.available_money - 100
             dbservice.update('quests', ['buyer'], [self.user_id], {'item_name': self.real_name})
@@ -3449,6 +3449,8 @@ async def guilda_completar_command(
             dbservice.delete('quests', {'buyer': user, 'id_anilist': anilist_id})
             
             obra = dbservice.select('quests', ['item_name'], '', {'buyer': user, 'id_anilist': anilist_id})
+            print("testesss:")
+            print(obra)
             
             await ctx.response.send_message('Parabéns! <@' + str(user) + '> terminou a quest ' + obra + ' enviada por <@' + str(sender_id) + '>!')
             
