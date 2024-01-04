@@ -3397,9 +3397,9 @@ async def mercado_comprar_command(
 
             value = calculate_market_value(value, days)
         
-            if available_money < int(value):
+            if available_money < 100:
             
-                await ctx.response.send_message('A obra ' + real_name + ' custará $' + str(value) + ' e você tem $' + str(available_money) + '. Por isso você não consegue realizar essa compra.', ephemeral=True)
+                await ctx.response.send_message('A obra ' + real_name + ' custará $100 e você tem $' + str(available_money) + '. Por isso você não consegue realizar essa compra.', ephemeral=True)
         
             else:
             
