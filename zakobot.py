@@ -3197,7 +3197,8 @@ quest_flavors = [
     ['Liberte o mundo das forças malignas de ','!'], 
     ['Faça uma peregrinação espiritual por ',' e traga a paz mundial!'], 
     ['Reencarne em ',' e salve seus amigos!'], 
-    ['Vire uma garota mágica em ',' e salve sua cidade!'], ['',''], ['',''], ['',''], ['',''], ['',''], ['',''], ['',''], ['',''], ['',''], ['','']]
+    ['Vire uma garota mágica em ',' e salve sua cidade!']
+    ]
 
 class SellingBtn(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
     def __init__(self, anilist_id, insertion, type, reward, sender, title, date):
@@ -3212,7 +3213,8 @@ class SellingBtn(discord.ui.View): # Create a class called MyView that subclasse
         
     @discord.ui.button(label="Criar quest", style=discord.ButtonStyle.primary, emoji="📋") # Create a button with the label "😎 Click me!" with color Blurple
     async def button_callback(self, button, interaction):
-        dbservice.insert('quests', ['id_anilist', 'item_url', 'item_name', 'item_type', 'sender', 'is_available', 'value', 'date_inserted'], [self.anilist_id, self.insertion, self.title, self.type, self.sender, 'true', self.reward, self.date])
+        flavor = random.choice(quest_flavors)
+        dbservice.insert('quests', ['id_anilist', 'item_url', 'item_name', 'item_type', 'sender', 'is_available', 'value', 'date_inserted', 'flavor_text'], [self.anilist_id, self.insertion, self.title, self.type, self.sender, 'true', self.reward, self.date, flavor])
 
         await interaction.response.send_message("Quest criada com sucesso.", ephemeral=True) # Send a message when the button is clicked
         
