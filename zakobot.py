@@ -3255,6 +3255,7 @@ async def mercado_inserir_command(
                     
                     else:
                         total_duration = duration * episodes
+                        factor = 0.003
 
                         print(total_duration)
                 
@@ -3271,6 +3272,7 @@ async def mercado_inserir_command(
                         return
                     
                     total_duration = chapters * duration
+                    factor = 0.005
 
                 title = media_obj['data']['Media']['title']['romaji']
                 
@@ -3281,7 +3283,7 @@ async def mercado_inserir_command(
                 
                 print(title)
 
-                duration_factor = 1 + (total_duration * 0.003)
+                duration_factor = 1 + (total_duration * factor)
             
                 reward = ceil(100 * duration_factor)
 
