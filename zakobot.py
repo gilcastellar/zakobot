@@ -3340,17 +3340,18 @@ async def get_quests_options(ctx: discord.AutocompleteContext):
     return [name for name in names if ctx.value.lower() in name.lower()]
 
 class BuyingBtn(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
-    def __init__(self, value, available_money, user_id, sender_id, real_name):
+    def __init__(self, value, available_money, user_id, sender_id, real_name,_type):
         super().__init__()
         self.value = value
         self.available_money = available_money
         self.user_id = user_id
         self.sender_id = sender_id
         self.real_name = real_name
+        self._type = _type
 
     @discord.ui.button(label="Aceitar", style=discord.ButtonStyle.primary, emoji="🤝") # Create a button with the label "😎 Click me!" with color Blurple
     async def button_callback(self, button, interaction):
-        is_available = dbservice.select('quests', ['is_available'], '', {'item_name':self.real_name})
+        is_available = dbservice.select('quests', ['is_available'], '', {'item_name':self.real_name, 'item_type': _type})
         
         if is_available == 'false':
             await interaction.response.send_message("A quest já foi pega por outra pessoa.", ephemeral=True) # Send a message when the button is clicked
@@ -3430,7 +3431,7 @@ async def guilda_adquirir_command(
         
             else:
             
-                await ctx.response.send_message('A aquisição da quest ' + real_name + ' custará $100 e você tem $' + str(available_money) + '. Para formalizar a aquisição da quest, clique no botão abaixo.', ephemeral=True, view=BuyingBtn(value, available_money, user_id, sender_id, real_name))
+                await ctx.response.send_message('A aquisição da quest ' + real_name + ' custará $100 e você tem $' + str(available_money) + '. Para formalizar a aquisição da quest, clique no botão abaixo.', ephemeral=True, view=BuyingBtn(value, available_money, user_id, sender_id, real_name, _type))
 
 def calculate_quest_reward(base_value, days_passed):
     
