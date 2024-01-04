@@ -3670,7 +3670,7 @@ class MyView(discord.ui.View):
         ]
     )
     async def select_callback(self, select, interaction): # the function called when the user is done selecting options
-        await interaction.response.send_message(f"Awesome! I like {select.values[0]} too!")
+        await interaction.response.send_message(f"Awesome! I like {select.values[0]} too!", ephemeral=True)
 
 @bot.command()
 async def flavor(ctx):
