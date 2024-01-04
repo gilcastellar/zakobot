@@ -3370,7 +3370,7 @@ class BuyingBtn(discord.ui.View): # Create a class called MyView that subclasses
             # dbservice.update_zakoleta('user', 50, '+50 zakoletas por uma venda no mercado', self.sender_id, 'add')
             await interaction.response.send_message("Quest aceita com sucesso.", ephemeral=True) # Send a message when the button is clicked
             
-            date = datetime.datetime.now(ZoneInfo('America/Sao_Paulo'))
+            date = int(datetime.datetime.now().timestamp())
             
             print('data da compra:')
             print(date)
