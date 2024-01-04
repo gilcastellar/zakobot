@@ -3444,6 +3444,22 @@ async def classificados_command(
     msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
 
     await gerar_classificados(msg, 1, 0, data)
+
+@mercado.command(name='inventario')
+async def inventario_command(
+    ctx: discord.ApplicationContext
+):
+    user_id = ctx.author.id    
+
+    data = dbservice.select('mercado', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], '', {'is_available':'true', 'buyer': user_id})
+
+    print(data)
+    
+    await ctx.respond(f'MEU INVENTÁRIO')
+    
+    msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
+
+    await gerar_classificados(msg, 1, 0, data)
     
 async def gerar_classificados(msg, page, last_page, data):
 
@@ -3498,21 +3514,7 @@ async def gerar_classificados(msg, page, last_page, data):
 
 # melhoras o comando de terminar
 
-@mercado.command(name='inventario')
-async def inventario_command(
-    ctx: discord.ApplicationContext
-):
-    user_id = ctx.author.id    
 
-    data = dbservice.select('mercado', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted'], '', {'is_available':'true', 'buyer': user_id})
-
-    print(data)
-    
-    await ctx.respond(f'MEU INVENTÁRIO')
-    
-    msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
-
-    await gerar_classificados(msg, 1, 0, data)
 
 # Auxiliar command
 @bot.command(name='aux')
