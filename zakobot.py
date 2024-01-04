@@ -3487,6 +3487,11 @@ async def gerar_inventario(msg, page, last_page, user_id):
     print('data info:')
     print(data)
     print(len(data))
+    
+    if not isinstance(data, list):
+        data = [data]
+        print('test:')
+        print(data)
 
     batch = 10
 
