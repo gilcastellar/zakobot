@@ -916,12 +916,9 @@ async def roulette_validator(list, last_two_draws):
     return True
 
 # Creates board message
-async def create_placeholder_message(ctx, channel_id, ephemeral=False):
+async def create_placeholder_message(ctx, channel_id):
 
-    if ephemeral == False:
-        return await send_message(ctx, 'Carregando...', channel_id)
-    else:
-        return await ctx.response.send_message('Carregando...', ephemeral=True)
+    return await send_message(ctx, 'Carregando...', channel_id)
         
 
 # Generate board
@@ -3491,7 +3488,7 @@ async def inventario_command(
         await ctx.response.send_message(text + 'Você não tem nada em seu inventário.', ephemeral=True)
         return
     
-    msg = await create_placeholder_message(ctx, True)
+    msg = await ctx.response.send_message('', ephemeral=True)
 
     # await gerar_inventario(msg, 1, 0, user_id)
     
