@@ -3416,27 +3416,7 @@ def calculate_market_value(base_value, days_passed):
         value = ceil(value * factor)
         print(value)
 
-    return value
-
-class MyViewTerminar(discord.ui.View):
-    def __init__(self, user_id):
-        super().__init__()
-        #self.ctx = ctx
-        self.user_id = user_id
-        
-    @discord.ui.select( # the decorator that lets you specify the properties of the select menu
-        placeholder = "Escolha a obra que quer terminar", # the placeholder text that will be displayed if nothing is selected
-        min_values = 1, # the minimum number of values that must be selected by the users
-        max_values = 1, # the maximum number of values that can be selected by the users
-        options = dbservice.select('mercado', ['item_name'], '', {'buyer': str(self.user_id)})
-    )
-    async def select_callback(self, select, interaction): # the function called when the user is done selecting options
-        await interaction.response.send_message(f"Awesome! I like {select.values[0]} too!", ephemeral=True)
-
-@mercado.command()
-async def terminar(ctx):
-    user_id = ctx.author.id
-    await ctx.response.send_message("Choose a flavor!", view=MyViewTerminar(user_id), ephemeral=True)    
+    return value 
 
 @mercado.command(name='terminar')
 async def mercado_terminar_command(
@@ -3522,7 +3502,7 @@ async def inventario_command(
         print('test:')
         print(data)
 
-    batch = 10
+    batch = 1
 
     indice = (page * batch) - (batch - 1)
 
@@ -3558,7 +3538,12 @@ async def inventario_command(
             
         text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
     
-    await ctx.response.send_message(text, ephemeral=True)
+    msg = await ctx.response.send_message(text, ephemeral=True)
+    
+    if page <= last_page:
+
+        await msg.edit(text, view=ClassificadosPagination(msg, page, last_page))
+    # await ctx.response.send_message(text, ephemeral=True)
     
 async def gerar_inventario(msg, page, last_page, user_id):
 
