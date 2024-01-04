@@ -3250,7 +3250,7 @@ async def mercado_inserir_command(
                         return                        
 
                     elif episodes == None:
-                        await ctx.response.send_message('Você provavelmente tentou inserir uma obra que não contém o número de episódios/capítulos no Anilist.', ephemeral=True)
+                        await ctx.response.send_message('Você provavelmente tentou inserir uma obra que não contém o número de episódios/capítulos ou está em lançamento no Anilist.', ephemeral=True)
                         return
                     
                     else:
@@ -3288,6 +3288,8 @@ async def mercado_inserir_command(
                 reward = ceil(100 * duration_factor)
 
                 date = datetime.datetime.now(ZoneInfo('America/Sao_Paulo'))
+                
+                timestamp = int(datetime.datetime.now().timestamp())
             
                 await ctx.response.send_message('A obra ' + title + ' valerá $' + str(reward) + '. Para formalizar a inserção no mercado, clique no botão abaixo.', ephemeral=True, view=SellingBtn(anilist_id, insertion, type, reward, sender, title, date))
 
@@ -3592,11 +3594,21 @@ async def gerar_classificados(msg, page, last_page, data):
 
 # to do
 
-# comando para ver suas compras
-
 # melhoras o comando de terminar
 
+# consertar sistema de data
 
+# rebranding
+
+##############################
+#
+# IDEIA
+#
+# Desafios cooperativos
+#
+# o bot ou algo do tipo escolherá um grupo de obras a serem terminadas
+#
+# após terminar uma quantidade mínima das obras, outro pacote de desafios é liberado
 
 # Auxiliar command
 @bot.command(name='aux')
