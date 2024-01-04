@@ -3510,6 +3510,8 @@ async def gerar_inventario(msg, page, last_page, user_id):
         for i in obra:
             print(i)
         
+        print('abaixo')
+        print(datetime.datetime.now().timestamp())
         print(obra[4])
         
         time_passed = datetime.datetime.now().timestamp() - obra[4]
