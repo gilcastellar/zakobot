@@ -3571,7 +3571,7 @@ async def gerar_classificados(msg, page, last_page, data):
         print(obra[4])
         
         time_passed = int(datetime.datetime.now().timestamp()) - obra[4]
-        print(time_passed)
+        print('time elapsed: ' + time_passed)
         
         # if 'day' in str(days_passed):
     
