@@ -3478,7 +3478,7 @@ async def inventario_command(
     
     grana = dbservice.select('user', ['zakoleta'], '', {'id': user_id})
     
-    await send_message(ctx, f'MEU INVENTÁRIO')
+    # await send_message(ctx, f'MEU INVENTÁRIO')
 
     text = '**$' + str(grana) + '**\n\n'
     print('length of data')
