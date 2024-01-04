@@ -3574,7 +3574,7 @@ async def inventario_command(
             print(i)
             
         print('agora')
-        print(datetime.datetime.now().timestamp())
+        print(str(datetime.datetime.now().timestamp()))
         
         print('abaixo')
         print('criado')
