@@ -3598,8 +3598,14 @@ async def gerar_inventario(msg, page, last_page, user_id):
         await msg.edit(text, view=ClassificadosPagination(msg, page, last_page))
             
 async def gerar_classificados(msg, page, last_page, data):
-
+    
     print(data)
+    print(len(data))
+    
+    if not isinstance(data, list):
+        data = [data]
+        print('test:')
+        print(data)
 
     batch = 10
 
