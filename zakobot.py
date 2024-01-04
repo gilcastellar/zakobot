@@ -33,6 +33,7 @@ import time
 import datetime
 from zoneinfo import ZoneInfo
 import asyncio
+import re
 from math import ceil, e
 
 
@@ -3256,10 +3257,7 @@ async def mercado_inserir_command(
 
                 title = media_obj['data']['Media']['title']['romaji']
                 
-                if "'" in title:
-                    title.strip("'")
-                if "/" in title:
-                    title.strip("/")
+                re.sub("/", '', title)
 
                 duration_factor = 1 + (total_duration * 0.003)
             
