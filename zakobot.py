@@ -3352,6 +3352,7 @@ class BuyingBtn(discord.ui.View): # Create a class called MyView that subclasses
     @discord.ui.button(label="Aceitar", style=discord.ButtonStyle.primary, emoji="🤝") # Create a button with the label "😎 Click me!" with color Blurple
     async def button_callback(self, button, interaction):
         is_available = dbservice.select('quests', ['is_available'], '', {'item_name':self.real_name, 'item_type': self._type})
+        print(self._type)
         
         if is_available == 'false':
             await interaction.response.send_message("A quest já foi pega por outra pessoa.", ephemeral=True) # Send a message when the button is clicked
