@@ -3381,15 +3381,9 @@ async def guilda_adquirir_command(
 
     available_money = dbservice.select('user', ['zakoleta'], '', {'id': str(user_id)})
 
-    real_name = order
-
-    print(real_name)
-    print(real_name)
+    real_name, trash = order.split(' (')
 
     sender_id = dbservice.select('quests', ['sender'], '', {'item_name': real_name})
-
-    print('sender_id')
-    print(sender_id)
     
     if user_id == int(sender_id):
         
