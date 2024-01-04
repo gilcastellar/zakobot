@@ -921,7 +921,7 @@ async def create_placeholder_message(ctx, channel_id, ephemeral=False):
     if ephemeral == False:
         return await send_message(ctx, 'Carregando...', channel_id)
     else:
-        return await ctx.response.send_message(ctx, 'Carregando...', channel_id, ephemeral=True)
+        return await ctx.response.send_message('Carregando...', channel_id, ephemeral=True)
         
 
 # Generate board
