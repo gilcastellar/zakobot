@@ -916,9 +916,13 @@ async def roulette_validator(list, last_two_draws):
     return True
 
 # Creates board message
-async def create_placeholder_message(ctx, channel_id):
+async def create_placeholder_message(ctx, channel_id, ephemeral=False):
 
-    return await send_message(ctx, 'Carregando...', channel_id)
+    if ephemeral == False:
+        return await send_message(ctx, 'Carregando...', channel_id)
+    else:
+        return await send_message(ctx, 'Carregando...', channel_id,ephemeral=True)
+        
 
 # Generate board
 async def generate_board(info, message, id=0):
