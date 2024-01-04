@@ -3580,6 +3580,8 @@ async def inventario_command(
         time_passed = int(datetime.datetime.now().timestamp()) - int(obra[4])
         
         days = floor(time_passed / 1440)
+        print('days')
+        print(days)
         
         value = calculate_quest_reward(obra[3], days)
         
