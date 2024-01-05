@@ -3524,9 +3524,9 @@ async def flavor_command(
     flavor_text: discord.Option(str, name='texto', description='Insira um asterisco * onde ficará o nome da obra. Ex: Conquiste o * para vencer!')
 ):
     
-    # part1, part2 = flavor_text.split('*')
+    user_id = str(ctx.author.id)
     
-    dbservice.insert('quest_flavors', ['flavor'], [flavor_text])
+    dbservice.insert('quest_flavors', ['flavor', 'creator'], [flavor_text, user_id])
 
     await ctx.response.send_message('Flavor adicionado!', ephemeral=True)
 
