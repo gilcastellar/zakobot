@@ -3459,7 +3459,7 @@ async def guilda_abandonar_quest_command(
             obra = dbservice.select('quests', ['item_name'], '', {'buyer': user_id, 'id_anilist': anilist_id})
             print(dbservice.select('quests', ['flavor_text'], '', {'buyer': user_id, 'id_anilist': anilist_id}))
             flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': user_id, 'id_anilist': anilist_id}).split('*')
-            dbservice.update('quests', ['buyer', 'is_available', 'abandoned'], [NULL, 'true', 'true'], {'buyer': user_id, 'id_anilist': anilist_id})
+            dbservice.update('quests', ['buyer', 'is_available', 'abandoned'], ['', 'true', 'true'], {'buyer': user_id, 'id_anilist': anilist_id})
             
             await ctx.response.send_message('<@' + str(user_id) + '> desistiu da quest ' + flavor1 + '**' + obra + '**' + flavor2 + ' e ela foi devolvida ao quadro. Essa quest não conta para o limite de criação do criador.')
             
