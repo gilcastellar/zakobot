@@ -3528,6 +3528,8 @@ async def flavor_command(
     
     dbservice.insert('quest_flavors', ['flavor1', 'flavor2'], [part1, part2])
 
+    ctx.response.send_message('Flavor adicionado!', ephemeral=True)
+
 
 @guilda.command(name='inventario')
 async def inventario_command(
