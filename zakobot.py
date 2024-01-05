@@ -3312,6 +3312,7 @@ async def guilda_criar_command(
                 timestamp = int(datetime.datetime.now().timestamp())
 
                 flavor = random.choice(dbservice.select('quest_flavors', ['flavor'], ''))
+                print(flavor)
             
                 await ctx.response.send_message('A quest ' + title + ' terá uma recompensa de $' + str(reward) + '. Para formalizar a criação da quest, clique no botão abaixo.', ephemeral=True, view=SellingBtn(anilist_id, insertion, type, reward, sender, title, timestamp, flavor))
 
