@@ -3220,7 +3220,7 @@ class SellingBtn(discord.ui.View): # Create a class called MyView that subclasse
 
         await interaction.response.send_message("Quest criada com sucesso.", ephemeral=True) # Send a message when the button is clicked
         
-@guilda.command(name='criar_quest')
+@guilda.command(name='criar_quest', description='Este comando permite que se crie uma quest')
 async def guilda_criar_quest_command(
     ctx: discord.ApplicationContext,
     insertion: discord.Option(str, name='obra')
@@ -3372,7 +3372,7 @@ class AcquiringBtn(discord.ui.View): # Create a class called MyView that subclas
             
             dbservice.update('quests', ['date_bought'], [int(date)], {'item_name': self.real_name, 'item_type': self._type})
 
-@guilda.command(name='aceitar_quest')
+@guilda.command(name='aceitar_quest', description='Este comando permite aceitar quests disponíveis no quadro')
 async def guilda_aceitar_quest_command(
     ctx: discord.ApplicationContext,
     order: discord.Option(str, autocomplete=get_quests_options, name='quests')
@@ -3440,7 +3440,7 @@ def calculate_quest_reward(base_value, days_passed):
 
     return value 
 
-@guilda.command(name='entregar_quest')
+@guilda.command(name='entregar_quest', description='Este comando permite que se entregue uma quest')
 async def guilda_entregar_quest_command(
     ctx: discord.ApplicationContext,
     to_finish: discord.Option(str, name='quest')
@@ -3504,7 +3504,7 @@ async def classificados_command(
 
     await gerar_quest_board(msg, 1, 0, data)
 
-@guilda.command(name='flavor')
+@guilda.command(name='flavor', description='Este comando permite a criação de "flavor texts" que enfeitarão as quests no quadro')
 async def flavor_command(
     ctx: discord.ApplicationContext,
     flavor_text: discord.Option(str, name='texto', description='Insira um asterisco * onde ficará o nome da obra. Ex: Conquiste o * para vencer!')
@@ -3517,7 +3517,7 @@ async def flavor_command(
     await ctx.response.send_message('Flavor adicionado!', ephemeral=True)
 
 
-@guilda.command(name='inventario')
+@guilda.command(name='inventario', description='Este comando permite visualizar seu dinheiro, espaço e quests aceitas')
 async def inventario_command(
     ctx: discord.ApplicationContext
 ):
