@@ -3219,8 +3219,8 @@ class SellingBtn(discord.ui.View): # Create a class called MyView that subclasse
 
         await interaction.response.send_message("Quest criada com sucesso.", ephemeral=True) # Send a message when the button is clicked
         
-@guilda.command(name='criar')
-async def guilda_criar_command(
+@guilda.command(name='criar_quest')
+async def guilda_criar_quest_command(
     ctx: discord.ApplicationContext,
     insertion: discord.Option(str, name='obra')
 ):
