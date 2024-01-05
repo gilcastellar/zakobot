@@ -3571,7 +3571,7 @@ async def inventario_command(
     print('length of data')
     print(len(data))
     if len(data) < 1:
-        await ctx.response.send_message(text + 'Você não tem nada em seu inventário de quests.', ephemeral=True)
+        await ctx.response.send_message(text + 'Você não tem nenhuma quest adquirida.', ephemeral=True)
         return
 
     # await gerar_inventario(msg, 1, 0, user_id)
