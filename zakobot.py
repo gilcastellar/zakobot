@@ -3528,7 +3528,7 @@ async def flavor_command(
     
     dbservice.insert('quest_flavors', ['flavor'], [flavor_text])
 
-    ctx.response.send_message('Flavor adicionado!', ephemeral=True)
+    await ctx.response.send_message('Flavor adicionado!', ephemeral=True)
 
 
 @guilda.command(name='inventario')
