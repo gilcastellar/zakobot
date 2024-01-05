@@ -114,25 +114,26 @@ class TopPagination(discord.ui.View): # Create a class called MyView that subcla
         await interaction.response.send_message('')
 
 class QuestBoardPagination(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
-    def __init__(self, msg, page, last_page):
+    def __init__(self, msg, page, last_page, data):
         super().__init__()
         #self.ctx = ctx
         self.msg = msg
         self.page = page
         self.last_page = last_page
+        self.data = data
 
     @discord.ui.button(label="<<", row=0, style=discord.ButtonStyle.primary)
     async def first_button_callback(self, button, interaction):
         if self.page > 1:
             self.page -= 1
-        await gerar_classificados(self.msg, self.page, self.last_page)
+        await gerar_quest_board(self.msg, self.page, self.last_page, self.data)
         await interaction.response.send_message('')
 
     @discord.ui.button(label=">>", row=0, style=discord.ButtonStyle.primary)
     async def second_button_callback(self, button, interaction):
         if self.page < self.last_page:
             self.page += 1
-        await gerar_classificados(self.msg, self.page, self.last_page)
+        await gerar_quest_board(self.msg, self.page, self.last_page, self.data)
         await interaction.response.send_message('')
         
 class CollectionPagination(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
@@ -3517,6 +3518,17 @@ async def classificados_command(
 
     await gerar_quest_board(msg, 1, 0, data)
 
+@guilda.command(name='flavor')
+async def flavor_command(
+    ctx: discord.ApplicationContext,
+    flavor_text: discord.Option(str, name='texto', description='Insira um asterisco * onde ficará o nome da obra. Ex: Conquiste o * para vencer!')
+):
+    
+    part1, part2 = flavor_text.split('*')
+    
+    dbservice.insert('quest_flavors', ['flavor1', 'flavor2'], [part1, part2])
+
+
 @guilda.command(name='inventario')
 async def inventario_command(
     ctx: discord.ApplicationContext
@@ -3705,7 +3717,7 @@ async def gerar_quest_board(msg, page, last_page, data):
     
     if page <= last_page:
 
-        await msg.edit(text, view=QuestBoardPagination(msg, page, last_page))
+        await msg.edit(text, view=QuestBoardPagination(msg, page, last_page, data))
 
 
     
