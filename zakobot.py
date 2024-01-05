@@ -16,7 +16,7 @@ from html.entities import name2codepoint
 from pydoc import describe
 from random import choice,choices, shuffle, randint
 import random
-from re import X
+from re import U, X
 from xml.dom.expatbuilder import theDOMImplementation
 
 import discord
@@ -3439,6 +3439,31 @@ def calculate_quest_reward(base_value, days_passed):
         print(value)
 
     return value 
+
+@guilda.command(name='abandonar_quest', description='Este comando permite que você abandone uma quest')
+async def guilda_abandonar_quest_command(
+    ctx: discord.ApplicationContext,
+    to_abandon: discord.Option(str, name='quest')
+):
+    user_id = str(ctx.author.id)
+    
+    if 'anilist.co' in to_abandon:
+        
+        type, anilist_id = get_type_and_id_from_anilist_link(to_abandon)
+        
+        exists = dbservice.check_existence('quests', {'buyer': user_id, 'id_anilist': anilist_id})
+        
+        if exists == 1:
+            dbservice.update('quests', ['buyer', 'is_available', 'abandoned'], [None, 'true', 'true'], {'buyer': user_id, 'id_anilist': anilist_id})
+            
+            obra = dbservice.select('quests', ['item_name'], '', {'buyer': user_id, 'id_anilist': anilist_id})
+            flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': user_id, 'id_anilist': anilist_id}).split('*')
+        
+            await ctx.response.send_message('<@' + str(user_id) + '> desistiu da quest ' + flavor1 + '**' + obra + '**' + flavor2 + ' e ela foi devolvida ao quadro. Essa quest não conta para o limite de criação do criador.')
+            
+        else:
+
+            await ctx.response.send_message('Você não é o dono dessa quest ou ela não existe.', ephemeral=True)
 
 @guilda.command(name='entregar_quest', description='Este comando permite que se entregue uma quest')
 async def guilda_entregar_quest_command(
