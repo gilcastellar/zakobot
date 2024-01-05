@@ -3220,7 +3220,7 @@ class SellingBtn(discord.ui.View): # Create a class called MyView that subclasse
         await interaction.response.send_message("Quest criada com sucesso.", ephemeral=True) # Send a message when the button is clicked
         
 @guilda.command(name='criar')
-async def guilda_inserir_command(
+async def guilda_criar_command(
     ctx: discord.ApplicationContext,
     insertion: discord.Option(str, name='obra')
 ):
@@ -3298,8 +3298,8 @@ async def guilda_inserir_command(
                 
                 print(title)
                 
-                title = re.sub('/', '', title)
-                title = re.sub("'", '', title)
+                # title = re.sub('/', '', title)
+                # title = re.sub("'", '', title)
                 
                 print(title)
 
@@ -3311,7 +3311,7 @@ async def guilda_inserir_command(
                 
                 timestamp = int(datetime.datetime.now().timestamp())
 
-                flavor = random.choice(quest_flavors)
+                flavor = random.choice(dbservice.select()
             
                 await ctx.response.send_message('A quest ' + title + ' terá uma recompensa de $' + str(reward) + '. Para formalizar a criação da quest, clique no botão abaixo.', ephemeral=True, view=SellingBtn(anilist_id, insertion, type, reward, sender, title, timestamp, flavor))
 
@@ -3524,9 +3524,9 @@ async def flavor_command(
     flavor_text: discord.Option(str, name='texto', description='Insira um asterisco * onde ficará o nome da obra. Ex: Conquiste o * para vencer!')
 ):
     
-    part1, part2 = flavor_text.split('*')
+    # part1, part2 = flavor_text.split('*')
     
-    dbservice.insert('quest_flavors', ['flavor1', 'flavor2'], [part1, part2])
+    dbservice.insert('quest_flavors', ['flavor'], [flavor_text])
 
     ctx.response.send_message('Flavor adicionado!', ephemeral=True)
 
