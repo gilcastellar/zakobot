@@ -3227,7 +3227,7 @@ async def guilda_criar_quest_command(
 ):
     sender = str(ctx.author.id)
 
-    seller_slots = dbservice.select('quests', ['sender'], '', {'sender': sender, 'is_available': 'true'})
+    seller_slots = dbservice.select('quests', ['sender'], '', {'sender': sender, 'is_available': 'true', 'abandoned':'false'})
 
     if seller_slots == str(sender):
         seller_slots = 1
