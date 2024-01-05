@@ -11,6 +11,7 @@
 ####################################################################################################################################################
 ####################################################################################################################################################
 
+from asyncio.windows_events import NULL
 from faulthandler import dump_traceback
 from html.entities import name2codepoint
 from pydoc import describe
@@ -3454,7 +3455,7 @@ async def guilda_abandonar_quest_command(
         exists = dbservice.check_existence('quests', {'buyer': user_id, 'id_anilist': anilist_id})
         
         if exists == 1:
-            dbservice.update('quests', ['buyer', 'is_available', 'abandoned'], [None, 'true', 'true'], {'buyer': user_id, 'id_anilist': anilist_id})
+            dbservice.update('quests', ['buyer', 'is_available', 'abandoned'], [NULL, 'true', 'true'], {'buyer': user_id, 'id_anilist': anilist_id})
             
             obra = dbservice.select('quests', ['item_name'], '', {'buyer': user_id, 'id_anilist': anilist_id})
             flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': user_id, 'id_anilist': anilist_id}).split('*')
