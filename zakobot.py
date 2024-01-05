@@ -3500,7 +3500,7 @@ async def guilda_entregar_quest_command(
             
             dbservice.delete('quests', {'buyer': user, 'id_anilist': anilist_id})
             
-            await ctx.response.send_message('Parabéns! <@' + str(user) + '> completou e entregou a quest ' + flavor1 + '**' + obra + '**' + flavor2 + ' criada por <@' + str(sender_id) + '>!')
+            await ctx.response.send_message('Parabéns! <@' + str(user) + '> completou e entregou a quest "' + flavor1 + '**' + obra + '**' + flavor2 + '" criada por <@' + str(sender_id) + '>!')
             
         else:
 
