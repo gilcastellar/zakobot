@@ -3537,6 +3537,25 @@ async def inventario_command(
     ctx: discord.ApplicationContext
 ):
     user_id = ctx.author.id   
+
+    seller_slots = dbservice.select('quests', ['sender'], '', {'sender': user_id, 'is_available': 'true'})
+
+    if seller_slots == str(user_id):
+        seller_slots = 1
+        
+    else:
+        seller_slots = len(seller_slots)
+        
+    buyer_slots = dbservice.select('quests', ['buyer'], '', {'buyer': user_id})
+
+    if buyer_slots == str(user_id):
+        buyer_slots = 1
+        
+    else:
+        buyer_slots = len(buyer_slots)
+        
+    seller_total_slots = dbservice.select('user', ['quest_selling_slots'], '', {'id': user_id})
+    buyer_total_slots = dbservice.select('user', ['quest_buying_slots'], '', {'id': user_id})
     
     data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'date_bought'], '', {'buyer': user_id})
     
@@ -3545,6 +3564,9 @@ async def inventario_command(
     # await send_message(ctx, f'MEU INVENTÁRIO')
 
     text = '**$' + str(grana) + '**\n\n'
+    text += '**Espaço:\n''
+    text += 'À venda: ' + str(seller_slots) + '/' + str(seller_total_slots)
+    text += 'Adquiridos: ' + str(buyer_slots) + '/' + str(buyer_total_slots)
     print('length of data')
     print(len(data))
     if len(data) < 1:
