@@ -3379,8 +3379,8 @@ class BuyingBtn(discord.ui.View): # Create a class called MyView that subclasses
             
             dbservice.update('quests', ['date_bought'], [int(date)], {'item_name': self.real_name, 'item_type': self._type})
 
-@guilda.command(name='adquirir')
-async def guilda_adquirir_command(
+@guilda.command(name='aceitar_quest')
+async def guilda_aceitar_quest_command(
     ctx: discord.ApplicationContext,
     order: discord.Option(str, autocomplete=get_quests_options, name='quests')
 ):
@@ -3400,7 +3400,7 @@ async def guilda_adquirir_command(
     
     if user_id == int(sender_id):
         
-        await ctx.response.send_message("Você não pode adquirir uma quest que você mesmo enviou.", ephemeral=True)
+        await ctx.response.send_message("Você não pode aceitar uma quest que você mesmo enviou.", ephemeral=True)
         
     else:
 
@@ -3426,7 +3426,7 @@ async def guilda_adquirir_command(
 
             print(dbservice.select('user', ['quest_buying_slots'], '', {'id': user_id}))
         
-            await ctx.response.send_message('Você não tem espaço para adquirir uma nova quest.', ephemeral=True)
+            await ctx.response.send_message('Você não tem espaço para aceitar uma nova quest.', ephemeral=True)
     
         else:
 
@@ -3564,14 +3564,14 @@ async def inventario_command(
     # await send_message(ctx, f'MEU INVENTÁRIO')
 
     text = '**$' + str(grana) + '**\n\n'
-    text += '**Espaço:**\n'
+    text += '**Quests:**\n'
     text += 'À venda: ' + str(seller_slots) + '/' + str(seller_total_slots)
-    text += '\nAdquiridos: ' + str(buyer_slots) + '/' + str(buyer_total_slots)
+    text += '\nAceitas: ' + str(buyer_slots) + '/' + str(buyer_total_slots)
     text += '\n\n'
     print('length of data')
     print(len(data))
     if len(data) < 1:
-        await ctx.response.send_message(text + 'Você não tem nenhuma quest adquirida.', ephemeral=True)
+        await ctx.response.send_message(text + 'Você não tem nenhuma quest aceita.', ephemeral=True)
         return
 
     # await gerar_inventario(msg, 1, 0, user_id)
