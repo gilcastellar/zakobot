@@ -3455,8 +3455,8 @@ def calculate_quest_reward(base_value, days_passed):
 
     return value 
 
-@guilda.command(name='completar')
-async def guilda_completar_command(
+@guilda.command(name='entregar_quest')
+async def guilda_entregar_quest_command(
     ctx: discord.ApplicationContext,
     to_finish: discord.Option(str, name='quest')
 ):
@@ -3488,7 +3488,7 @@ async def guilda_completar_command(
             
             dbservice.delete('quests', {'buyer': user, 'id_anilist': anilist_id})
             
-            await ctx.response.send_message('Parabéns! <@' + str(user) + '> terminou a quest ' + flavor1 + '**' + obra + '**' + flavor2 + ' enviada por <@' + str(sender_id) + '>!')
+            await ctx.response.send_message('Parabéns! <@' + str(user) + '> completou e entregou a quest ' + flavor1 + '**' + obra + '**' + flavor2 + ' criada por <@' + str(sender_id) + '>!')
             
         else:
 
