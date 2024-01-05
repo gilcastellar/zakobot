@@ -13,6 +13,7 @@
 
 from faulthandler import dump_traceback
 from html.entities import name2codepoint
+from pydoc import describe
 from random import choice,choices, shuffle, randint
 import random
 from re import X
@@ -3275,7 +3276,7 @@ async def guilda_criar_quest_command(
                     
                     else:
                         total_duration = duration * episodes
-                        type_factor = 0.003
+                        type_factor = 0.004
 
                         print(total_duration)
                 
@@ -3285,7 +3286,7 @@ async def guilda_criar_quest_command(
 
                     media_obj = response.json()
                     chapters = media_obj['data']['Media']['chapters']
-                    duration = 7
+                    duration = 8
                     
                     if chapters == None:
                         await ctx.response.send_message('Você provavelmente tentou inserir uma obra que não contém o número de episódios/capítulos ou está em lançamento no Anilist.', ephemeral=True)
@@ -3305,7 +3306,7 @@ async def guilda_criar_quest_command(
 
                 duration_factor = 1 + (total_duration * type_factor)
             
-                reward = ceil(100 * duration_factor)
+                reward = ceil(100 * duration_factor) - 100
 
                 date = datetime.datetime.now(ZoneInfo('America/Sao_Paulo'))
                 
@@ -3345,11 +3346,10 @@ async def get_quests_options(ctx: discord.AutocompleteContext):
 
     return [name for name in names if ctx.value.lower() in name.lower()]
 
-class BuyingBtn(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
-    def __init__(self, value, available_money, user_id, sender_id, real_name, _type):
+class AcquiringBtn(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
+    def __init__(self, value, user_id, sender_id, real_name, _type):
         super().__init__()
         self.value = value
-        self.available_money = available_money
         self.user_id = user_id
         self.sender_id = sender_id
         self.real_name = real_name
@@ -3363,19 +3363,12 @@ class BuyingBtn(discord.ui.View): # Create a class called MyView that subclasses
         if is_available == 'false':
             await interaction.response.send_message("A quest já foi pega por outra pessoa.", ephemeral=True) # Send a message when the button is clicked
         else:
-            new_money = self.available_money - 100
             dbservice.update('quests', ['buyer'], [self.user_id], {'item_name': self.real_name, 'item_type': self._type})
             dbservice.update('quests', ['is_available'], ['false'], {'item_name': self.real_name, 'item_type': self._type})
-
-            dbservice.update('user', ['zakoleta'], [new_money], {'id': str(self.user_id)})
             
-            # dbservice.update_zakoleta('user', 50, '+50 zakoletas por uma venda no mercado', self.sender_id, 'add')
             await interaction.response.send_message("Quest aceita com sucesso.", ephemeral=True) # Send a message when the button is clicked
             
             date = int(datetime.datetime.now().timestamp())
-            
-            print('data da compra:')
-            print(date)
             
             dbservice.update('quests', ['date_bought'], [int(date)], {'item_name': self.real_name, 'item_type': self._type})
 
@@ -3386,8 +3379,6 @@ async def guilda_aceitar_quest_command(
 ):
     
     user_id = ctx.author.id
-
-    available_money = dbservice.select('user', ['zakoleta'], '', {'id': str(user_id)})
 
     real_name, _type = order.split(' (')
     
@@ -3431,14 +3422,8 @@ async def guilda_aceitar_quest_command(
         else:
 
             value = calculate_quest_reward(value, days)
-        
-            if available_money < 100:
             
-                await ctx.response.send_message('A aquisição da quest ' + real_name + ' custará $100 e você tem $' + str(available_money) + '. Você não tem zakoletas o suficiente para prosseguir.', ephemeral=True)
-        
-            else:
-            
-                await ctx.response.send_message('A aquisição da quest ' + real_name + ' custará $100 e você tem $' + str(available_money) + '. Para formalizar a aquisição da quest, clique no botão abaixo.', ephemeral=True, view=BuyingBtn(value, available_money, user_id, sender_id, real_name, _type))
+            await ctx.response.send_message('Para formalizar a aquisição da quest, clique no botão abaixo.', ephemeral=True, view=AcquiringBtn(value, user_id, sender_id, real_name, _type))
 
 def calculate_quest_reward(base_value, days_passed):
     
@@ -3494,7 +3479,7 @@ async def guilda_entregar_quest_command(
 
             await ctx.response.send_message('Você não é o dono dessa quest ou ela não existe.', ephemeral=True)
 
-@guilda.command(name='quadro')
+@guilda.command(name='quadro', description='Este comando permite visualizar as quests disponíveis')
 async def classificados_command(
     ctx: discord.ApplicationContext
 ):
