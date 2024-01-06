@@ -3818,23 +3818,82 @@ async def aux_command(ctx):
 
     if ctx.author.id in admins:
         
-        print(datetime.datetime.now(ZoneInfo('America/Sao_Paulo')))
+        data = dbservice.select('quests', ['anilist_id', 'item_type', 'value', 'item_name'], '')
         
-        print(str(datetime.datetime.now() - dbservice.select('quests', ['date_inserted'], '', {'id_item': 1})))
+        print('data')
+        print(data)
         
-        date = str(datetime.datetime.now() - dbservice.select('quests', ['date_inserted'], '', {'id_item': 1}))
-
-        # if 'day' in str(days_passed):
-    
-        #     days, trash = days_passed.split(' day')
+        for obra in data:
             
-        # else:
-            
-        #     days = 0
+            anilist_id = obra[0]
+            previous_value = obra[2]
+            name = obra[3]
         
-        # print(days)
+            if obra[1] == 'anime':
 
-        print(str(datetime.datetime.now() - dbservice.select('quests', ['date_inserted'], '', {'id_item': 1})).split(' day'))
+                response = anilist.query_anime_id(anilist_id)
+                
+                media_obj = response.json()
+                
+                duration = media_obj['data']['Media']['duration']
+
+                episodes = media_obj['data']['Media']['episodes']
+                print(duration)
+                print(episodes)
+
+                if duration == None:
+                    await ctx.response.send_message('Você provavelmente tentou inserir uma obra sem a informação de duração no Anilist.', ephemeral=True)
+                    return                        
+
+                elif episodes == None:
+                    await ctx.response.send_message('Você provavelmente tentou inserir uma obra que não contém o número de episódios/capítulos ou está em lançamento no Anilist.', ephemeral=True)
+                    return
+                    
+                else:
+                    total_duration = duration * episodes
+                    type_factor = 0.004
+
+                    print(total_duration)
+                
+            else:
+
+                response = anilist.query_manga_id(anilist_id)
+
+                media_obj = response.json()
+                chapters = media_obj['data']['Media']['chapters']
+                volumes = media_obj['data']['Media']['volumes']
+                duration = 45
+                    
+                if volumes == None or volumes == 1:
+                    if chapters == 1:
+                        duration = 20
+                        volumes = 1
+                    else:
+                        await ctx.response.send_message('Você provavelmente tentou inserir uma obra que não contém o número de episódios/volumes ou está em lançamento no Anilist.', ephemeral=True)
+                        return
+                    
+                total_duration = volumes * duration
+                type_factor = 0.004
+
+            title = media_obj['data']['Media']['title']['romaji']
+                
+            print(title)
+
+            duration_factor = 1 + (total_duration * type_factor)
+                
+            hours = floor(total_duration / 60)
+                
+            size_factor = 1 + ((hours - 1)/10)
+            print('size factor')
+            print(str(size_factor))
+            
+            reward = ceil(((100 * duration_factor) - 100) * size_factor)
+            
+            print('Obra: ' + name)
+            print('Valor anterior: ' + previous_value)
+            print('Novo valor: ' + reward)
+            print('=============================================================')
+
     
         
         # await send_message2('ok', 1077070205987082281)
