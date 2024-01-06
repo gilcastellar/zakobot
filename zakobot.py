@@ -3630,7 +3630,7 @@ async def gerar_quest_board(msg, page, last_page, data):
         print('len of obra')
         print(str(len(obra)))
         
-        if len(obra) == 6:
+        if len(obra) == 7:
             aventureiro = dbservice.select('user', ['name'], '', {'id': obra[6]})
             text += f'Aventureiro: {aventureiro}\n'
         
