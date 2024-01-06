@@ -3613,13 +3613,13 @@ async def inventario_command(
             print('days')
             print(days)
         
-            value = calculate_quest_reward(obra[3], days)
+            value = calculate_quest_reward(quest[3], days)
         
-            flavor1, flavor2 = obra[5].split('*')
+            flavor1, flavor2 = quest[5].split('*')
         
-            text += flavor1 + '**' + obra[1] + '**' + flavor2 + '\n'
+            text += flavor1 + '**' + quest[1] + '**' + flavor2 + '\n'
             
-            text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
+            text += '<' + quest[0] + '>\nTipo: ' + quest[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
             
         text += '\nAceitas: ' + str(buyer_slots) + '/' + str(buyer_total_slots)
         text += '\n\n'
