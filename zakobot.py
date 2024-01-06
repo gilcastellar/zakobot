@@ -3471,7 +3471,7 @@ async def guilda_abandonar_quest_command(
             flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': user_id, 'id_anilist': anilist_id}).split('*')
             dbservice.update('quests', ['buyer', 'is_available', 'abandoned'], ['', 'true', 'true'], {'buyer': user_id, 'id_anilist': anilist_id})
             
-            msg = f'💀 O aventureiro <@{str(user_id)}> morreu tentanto terminar a quest "{flavor1}**{obra}**{flavor2}" e a mesma foi devolvida ao quadro. Essa quest não conta para o limite de criação do criador.')
+            msg = f'💀 O aventureiro <@{str(user_id)}> morreu tentanto terminar a quest "{flavor1}**{obra}**{flavor2}" e a mesma foi devolvida ao quadro. Essa quest não conta para o limite de criação do criador.'
             await generate_guild_log(msg)
         else:
 
