@@ -3464,34 +3464,6 @@ def calculate_quest_reward(base_value, days_passed):
 
     return value 
 
-@guilda.command(name='abandonar_quest', description='Este comando permite que você abandone uma quest')
-async def guilda_abandonar_quest_command(
-    ctx: discord.ApplicationContext,
-    to_abandon: discord.Option(str, name='quest', description='Insira o link do anilist da obra')
-):
-    user_id = str(ctx.author.id)
-    
-    if 'anilist.co' in to_abandon:
-        
-        type, anilist_id = get_type_and_id_from_anilist_link(to_abandon)
-        
-        exists = dbservice.check_existence('quests', {'buyer': user_id, 'id_anilist': anilist_id})
-        
-        if exists == 1:
-            
-            obra = dbservice.select('quests', ['item_name'], '', {'buyer': user_id, 'id_anilist': anilist_id})
-            print(dbservice.select('quests', ['flavor_text'], '', {'buyer': user_id, 'id_anilist': anilist_id}))
-            flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': user_id, 'id_anilist': anilist_id}).split('*')
-            dbservice.update('quests', ['buyer', 'is_available', 'abandoned'], ['', 'true', 'true'], {'buyer': user_id, 'id_anilist': anilist_id})
-            
-            msg = f'💀 O aventureiro <@{str(user_id)}> morreu tentanto terminar a quest *{flavor1}**{obra} ({type})**{flavor2}* e a mesma foi devolvida ao quadro. Essa quest não conta para o limite de criação do criador.'
-            await generate_guild_log(msg)
-            
-            await ctx.response.send_message('Quest abandonada com sucesso.', ephemeral=True)
-        else:
-
-            await ctx.response.send_message('Você não é o dono dessa quest ou ela não existe.', ephemeral=True)
-
 async def get_user_received_quests(ctx: discord.AutocompleteContext):
 
     user_name = dbservice.select('user', ['name'], '', {'id': ctx.interaction.user.id})
@@ -3514,6 +3486,36 @@ async def get_user_received_quests(ctx: discord.AutocompleteContext):
     print(names)
 
     return [name for name in names if ctx.value.lower() in name.lower()]
+
+@guilda.command(name='abandonar_quest', description='Este comando permite que você abandone uma quest')
+async def guilda_abandonar_quest_command(
+    ctx: discord.ApplicationContext,
+    quest: discord.Option(str, name='quest', autocomkplete=get_user_received_quests, description='Insira o link do anilist da obra')
+):
+    user_id = str(ctx.author.id)
+    
+    real_name, _type = quest.split(' (')
+
+    url = dbservice.select('quests', ['item_url'], '', {'item_name': real_name})
+    
+    type, anilist_id = get_type_and_id_from_anilist_link(url)
+        
+    exists = dbservice.check_existence('quests', {'buyer': user_id, 'id_anilist': anilist_id})
+        
+    if exists == 1:
+            
+        obra = dbservice.select('quests', ['item_name'], '', {'buyer': user_id, 'id_anilist': anilist_id})
+        print(dbservice.select('quests', ['flavor_text'], '', {'buyer': user_id, 'id_anilist': anilist_id}))
+        flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': user_id, 'id_anilist': anilist_id}).split('*')
+        dbservice.update('quests', ['buyer', 'is_available', 'abandoned'], ['', 'true', 'true'], {'buyer': user_id, 'id_anilist': anilist_id})
+            
+        msg = f'💀 O aventureiro <@{str(user_id)}> morreu tentanto terminar a quest *{flavor1}**{obra} ({type})**{flavor2}* e a mesma foi devolvida ao quadro. Essa quest não conta para o limite de criação do criador.'
+        await generate_guild_log(msg)
+            
+        await ctx.response.send_message('Quest abandonada com sucesso.', ephemeral=True)
+    else:
+
+        await ctx.response.send_message('Você não é o dono dessa quest ou ela não existe.', ephemeral=True)
 
 @guilda.command(name='entregar_quest', description='Este comando permite que se entregue uma quest')
 async def guilda_entregar_quest_command(
