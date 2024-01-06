@@ -3319,7 +3319,7 @@ async def guilda_criar_quest_command(
                 
                 hours = floor(total_duration / 60)
                 
-                size_factor = (hours - 1)/10
+                size_factor = 1 + ((hours - 1)/10)
             
                 reward = (ceil(100 * duration_factor) - 100) * size_factor
 
