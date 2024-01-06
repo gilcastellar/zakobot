@@ -3626,6 +3626,10 @@ async def gerar_quest_board(msg, page, last_page, data):
         text += flavor1 + '**' + obra[1] + '**' + flavor2 + '\n'
             
         text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n'
+        
+        print('len of obra')
+        print(str(len(obra)))
+        
         if len(obra) == 6:
             aventureiro = dbservice.select('user', ['name'], '', {'id': obra[6]})
             text += f'Aventureiro: {aventureiro}\n'
