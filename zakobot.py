@@ -3731,7 +3731,7 @@ async def inventario_command(
         data_cd = datetime.datetime.utcfromtimestamp(due_date).strftime('%d-%m-%Y %H:%M:%S')
         
         text += '**$' + str(grana) + '**\n\n'
-        text += 'Data do próximo cancelamento de quest: ' + data_cd
+        text += 'Data do próximo cancelamento de quest: ' + data_cd + '\n\n'
         text += '**Quests à venda: **' + str(seller_slots) + '/' + str(seller_total_slots) + ' \n\n'
         selling_quests = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], '', {'sender': user_id, 'is_available': 'true'})
         
