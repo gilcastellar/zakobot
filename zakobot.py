@@ -3599,7 +3599,7 @@ async def inventario_command(
         text += '\nAceitas: ' + str(buyer_slots) + '/' + str(buyer_total_slots)
         text += '\n\n'
     else:
-        text += f'Inventário de {user}'
+        text += f'**Inventário de {user}**'
 
     text += '**Quests:**\n\n'
     print('length of data')
