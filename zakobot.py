@@ -3863,7 +3863,22 @@ async def cancelar_quest_command(
     print('anilist_id')
     print(anilist_id)
 
-    dbservice.delete('quests', {'sender': user, 'id_anilist': anilist_id})
+    ts = datetime.datetime.now().timestamp() + 259200
+    
+    due_date = dbservice.select('user', ['quest_cancel_due_date'], '', {'id': user})
+    
+    if ts >= due_date:
+        data_cd = datetime.utcfromtimestamp(ts).strftime('%d-%m-%Y %H:%M:%S')
+    
+        dbservice.delete('quests', {'sender': user, 'id_anilist': anilist_id})
+    
+        await ctx.response.send_message(f'Quest cancelada com sucesso. Você poderá cancelar outra quest em {data_cd}.', ephemeral=True)
+    
+    else:
+        
+        data_cd = datetime.utcfromtimestamp(due_date).strftime('%d-%m-%Y %H:%M:%S')
+        
+        await ctx.response.send_message(f'Não foi possível cancelar a quest. Você só poderá cancelar outra quest em {data_cd}.', ephemeral=True)
     
 
 # to do
