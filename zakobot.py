@@ -3561,7 +3561,7 @@ async def flavor_command(
 @guilda.command(name='inventario', description='Este comando permite visualizar seu dinheiro, espaço e quests aceitas')
 async def inventario_command(
     ctx: discord.ApplicationContext,
-    user: discord.Option(str, name='usuario', autocomplete=get_members_names, required=False)
+    user: discord.Option(str, name='usuario', autocomplete=get_members_names2, required=False)
 ):
     user_id = ctx.author.id   
 
