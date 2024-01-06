@@ -3234,7 +3234,7 @@ class SellingBtn(discord.ui.View): # Create a class called MyView that subclasse
 @guilda.command(name='criar_quest', description='Este comando permite que se crie uma quest')
 async def guilda_criar_quest_command(
     ctx: discord.ApplicationContext,
-    insertion: discord.Option(str, name='obra')
+    insertion: discord.Option(str, name='obra', description='Insira o link do anilist da obra')
 ):
     sender = str(ctx.author.id)
 
@@ -3312,11 +3312,6 @@ async def guilda_criar_quest_command(
                     type_factor = 0.004
 
                 title = media_obj['data']['Media']['title']['romaji']
-                
-                print(title)
-                
-                # title = re.sub('/', '', title)
-                # title = re.sub("'", '', title)
                 
                 print(title)
 
@@ -3466,7 +3461,7 @@ def calculate_quest_reward(base_value, days_passed):
 @guilda.command(name='abandonar_quest', description='Este comando permite que você abandone uma quest')
 async def guilda_abandonar_quest_command(
     ctx: discord.ApplicationContext,
-    to_abandon: discord.Option(str, name='quest')
+    to_abandon: discord.Option(str, name='quest', description='Insira o link do anilist da obra')
 ):
     user_id = str(ctx.author.id)
     
@@ -3494,7 +3489,7 @@ async def guilda_abandonar_quest_command(
 @guilda.command(name='entregar_quest', description='Este comando permite que se entregue uma quest')
 async def guilda_entregar_quest_command(
     ctx: discord.ApplicationContext,
-    to_finish: discord.Option(str, name='quest')
+    to_finish: discord.Option(str, name='quest', description='Insira o link do anilist da obra')
 ):
     
     user = str(ctx.author.id)
