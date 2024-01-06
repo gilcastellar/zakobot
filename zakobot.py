@@ -3595,10 +3595,10 @@ async def inventario_command(
     text = ''
     if user != None:
         text += f'**Inventário de {user} **\n\n'
-    text += '**Quests:**\n\n'   
+      
     if user == None:
         text += '**$' + str(grana) + '**\n\n'
-        text += 'À venda:' + str(seller_slots) + '/' + str(seller_total_slots) + ' \n\n'
+        text += '**Quests à venda: **' + str(seller_slots) + '/' + str(seller_total_slots) + ' \n\n'
         selling_quests = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], '', {'sender': user_id})
         
         if not isinstance(selling_quests, list):
@@ -3621,7 +3621,7 @@ async def inventario_command(
             
             text += '<' + quest[0] + '>\nTipo: ' + quest[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
             
-        text += '\nAceitas: ' + str(buyer_slots) + '/' + str(buyer_total_slots)
+        text += '\n**Quests Aceitas: **' + str(buyer_slots) + '/' + str(buyer_total_slots)
         text += '\n\n'
         
     print('length of data')
