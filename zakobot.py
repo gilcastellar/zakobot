@@ -3473,6 +3473,8 @@ async def guilda_abandonar_quest_command(
             
             msg = f'💀 O aventureiro <@{str(user_id)}> morreu tentanto terminar a quest *{flavor1}**{obra}**{flavor2}* e a mesma foi devolvida ao quadro. Essa quest não conta para o limite de criação do criador.'
             await generate_guild_log(msg)
+            
+            await ctx.response.send_message('Quest abandonada com sucesso.', ephemeral=True)
         else:
 
             await ctx.response.send_message('Você não é o dono dessa quest ou ela não existe.', ephemeral=True)
