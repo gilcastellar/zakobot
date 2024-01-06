@@ -3594,7 +3594,7 @@ async def inventario_command(
     # await send_message(ctx, f'MEU INVENTÁRIO')
     text = ''
     if user != None:
-        text += '**$' + str(grana) + '**\n\n''
+        text += '**$' + str(grana) + '**\n\n'
         text += 'À venda: ' + str(seller_slots) + '/' + str(seller_total_slots)
         text += '\nAceitas: ' + str(buyer_slots) + '/' + str(buyer_total_slots)
         text += '\n\n'
