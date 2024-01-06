@@ -3224,7 +3224,7 @@ class SellingBtn(discord.ui.View): # Create a class called MyView that subclasse
 
         await interaction.response.send_message("Quest criada com sucesso.", ephemeral=True) # Send a message when the button is clicked
         
-        flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': self.user_id, 'item_name': self.real_name, 'item_type': self._type}).split('*')
+        flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'id_anilist': self.anilist_id).split('*')
         
         msg = f'A quest {flavor1}**{self.title} ({self.type})**{flavor2} acabou de ser criada e está disponível no quadro!'
     
