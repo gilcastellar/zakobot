@@ -513,7 +513,7 @@ async def registro_command(message):
 
         dbservice.insert('user', ['id', 'id_guild', 'name'], (user_id, guild, name))
 
-        await send_message2(f"Seja bem-vindo(a) à roleta, {name}!", message.channel.id)
+        await send_message2(f"Seja bem-vindo(a) à Hiraeth, {name}!", message.channel.id)
 
     else:
 
@@ -3525,7 +3525,7 @@ async def classificados_command(
         print('test:')
         print(data)
     
-    await ctx.respond(f'**QUESTS**')
+    # await ctx.respond(f'**QUESTS**')
     
     msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
 
@@ -3639,69 +3639,7 @@ async def inventario_command(
             
         text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
     
-    # msg = await ctx.response.send_message(text, ephemeral=True)
-    
-    # if page <= last_page:
-
-    #     await msg.edit(text, view=ClassificadosPagination(msg, page, last_page))
     await ctx.response.send_message(text, ephemeral=True)
-    
-# async def gerar_inventario(msg, page, last_page, user_id):
-
-#     data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], '', {'buyer': user_id})
-
-#     print('data info:')
-#     print(data)
-#     print(len(data))
-    
-#     if not isinstance(data, list):
-#         data = [data]
-#         print('test:')
-#         print(data)
-
-#     batch = 10
-
-#     indice = (page * batch) - (batch - 1)
-
-#     text = ''
-
-#     print('page')
-#     print(page)
-
-#     print('indice:')
-#     print(indice)
-
-#     last_page = ceil(len(data) / batch)
-
-#     for obra in data[batch*(page-1):batch*page]:
-
-#         print(indice)
-
-#         print('obra')
-#         print(obra)
-
-#         for i in obra:
-#             print(i)
-        
-#         print('abaixo')
-#         print(datetime.datetime.now().timestamp())
-#         print(obra[4])
-        
-#         time_passed = int(datetime.datetime.now().timestamp()) - int(obra[4])
-        
-#         days = floor(time_passed / 1440)
-        
-#         value = calculate_quest_reward(obra[3], days)
-        
-#         flavor1, flavor2 = obra[5].split('*')
-        
-#         text += flavor1 + '**' + obra[1] + '**' + flavor2 + '\n'
-            
-#         text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
-    
-#     if page <= last_page:
-
-#         await msg.edit(text, view=QuestBoardPagination(msg, page, last_page))
             
 async def gerar_quest_board(msg, page, last_page, data):
     
@@ -3713,11 +3651,11 @@ async def gerar_quest_board(msg, page, last_page, data):
         print('test:')
         print(data)
 
-    batch = 10
+    batch = 8
 
     indice = (page * batch) - (batch - 1)
 
-    text = ''
+    text = '# **QUESTS**\n\n'
 
     print('page')
     print(page)
@@ -3761,7 +3699,12 @@ async def gerar_quest_board(msg, page, last_page, data):
     
 # to do
 
-# verificar os valores
+# pensar em sistema de party
+# pensar em sistema de raid
+# pensar no sistema de upvote e downvote do nico
+# criar canal de log q mostre compras e inserções
+# criar canal que mantém o quadro sempre exposto e atualizado ao vivo
+# criar maneira de ver o inventario alheio
 
 ##############################
 #
