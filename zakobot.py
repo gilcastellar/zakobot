@@ -3727,7 +3727,11 @@ async def inventario_command(
         text += f'**Inventário de {user} **\n\n'
       
     if user == None:
+        due_date = dbservice.select('user', ['quest_cancel_due_date'], '', {'id': user_id})
+        data_cd = datetime.utcfromtimestamp(due_date).strftime('%d-%m-%Y %H:%M:%S')
+        
         text += '**$' + str(grana) + '**\n\n'
+        text += 'Data do próximo cancelamento de quest: ' + data_cd
         text += '**Quests à venda: **' + str(seller_slots) + '/' + str(seller_total_slots) + ' \n\n'
         selling_quests = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], '', {'sender': user_id, 'is_available': 'true'})
         
@@ -3846,10 +3850,7 @@ async def get_user_created_quests(ctx: discord.AutocompleteContext):
 
     return [name for name in names if ctx.value.lower() in name.lower()]
 
-
-    
-
-@guilda.command(name='cancelar_quest', description='Este comando permite que ')
+@guilda.command(name='cancelar_quest', description='Este comando permite que você cancele uma quest criada por você que ainda não foi aceita')
 async def cancelar_quest_command(
     ctx: discord.ApplicationContext,
     quest: discord.Option(str, autocomplete=get_user_created_quests, name='quest')
