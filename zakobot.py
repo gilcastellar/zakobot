@@ -3492,46 +3492,71 @@ async def guilda_abandonar_quest_command(
 
             await ctx.response.send_message('Você não é o dono dessa quest ou ela não existe.', ephemeral=True)
 
+async def get_user_received_quests(ctx: discord.AutocompleteContext):
+
+    user_name = dbservice.select('user', ['name'], '', {'id': ctx.interaction.user.id})
+    
+    quests_options = dbservice.select('quests', ['item_name', 'item_type'], '', {'buyer': str(ctx.interaction.user.id)})
+    
+    print(quests_options)
+
+    if not isinstance(quests_options, list):
+        quests_options = [quests_options]
+        print('test:')
+        print(quests_options)
+
+    names = []
+
+    for name in quests_options:
+        
+        names.append(name[0] + ' (' + name[1] + ')')
+            
+    print(names)
+
+    return [name for name in names if ctx.value.lower() in name.lower()]
+
 @guilda.command(name='entregar_quest', description='Este comando permite que se entregue uma quest')
 async def guilda_entregar_quest_command(
     ctx: discord.ApplicationContext,
-    to_finish: discord.Option(str, name='quest', description='Insira o link do anilist da obra')
+    quest: discord.Option(str, autocomplete=get_user_received_quests, name='quest')
 ):
     
     user = str(ctx.author.id)
+    
+    real_name, _type = quest.split(' (')
 
-    if 'anilist.co' in to_finish:
+    url = dbservice.select('quests', ['item_url'], '', {'item_name': real_name})
         
-        type, anilist_id = get_type_and_id_from_anilist_link(to_finish)
+    type, anilist_id = get_type_and_id_from_anilist_link(url)
         
-        exists = dbservice.check_existence('quests', {'buyer': user, 'id_anilist': anilist_id})
+    exists = dbservice.check_existence('quests', {'buyer': user, 'id_anilist': anilist_id})
         
-        if exists == 1:
+    if exists == 1:
             
-            sender_id = dbservice.select('quests', ['sender'], '', {'id_anilist': anilist_id})
+        sender_id = dbservice.select('quests', ['sender'], '', {'id_anilist': anilist_id})
             
-            buyer_reward = dbservice.select('quests', ['value'], '', {'id_anilist': anilist_id})
-            sender_reward = ceil(buyer_reward / 2)
+        buyer_reward = dbservice.select('quests', ['value'], '', {'id_anilist': anilist_id})
+        sender_reward = ceil(buyer_reward / 2)
             
-            print('rewards: ')
-            print(buyer_reward)
-            print(sender_reward)
+        print('rewards: ')
+        print(buyer_reward)
+        print(sender_reward)
             
-            dbservice.update_zakoleta('user', sender_reward, '+' + str(sender_reward) + ' zakoletas porque alguém finalizou sua quest.', sender_id, 'add')
-            dbservice.update_zakoleta('user', buyer_reward, '+' + str(buyer_reward) + ' zakoletas por completar uma quest.', user, 'add')
+        dbservice.update_zakoleta('user', sender_reward, '+' + str(sender_reward) + ' zakoletas porque alguém finalizou sua quest.', sender_id, 'add')
+        dbservice.update_zakoleta('user', buyer_reward, '+' + str(buyer_reward) + ' zakoletas por completar uma quest.', user, 'add')
             
-            obra = dbservice.select('quests', ['item_name'], '', {'buyer': user, 'id_anilist': anilist_id})
-            flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': user, 'id_anilist': anilist_id}).split('*')
+        obra = dbservice.select('quests', ['item_name'], '', {'buyer': user, 'id_anilist': anilist_id})
+        flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': user, 'id_anilist': anilist_id}).split('*')
             
-            dbservice.delete('quests', {'buyer': user, 'id_anilist': anilist_id})
+        dbservice.delete('quests', {'buyer': user, 'id_anilist': anilist_id})
             
-            msg = f'O aventureiro <@{str(user)}> completou e entregou a quest *{flavor1}**{obra} ({type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(buyer_reward)} e ${str(sender_reward)} respectivamente.'
+        msg = f'O aventureiro <@{str(user)}> completou e entregou a quest *{flavor1}**{obra} ({type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(buyer_reward)} e ${str(sender_reward)} respectivamente.'
 
-            await generate_guild_log(msg)
+        await generate_guild_log(msg)
             
-        else:
+    else:
 
-            await ctx.response.send_message('Você não é o dono dessa quest ou ela não existe.', ephemeral=True)
+        await ctx.response.send_message('Você não é o dono dessa quest ou ela não existe.', ephemeral=True)
 
 @guilda.command(name='quadro', description='Este comando permite visualizar as quests disponíveis')
 async def classificados_command(
@@ -3796,7 +3821,7 @@ async def generate_guild_log(msg):
     await send_message2(msg, 1193144846945353749, True)
     
 
-async def get_user_quests(ctx: discord.AutocompleteContext):
+async def get_user_created_quests(ctx: discord.AutocompleteContext):
 
     user_name = dbservice.select('user', ['name'], '', {'id': ctx.interaction.user.id})
     
@@ -3819,12 +3844,13 @@ async def get_user_quests(ctx: discord.AutocompleteContext):
 
     return [name for name in names if ctx.value.lower() in name.lower()]
 
+
     
 
 @guilda.command(name='cancelar_quest', description='Este comando permite que ')
 async def cancelar_quest_command(
     ctx: discord.ApplicationContext,
-    quest: discord.Option(str, autocomplete=get_user_quests, name='quest')
+    quest: discord.Option(str, autocomplete=get_user_created_quests, name='quest')
 ):
     user = ctx.author.id
     
@@ -3840,6 +3866,7 @@ async def cancelar_quest_command(
 
 # to do
 
+#   URGENTE: criação de quests precisam aparecer no log!!!!!!!!!
 # criar maneira de dropar quest CRIADA
 # criar canal que mantém o quadro sempre exposto e atualizado ao vivo
 # pensar no sistema de upvote e downvote do nico
