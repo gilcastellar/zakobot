@@ -3863,7 +3863,7 @@ async def cancelar_quest_command(
     print('anilist_id')
     print(anilist_id)
 
-    ts = datetime.datetime.now().timestamp() + 259200
+    ts = int(datetime.datetime.now().timestamp() + 259200)
     
     due_date = dbservice.select('user', ['quest_cancel_due_date'], '', {'id': user})
     
