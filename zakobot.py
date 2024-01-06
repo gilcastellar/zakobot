@@ -3323,7 +3323,7 @@ async def guilda_criar_quest_command(
                 print('size factor')
                 print(str(size_factor))
             
-                reward = (ceil(100 * duration_factor) - 100) * size_factor
+                reward = ceil(((100 * duration_factor) - 100) * size_factor)
 
                 date = datetime.datetime.now(ZoneInfo('America/Sao_Paulo'))
                 
