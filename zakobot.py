@@ -3818,7 +3818,7 @@ async def aux_command(ctx):
 
     if ctx.author.id in admins:
         
-        data = dbservice.select('quests', ['id_anilist', 'item_type', 'value', 'item_name'], '')
+        data = dbservice.select('quests', ['id_anilist', 'item_type', 'value', 'item_name'], '', {'id': >= 151})
         
         print('data')
         print(data)
