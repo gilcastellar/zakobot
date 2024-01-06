@@ -3727,7 +3727,7 @@ async def inventario_command(
         text += f'**Inventário de {user} **\n\n'
       
     if user == None:
-        due_date = dbservice.select('user', ['quest_cancel_due_date'], '', {'id': user_id})
+        due_date = int(dbservice.select('user', ['quest_cancel_due_date'], '', {'id': user_id})) - 10800
         data_cd = datetime.datetime.utcfromtimestamp(due_date).strftime('%d-%m-%Y %H:%M:%S')
         
         text += '**$' + str(grana) + '**\n\n'
@@ -3887,7 +3887,7 @@ async def cancelar_quest_command(
     
     else:
         
-        data_cd = datetime.datetime.utcfromtimestamp(due_date).strftime('%d-%m-%Y %H:%M:%S')
+        data_cd = datetime.datetime.utcfromtimestamp(due_date - 10800).strftime('%d-%m-%Y %H:%M:%S')
         
         await ctx.response.send_message(f'Não foi possível cancelar a quest. Você só poderá cancelar outra quest em {data_cd}.', ephemeral=True)
     
