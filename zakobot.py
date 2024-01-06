@@ -116,19 +116,20 @@ class TopPagination(discord.ui.View): # Create a class called MyView that subcla
         await interaction.response.send_message('')
 
 class QuestBoardPagination(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
-    def __init__(self, msg, page, last_page, data):
+    def __init__(self, msg, page, last_page, data, disponibilidade):
         super().__init__()
         #self.ctx = ctx
         self.msg = msg
         self.page = page
         self.last_page = last_page
         self.data = data
+        self.disponibilidade = disponibilidade
 
     @discord.ui.button(label="<<", row=0, style=discord.ButtonStyle.primary)
     async def first_button_callback(self, button, interaction):
         if self.page > 1:
             self.page -= 1
-        await gerar_quest_board(self.msg, self.page, self.last_page, self.data)
+        await gerar_quest_board(self.msg, self.page, self.last_page, self.data, self.disponibilidade)
         await interaction.response.send_message('')
 
     @discord.ui.button(label=">>", row=0, style=discord.ButtonStyle.primary)
@@ -3637,7 +3638,10 @@ async def gerar_quest_board(msg, page, last_page, data, disponibilidade=False):
     
     if page <= last_page:
 
-        await msg.edit(text, view=QuestBoardPagination(msg, page, last_page, data))
+        if disponibilidade == True:
+            await msg.edit(text, view=QuestBoardPagination(msg, page, last_page, data, True))
+        else:
+            await msg.edit(text, view=QuestBoardPagination(msg, page, last_page, data))
 
 @guilda.command(name='flavor', description='Este comando permite a criação de "flavor texts" que enfeitarão as quests no quadro')
 async def flavor_command(
