@@ -3535,7 +3535,7 @@ async def classificados_command(
     disponibilidade: discord.Option(str, choices=['Quests aceitas'], name='disponibilidade', required=False)
 ):
     
-    if disponibilidade != 'Aceitas':
+    if disponibilidade != 'Quests aceitas':
         
         if type == 'Anime':
             data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], ' ORDER BY date_inserted', {'is_available':'true', 'item_type':'anime'})
