@@ -3456,7 +3456,7 @@ def calculate_quest_reward(base_value, days_passed):
     
     value = base_value
 
-    factor = 1.0235
+    factor = 1.03
 
     for day in range(int(days_passed)):
         value = ceil(value * factor)
