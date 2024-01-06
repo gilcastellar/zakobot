@@ -3599,7 +3599,7 @@ async def inventario_command(
     if user == None:
         text += '**$' + str(grana) + '**\n\n'
         text += '**Quests à venda: **' + str(seller_slots) + '/' + str(seller_total_slots) + ' \n\n'
-        selling_quests = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], '', {'sender': user_id})
+        selling_quests = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], '', {'sender': user_id, 'is_available': 'true'})
         
         if not isinstance(selling_quests, list):
             selling_quests = [selling_quests]
