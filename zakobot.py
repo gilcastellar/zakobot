@@ -291,10 +291,13 @@ async def send_message(ctx, text, channel_id=''):
     return message
 
 # Send message
-async def send_message2(text, channel_id):
+async def send_message2(text, channel_id, silent=False):
 
     channel = bot.get_channel(channel_id)
-    message = await channel.send(text)
+    if False:
+        message = await channel.send(text)
+    else:
+        message = await channel.send(text, silent=True)
 
     return message
 
@@ -3369,9 +3372,16 @@ class AcquiringBtn(discord.ui.View): # Create a class called MyView that subclas
             
             await interaction.response.send_message("Quest aceita com sucesso.", ephemeral=True) # Send a message when the button is clicked
             
-            date = int(datetime.datetime.now().timestamp())
+            timestamp = int(datetime.datetime.now().timestamp())
+            # date = 
             
-            dbservice.update('quests', ['date_bought'], [int(date)], {'item_name': self.real_name, 'item_type': self._type})
+            dbservice.update('quests', ['date_bought'], [int(timestamp)], {'item_name': self.real_name, 'item_type': self._type})
+            
+            flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': self.user_id, 'item_name': self.real_name, 'item_type': self._type}).split('*')
+            
+            msg = f"📋 O aventureiro <@{str(self.user_id)}> aceitou a quest {flavor1} {self.real_name} {flavor2} ({self.item_type})"
+            
+            await generate_guild_log(msg)
 
 @guilda.command(name='aceitar_quest', description='Este comando permite aceitar quests disponíveis no quadro')
 async def guilda_aceitar_quest_command(
@@ -3695,16 +3705,20 @@ async def gerar_quest_board(msg, page, last_page, data):
 
         await msg.edit(text, view=QuestBoardPagination(msg, page, last_page, data))
 
+#channel == 1193144846945353749
 
+async def generate_guild_log(msg):
     
+    await send_message2(msg, 1193144846945353749, True)
 # to do
 
-# pensar em sistema de party
-# pensar em sistema de raid
-# pensar no sistema de upvote e downvote do nico
 # criar canal de log q mostre compras e inserções
-# criar canal que mantém o quadro sempre exposto e atualizado ao vivo
 # criar maneira de ver o inventario alheio
+# criar canal que mantém o quadro sempre exposto e atualizado ao vivo
+# criar maneira de dropar quest CRIADA
+# pensar no sistema de upvote e downvote do nico
+# pensar em sistema de raid
+# pensar em sistema de party
 
 ##############################
 #
