@@ -3880,6 +3880,7 @@ async def cancelar_quest_command(
         await generate_guild_log(msg)
     
         dbservice.delete('quests', {'sender': user, 'id_anilist': anilist_id})
+        dbservice.update('user', ['quest_cancel_due_date'], [ts], {'id': user})
     
         await ctx.response.send_message(f'Quest cancelada com sucesso. Você poderá cancelar outra quest em {data_cd}.', ephemeral=True)
 
