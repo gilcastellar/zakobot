@@ -3563,9 +3563,10 @@ async def inventario_command(
     ctx: discord.ApplicationContext,
     user: discord.Option(str, name='usuario', autocomplete=get_members_names2, required=False)
 ):
-    print(user)    
-
-    user_id = ctx.author.id   
+    if user == None:   
+        user_id = ctx.author.id
+    else:
+        user_id = dbservice.select('user', ['id'], '', {'name':user})
 
     seller_slots = dbservice.select('quests', ['sender'], '', {'sender': user_id, 'is_available': 'true'})
 
