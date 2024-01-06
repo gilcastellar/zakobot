@@ -3870,6 +3870,9 @@ async def cancelar_quest_command(
     
     due_date = dbservice.select('user', ['quest_cancel_due_date'], '', {'id': user})
     
+    print('due date')
+    print(str(due_date))
+    
     if due_date == None or ts >= due_date:
         data_cd = datetime.datetime.utcfromtimestamp(ts).strftime('%d-%m-%Y %H:%M:%S')
         
