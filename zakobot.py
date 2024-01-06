@@ -3298,7 +3298,7 @@ async def guilda_criar_quest_command(
                     media_obj = response.json()
                     chapters = media_obj['data']['Media']['chapters']
                     volumes = media_obj['data']['Media']['volumes']
-                    duration = 60
+                    duration = 45
                     
                     if volumes == None or volumes == 1:
                         if chapters == 1:
@@ -3530,17 +3530,32 @@ async def guilda_entregar_quest_command(
 @guilda.command(name='quadro', description='Este comando permite visualizar as quests disponíveis')
 async def classificados_command(
     ctx: discord.ApplicationContext,
-    type: discord.Option(str, choices=['Anime', 'Manga'], required=False)
+    type: discord.Option(str, choices=['Anime', 'Manga'], name='tipo', required=False),
+    disponibilidade: discord.Option(str, choices=['Aceitas'], name='disponibilidade', required=False)
 ):
-    if type == 'Anime':
-        data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], ' ORDER BY date_inserted', {'is_available':'true', 'item_type':'anime'})
     
-    elif type == 'Manga':
-        data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], ' ORDER BY date_inserted', {'is_available':'true', 'item_type':'manga'})
+    if disponibilidade != 'Aceitas':
+        
+        if type == 'Anime':
+            data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], ' ORDER BY date_inserted', {'is_available':'true', 'item_type':'anime'})
     
-    else:
-        data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], ' ORDER BY date_inserted', {'is_available':'true'})
+        elif type == 'Manga':
+            data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], ' ORDER BY date_inserted', {'is_available':'true', 'item_type':'manga'})
+    
+        else:
+            data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], ' ORDER BY date_inserted', {'is_available':'true'})
 
+    else:
+        if type == 'Anime':
+            data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], ' ORDER BY date_inserted', {'is_available':'false', 'item_type':'anime'})
+    
+        elif type == 'Manga':
+            data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], ' ORDER BY date_inserted', {'is_available':'false', 'item_type':'manga'})
+    
+        else:
+            data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], ' ORDER BY date_inserted', {'is_available':'false'})
+
+        
     text = 'QUESTS \n\n'
     
     
