@@ -3800,7 +3800,7 @@ async def get_user_quests(ctx: discord.AutocompleteContext):
 
     user_name = dbservice.select('user', ['name'], '', {'id': ctx.interaction.user.id})
     
-    quests_options = dbservice.select('quests', ['item_name'], '', {'sender': str(ctx.interaction.user.id), 'is_available': 'true'})
+    quests_options = dbservice.select('quests', ['item_name', 'item_type'], '', {'sender': str(ctx.interaction.user.id), 'is_available': 'true'})
     
     print(quests_options)
 
@@ -3813,7 +3813,7 @@ async def get_user_quests(ctx: discord.AutocompleteContext):
 
     for name in quests_options:
         
-        names.append(name[0])
+        names.append(name[0] + ' (' + name[1] + ')')
             
     print(names)
 
@@ -3826,6 +3826,17 @@ async def cancelar_quest_command(
     ctx: discord.ApplicationContext,
     quest: discord.Option(str, autocomplete=get_user_quests, name='quest')
 ):
+    user = ctx.author.id
+    
+    real_name, _type = quest.split(' (')
+    
+    anilist_id = dbservice.select('quests', ['id_anilist'], '', {'sender': user, 'item_name': real_name})
+    
+    print('anilist_id')
+    print(anilist_id)
+
+    # dbservice.delete('quests', {'sender': user, 'id_anilist': anilist_id})
+    
 
 # to do
 
