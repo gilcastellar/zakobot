@@ -3858,6 +3858,8 @@ async def cancelar_quest_command(
     
     real_name, _type = quest.split(' (')
     
+    _type = _type.strip(')')
+    
     anilist_id = dbservice.select('quests', ['id_anilist'], '', {'sender': user, 'item_name': real_name})
     
     print('anilist_id')
@@ -3867,19 +3869,19 @@ async def cancelar_quest_command(
     
     due_date = dbservice.select('user', ['quest_cancel_due_date'], '', {'id': user})
     
-    if due_date == None:
+    if due_date == None or ts >= due_date:
         data_cd = datetime.datetime.utcfromtimestamp(ts).strftime('%d-%m-%Y %H:%M:%S')
+        
+        flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'sender': user, 'id_anilist': anilist_id}).split('*')
+        
+        msg = f'A quest *{flavor1}**{real_name} ({_type})**{flavor2}* foi deletada pelo criador.'
+        
+        await generate_guild_log(msg)
     
         dbservice.delete('quests', {'sender': user, 'id_anilist': anilist_id})
     
         await ctx.response.send_message(f'Quest cancelada com sucesso. Você poderá cancelar outra quest em {data_cd}.', ephemeral=True)
 
-    elif ts >= due_date:
-        data_cd = datetime.datetime.utcfromtimestamp(ts).strftime('%d-%m-%Y %H:%M:%S')
-    
-        dbservice.delete('quests', {'sender': user, 'id_anilist': anilist_id})
-    
-        await ctx.response.send_message(f'Quest cancelada com sucesso. Você poderá cancelar outra quest em {data_cd}.', ephemeral=True)
     
     else:
         
