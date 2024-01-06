@@ -3296,8 +3296,8 @@ async def guilda_criar_quest_command(
                     response = anilist.query_manga_id(anilist_id)
 
                     media_obj = response.json()
-                    chapters = media_obj['data']['Media']['chapters']
-                    duration = 8
+                    volumes = media_obj['data']['Media']['chapters']
+                    duration = 60
                     
                     if chapters == None:
                         await ctx.response.send_message('Você provavelmente tentou inserir uma obra que não contém o número de episódios/capítulos ou está em lançamento no Anilist.', ephemeral=True)
@@ -3762,9 +3762,8 @@ async def generate_guild_log(msg):
     await send_message2(msg, 1193144846945353749, True)
 # to do
 
-# criar maneira de ver o inventario alheio
-# criar canal que mantém o quadro sempre exposto e atualizado ao vivo
 # criar maneira de dropar quest CRIADA
+# criar canal que mantém o quadro sempre exposto e atualizado ao vivo
 # pensar no sistema de upvote e downvote do nico
 # pensar em sistema de raid
 # pensar em sistema de party

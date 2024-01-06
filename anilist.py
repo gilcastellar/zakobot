@@ -183,6 +183,7 @@ def query_manga_id(id):
         id
         format
         chapters
+        volumes
         duration
         popularity
         status
