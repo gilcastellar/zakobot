@@ -3531,7 +3531,7 @@ async def guilda_entregar_quest_command(
 async def classificados_command(
     ctx: discord.ApplicationContext,
     type: discord.Option(str, choices=['Anime', 'Manga'], name='tipo', required=False),
-    disponibilidade: discord.Option(str, choices=['Aceitas'], name='disponibilidade', required=False)
+    disponibilidade: discord.Option(str, choices=['Quests aceitas'], name='disponibilidade', required=False)
 ):
     
     if disponibilidade != 'Aceitas':
