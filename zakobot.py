@@ -3379,7 +3379,7 @@ class AcquiringBtn(discord.ui.View): # Create a class called MyView that subclas
             
             flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': self.user_id, 'item_name': self.real_name, 'item_type': self._type}).split('*')
             
-            msg = f"📋 O aventureiro <@{str(self.user_id)}> aceitou a quest {flavor1}**{self.real_name}**{flavor2} ({self.item_type})"
+            msg = f"📋 O aventureiro <@{str(self.user_id)}> aceitou a quest {flavor1}**{self.real_name}**{flavor2} ({self._type})"
             
             await generate_guild_log(msg)
 
