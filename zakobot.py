@@ -3299,11 +3299,11 @@ async def guilda_criar_quest_command(
                     volumes = media_obj['data']['Media']['chapters']
                     duration = 60
                     
-                    if chapters == None:
-                        await ctx.response.send_message('Você provavelmente tentou inserir uma obra que não contém o número de episódios/capítulos ou está em lançamento no Anilist.', ephemeral=True)
+                    if volumes == None:
+                        await ctx.response.send_message('Você provavelmente tentou inserir uma obra que não contém o número de episódios/volumes ou está em lançamento no Anilist.', ephemeral=True)
                         return
                     
-                    total_duration = chapters * duration
+                    total_duration = volumes * duration
                     type_factor = 0.004
 
                 title = media_obj['data']['Media']['title']['romaji']
