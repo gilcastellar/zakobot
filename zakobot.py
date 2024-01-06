@@ -3883,7 +3883,7 @@ async def aux_command(ctx):
                 
             hours = floor(total_duration / 60)
                 
-            size_factor = 1 + ((hours - 1)/10)
+            size_factor = 1 + ((hours - 1)/12)
             print('size factor')
             print(str(size_factor))
             
