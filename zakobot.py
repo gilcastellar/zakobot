@@ -3549,7 +3549,7 @@ async def classificados_command(
     # await ctx.respond(f'**QUESTS**')
     
     msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
-    await ctx.response.send_message('', ephemeral=True)
+    await ctx.response.send_message('OK', ephemeral=True)
 
     await gerar_quest_board(msg, 1, 0, data)
 
