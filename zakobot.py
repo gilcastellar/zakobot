@@ -3319,7 +3319,7 @@ async def guilda_criar_quest_command(
                 
                 hours = floor(total_duration / 60)
                 
-                size_factor = 1 + ((hours - 1)/17)
+                size_factor = 1 + ((hours - 1)/20)
                 print('size factor')
                 print(str(size_factor))
             
@@ -3883,7 +3883,7 @@ async def aux_command(ctx):
                 
             hours = floor(total_duration / 60)
                 
-            size_factor = 1 + ((hours - 1)/17)
+            size_factor = 1 + ((hours - 1)/20)
             print('size factor')
             print(str(size_factor))
             
