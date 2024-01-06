@@ -3873,7 +3873,10 @@ async def cancelar_quest_command(
     print('due date')
     print(str(due_date))
     
-    if due_date == None or ts >= due_date:
+    print('now')
+    print(ts)
+    
+    if due_date == None or datetime.datetime.now().timestamp() >= due_date:
         data_cd = datetime.datetime.utcfromtimestamp(ts).strftime('%d-%m-%Y %H:%M:%S')
         
         flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'sender': user, 'id_anilist': anilist_id}).split('*')
