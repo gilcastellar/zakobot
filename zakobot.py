@@ -3379,7 +3379,7 @@ class AcquiringBtn(discord.ui.View): # Create a class called MyView that subclas
             
             flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': self.user_id, 'item_name': self.real_name, 'item_type': self._type}).split('*')
             
-            msg = f"📋 O aventureiro <@{str(self.user_id)}> aceitou a quest {flavor1} {self.real_name} {flavor2} ({self.item_type})"
+            msg = f"📋 O aventureiro <@{str(self.user_id)}> aceitou a quest {flavor1}{self.real_name}{flavor2} ({self.item_type})"
             
             await generate_guild_log(msg)
 
@@ -3510,7 +3510,9 @@ async def guilda_entregar_quest_command(
             
             dbservice.delete('quests', {'buyer': user, 'id_anilist': anilist_id})
             
-            await ctx.response.send_message('Parabéns! <@' + str(user) + '> completou e entregou a quest "' + flavor1 + '**' + obra + '**' + flavor2 + '" criada por <@' + str(sender_id) + '>!')
+            msg = f'Parabéns! <@{str(user)}> completou e entregou a quest "{flavor1}**{obra}**{flavor2}" criada por <@{str(sender_id)}>!')
+
+            await generate_guild_log(msg)
             
         else:
 
