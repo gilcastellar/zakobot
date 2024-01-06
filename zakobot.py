@@ -3519,7 +3519,7 @@ async def guilda_entregar_quest_command(
             
             dbservice.delete('quests', {'buyer': user, 'id_anilist': anilist_id})
             
-            msg = f'O aventureiro <@{str(user)}> completou e entregou a quest *{flavor1}**{obra} ({type})**{flavor2}* criada por <@{str(sender_id)}>!'
+            msg = f'O aventureiro <@{str(user)}> completou e entregou a quest *{flavor1}**{obra} ({type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(buyer_reward)} e ${str(sender_reward)} respectivamente.'
 
             await generate_guild_log(msg)
             
