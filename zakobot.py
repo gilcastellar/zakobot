@@ -3529,9 +3529,17 @@ async def guilda_entregar_quest_command(
 
 @guilda.command(name='quadro', description='Este comando permite visualizar as quests disponíveis')
 async def classificados_command(
-    ctx: discord.ApplicationContext
+    ctx: discord.ApplicationContext,
+    type: discord.Option(str, choices=['Anime', 'Manga'], required=False)
 ):
-    data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], ' ORDER BY date_inserted', {'is_available':'true'})
+    if type == 'Anime':
+        data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], ' ORDER BY date_inserted', {'is_available':'true', 'item_type':'anime'})
+    
+    elif type = 'Manga':
+        data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], ' ORDER BY date_inserted', {'is_available':'true', 'item_type':'manga'})
+    
+    else:
+        data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], ' ORDER BY date_inserted', {'is_available':'true'})
 
     text = 'QUESTS \n\n'
     
