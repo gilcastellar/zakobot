@@ -3379,7 +3379,7 @@ class AcquiringBtn(discord.ui.View): # Create a class called MyView that subclas
             
             flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': self.user_id, 'item_name': self.real_name, 'item_type': self._type}).split('*')
             
-            msg = f"📋 O aventureiro <@{str(self.user_id)}> aceitou a quest *{flavor1}**{self.real_name}**{flavor2}* ({self._type})"
+            msg = f"📋 O aventureiro <@{str(self.user_id)}> aceitou a quest *{flavor1} **{self.real_name} ({self._type})**{flavor2}*"
             
             await generate_guild_log(msg)
 
@@ -3471,7 +3471,7 @@ async def guilda_abandonar_quest_command(
             flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': user_id, 'id_anilist': anilist_id}).split('*')
             dbservice.update('quests', ['buyer', 'is_available', 'abandoned'], ['', 'true', 'true'], {'buyer': user_id, 'id_anilist': anilist_id})
             
-            msg = f'💀 O aventureiro <@{str(user_id)}> morreu tentanto terminar a quest *{flavor1}**{obra}**{flavor2}* e a mesma foi devolvida ao quadro. Essa quest não conta para o limite de criação do criador.'
+            msg = f'💀 O aventureiro <@{str(user_id)}> morreu tentanto terminar a quest *{flavor1}**{obra} ({type})**{flavor2}* e a mesma foi devolvida ao quadro. Essa quest não conta para o limite de criação do criador.'
             await generate_guild_log(msg)
             
             await ctx.response.send_message('Quest abandonada com sucesso.', ephemeral=True)
@@ -3512,7 +3512,7 @@ async def guilda_entregar_quest_command(
             
             dbservice.delete('quests', {'buyer': user, 'id_anilist': anilist_id})
             
-            msg = f'O aventureiro <@{str(user)}> completou e entregou a quest *{flavor1}**{obra}**{flavor2}* criada por <@{str(sender_id)}>!'
+            msg = f'O aventureiro <@{str(user)}> completou e entregou a quest *{flavor1}**{obra} ({type})**{flavor2}* criada por <@{str(sender_id)}>!'
 
             await generate_guild_log(msg)
             
