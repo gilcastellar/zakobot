@@ -3727,11 +3727,13 @@ async def inventario_command(
         text += f'**Inventário de {user} **\n\n'
       
     if user == None:
-        due_date = int(dbservice.select('user', ['quest_cancel_due_date'], '', {'id': user_id})) - 10800
-        data_cd = datetime.datetime.utcfromtimestamp(due_date).strftime('%d-%m-%Y %H:%M:%S')
+        
         
         text += '**$' + str(grana) + '**\n\n'
-        text += 'Data do próximo cancelamento de quest: ' + data_cd + '\n\n'
+        if dbservice.select('user', ['quest_cancel_due_date'], '', {'id': user_id}) != None:
+            due_date = int(dbservice.select('user', ['quest_cancel_due_date'], '', {'id': user_id})) - 10800
+            data_cd = datetime.datetime.utcfromtimestamp(due_date).strftime('%d-%m-%Y %H:%M:%S')
+            text += 'Data do próximo cancelamento de quest: ' + data_cd + '\n\n'
         text += '**Quests à venda: **' + str(seller_slots) + '/' + str(seller_total_slots) + ' \n\n'
         selling_quests = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], '', {'sender': user_id, 'is_available': 'true'})
         
@@ -3900,8 +3902,6 @@ async def cancelar_quest_command(
 
 # to do
 
-#   URGENTE: criação de quests precisam aparecer no log!!!!!!!!!
-# criar maneira de dropar quest CRIADA
 # criar canal que mantém o quadro sempre exposto e atualizado ao vivo
 # pensar no sistema de upvote e downvote do nico
 # pensar em sistema de raid
