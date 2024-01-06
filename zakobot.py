@@ -3794,6 +3794,39 @@ async def inventario_command(
 async def generate_guild_log(msg):
     
     await send_message2(msg, 1193144846945353749, True)
+    
+
+async def get_user_quests(ctx: discord.AutocompleteContext):
+
+    user_name = dbservice.select('user', ['name'], '', {'id': ctx.interaction.user.id})
+    
+    quests_options = dbservice.select('quests', ['item_name'], '', {'sender': str(ctx.interaction.user.id), 'is_available': 'true'})
+    
+    print(quests_options)
+
+    if not isinstance(quests_options, list):
+        quests_options = [quests_options]
+        print('test:')
+        print(quests_options)
+
+    names = []
+
+    for name in quests_options:
+        
+        names.append(name[0])
+            
+    print(names)
+
+    return [name for name in names if ctx.value.lower() in name.lower()]
+
+    
+
+@guilda.command(name='cancelar_quest', description='Este comando permite que ')
+async def cancelar_quest_command(
+    ctx: discord.ApplicationContext,
+    quest: discord.Option(str, autocomplete=get_user_quests, name='quest')
+):
+
 # to do
 
 # criar maneira de dropar quest CRIADA
