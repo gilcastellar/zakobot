@@ -3560,7 +3560,8 @@ async def flavor_command(
 
 @guilda.command(name='inventario', description='Este comando permite visualizar seu dinheiro, espaço e quests aceitas')
 async def inventario_command(
-    ctx: discord.ApplicationContext
+    ctx: discord.ApplicationContext,
+    user: discord.Option(str, name='usuario', autocomplete=get_members_names, required=False)
 ):
     user_id = ctx.author.id   
 
@@ -3716,7 +3717,6 @@ async def generate_guild_log(msg):
     await send_message2(msg, 1193144846945353749, True)
 # to do
 
-# criar canal de log q mostre compras e inserções
 # criar maneira de ver o inventario alheio
 # criar canal que mantém o quadro sempre exposto e atualizado ao vivo
 # criar maneira de dropar quest CRIADA
