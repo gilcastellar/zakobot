@@ -3894,6 +3894,8 @@ async def aux_command(ctx):
             print('Novo valor: ' + str(reward))
             print('=============================================================')
 
+            dbservice.update('quests', ['value'], [reward], {'id_anilist':obra[0]})
+
     
         
         # await send_message2('ok', 1077070205987082281)
