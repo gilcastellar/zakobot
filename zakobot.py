@@ -3890,8 +3890,8 @@ async def aux_command(ctx):
             reward = ceil(((100 * duration_factor) - 100) * size_factor)
             
             print('Obra: ' + name)
-            print('Valor anterior: ' + previous_value)
-            print('Novo valor: ' + reward)
+            print('Valor anterior: ' + str(previous_value))
+            print('Novo valor: ' + str(reward))
             print('=============================================================')
 
     
