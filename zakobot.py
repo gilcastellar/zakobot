@@ -3594,10 +3594,12 @@ async def inventario_command(
     # await send_message(ctx, f'MEU INVENTÁRIO')
 
     text = '**$' + str(grana) + '**\n\n'
-    text += '**Quests:**\n'
-    text += 'À venda: ' + str(seller_slots) + '/' + str(seller_total_slots)
-    text += '\nAceitas: ' + str(buyer_slots) + '/' + str(buyer_total_slots)
-    text += '\n\n'
+    if user != None:
+        text += 'À venda: ' + str(seller_slots) + '/' + str(seller_total_slots)
+        text += '\nAceitas: ' + str(buyer_slots) + '/' + str(buyer_total_slots)
+        text += '\n\n'
+
+    text += '**Quests:**\n\n'
     print('length of data')
     print(len(data))
     if len(data) < 1:
