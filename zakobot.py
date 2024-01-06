@@ -3296,12 +3296,17 @@ async def guilda_criar_quest_command(
                     response = anilist.query_manga_id(anilist_id)
 
                     media_obj = response.json()
-                    volumes = media_obj['data']['Media']['chapters']
+                    chapters = media_obj['data']['Media']['chapters']
+                    volumes = media_obj['data']['Media']['volumes']
                     duration = 60
                     
-                    if volumes == None:
-                        await ctx.response.send_message('Você provavelmente tentou inserir uma obra que não contém o número de episódios/volumes ou está em lançamento no Anilist.', ephemeral=True)
-                        return
+                    if volumes == None or volumes == 1:
+                        if chapters == 1:
+                            duration = 20
+                            volumes = 1
+                        else:
+                            await ctx.response.send_message('Você provavelmente tentou inserir uma obra que não contém o número de episódios/volumes ou está em lançamento no Anilist.', ephemeral=True)
+                            return
                     
                     total_duration = volumes * duration
                     type_factor = 0.004
