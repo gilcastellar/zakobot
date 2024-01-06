@@ -3226,7 +3226,7 @@ class SellingBtn(discord.ui.View): # Create a class called MyView that subclasse
         
         flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'id_anilist': self.anilist_id}).split('*')
         
-        msg = f'A quest *{flavor1}**{self.title} ({self.type})**{flavor2}* acabou de ser criada, está valendo ${str(self.value)} e já está disponível no quadro!'
+        msg = f'A quest *{flavor1}**{self.title} ({self.type})**{flavor2}* acabou de ser criada, está valendo ${str(self.value} e já está disponível no quadro!'
     
         await generate_guild_log(msg)
 
@@ -3549,6 +3549,7 @@ async def classificados_command(
     # await ctx.respond(f'**QUESTS**')
     
     msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
+    await ctx.response.send_message('', ephemeral=True)
 
     await gerar_quest_board(msg, 1, 0, data)
 
