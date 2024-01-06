@@ -3559,11 +3559,12 @@ async def classificados_command(
     text = 'QUESTS \n\n'
     
     
+    print('chegou aqui 1')
     print(data)
     if len(data) < 1:
         await ctx.response.send_message(text + 'Não existem quests disponíveis.', ephemeral=True)
         return
-
+    print('chegou aqui 2')
     if not isinstance(data, list):
         data = [data]
         print('test:')
@@ -3574,7 +3575,7 @@ async def classificados_command(
     msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
     await ctx.response.send_message('OK', ephemeral=True)
 
-    print('chegou aqui 1')
+    print('chegou aqui 3')
 
     await gerar_quest_board(msg, 1, 0, data)
                 
