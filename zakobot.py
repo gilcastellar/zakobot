@@ -3593,15 +3593,37 @@ async def inventario_command(
     
     # await send_message(ctx, f'MEU INVENTÁRIO')
     text = ''
+    if user != None:
+        text += f'**Inventário de {user} **\n\n'
+    text += '**Quests:**\n\n'   
     if user == None:
         text += '**$' + str(grana) + '**\n\n'
-        text += 'À venda: ' + str(seller_slots) + '/' + str(seller_total_slots)
+        text += 'À venda:' + str(seller_slots) + '/' + str(seller_total_slots) + ' \n\n'
+        selling_quests = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], '', {'sender': user_id})
+        
+        if not isinstance(selling_quests, list):
+            selling_quests = [selling_quests]
+            
+        for quest in selling_quests:
+            time_passed = int(datetime.datetime.now().timestamp()) - int(quest[4])
+            print('time_passed')
+            print(time_passed)
+        
+            days = floor(time_passed / 86400)
+            print('days')
+            print(days)
+        
+            value = calculate_quest_reward(obra[3], days)
+        
+            flavor1, flavor2 = obra[5].split('*')
+        
+            text += flavor1 + '**' + obra[1] + '**' + flavor2 + '\n'
+            
+            text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
+            
         text += '\nAceitas: ' + str(buyer_slots) + '/' + str(buyer_total_slots)
         text += '\n\n'
-    else:
-        text += f'**Inventário de {user} **\n\n'
-
-    text += '**Quests:**\n\n'
+        
     print('length of data')
     print(len(data))
     if len(data) < 1:
