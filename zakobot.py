@@ -3423,7 +3423,7 @@ async def guilda_aceitar_quest_command(
                                                         
         time_passed = int(datetime.datetime.now().timestamp()) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': real_name, 'item_type': _type}))
     
-        days = floor(time_passed / 1440)
+        days = floor(time_passed / 86400)
 
         print('days: ' + str(days))
 
