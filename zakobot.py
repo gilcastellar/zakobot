@@ -3547,13 +3547,13 @@ async def classificados_command(
 
     else:
         if type == 'Anime':
-            data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], ' ORDER BY date_inserted', {'is_available':'false', 'item_type':'anime'})
+            data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'buyer'], ' ORDER BY date_inserted', {'is_available':'false', 'item_type':'anime'})
     
         elif type == 'Manga':
-            data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], ' ORDER BY date_inserted', {'is_available':'false', 'item_type':'manga'})
+            data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'buyer'], ' ORDER BY date_inserted', {'is_available':'false', 'item_type':'manga'})
     
         else:
-            data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], ' ORDER BY date_inserted', {'is_available':'false'})
+            data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'buyer'], ' ORDER BY date_inserted', {'is_available':'false'})
 
         
     text = 'QUESTS \n\n'
@@ -3574,7 +3574,68 @@ async def classificados_command(
     msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
     await ctx.response.send_message('OK', ephemeral=True)
 
-    await gerar_quest_board(msg, 1, 0, data)
+
+    if disponibilidade == 'Aceitas':
+        await gerar_quest_board(msg, 1, 0, data, True)
+    else:
+        await gerar_quest_board(msg, 1, 0, data)
+                
+async def gerar_quest_board(msg, page, last_page, data, disponibilidade=False):
+    
+    print(data)
+    print(len(data))
+    
+    if not isinstance(data, list):
+        data = [data]
+        print('test:')
+        print(data)
+
+    batch = 8
+
+    indice = (page * batch) - (batch - 1)
+
+    text = '# **QUESTS**\n\n'
+
+    print('page')
+    print(page)
+
+    print('indice:')
+    print(indice)
+
+    last_page = ceil(len(data) / batch)
+
+    for obra in data[batch*(page-1):batch*page]:
+
+        print(indice)
+
+        print('obra')
+        print(obra)
+
+        for i in obra:
+            print(i)
+        
+        print(obra[4])
+        
+        time_passed = int(datetime.datetime.now().timestamp()) - int(obra[4])
+        print('time elapsed: ' + str(time_passed))
+        
+        days = floor(time_passed / 86400)
+        print('days: ' + str(days))
+        
+        value = calculate_quest_reward(obra[3], days)
+        
+        flavor1, flavor2 = obra[5].split('*')
+        
+        text += flavor1 + '**' + obra[1] + '**' + flavor2 + '\n'
+            
+        text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n'
+        if disponibilidade == True:
+            aventureiro = dbservice.select('user', ['name'], '', {'id': obra[6]})
+            text += f'Aventureiro: {aventureiro}'
+    
+    if page <= last_page:
+
+        await msg.edit(text, view=QuestBoardPagination(msg, page, last_page, data))
 
 @guilda.command(name='flavor', description='Este comando permite a criação de "flavor texts" que enfeitarão as quests no quadro')
 async def flavor_command(
@@ -3715,60 +3776,7 @@ async def inventario_command(
         text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
     
     await ctx.response.send_message(text, ephemeral=True)
-            
-async def gerar_quest_board(msg, page, last_page, data):
-    
-    print(data)
-    print(len(data))
-    
-    if not isinstance(data, list):
-        data = [data]
-        print('test:')
-        print(data)
 
-    batch = 8
-
-    indice = (page * batch) - (batch - 1)
-
-    text = '# **QUESTS**\n\n'
-
-    print('page')
-    print(page)
-
-    print('indice:')
-    print(indice)
-
-    last_page = ceil(len(data) / batch)
-
-    for obra in data[batch*(page-1):batch*page]:
-
-        print(indice)
-
-        print('obra')
-        print(obra)
-
-        for i in obra:
-            print(i)
-        
-        print(obra[4])
-        
-        time_passed = int(datetime.datetime.now().timestamp()) - int(obra[4])
-        print('time elapsed: ' + str(time_passed))
-        
-        days = floor(time_passed / 86400)
-        print('days: ' + str(days))
-        
-        value = calculate_quest_reward(obra[3], days)
-        
-        flavor1, flavor2 = obra[5].split('*')
-        
-        text += flavor1 + '**' + obra[1] + '**' + flavor2 + '\n'
-            
-        text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
-    
-    if page <= last_page:
-
-        await msg.edit(text, view=QuestBoardPagination(msg, page, last_page, data))
 
 #channel == 1193144846945353749
 
