@@ -3226,7 +3226,7 @@ class SellingBtn(discord.ui.View): # Create a class called MyView that subclasse
         
         flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'id_anilist': self.anilist_id}).split('*')
         
-        msg = f'A quest *{flavor1}**{self.title} ({self.type})**{flavor2}* acabou de ser criada, está valendo ${str(self.value)} e já está disponível no quadro!'
+        msg = f'A quest *{flavor1}**{self.title} ({self.type})**{flavor2}* acabou de ser criada, está valendo ${str(self.reward)} e já está disponível no quadro!'
     
         await generate_guild_log(msg)
 
