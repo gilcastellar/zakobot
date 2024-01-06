@@ -3863,7 +3863,7 @@ async def cancelar_quest_command(
     print('anilist_id')
     print(anilist_id)
 
-    # dbservice.delete('quests', {'sender': user, 'id_anilist': anilist_id})
+    dbservice.delete('quests', {'sender': user, 'id_anilist': anilist_id})
     
 
 # to do
