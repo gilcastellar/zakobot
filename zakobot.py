@@ -3631,7 +3631,9 @@ async def gerar_quest_board(msg, page, last_page, data, disponibilidade=False):
         text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n'
         if disponibilidade == True:
             aventureiro = dbservice.select('user', ['name'], '', {'id': obra[6]})
-            text += f'Aventureiro: {aventureiro}'
+            text += f'Aventureiro: {aventureiro}\n'
+        
+        text += '\n'
     
     if page <= last_page:
 
