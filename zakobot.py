@@ -3401,12 +3401,13 @@ class AcquiringBtn(discord.ui.View): # Create a class called MyView that subclas
 
 # Resenha modal
 class ResenhaModal(discord.ui.Modal):
-    def __init__(self, user_id, item_name, buyer_reward, sender_reward, *args, **kwargs) -> None:
+    def __init__(self, user_id, item_name, buyer_reward, sender_reward, type, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.user_id = user_id
         self.item_name = item_name
         self.buyer_reward = buyer_reward
         self.sender_reward = sender_reward
+        self.type = type
         
         self.add_item(discord.ui.InputText(label="Comentário/Resenha", style=discord.InputTextStyle.long, required=True, max_length=4000))
         self.add_item(discord.ui.InputText(label="Nota (número inteiro de 0 a 10)", required=False, max_length=2))
@@ -3437,9 +3438,9 @@ class ResenhaModal(discord.ui.Modal):
         sender_id = dbservice.select('quests', ['sender'], '', {'buyer': self.user_id, 'item_name': self.item_name})
         
         if dbservice.select('user', ['sexo'], '', {'id': self.user_id}) == 'm':
-            msg = f'A aventureira <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{self.item_name} ({type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente. Além de um bônus de {str(bonus)} pela resenha.'
+            msg = f'A aventureira <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{self.item_name} ({self.type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente. Além de um bônus de {str(bonus)} pela resenha.'
         else:    
-            msg = f'O aventureiro <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{self.item_name} ({type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente. Além de um bônus de {str(bonus)} pela resenha.'
+            msg = f'O aventureiro <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{self.item_name} ({self.type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente. Além de um bônus de {str(bonus)} pela resenha.'
         
         # dbservice.delete('quests', {'buyer': self.user_id, 'item_name': self.real_name})
 
@@ -3458,7 +3459,7 @@ class ReviewBtn(discord.ui.View): # Create a class called MyView that subclasses
 
     @discord.ui.button(label="Deixar comentário ou resenha", row=0, style=discord.ButtonStyle.primary, emoji="📝") # Create a button with the label "😎 Click me!" with color Blurple
     async def first_button_callback(self, button, interaction):
-        modal = ResenhaModal(self.user_id, self.real_name, self.buyer_reward, self.sender_reward, title="Escrever resenha")
+        modal = ResenhaModal(self.user_id, self.real_name, self.buyer_reward, self.sender_reward, self.type, title="Escrever resenha")
         await interaction.response.send_modal(modal)
         
     @discord.ui.button(label="Entregar a quest sem bônus", row=0, style=discord.ButtonStyle.primary, emoji="💰") # Create a button with the label "😎 Click me!" with color Blurple
