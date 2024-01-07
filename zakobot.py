@@ -3452,7 +3452,7 @@ class ResenhaModal(discord.ui.Modal):
         else:    
             msg = f'O aventureiro <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{self.item_name} ({self.type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente. Além de um bônus de {str(bonus)} pela resenha para o aventureiro.'
         
-        # dbservice.delete('quests', {'buyer': self.user_id, 'item_name': self.real_name})
+        dbservice.delete('quests', {'buyer': self.user_id, 'item_name': self.real_name})
 
         await generate_guild_log(msg)         
 
@@ -4018,89 +4018,32 @@ async def aux_command(ctx):
 
     if ctx.author.id in admins:
         
-        data = dbservice.select('quests', ['id_anilist', 'item_type', 'value', 'item_name', 'id_item'], '')
+        channel_id = 1193569004204331052
         
-        print('data')
-        print(data)
+        data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'sender', 'is_available', 'buyer', 'value', 'flavor_text', 'date_inserted', 'date_bought'], '')
         
-        for obra in data:
-            
-            id = obra[4]
-            
-            if id > 151:
-            
-                anilist_id = obra[0]
-                previous_value = obra[2]
-                name = obra[3]
+        text = f'# **QUESTS DISPONÍVEIS**\n\n\n'
         
-                if obra[1] == 'anime':
-
-                    response = anilist.query_anime_id(anilist_id)
-                
-                    media_obj = response.json()
-                
-                    duration = media_obj['data']['Media']['duration']
-
-                    episodes = media_obj['data']['Media']['episodes']
-                    print(duration)
-                    print(episodes)
-
-                    if duration == None:
-                        await ctx.response.send_message('Você provavelmente tentou inserir uma obra sem a informação de duração no Anilist.', ephemeral=True)
-                        return                        
-
-                    elif episodes == None:
-                        await ctx.response.send_message('Você provavelmente tentou inserir uma obra que não contém o número de episódios/capítulos ou está em lançamento no Anilist.', ephemeral=True)
-                        return
-                    
-                    else:
-                        total_duration = duration * episodes
-                        type_factor = 0.004
-
-                        print(total_duration)
-                
-                else:
-
-                    response = anilist.query_manga_id(anilist_id)
-
-                    media_obj = response.json()
-                    chapters = media_obj['data']['Media']['chapters']
-                    volumes = media_obj['data']['Media']['volumes']
-                    duration = 45
-                    
-                    if volumes == None or volumes == 1:
-                        if chapters == 1:
-                            duration = 20
-                            volumes = 1
-                        else:
-                            await ctx.response.send_message('Você provavelmente tentou inserir uma obra que não contém o número de episódios/volumes ou está em lançamento no Anilist.', ephemeral=True)
-                            return
-                    
-                    total_duration = volumes * duration
-                    type_factor = 0.004
-
-                title = media_obj['data']['Media']['title']['romaji']
-                
-                print(title)
-
-                duration_factor = 1 + (total_duration * type_factor)
-                
-                hours = floor(total_duration / 60)
-                
-                size_factor = 1 + ((hours - 1)/20)
-                print('size factor')
-                print(str(size_factor))
+        for quest in data:
             
-                reward = ceil(((100 * duration_factor) - 100) * size_factor)
-            
-                print('Obra: ' + name)
-                print('Valor anterior: ' + str(previous_value))
-                print('Novo valor: ' + str(reward))
-                print('=============================================================')
-
-                dbservice.update('quests', ['value'], [reward], {'id_anilist':obra[0]})
-
-    
+            if quest[5] == True:
+                
+                flavor1, flavor2 = quest[7].split('*')
+        
+                time_passed = int(datetime.datetime.now().timestamp()) - int(quest[8])
+                print('time elapsed: ' + str(time_passed))
+        
+                days = floor(time_passed / 86400)
+                print('days: ' + str(days))
+        
+                reward = calculate_quest_reward(quest[6], days)
+                
+                text += f'*{flavor1}**{quest[1]}**{flavor2}*\n{quest[0]}\nTipo: {quest[2]}\nRecompensa: ${str(reward)}\n\n'
+                
+                msg_id = await send_message2(text, channel_id)
+                
+                dbservice.update('quests', ['id_msg'], [msg_id], {'item_name': quest[1]})
+        
         
         # await send_message2('ok', 1077070205987082281)
 
