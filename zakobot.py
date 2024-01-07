@@ -3442,7 +3442,7 @@ class ReviewBtn(discord.ui.View): # Create a class called MyView that subclasses
     @discord.ui.button(label="Deixar comentário ou resenha", row=0, style=discord.ButtonStyle.primary, emoji="📝") # Create a button with the label "😎 Click me!" with color Blurple
     async def first_button_callback(self, button, interaction):
         modal = ResenhaModal(self.user_id, self.real_name, title="Escrever resenha")
-        await self.ctx.send_modal(modal)
+        await interaction.response.send_modal(modal)
         
     @discord.ui.button(label="Entregar a quest sem bônus", row=0, style=discord.ButtonStyle.primary, emoji="💰") # Create a button with the label "😎 Click me!" with color Blurple
     async def second_button_callback(self, button, interaction):
