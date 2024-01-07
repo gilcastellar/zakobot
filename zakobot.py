@@ -3416,16 +3416,17 @@ class ResenhaModal(discord.ui.Modal):
         
         score = self.children[1].value
         
+        print(review)
+        print('score:')
+        print(score)
+        
         #sql = 'UPDATE user SET anime_list= "' + _list + '", obs= "' + _obs + '" WHERE id=' + user_id
         #print(sql)
         #database.update(sql)
 
-        dbservice.insert('quests_reviews', ['id_user', 'item_name', 'review', 'score'], [self.user_id, self.item_name, review, score])
+        # dbservice.insert('quests_reviews', ['id_user', 'item_name', 'review', 'score'], [self.user_id, self.item_name, review, score])
 
-        global key
-        key = True
-
-        await interaction.response.send_message('Edições realizadas! Utilize o comando /perfil para visualizar.')
+        print('deu bom porra')
           
 class ReviewBtn(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
     def __init__(self, value, user_id, sender_id, real_name, type, buyer_reward, sender_reward):
