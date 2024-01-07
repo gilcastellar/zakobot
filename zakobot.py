@@ -4132,7 +4132,7 @@ async def formar_grupo_command(
         if idx == len(group):
             msg += f' e {member}'
             member_id = dbservice.select('user', ['id'], '', {'name': member})
-            dbservice.update('quests', ['buyer' + str(len(group+1))], [str(member_id)], {'item_name': quest_name, 'item_type': tipo})
+            dbservice.update('quests', ['buyer' + str(len(group)+1)], [str(member_id)], {'item_name': quest_name, 'item_type': tipo})
     
         else:
             idx += 1
