@@ -3432,14 +3432,15 @@ class ResenhaModal(discord.ui.Modal):
 
         await interaction.response.send_message(f'Comentário/resenha enviada. A Guilda agradece!', ephemeral=True)
         
-        # dbservice.delete('quests', {'buyer': self.user_id, 'item_name': self.real_name})
-        
         flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': self.user_id, 'item_name': self.item_name}).split('*')
+        sender_id = dbservice.select('quests', ['sender'], '', {'buyer': self.user_id, 'item_name': self.item_name})
         
         if dbservice.select('user', ['sexo'], '', {'id': self.user_id}) == 'm':
-            msg = f'A aventureira <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{self.item_name} ({type})**{flavor2}* criada por <@{str(self.sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente. Além de um bônus de {str(bonus)} pela resenha.'
+            msg = f'A aventureira <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{self.item_name} ({type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente. Além de um bônus de {str(bonus)} pela resenha.'
         else:    
-            msg = f'O aventureiro <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{self.item_name} ({type})**{flavor2}* criada por <@{str(self.sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente. Além de um bônus de {str(bonus)} pela resenha.'
+            msg = f'O aventureiro <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{self.item_name} ({type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente. Além de um bônus de {str(bonus)} pela resenha.'
+        
+        # dbservice.delete('quests', {'buyer': self.user_id, 'item_name': self.real_name})
 
         await generate_guild_log(msg)         
 
