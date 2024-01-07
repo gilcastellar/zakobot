@@ -3442,7 +3442,7 @@ class ResenhaModal(discord.ui.Modal):
         else:    
             msg = f'O aventureiro <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{self.item_name} ({self.type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente. Além de um bônus de {str(bonus)} pela resenha.'
         
-        # dbservice.delete('quests', {'buyer': self.user_id, 'item_name': self.real_name})
+        dbservice.delete('quests', {'buyer': self.user_id, 'item_name': self.real_name})
 
         await generate_guild_log(msg)         
 
@@ -3628,8 +3628,8 @@ async def guilda_entregar_quest_command(
         print(buyer_reward)
         print(sender_reward)
             
-        # dbservice.update_zakoleta('user', sender_reward, '+' + str(sender_reward) + ' zakoletas porque alguém finalizou sua quest.', sender_id, 'add')
-        # dbservice.update_zakoleta('user', buyer_reward, '+' + str(buyer_reward) + ' zakoletas por completar uma quest.', user, 'add')
+        dbservice.update_zakoleta('user', sender_reward, '+' + str(sender_reward) + ' zakoletas porque alguém finalizou sua quest.', sender_id, 'add')
+        dbservice.update_zakoleta('user', buyer_reward, '+' + str(buyer_reward) + ' zakoletas por completar uma quest.', user, 'add')
         
         await ctx.response.send_message('Quest entregue com sucesso. Considere deixar um comentário ou até mesmo uma resenha sobre a obra. Você receberá um bônus de 5% da recompensa.', ephemeral=True, view=ReviewBtn(ctx, user, sender_id, real_name, type, buyer_reward, sender_reward))
 
