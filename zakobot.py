@@ -3993,7 +3993,28 @@ async def cancelar_quest_command(
         data_cd = datetime.datetime.utcfromtimestamp(due_date - 10800).strftime('%d-%m-%Y %H:%M:%S')
         
         await ctx.response.send_message(f'Não foi possível cancelar a quest. Você só poderá cancelar outra quest em {data_cd}.', ephemeral=True)
+   
+@guilda.command(name='criar_grupo')
+async def criar_grupo_command(
+    ctx: discord.ApplicationContext,
+    quest: discord.Option(str, autocomplete=get_quests_options, name='quests', required=True),
+    membro1: discord.Option(str, autocomplete=get_members_names2, name='primeiro_membro', required=True),
+    membro2: discord.Option(str, autocomplete=get_members_names2, name='segundo_membro', required=False),
+    membro3: discord.Option(str, autocomplete=get_members_names2, name='terceiro_membro', required=False),
+    membro4: discord.Option(str, autocomplete=get_members_names2, name='quarto_membro', required=False)
+):
+    grupo = f'{str(ctx.author.id)}'
     
+    _possible = [membro1, membro2, membro3, membro4]
+    
+    for member in _possible:
+        if member != None:
+            member_id = dbservice.select('user', ['id'], '', {'name': member})
+            grupo += f',{str(member_id)}'
+            
+    print('quest:')
+    print(quest)
+    print(grupo)
 
 # to do
 
@@ -4018,35 +4039,35 @@ async def aux_command(ctx):
 
     if ctx.author.id in admins:
         
-        channel_id = 1193569004204331052
+        # channel_id = 1193569004204331052
         
-        data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'sender', 'is_available', 'buyer', 'value', 'flavor_text', 'date_inserted', 'date_bought'], '')
+        # data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'sender', 'is_available', 'buyer', 'value', 'flavor_text', 'date_inserted', 'date_bought'], '')
         
-        # await send_message2(f'# **QUESTS DISPONÍVEIS**\n\n\n', channel_id) 
+        # # await send_message2(f'# **QUESTS DISPONÍVEIS**\n\n\n', channel_id) 
         
-        for quest in data:
+        # for quest in data:
             
-            if quest[4] == 'true':
+        #     if quest[4] == 'true':
                 
-                text = ''
+        #         text = ''
                 
-                flavor1, flavor2 = quest[7].split('*')
+        #         flavor1, flavor2 = quest[7].split('*')
         
-                time_passed = int(datetime.datetime.now().timestamp()) - int(quest[8])
-                print('time elapsed: ' + str(time_passed))
+        #         time_passed = int(datetime.datetime.now().timestamp()) - int(quest[8])
+        #         print('time elapsed: ' + str(time_passed))
         
-                days = floor(time_passed / 86400)
-                print('days: ' + str(days))
+        #         days = floor(time_passed / 86400)
+        #         print('days: ' + str(days))
         
-                reward = calculate_quest_reward(quest[6], days)
+        #         reward = calculate_quest_reward(quest[6], days)
                 
-                text += f'*{flavor1}**{quest[1]}**{flavor2}*\n<{quest[0]}>\nTipo: {quest[2]}\nRecompensa: ${str(reward)}\n­ ­'
+        #         text += f'*{flavor1}**{quest[1]}**{flavor2}*\n<{quest[0]}>\nTipo: {quest[2]}\nRecompensa: ${str(reward)}\n­ ­'
                 
-                message = await send_message2(text, channel_id)
+        #         message = await send_message2(text, channel_id)
                 
-                msg_id = message.id
+        #         msg_id = message.id
                 
-                dbservice.update('quests', ['id_msg'], [str(msg_id)], {'item_name': quest[1]})
+        #         dbservice.update('quests', ['id_msg'], [str(msg_id)], {'item_name': quest[1]})
         
         
         # await send_message2('ok', 1077070205987082281)
