@@ -4063,8 +4063,9 @@ async def formar_grupo_command(
 
     msg = f'Um grupo de aventureiros foi formado para cuidar da quest *{flavor1}**{quest}**{flavor2}*. Seu líder é {leader} e os membros são '
     
-    for member in grupo:
-        msg += f'{member},'
+    for member in _possible:
+        if member != None:
+            msg += f'{member},'
         
     time_passed = int(datetime.datetime.now().timestamp()) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': quest_name}))
     print('time elapsed: ' + str(time_passed))
