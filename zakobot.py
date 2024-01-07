@@ -3994,8 +3994,8 @@ async def cancelar_quest_command(
         
         await ctx.response.send_message(f'Não foi possível cancelar a quest. Você só poderá cancelar outra quest em {data_cd}.', ephemeral=True)
    
-@guilda.command(name='criar_grupo')
-async def criar_grupo_command(
+@guilda.command(name='formar_grupo')
+async def formar_grupo_command(
     ctx: discord.ApplicationContext,
     quest: discord.Option(str, autocomplete=get_quests_options, name='quests', required=True),
     membro1: discord.Option(str, autocomplete=get_members_names2, name='primeiro_membro', required=True),
@@ -4003,6 +4003,20 @@ async def criar_grupo_command(
     membro3: discord.Option(str, autocomplete=get_members_names2, name='terceiro_membro', required=False),
     membro4: discord.Option(str, autocomplete=get_members_names2, name='quarto_membro', required=False)
 ):
+    buyer_slots = dbservice.select('quests', ['buyer'], '', {'buyer': ctx.author.id})
+    
+    if buyer_slots == str(ctx.author.id):
+        buyer_slots = 1
+        
+    else:
+        buyer_slots = len(buyer_slots)
+    
+    print('slots: ' + str(buyer_slots))
+
+    if buyer_slots >= int(dbservice.select('user', ['quest_buying_slots'], '', {'id': ctx.author.id})):    
+        await ctx.response.send_message('Você não tem espaço para aceitar novas quests.', ephemeral=True)
+        return
+
     grupo = f'{str(ctx.author.id)}'
     
     _possible = [membro1, membro2, membro3, membro4]
@@ -4010,11 +4024,28 @@ async def criar_grupo_command(
     for member in _possible:
         if member != None:
             member_id = dbservice.select('user', ['id'], '', {'name': member})
+            buyer_slots = dbservice.select('quests', ['buyer'], '', {'buyer': member_id})
+            if buyer_slots == str(member_id):
+                buyer_slots = 1
+        
+            else:
+                buyer_slots = len(buyer_slots)
+    
+            print('slots: ' + str(buyer_slots))
+
+            if buyer_slots >= int(dbservice.select('user', ['quest_buying_slots'], '', {'id': member_id})):
+                await ctx.response.send_message(f'O aventureiro {member} não tem espaço para aceitar novas quests.', ephemeral=True)
+                return
+            
             grupo += f',{str(member_id)}'
             
     print('quest:')
     print(quest)
     print(grupo)
+    
+    dbservice.update('quests', ['buyer', 'is_available', 'date_bought'], [grupo, 'false', int(datetime.datetime.now().timestamp())])
+    
+    await ctx.response.send_message('Grupo criado com sucesso!', ephemeral=True)
 
 # to do
 
