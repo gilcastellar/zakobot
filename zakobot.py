@@ -3874,7 +3874,7 @@ async def inventario_command(
     seller_total_slots = dbservice.select('user', ['quest_selling_slots'], '', {'id': user_id})
     buyer_total_slots = dbservice.select('user', ['quest_buying_slots'], '', {'id': user_id})
     
-    data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'date_bought'], '', {'buyer': user_id})
+    data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'date_bought'], '', {'is_available': 'false'})
     
     grana = dbservice.select('user', ['zakoleta'], '', {'id': user_id})
     
@@ -4111,20 +4111,9 @@ async def formar_grupo_command(
                 return
             
             grupo += f',{str(member_id)}'
-            
-    print('quest:')
-    print(quest)
-    print(grupo)
     
-    dbservice.update('quests', ['buyer', 'is_available', 'date_bought'], [grupo, 'false', int(datetime.datetime.now().timestamp())], {'item_name': quest_name, 'item_type': tipo})
+    dbservice.update('quests', ['buyer', 'is_available', 'date_bought'], [str(ctx.author.id), 'false', int(datetime.datetime.now().timestamp())], {'item_name': quest_name, 'item_type': tipo})
     
-    await ctx.response.send_message('Grupo criado com sucesso!', ephemeral=True)
-    
-    
-    
-    print("TESTETETE:")
-    print(dbservice.select('quests', ['flavor_text'], '', {'item_name': quest_name}))
-
     flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'item_name': quest_name, 'item_type': tipo}).split('*')
 
     leader = dbservice.select('user', ['name'], '', {'id': ctx.author.id})    
@@ -4133,22 +4122,31 @@ async def formar_grupo_command(
     
     idx = 1
     
-    print(_possible)
-    
     group = []
 
     for member in _possible:
         if member != None:
             group.append(member)
-            
-    print(group)
     
     for member in group:
         if idx == len(group):
             msg += f' e {member}'
+            member_id = dbservice.select('user', ['id'], '', {'name': member})
+            dbservice.update('quests', ['buyer5', 'is_available', 'date_bought'], [str(member_id), 'false', int(datetime.datetime.now().timestamp())], {'item_name': quest_name, 'item_type': tipo})
+    
         else:
             idx += 1
             msg += f', {member}'
+            member_id = dbservice.select('user', ['id'], '', {'name': member})
+            if idx == 2:
+                dbservice.update('quests', ['buyer2', 'is_available', 'date_bought'], [str(member_id), 'false', int(datetime.datetime.now().timestamp())], {'item_name': quest_name, 'item_type': tipo})
+            if idx == 3:
+                dbservice.update('quests', ['buyer3', 'is_available', 'date_bought'], [str(member_id), 'false', int(datetime.datetime.now().timestamp())], {'item_name': quest_name, 'item_type': tipo})
+            if idx == 4:
+                dbservice.update('quests', ['buyer4', 'is_available', 'date_bought'], [str(member_id), 'false', int(datetime.datetime.now().timestamp())], {'item_name': quest_name, 'item_type': tipo})
+    
+
+    await ctx.response.send_message('Grupo criado com sucesso!', ephemeral=True)
         
     time_passed = int(datetime.datetime.now().timestamp()) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': quest_name, 'item_type': tipo}))
     print('time elapsed: ' + str(time_passed))
