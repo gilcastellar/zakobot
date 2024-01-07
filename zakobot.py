@@ -4097,7 +4097,7 @@ async def formar_grupo_command(
     
     sender_reward = ceil(reward/2)
         
-    msg = msg.rstrip(',') + f'. Cada aventureiro receberá ${str(buyer_reward)} e o criador receberá ${str(sender_reward)} ao terminar a quest.'
+    msg = msg.rstrip(',') + f'. Cada aventureiro receberá ${str(buyer_reward)} e o criador receberá ${str(sender_reward)} ao terminar a quest, que deverá ser entregue pelo líder {leader}.'
     
     print(msg)
 
