@@ -3432,7 +3432,7 @@ class ResenhaModal(discord.ui.Modal):
         user_name = dbservice.select('user', ['name'], '', {'id': self.user_id})    
         sender_name = dbservice.select('user', ['name'], '', {'id': self.sender_id})    
 
-        text = f'**Resenha de {self.item_name}\nQuest criada por: {sender_name}\nResenha por: {user_name}**\n\n{review}'
+        text = f'Resenha de **{self.item_name}**\nQuest criada por: {sender_name}\nResenha por: {user_name}\n\n{review}'
         if score.isnumeric() == True:
             text += f'\n\nNota: {str(score)}/10'
             
