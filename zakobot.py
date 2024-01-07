@@ -3401,11 +3401,12 @@ class AcquiringBtn(discord.ui.View): # Create a class called MyView that subclas
 
 # Resenha modal
 class ResenhaModal(discord.ui.Modal):
-    def __init__(self, user_id, item_name, buyer_reward, *args, **kwargs) -> None:
+    def __init__(self, user_id, item_name, buyer_reward, sender_reward, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.user_id = user_id
         self.item_name = item_name
         self.buyer_reward = buyer_reward
+        self.sender_reward = sender_reward
         
         self.add_item(discord.ui.InputText(label="Comentário/Resenha", style=discord.InputTextStyle.long, required=True, max_length=4000))
         self.add_item(discord.ui.InputText(label="Nota (número inteiro de 0 a 10)", required=False, max_length=2))
