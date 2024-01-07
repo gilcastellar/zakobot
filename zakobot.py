@@ -14,6 +14,7 @@
 
 from faulthandler import dump_traceback
 from html.entities import name2codepoint
+from lib2to3.pgen2 import grammar
 from pydoc import describe
 from random import choice,choices, shuffle, randint
 import random
@@ -4066,15 +4067,17 @@ async def formar_grupo_command(
     idx = 1
     
     print(_possible)
+    
+    group = []
 
     for member in _possible:
-        if member == None:
-            _possible.remove(member)
+        if member != None:
+            group.append(member)
             
     print(_possible)
     
-    for member in _possible:
-        if idx == len(_possible):
+    for member in group:
+        if idx == len(group):
             msg += f'e {member}'
         else:
             idx += 1
