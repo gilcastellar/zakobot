@@ -4132,18 +4132,18 @@ async def formar_grupo_command(
         if idx == len(group):
             msg += f' e {member}'
             member_id = dbservice.select('user', ['id'], '', {'name': member})
-            dbservice.update('quests', ['buyer5', 'is_available', 'date_bought'], [str(member_id), 'false', int(datetime.datetime.now().timestamp())], {'item_name': quest_name, 'item_type': tipo})
+            dbservice.update('quests', ['buyer' + str(len(group))], [str(member_id)], {'item_name': quest_name, 'item_type': tipo})
     
         else:
             idx += 1
             msg += f', {member}'
             member_id = dbservice.select('user', ['id'], '', {'name': member})
             if idx == 2:
-                dbservice.update('quests', ['buyer2', 'is_available', 'date_bought'], [str(member_id), 'false', int(datetime.datetime.now().timestamp())], {'item_name': quest_name, 'item_type': tipo})
-            if idx == 3:
-                dbservice.update('quests', ['buyer3', 'is_available', 'date_bought'], [str(member_id), 'false', int(datetime.datetime.now().timestamp())], {'item_name': quest_name, 'item_type': tipo})
-            if idx == 4:
-                dbservice.update('quests', ['buyer4', 'is_available', 'date_bought'], [str(member_id), 'false', int(datetime.datetime.now().timestamp())], {'item_name': quest_name, 'item_type': tipo})
+                dbservice.update('quests', ['buyer2'], [str(member_id)], {'item_name': quest_name, 'item_type': tipo})
+            elif idx == 3:
+                dbservice.update('quests', ['buyer3'], [str(member_id)], {'item_name': quest_name, 'item_type': tipo})
+            elif idx == 4:
+                dbservice.update('quests', ['buyer4'], [str(member_id)], {'item_name': quest_name, 'item_type': tipo})
     
 
     await ctx.response.send_message('Grupo criado com sucesso!', ephemeral=True)
