@@ -4055,7 +4055,7 @@ async def formar_grupo_command(
     tipo = tipo.strip(')')
     
     print("TESTETETE:")
-    print(dbservice.select('quests', ['flavor_text'], '', {'item_name': quest}))
+    print(dbservice.select('quests', ['flavor_text'], '', {'item_name': quest_name}))
 
     flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'item_name': quest_name}).split('*')
 
@@ -4080,7 +4080,7 @@ async def formar_grupo_command(
     
     sender_reward = ceil(reward/2)
         
-    msg = msg.rstrip(',', 1) + f'. Cada aventureiro receberá ${str(buyer_reward)} e o criador receberá ${str(sender_reward)}'
+    msg = msg.rstrip(',') + f'. Cada aventureiro receberá ${str(buyer_reward)} e o criador receberá ${str(sender_reward)}'
     
     print(msg)
 
