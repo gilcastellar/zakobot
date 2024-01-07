@@ -3393,9 +3393,9 @@ class AcquiringBtn(discord.ui.View): # Create a class called MyView that subclas
             flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': self.user_id, 'item_name': self.real_name, 'item_type': self._type}).split('*')
             
             if dbservice.select('user', ['sexo'], '', {'id': self.user_id}) == 'm':
-                msg = f"📋 A aventureira <@{str(self.user_id)}> aceitou a quest *{flavor1} **{self.real_name} ({self._type})**{flavor2}* pela recompensa de ${str(self.value)}"
+                msg = f"📋 A aventureira <@{str(self.user_id)}> aceitou a quest *{flavor1}**{self.real_name} ({self._type})**{flavor2}* pela recompensa de ${str(self.value)}"
             else:
-                msg = f"📋 O aventureiro <@{str(self.user_id)}> aceitou a quest *{flavor1} **{self.real_name} ({self._type})**{flavor2}* pela recompensa de ${str(self.value)}"
+                msg = f"📋 O aventureiro <@{str(self.user_id)}> aceitou a quest *{flavor1}**{self.real_name} ({self._type})**{flavor2}* pela recompensa de ${str(self.value)}"
             
             await generate_guild_log(msg)
 
