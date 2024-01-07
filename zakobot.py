@@ -3439,12 +3439,12 @@ class ReviewBtn(discord.ui.View): # Create a class called MyView that subclasses
         self.buyer_reward = buyer_reward
         self.sender_reward = sender_reward
 
-    @discord.ui.button(label="Deixar comentário ou resenha", style=discord.ButtonStyle.primary, emoji="📝") # Create a button with the label "😎 Click me!" with color Blurple
+    @discord.ui.button(label="Deixar comentário ou resenha", row=0, style=discord.ButtonStyle.primary, emoji="📝") # Create a button with the label "😎 Click me!" with color Blurple
     async def button_callback(self, button, interaction):
         modal = ResenhaModal(self.user_id, self.real_name, title="Escrever resenha")
         await interaction.send_modal(modal)
         
-    @discord.ui.button(label="Entregar a quest sem bônus", style=discord.ButtonStyle.primary, emoji="💰") # Create a button with the label "😎 Click me!" with color Blurple
+    @discord.ui.button(label="Entregar a quest sem bônus", row=0, style=discord.ButtonStyle.primary, emoji="💰") # Create a button with the label "😎 Click me!" with color Blurple
     async def button_callback(self, button, interaction):
         obra = dbservice.select('quests', ['item_name'], '', {'buyer': self.user_id, 'item_name': self.real_name})
         flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': self.user_id, 'item_name': self.real_name}).split('*')
