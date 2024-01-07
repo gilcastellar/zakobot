@@ -4021,8 +4021,11 @@ async def formar_grupo_command(
     
     _possible = [membro1, membro2, membro3, membro4]
     
+    group_size = 1
+    
     for member in _possible:
         if member != None:
+            group_size += 1
             member_id = dbservice.select('user', ['id'], '', {'name': member})
             buyer_slots = dbservice.select('quests', ['buyer'], '', {'buyer': member_id})
             if buyer_slots == str(member_id):
@@ -4046,6 +4049,33 @@ async def formar_grupo_command(
     # dbservice.update('quests', ['buyer', 'is_available', 'date_bought'], [grupo, 'false', int(datetime.datetime.now().timestamp())])
     
     await ctx.response.send_message('Grupo criado com sucesso!', ephemeral=True)
+
+    flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'item_name': quest}).split('*')
+
+    leader = dbservice.select('user', ['name'], '', {'id': ctx.author.id})    
+
+    msg = f'Um grupo de aventureiros foi formado para cuidar da quest *{flavor1}**{quest}**{flavor2}*. Seu líder é {leader} e os membros são '
+    
+    for member in grupo:
+        msg += f'{member},'
+        
+    time_passed = int(datetime.datetime.now().timestamp()) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': quest}))
+    print('time elapsed: ' + str(time_passed))
+        
+    days = floor(time_passed / 86400)
+    print('days: ' + str(days))
+    
+    base_value = dbservice.select('quests', ['value'], '', {'item_name': quest})
+        
+    reward = calculate_quest_reward(base_value, days)
+    
+    buyer_reward = floor(reward/group_size)
+    
+    sender_reward = ceil(reward/2)
+        
+    msg = msg.rstrip(',', 1) + f'. Cada aventureiro receberá ${str(buyer_reward)} e o criador receberá ${str(sender_reward)}'
+    
+    print(msg)
 
 # to do
 
