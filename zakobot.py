@@ -4042,7 +4042,7 @@ async def aux_command(ctx):
                 
                 text += f'*{flavor1}**{quest[1]}**{flavor2}*\n{quest[0]}\nTipo: {quest[2]}\nRecompensa: ${str(reward)}\n\n'
                 
-                message = await send_message2(text, channel_id)
+                message = await send_message2(text, channel_id).id
                 
                 print(message)
                 
