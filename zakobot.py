@@ -4049,10 +4049,15 @@ async def formar_grupo_command(
     # dbservice.update('quests', ['buyer', 'is_available', 'date_bought'], [grupo, 'false', int(datetime.datetime.now().timestamp())])
     
     await ctx.response.send_message('Grupo criado com sucesso!', ephemeral=True)
+    
+    quest_name, tipo = quest.split('(')
+    
+    tipo = tipo.strip(')')
+    
+    print("TESTETETE:")
+    print(dbservice.select('quests', ['flavor_text'], '', {'item_name': quest}))
 
-    flavor = random.choice(dbservice.select('quest_flavors', ['flavor'], ''))[0]
-
-    flavor1, flavor2 = flavor.split('*')
+    flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'item_name': quest}).split('*')
 
     leader = dbservice.select('user', ['name'], '', {'id': ctx.author.id})    
 
