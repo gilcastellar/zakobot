@@ -18,13 +18,15 @@ from lib2to3.pgen2 import grammar
 from pydoc import describe
 from random import choice,choices, shuffle, randint
 import random
-from re import U, X
+from re import T, U, X
 from xml.dom.expatbuilder import theDOMImplementation
 
 import discord
 from discord.ext import tasks
 from discord.ext import commands
 import configparser
+
+from discord.utils import P
 
 # from discord.ext.commands.flags import F
 # from discord.utils import P
@@ -3621,6 +3623,8 @@ async def guilda_entregar_quest_command(
     user = str(ctx.author.id)
     
     real_name, _type = quest.split(' (')
+    
+    _type = _type.strip(')')
 
     url = dbservice.select('quests', ['item_url'], '', {'item_name': real_name})
         
@@ -3631,9 +3635,20 @@ async def guilda_entregar_quest_command(
     if exists == 1:
             
         sender_id = dbservice.select('quests', ['sender'], '', {'id_anilist': anilist_id})
-            
-        buyer_reward = dbservice.select('quests', ['value'], '', {'id_anilist': anilist_id})
-        sender_reward = ceil(buyer_reward / 2)
+
+        time_passed = int(datetime.datetime.now().timestamp()) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': real_name, 'type': _type}))
+        print('time elapsed: ' + str(time_passed))
+        
+        days = floor(time_passed / 86400)
+        print('days: ' + str(days))
+    
+        base_value = dbservice.select('quests', ['value'], '', {'item_name': real_name, 'type': _type})
+        
+        reward = calculate_quest_reward(base_value, days)
+    
+        buyer_reward = reward
+    
+        sender_reward = ceil(reward/2)
             
         print('rewards: ')
         print(buyer_reward)
@@ -3642,7 +3657,7 @@ async def guilda_entregar_quest_command(
         dbservice.update_zakoleta('user', sender_reward, '+' + str(sender_reward) + ' zakoletas porque alguém finalizou sua quest.', sender_id, 'add')
         dbservice.update_zakoleta('user', buyer_reward, '+' + str(buyer_reward) + ' zakoletas por completar uma quest.', user, 'add')
         
-        await ctx.response.send_message('Quest entregue com sucesso. Considere deixar um comentário ou até mesmo uma resenha sobre a obra. Você receberá um bônus de 5% da recompensa.', ephemeral=True, view=ReviewBtn(ctx, user, sender_id, real_name, type, buyer_reward, sender_reward))
+        await ctx.response.send_message('Quest entregue com sucesso. Considere deixar um comentário ou até mesmo uma resenha sobre a obra. Você receberá um bônus de 5% da recompensa.', ephemeral=True, view=ReviewBtn(ctx, user, sender_id, real_name, type, buyer_reward, sender_reward, False))
             
     else:
         
@@ -3651,6 +3666,51 @@ async def guilda_entregar_quest_command(
         if ',' in possible_group:
             group = possible_group.split(',')
             if user == group[0]:
+            
+                sender_id = dbservice.select('quests', ['sender'], '', {'id_anilist': anilist_id})
+
+                time_passed = int(datetime.datetime.now().timestamp()) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': real_name, 'type': _type}))
+                print('time elapsed: ' + str(time_passed))
+        
+                days = floor(time_passed / 86400)
+                print('days: ' + str(days))
+    
+                base_value = dbservice.select('quests', ['value'], '', {'item_name': real_name, 'type': _type})
+        
+                reward = calculate_quest_reward(base_value, days)
+    
+                buyer_reward = floor(reward/len(group))
+    
+                sender_reward = ceil(reward/2)
+                
+                # dbservice.update_zakoleta('user', sender_reward, '+' + str(sender_reward) + ' zakoletas porque alguém finalizou sua quest.', sender_id, 'add')
+                
+                # for member in group:
+                #     dbservice.update_zakoleta('user', buyer_reward, '+' + str(buyer_reward) + ' zakoletas por completar uma quest.', member, 'add')
+                    
+                obra = dbservice.select('quests', ['item_name'], '', {'item_name': real_name, 'type': _type})
+                flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'item_name': real_name, 'type': _type}).split('*')
+        
+                # dbservice.delete('quests', {'item_name': real_name, 'type': _type})
+        
+                msg = f'Os aventureiros ' 
+                
+                idx = 1
+                    
+                for member in group:
+                    member_name = dbservice.select('user', ['name'], '', {'id': member})
+                    if idx == len(group):
+                        msg += f' e {member_name}'
+                    else:
+                        idx += 1
+                        msg += f', {member_name}'
+                        
+                msg += f' completaram e entregaram a quest *{flavor1}**{real_name} ({_type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(buyer_reward)} por aventureiro e ${str(sender_reward)} para o criador..'
+            
+                # await generate_guild_log(msg)
+                print(msg)
+
+                await ctx.response.send_message('Quest entregue com sucesso. a sobre a obra. Quests em grupo não tem a opção de resenha, mas você pode enviá-la no privado.', ephemeral=True)
                 
 
         await ctx.response.send_message('Você não é o dono dessa quest ou ela não existe.', ephemeral=True)
@@ -4036,7 +4096,7 @@ async def formar_grupo_command(
         if member != None:
             group_size += 1
             member_id = dbservice.select('user', ['id'], '', {'name': member})
-            if str(member_id) == dbservice.select('quests', ['sender'], '', {'item_name': quest_name}):
+            if str(member_id) == dbservice.select('quests', ['sender'], '', {'item_name': quest_name, 'type': tipo}):
                 await ctx.response.send_message(f'O aventureiro {member} é o dono da quest e portanto não pode participar.', ephemeral=True)
                 return
             buyer_slots = dbservice.select('quests', ['buyer'], '', {'buyer': member_id})
@@ -4067,7 +4127,7 @@ async def formar_grupo_command(
     print("TESTETETE:")
     print(dbservice.select('quests', ['flavor_text'], '', {'item_name': quest_name}))
 
-    flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'item_name': quest_name}).split('*')
+    flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'item_name': quest_name, 'type': tipo}).split('*')
 
     leader = dbservice.select('user', ['name'], '', {'id': ctx.author.id})    
 
@@ -4092,13 +4152,13 @@ async def formar_grupo_command(
             idx += 1
             msg += f', {member}'
         
-    time_passed = int(datetime.datetime.now().timestamp()) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': quest_name}))
+    time_passed = int(datetime.datetime.now().timestamp()) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': quest_name, 'type': tipo}))
     print('time elapsed: ' + str(time_passed))
         
     days = floor(time_passed / 86400)
     print('days: ' + str(days))
     
-    base_value = dbservice.select('quests', ['value'], '', {'item_name': quest_name})
+    base_value = dbservice.select('quests', ['value'], '', {'item_name': quest_name, 'type': tipo})
         
     reward = calculate_quest_reward(base_value, days)
     
