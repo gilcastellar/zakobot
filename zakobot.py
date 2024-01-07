@@ -3610,8 +3610,8 @@ async def guilda_entregar_quest_command(
         print(buyer_reward)
         print(sender_reward)
             
-        dbservice.update_zakoleta('user', sender_reward, '+' + str(sender_reward) + ' zakoletas porque alguém finalizou sua quest.', sender_id, 'add')
-        dbservice.update_zakoleta('user', buyer_reward, '+' + str(buyer_reward) + ' zakoletas por completar uma quest.', user, 'add')
+        # dbservice.update_zakoleta('user', sender_reward, '+' + str(sender_reward) + ' zakoletas porque alguém finalizou sua quest.', sender_id, 'add')
+        # dbservice.update_zakoleta('user', buyer_reward, '+' + str(buyer_reward) + ' zakoletas por completar uma quest.', user, 'add')
         
         await ctx.response.send_message('Quest entregue com sucesso. Considere deixar um comentário ou até mesmo uma resenha sobre a obra. Você receberá um bônus de 5% da recompensa. No caso de uma resenha (que será avaliada pelo esforço), o bônus será de 15%', ephemeral=True, view=ReviewBtn(buyer_reward, user, sender_id, real_name, type, buyer_reward, sender_reward))
 
