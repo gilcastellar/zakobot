@@ -4094,7 +4094,7 @@ async def formar_grupo_command(
         if member != None:
             group_size += 1
             member_id = dbservice.select('user', ['id'], '', {'name': member})
-            if str(member_id) == dbservice.select('quests', ['sender'], '', {'item_name': quest_name, 'type': tipo}):
+            if str(member_id) == dbservice.select('quests', ['sender'], '', {'item_name': quest_name, 'item_type': tipo}):
                 await ctx.response.send_message(f'O aventureiro {member} é o dono da quest e portanto não pode participar.', ephemeral=True)
                 return
             buyer_slots = dbservice.select('quests', ['buyer'], '', {'buyer': member_id})
