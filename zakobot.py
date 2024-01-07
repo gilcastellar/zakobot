@@ -3399,6 +3399,65 @@ class AcquiringBtn(discord.ui.View): # Create a class called MyView that subclas
             
             await generate_guild_log(msg)
 
+# Resenha modal
+class ResenhaModal(discord.ui.Modal):
+    def __init__(self, user_id, item_name, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        
+        self.add_item(discord.ui.InputText(label="Comentário/Resenha", style=discord.InputTextStyle.long, required=True, max_length=900))
+        self.add_item(discord.ui.InputText(label="Nota (número inteiro de 0 a 10)", style=discord.InputTextStyle.long, required=False, max_length=2))
+
+    async def callback(self, interaction: discord.Interaction):
+
+        user_id = str(interaction.user.id)
+        review = self.children[0].value
+        
+        # needs to check if score is an int
+        
+        score = self.children[1].value
+        
+        #sql = 'UPDATE user SET anime_list= "' + _list + '", obs= "' + _obs + '" WHERE id=' + user_id
+        #print(sql)
+        #database.update(sql)
+
+        dbservice.insert('quests_reviews', ['id_user', 'item_name', 'review', 'score'], [self.user_id, self.item_name, review, score])
+
+        global key
+        key = True
+
+        await interaction.response.send_message('Edições realizadas! Utilize o comando /perfil para visualizar.')
+          
+class ReviewBtn(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
+    def __init__(self, value, user_id, sender_id, real_name, type, buyer_reward, sender_reward):
+        super().__init__()
+        self.value = value
+        self.user_id = user_id
+        self.sender_id = sender_id
+        self.real_name = real_name
+        self.type = type
+        self.buyer_reward = buyer_reward
+        self.sender_reward = sender_reward
+
+    @discord.ui.button(label="Deixar comentário ou resenha", style=discord.ButtonStyle.primary, emoji="📝") # Create a button with the label "😎 Click me!" with color Blurple
+    async def button_callback(self, button, interaction):
+        modal = ResenhaModal(self.user_id, self.real_name, title="Escrever resenha")
+        await interaction.send_modal(modal)
+        
+    @discord.ui.button(label="Entregar a quest sem bônus", style=discord.ButtonStyle.primary, emoji="💰") # Create a button with the label "😎 Click me!" with color Blurple
+    async def button_callback(self, button, interaction):
+        obra = dbservice.select('quests', ['item_name'], '', {'buyer': self.user_id, 'item_name': self.real_name})
+        flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': self.user_id, 'item_name': self.real_name}).split('*')
+        
+        dbservice.delete('quests', {'buyer': self.user_id, 'item_name': self.real_name})
+        
+        if dbservice.select('user', ['sexo'], '', {'id': self.user_id}) == 'm':
+            msg = f'A aventureira <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{obra} ({type})**{flavor2}* criada por <@{str(self.sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente.'
+        else:    
+            msg = f'O aventureiro <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{obra} ({type})**{flavor2}* criada por <@{str(self.sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente.'
+
+        await generate_guild_log(msg)
+        
+
 @guilda.command(name='aceitar_quest', description='Este comando permite aceitar quests disponíveis no quadro')
 async def guilda_aceitar_quest_command(
     ctx: discord.ApplicationContext,
@@ -3552,20 +3611,11 @@ async def guilda_entregar_quest_command(
             
         dbservice.update_zakoleta('user', sender_reward, '+' + str(sender_reward) + ' zakoletas porque alguém finalizou sua quest.', sender_id, 'add')
         dbservice.update_zakoleta('user', buyer_reward, '+' + str(buyer_reward) + ' zakoletas por completar uma quest.', user, 'add')
-            
-        obra = dbservice.select('quests', ['item_name'], '', {'buyer': user, 'id_anilist': anilist_id})
-        flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': user, 'id_anilist': anilist_id}).split('*')
-            
-        dbservice.delete('quests', {'buyer': user, 'id_anilist': anilist_id})
         
-        if dbservice.select('user', ['sexo'], '', {'id': user}) == 'm':
-            msg = f'A aventureira <@{str(user)}> completou e entregou a quest *{flavor1}**{obra} ({type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(buyer_reward)} e ${str(sender_reward)} respectivamente.'
-        else:    
-            msg = f'O aventureiro <@{str(user)}> completou e entregou a quest *{flavor1}**{obra} ({type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(buyer_reward)} e ${str(sender_reward)} respectivamente.'
+        await ctx.response.send_message('Quest entregue com sucesso. Considere deixar um comentário ou até mesmo uma resenha sobre a obra. Você receberá um bônus de 5% da recompensa. No caso de uma resenha (que será avaliada pelo esforço), o bônus será de 15%', ephemeral=True, view=ReviewBtn(buyer_reward, user, sender_id, real_name, type, buyer_reward, sender_reward))
 
-        await generate_guild_log(msg)
         
-        await ctx.response.send_message('Quest entregue com sucesso. Considere escrever uma resenha sobre a obra para receber um bônus de 10% da recompensa total. Utilize o comando /guilda resenha.', ephemeral=True)
+        # await ctx.response.send_message('Quest entregue com sucesso. Considere escrever uma resenha sobre a obra para receber um bônus de 10% da recompensa total. Utilize o comando /guilda resenha.', ephemeral=True)
             
     else:
 
