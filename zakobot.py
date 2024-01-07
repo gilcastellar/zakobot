@@ -4116,7 +4116,7 @@ async def formar_grupo_command(
     print(quest)
     print(grupo)
     
-    # dbservice.update('quests', ['buyer', 'is_available', 'date_bought'], [grupo, 'false', int(datetime.datetime.now().timestamp())])
+    dbservice.update('quests', ['buyer', 'is_available', 'date_bought'], [grupo, 'false', int(datetime.datetime.now().timestamp())])
     
     await ctx.response.send_message('Grupo criado com sucesso!', ephemeral=True)
     
