@@ -3564,6 +3564,8 @@ async def guilda_entregar_quest_command(
             msg = f'O aventureiro <@{str(user)}> completou e entregou a quest *{flavor1}**{obra} ({type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(buyer_reward)} e ${str(sender_reward)} respectivamente.'
 
         await generate_guild_log(msg)
+        
+        await ctx.response.send_message('Quest entregue com sucesso. Considere escrever uma resenha sobre a obra para receber um bônus de 10% da recompensa total. Utilize o comando /guilda resenha.', ephemeral=True)
             
     else:
 
