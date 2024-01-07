@@ -3401,10 +3401,13 @@ class AcquiringBtn(discord.ui.View): # Create a class called MyView that subclas
 
 # Resenha modal
 class ResenhaModal(discord.ui.Modal):
-    def __init__(self, user_id, item_name, *args, **kwargs) -> None:
+    def __init__(self, user_id, item_name, buyer_reward, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
+        self.user_id = user_id
+        self.item_name = item_name
+        self.buyer_reward = buyer_reward
         
-        self.add_item(discord.ui.InputText(label="Comentário/Resenha", style=discord.InputTextStyle.long, required=True, max_length=900))
+        self.add_item(discord.ui.InputText(label="Comentário/Resenha", style=discord.InputTextStyle.long, required=True, max_length=5000))
         self.add_item(discord.ui.InputText(label="Nota (número inteiro de 0 a 10)", required=False, max_length=2))
 
     async def callback(self, interaction: discord.Interaction):
@@ -3412,21 +3415,22 @@ class ResenhaModal(discord.ui.Modal):
         user_id = str(interaction.user.id)
         review = self.children[0].value
         
-        # needs to check if score is an int
-        
         score = self.children[1].value
         
         print(review)
         print('score:')
-        print(score)
+        print(str(score))
         
-        #sql = 'UPDATE user SET anime_list= "' + _list + '", obs= "' + _obs + '" WHERE id=' + user_id
-        #print(sql)
-        #database.update(sql)
+        if score.isnumeric() == False:
+            dbservice.insert('quests_reviews', ['id_user', 'item_name', 'review'], [self.user_id, self.item_name, review])
+        else:
+            dbservice.insert('quests_reviews', ['id_user', 'item_name', 'review', 'score'], [self.user_id, self.item_name, review, score])
+            
+        bonus = ceil(int(self.buyer_reward) * 0.05)
+        
+        dbservice.update_zakoleta('user', int(bonus), '+' + str(bonus) + ' por escrever uma resenha para quest', self.user_id, 'add')
 
-        # dbservice.insert('quests_reviews', ['id_user', 'item_name', 'review', 'score'], [self.user_id, self.item_name, review, score])
-
-        print('deu bom porra')
+        await interaction.response.send_message('Comentário/resenha enviada. A Guilda agradece!')
           
 class ReviewBtn(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
     def __init__(self, ctx, user_id, sender_id, real_name, type, buyer_reward, sender_reward):
@@ -3441,7 +3445,7 @@ class ReviewBtn(discord.ui.View): # Create a class called MyView that subclasses
 
     @discord.ui.button(label="Deixar comentário ou resenha", row=0, style=discord.ButtonStyle.primary, emoji="📝") # Create a button with the label "😎 Click me!" with color Blurple
     async def first_button_callback(self, button, interaction):
-        modal = ResenhaModal(self.user_id, self.real_name, title="Escrever resenha")
+        modal = ResenhaModal(self.user_id, self.real_name, self.buyer_reward, title="Escrever resenha")
         await interaction.response.send_modal(modal)
         
     @discord.ui.button(label="Entregar a quest sem bônus", row=0, style=discord.ButtonStyle.primary, emoji="💰") # Create a button with the label "😎 Click me!" with color Blurple
@@ -3613,7 +3617,7 @@ async def guilda_entregar_quest_command(
         # dbservice.update_zakoleta('user', sender_reward, '+' + str(sender_reward) + ' zakoletas porque alguém finalizou sua quest.', sender_id, 'add')
         # dbservice.update_zakoleta('user', buyer_reward, '+' + str(buyer_reward) + ' zakoletas por completar uma quest.', user, 'add')
         
-        await ctx.response.send_message('Quest entregue com sucesso. Considere deixar um comentário ou até mesmo uma resenha sobre a obra. Você receberá um bônus de 5% da recompensa. No caso de uma resenha (que será avaliada pelo esforço), o bônus será de 15%', ephemeral=True, view=ReviewBtn(ctx, user, sender_id, real_name, type, buyer_reward, sender_reward))
+        await ctx.response.send_message('Quest entregue com sucesso. Considere deixar um comentário ou até mesmo uma resenha sobre a obra. Você receberá um bônus de 5% da recompensa.', ephemeral=True, view=ReviewBtn(ctx, user, sender_id, real_name, type, buyer_reward, sender_reward))
 
         
         # await ctx.response.send_message('Quest entregue com sucesso. Considere escrever uma resenha sobre a obra para receber um bônus de 10% da recompensa total. Utilize o comando /guilda resenha.', ephemeral=True)
