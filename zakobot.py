@@ -4040,7 +4040,7 @@ async def aux_command(ctx):
         
                 reward = calculate_quest_reward(quest[6], days)
                 
-                text += f'*{flavor1}**{quest[1]}**{flavor2}*\n{quest[0]}\nTipo: {quest[2]}\nRecompensa: ${str(reward)}\n\n'
+                text += f'*{flavor1}**{quest[1]}**{flavor2}*\n<{quest[0]}>\nTipo: {quest[2]}\nRecompensa: ${str(reward)}\n\n'
                 
                 message = await send_message2(text, channel_id)
                 
