@@ -4057,114 +4057,114 @@ async def cancelar_quest_command(
         
         await ctx.response.send_message(f'Não foi possível cancelar a quest. Você só poderá cancelar outra quest em {data_cd}.', ephemeral=True)
    
-@guilda.command(name='formar_grupo')
-async def formar_grupo_command(
-    ctx: discord.ApplicationContext,
-    quest: discord.Option(str, autocomplete=get_quests_options, name='quests', required=True),
-    membro1: discord.Option(str, autocomplete=get_members_names2, name='primeiro_membro', required=True),
-    membro2: discord.Option(str, autocomplete=get_members_names2, name='segundo_membro', required=False),
-    membro3: discord.Option(str, autocomplete=get_members_names2, name='terceiro_membro', required=False),
-    membro4: discord.Option(str, autocomplete=get_members_names2, name='quarto_membro', required=False)
-):
-    buyer_slots = dbservice.select('quests', ['buyer'], '', {'buyer': ctx.author.id})
+# @guilda.command(name='formar_grupo')
+# async def formar_grupo_command(
+#     ctx: discord.ApplicationContext,
+#     quest: discord.Option(str, autocomplete=get_quests_options, name='quests', required=True),
+#     membro1: discord.Option(str, autocomplete=get_members_names2, name='primeiro_membro', required=True),
+#     membro2: discord.Option(str, autocomplete=get_members_names2, name='segundo_membro', required=False),
+#     membro3: discord.Option(str, autocomplete=get_members_names2, name='terceiro_membro', required=False),
+#     membro4: discord.Option(str, autocomplete=get_members_names2, name='quarto_membro', required=False)
+# ):
+#     buyer_slots = dbservice.select('quests', ['buyer'], '', {'buyer': ctx.author.id})
     
-    if buyer_slots == str(ctx.author.id):
-        buyer_slots = 1
+#     if buyer_slots == str(ctx.author.id):
+#         buyer_slots = 1
         
-    else:
-        buyer_slots = len(buyer_slots)
+#     else:
+#         buyer_slots = len(buyer_slots)
     
-    print('slots: ' + str(buyer_slots))
+#     print('slots: ' + str(buyer_slots))
 
-    if buyer_slots >= int(dbservice.select('user', ['quest_buying_slots'], '', {'id': ctx.author.id})):    
-        await ctx.response.send_message('Você não tem espaço para aceitar novas quests.', ephemeral=True)
-        return
+#     if buyer_slots >= int(dbservice.select('user', ['quest_buying_slots'], '', {'id': ctx.author.id})):    
+#         await ctx.response.send_message('Você não tem espaço para aceitar novas quests.', ephemeral=True)
+#         return
 
-    grupo = f'{str(ctx.author.id)}'
+#     grupo = f'{str(ctx.author.id)}'
     
-    _possible = [membro1, membro2, membro3, membro4]
+#     _possible = [membro1, membro2, membro3, membro4]
     
-    group_size = 1
+#     group_size = 1
     
-    quest_name, tipo = quest.split('(')
+#     quest_name, tipo = quest.split('(')
     
-    tipo = tipo.strip(')')
+#     tipo = tipo.strip(')')
     
-    for member in _possible:
-        if member != None:
-            group_size += 1
-            member_id = dbservice.select('user', ['id'], '', {'name': member})
-            if str(member_id) == dbservice.select('quests', ['sender'], '', {'item_name': quest_name, 'item_type': tipo}):
-                await ctx.response.send_message(f'Um ou mais aventureiros do grupo não podem participar da quest.', ephemeral=True)
-                return
-            buyer_slots = dbservice.select('quests', ['buyer'], '', {'buyer': member_id})
-            if buyer_slots == str(member_id):
-                buyer_slots = 1
+#     for member in _possible:
+#         if member != None:
+#             group_size += 1
+#             member_id = dbservice.select('user', ['id'], '', {'name': member})
+#             if str(member_id) == dbservice.select('quests', ['sender'], '', {'item_name': quest_name, 'item_type': tipo}):
+#                 await ctx.response.send_message(f'Um ou mais aventureiros do grupo não podem participar da quest.', ephemeral=True)
+#                 return
+#             buyer_slots = dbservice.select('quests', ['buyer'], '', {'buyer': member_id})
+#             if buyer_slots == str(member_id):
+#                 buyer_slots = 1
         
-            else:
-                buyer_slots = len(buyer_slots)
+#             else:
+#                 buyer_slots = len(buyer_slots)
     
-            print('slots: ' + str(buyer_slots))
+#             print('slots: ' + str(buyer_slots))
 
-            if buyer_slots >= int(dbservice.select('user', ['quest_buying_slots'], '', {'id': member_id})):
-                await ctx.response.send_message(f'Um ou mais aventureiros do grupo não podem participar da quest.', ephemeral=True)
-                return
+#             if buyer_slots >= int(dbservice.select('user', ['quest_buying_slots'], '', {'id': member_id})):
+#                 await ctx.response.send_message(f'Um ou mais aventureiros do grupo não podem participar da quest.', ephemeral=True)
+#                 return
             
-            grupo += f',{str(member_id)}'
+#             grupo += f',{str(member_id)}'
     
-    dbservice.update('quests', ['buyer', 'is_available', 'date_bought'], [str(ctx.author.id), 'false', int(datetime.datetime.now().timestamp())], {'item_name': quest_name, 'item_type': tipo})
+#     dbservice.update('quests', ['buyer', 'is_available', 'date_bought'], [str(ctx.author.id), 'false', int(datetime.datetime.now().timestamp())], {'item_name': quest_name, 'item_type': tipo})
     
-    flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'item_name': quest_name, 'item_type': tipo}).split('*')
+#     flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'item_name': quest_name, 'item_type': tipo}).split('*')
 
-    leader = dbservice.select('user', ['name'], '', {'id': ctx.author.id})    
+#     leader = dbservice.select('user', ['name'], '', {'id': ctx.author.id})    
 
-    msg = f'Um grupo de aventureiros foi formado para cuidar da quest *{flavor1}**{quest}**{flavor2}*. Seus membros são {leader}'
+#     msg = f'Um grupo de aventureiros foi formado para cuidar da quest *{flavor1}**{quest}**{flavor2}*. Seus membros são {leader}'
     
-    idx = 1
+#     idx = 1
     
-    group = []
+#     group = []
 
-    for member in _possible:
-        if member != None:
-            group.append(member)
+#     for member in _possible:
+#         if member != None:
+#             group.append(member)
     
-    for member in group:
-        if idx == len(group):
-            msg += f' e {member}'
-            member_id = dbservice.select('user', ['id'], '', {'name': member})
-            dbservice.update('quests', ['buyer' + str(len(group)+1)], [str(member_id)], {'item_name': quest_name, 'item_type': tipo})
+#     for member in group:
+#         if idx == len(group):
+#             msg += f' e {member}'
+#             member_id = dbservice.select('user', ['id'], '', {'name': member})
+#             dbservice.update('quests', ['buyer' + str(len(group)+1)], [str(member_id)], {'item_name': quest_name, 'item_type': tipo})
     
-        else:
-            idx += 1
-            msg += f', {member}'
-            member_id = dbservice.select('user', ['id'], '', {'name': member})
-            if idx == 2:
-                dbservice.update('quests', ['buyer2'], [str(member_id)], {'item_name': quest_name, 'item_type': tipo})
-            elif idx == 3:
-                dbservice.update('quests', ['buyer3'], [str(member_id)], {'item_name': quest_name, 'item_type': tipo})
-            elif idx == 4:
-                dbservice.update('quests', ['buyer4'], [str(member_id)], {'item_name': quest_name, 'item_type': tipo})
+#         else:
+#             idx += 1
+#             msg += f', {member}'
+#             member_id = dbservice.select('user', ['id'], '', {'name': member})
+#             if idx == 2:
+#                 dbservice.update('quests', ['buyer2'], [str(member_id)], {'item_name': quest_name, 'item_type': tipo})
+#             elif idx == 3:
+#                 dbservice.update('quests', ['buyer3'], [str(member_id)], {'item_name': quest_name, 'item_type': tipo})
+#             elif idx == 4:
+#                 dbservice.update('quests', ['buyer4'], [str(member_id)], {'item_name': quest_name, 'item_type': tipo})
     
 
-    await ctx.response.send_message('Grupo criado com sucesso!', ephemeral=True)
+#     await ctx.response.send_message('Grupo criado com sucesso!', ephemeral=True)
         
-    time_passed = int(datetime.datetime.now().timestamp()) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': quest_name, 'item_type': tipo}))
-    print('time elapsed: ' + str(time_passed))
+#     time_passed = int(datetime.datetime.now().timestamp()) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': quest_name, 'item_type': tipo}))
+#     print('time elapsed: ' + str(time_passed))
         
-    days = floor(time_passed / 86400)
-    print('days: ' + str(days))
+#     days = floor(time_passed / 86400)
+#     print('days: ' + str(days))
     
-    base_value = dbservice.select('quests', ['value'], '', {'item_name': quest_name, 'item_type': tipo})
+#     base_value = dbservice.select('quests', ['value'], '', {'item_name': quest_name, 'item_type': tipo})
         
-    reward = calculate_quest_reward(base_value, days)
+#     reward = calculate_quest_reward(base_value, days)
     
-    buyer_reward = floor(reward/group_size)
+#     buyer_reward = floor(reward/group_size)
     
-    sender_reward = ceil(reward/2)
+#     sender_reward = ceil(reward/2)
         
-    msg = msg.rstrip(',') + f'. Cada aventureiro receberá ${str(buyer_reward)} e o criador receberá ${str(sender_reward)} na finalização da quest, que deverá ser entregue pelo líder {leader}.'
+#     msg = msg.rstrip(',') + f'. Cada aventureiro receberá ${str(buyer_reward)} e o criador receberá ${str(sender_reward)} na finalização da quest, que deverá ser entregue pelo líder {leader}.'
     
-    await generate_guild_log(msg)
+#     await generate_guild_log(msg)
 
 # to do
 
