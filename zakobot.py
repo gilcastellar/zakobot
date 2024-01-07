@@ -4078,7 +4078,7 @@ async def formar_grupo_command(
     
     for member in group:
         if idx == len(group):
-            msg += f'e {member}'
+            msg += f' e {member}'
         else:
             idx += 1
             msg += f', {member}'
