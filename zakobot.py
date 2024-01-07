@@ -4095,7 +4095,7 @@ async def formar_grupo_command(
             group_size += 1
             member_id = dbservice.select('user', ['id'], '', {'name': member})
             if str(member_id) == dbservice.select('quests', ['sender'], '', {'item_name': quest_name, 'item_type': tipo}):
-                await ctx.response.send_message(f'Um dos aventureiros não pode participar da quest.', ephemeral=True)
+                await ctx.response.send_message(f'Um ou mais aventureiros do grupo não podem participar da quest.', ephemeral=True)
                 return
             buyer_slots = dbservice.select('quests', ['buyer'], '', {'buyer': member_id})
             if buyer_slots == str(member_id):
@@ -4107,7 +4107,7 @@ async def formar_grupo_command(
             print('slots: ' + str(buyer_slots))
 
             if buyer_slots >= int(dbservice.select('user', ['quest_buying_slots'], '', {'id': member_id})):
-                await ctx.response.send_message(f'O aventureiro {member} não tem espaço para aceitar novas quests.', ephemeral=True)
+                await ctx.response.send_message(f'Um ou mais aventureiros do grupo não podem participar da quest.', ephemeral=True)
                 return
             
             grupo += f',{str(member_id)}'
