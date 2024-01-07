@@ -3405,7 +3405,7 @@ class ResenhaModal(discord.ui.Modal):
         super().__init__(*args, **kwargs)
         
         self.add_item(discord.ui.InputText(label="Comentário/Resenha", style=discord.InputTextStyle.long, required=True, max_length=900))
-        self.add_item(discord.ui.string_select(str, label='nota', options=['1', '2']))
+        self.add_item(discord.ui.string_select(str, options=['1', '2']))
         # self.add_item(discord.ui.InputText(label="Nota (número inteiro de 0 a 10)", required=False, max_length=2))
 
     async def callback(self, interaction: discord.Interaction):
