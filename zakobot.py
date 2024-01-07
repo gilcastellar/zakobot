@@ -4125,7 +4125,7 @@ async def formar_grupo_command(
     print("TESTETETE:")
     print(dbservice.select('quests', ['flavor_text'], '', {'item_name': quest_name}))
 
-    flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'item_name': quest_name, 'type': tipo}).split('*')
+    flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'item_name': quest_name, 'item_type': tipo}).split('*')
 
     leader = dbservice.select('user', ['name'], '', {'id': ctx.author.id})    
 
@@ -4150,13 +4150,13 @@ async def formar_grupo_command(
             idx += 1
             msg += f', {member}'
         
-    time_passed = int(datetime.datetime.now().timestamp()) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': quest_name, 'type': tipo}))
+    time_passed = int(datetime.datetime.now().timestamp()) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': quest_name, 'item_type': tipo}))
     print('time elapsed: ' + str(time_passed))
         
     days = floor(time_passed / 86400)
     print('days: ' + str(days))
     
-    base_value = dbservice.select('quests', ['value'], '', {'item_name': quest_name, 'type': tipo})
+    base_value = dbservice.select('quests', ['value'], '', {'item_name': quest_name, 'item_type': tipo})
         
     reward = calculate_quest_reward(base_value, days)
     
