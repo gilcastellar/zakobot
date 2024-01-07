@@ -3404,6 +3404,7 @@ class ResenhaModal(discord.ui.Modal):
     def __init__(self, user_id, sender_id, item_name, buyer_reward, sender_reward, type, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.user_id = user_id
+        self.sender_id = sender_id
         self.item_name = item_name
         self.buyer_reward = buyer_reward
         self.sender_reward = sender_reward
@@ -3431,7 +3432,10 @@ class ResenhaModal(discord.ui.Modal):
         user_name = dbservice.select('user', ['name'], '', {'id': self.user_id})    
         sender_name = dbservice.select('user', ['name'], '', {'id': self.sender_id})    
 
-        text = f''
+        text = f'**Resenha de {self.item_name}\nQuest criada por: {sender_name}\nResenha por: {user_name}\n\n{review}'
+        if score.isnumeric() == True:
+            text += f'\n\nNota: {str(score)}/10'
+            
         await send_message2(text, 1193562729198407701)
             
         bonus = ceil(int(self.buyer_reward) * 0.05)
