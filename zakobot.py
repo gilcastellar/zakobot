@@ -4042,9 +4042,13 @@ async def aux_command(ctx):
                 
                 text += f'*{flavor1}**{quest[1]}**{flavor2}*\n{quest[0]}\nTipo: {quest[2]}\nRecompensa: ${str(reward)}\n\n'
                 
-                msg_id = await send_message2(text, channel_id)
+                message = await send_message2(text, channel_id)
                 
-                dbservice.update('quests', ['id_msg'], [str(msg_id)], {'item_name': quest[1]})
+                print(message)
+                
+                # dbservice.update('quests', ['id_msg'], [str(msg_id)], {'item_name': quest[1]})
+                
+                break
         
         
         # await send_message2('ok', 1077070205987082281)
