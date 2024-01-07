@@ -4026,7 +4026,7 @@ async def aux_command(ctx):
         
         for quest in data:
             
-            if quest[3] == True:
+            if quest[4] == True:
                 
                 flavor1, flavor2 = quest[7].split('*')
         
