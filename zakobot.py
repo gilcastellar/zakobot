@@ -3452,7 +3452,7 @@ class ResenhaModal(discord.ui.Modal):
         else:    
             msg = f'O aventureiro <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{self.item_name} ({self.type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente. Além de um bônus de {str(bonus)} pela resenha para o aventureiro.'
         
-        dbservice.delete('quests', {'buyer': self.user_id, 'item_name': self.real_name})
+        # dbservice.delete('quests', {'buyer': self.user_id, 'item_name': self.real_name})
 
         await generate_guild_log(msg)         
 
