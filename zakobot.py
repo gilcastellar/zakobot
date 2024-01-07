@@ -3430,7 +3430,7 @@ class ResenhaModal(discord.ui.Modal):
         
         dbservice.update_zakoleta('user', int(bonus), '+' + str(bonus) + ' por escrever uma resenha para quest', self.user_id, 'add')
 
-        await interaction.response.send_message(f'Comentário/resenha enviada. A Guilda agradece! Você recebeu {str(bonus)} como bônus.')
+        await interaction.response.send_message(f'Comentário/resenha enviada. A Guilda agradece! Você recebeu {str(bonus)} como bônus.', ephemeral=True)
           
 class ReviewBtn(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
     def __init__(self, ctx, user_id, sender_id, real_name, type, buyer_reward, sender_reward):
