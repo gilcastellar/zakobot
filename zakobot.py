@@ -4074,7 +4074,7 @@ async def formar_grupo_command(
         if member != None:
             group.append(member)
             
-    print(_possible)
+    print(group)
     
     for member in group:
         if idx == len(group):
