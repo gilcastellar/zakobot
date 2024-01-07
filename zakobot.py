@@ -3640,7 +3640,7 @@ async def guilda_entregar_quest_command(
         days = floor(time_passed / 86400)
         print('days: ' + str(days))
     
-        base_value = dbservice.select('quests', ['value'], '', {'item_name': real_name, 'type': _type})
+        base_value = dbservice.select('quests', ['value'], '', {'item_name': real_name, 'item_type': _type})
         
         reward = calculate_quest_reward(base_value, days)
     
@@ -3667,13 +3667,13 @@ async def guilda_entregar_quest_command(
             
                 sender_id = dbservice.select('quests', ['sender'], '', {'id_anilist': anilist_id})
 
-                time_passed = int(datetime.datetime.now().timestamp()) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': real_name, 'type': _type}))
+                time_passed = int(datetime.datetime.now().timestamp()) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': real_name, 'item_type': _type}))
                 print('time elapsed: ' + str(time_passed))
         
                 days = floor(time_passed / 86400)
                 print('days: ' + str(days))
     
-                base_value = dbservice.select('quests', ['value'], '', {'item_name': real_name, 'type': _type})
+                base_value = dbservice.select('quests', ['value'], '', {'item_name': real_name, 'item_type': _type})
         
                 reward = calculate_quest_reward(base_value, days)
     
@@ -3686,10 +3686,10 @@ async def guilda_entregar_quest_command(
                 # for member in group:
                 #     dbservice.update_zakoleta('user', buyer_reward, '+' + str(buyer_reward) + ' zakoletas por completar uma quest.', member, 'add')
                     
-                obra = dbservice.select('quests', ['item_name'], '', {'item_name': real_name, 'type': _type})
-                flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'item_name': real_name, 'type': _type}).split('*')
+                obra = dbservice.select('quests', ['item_name'], '', {'item_name': real_name, 'item_type': _type})
+                flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'item_name': real_name, 'item_type': _type}).split('*')
         
-                # dbservice.delete('quests', {'item_name': real_name, 'type': _type})
+                # dbservice.delete('quests', {'item_name': real_name, 'item_type': _type})
         
                 msg = f'Os aventureiros ' 
                 
