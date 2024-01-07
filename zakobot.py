@@ -3511,8 +3511,11 @@ async def guilda_abandonar_quest_command(
         print(dbservice.select('quests', ['flavor_text'], '', {'buyer': user_id, 'id_anilist': anilist_id}))
         flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': user_id, 'id_anilist': anilist_id}).split('*')
         dbservice.update('quests', ['buyer', 'is_available', 'abandoned'], ['', 'true', 'true'], {'buyer': user_id, 'id_anilist': anilist_id})
-            
-        msg = f'💀 O aventureiro <@{str(user_id)}> morreu tentanto terminar a quest *{flavor1}**{obra} ({type})**{flavor2}* e a mesma foi devolvida ao quadro. Essa quest não conta para o limite de criação do criador.'
+        
+        if dbservice.select('user', ['sexo'], '', {'id': user_id}) == 'm':    
+            msg = f'💀 A aventureira <@{str(user_id)}> morreu tentanto terminar a quest *{flavor1}**{obra} ({type})**{flavor2}* e a mesma foi devolvida ao quadro. Essa quest não conta para o limite de criação do criador.'
+        else:
+            msg = f'💀 O aventureiro <@{str(user_id)}> morreu tentanto terminar a quest *{flavor1}**{obra} ({type})**{flavor2}* e a mesma foi devolvida ao quadro. Essa quest não conta para o limite de criação do criador.'
         await generate_guild_log(msg)
             
         await ctx.response.send_message('Quest abandonada com sucesso.', ephemeral=True)
@@ -3554,8 +3557,11 @@ async def guilda_entregar_quest_command(
         flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': user, 'id_anilist': anilist_id}).split('*')
             
         dbservice.delete('quests', {'buyer': user, 'id_anilist': anilist_id})
-            
-        msg = f'O aventureiro <@{str(user)}> completou e entregou a quest *{flavor1}**{obra} ({type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(buyer_reward)} e ${str(sender_reward)} respectivamente.'
+        
+        if dbservice.select('user', ['sexo'], '', {'id': user}) == 'm':
+            msg = f'A aventureira <@{str(user)}> completou e entregou a quest *{flavor1}**{obra} ({type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(buyer_reward)} e ${str(sender_reward)} respectivamente.'
+        else:    
+            msg = f'O aventureiro <@{str(user)}> completou e entregou a quest *{flavor1}**{obra} ({type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(buyer_reward)} e ${str(sender_reward)} respectivamente.'
 
         await generate_guild_log(msg)
             
@@ -3668,9 +3674,13 @@ async def gerar_quest_board(msg, page, last_page, data):
         print('len of obra')
         print(str(len(obra)))
         
+
         if len(obra) == 7:
             aventureiro = dbservice.select('user', ['name'], '', {'id': obra[6]})
-            text += f'Aventureiro: {aventureiro}\n'
+            if dbservice.select('user', ['sexo'], '', {'id': obra[6]}) == 'm':
+                text += f'Aventureira: {aventureiro}\n'
+            else:
+                text += f'Aventureiro: {aventureiro}\n'
         
         text += '\n'
     
@@ -3806,7 +3816,7 @@ async def inventario_command(
         if obra[6] != None:
             time_passed = int(obra[6]) - int(obra[4])
         else:
-            time_passed = 0
+            time_passed = int(obra[6]) - int(obra[4])
             
         print('time_passed')
         print(time_passed)
