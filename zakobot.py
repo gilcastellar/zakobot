@@ -4042,7 +4042,7 @@ async def aux_command(ctx):
                 
                 msg_id = await send_message2(text, channel_id)
                 
-                dbservice.update('quests', ['id_msg'], [msg_id], {'item_name': quest[1]})
+                dbservice.update('quests', ['id_msg'], [str(msg_id)], {'item_name': quest[1]})
         
         
         # await send_message2('ok', 1077070205987082281)
