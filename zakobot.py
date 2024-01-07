@@ -3429,9 +3429,9 @@ class ResenhaModal(discord.ui.Modal):
         print('deu bom porra')
           
 class ReviewBtn(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
-    def __init__(self, value, user_id, sender_id, real_name, type, buyer_reward, sender_reward):
+    def __init__(self, ctx, user_id, sender_id, real_name, type, buyer_reward, sender_reward):
         super().__init__()
-        self.value = value
+        self.ctx = ctx
         self.user_id = user_id
         self.sender_id = sender_id
         self.real_name = real_name
@@ -3613,7 +3613,7 @@ async def guilda_entregar_quest_command(
         # dbservice.update_zakoleta('user', sender_reward, '+' + str(sender_reward) + ' zakoletas porque alguém finalizou sua quest.', sender_id, 'add')
         # dbservice.update_zakoleta('user', buyer_reward, '+' + str(buyer_reward) + ' zakoletas por completar uma quest.', user, 'add')
         
-        await ctx.response.send_message('Quest entregue com sucesso. Considere deixar um comentário ou até mesmo uma resenha sobre a obra. Você receberá um bônus de 5% da recompensa. No caso de uma resenha (que será avaliada pelo esforço), o bônus será de 15%', ephemeral=True, view=ReviewBtn(buyer_reward, user, sender_id, real_name, type, buyer_reward, sender_reward))
+        await ctx.response.send_message('Quest entregue com sucesso. Considere deixar um comentário ou até mesmo uma resenha sobre a obra. Você receberá um bônus de 5% da recompensa. No caso de uma resenha (que será avaliada pelo esforço), o bônus será de 15%', ephemeral=True, view=ReviewBtn(ctx, user, sender_id, real_name, type, buyer_reward, sender_reward))
 
         
         # await ctx.response.send_message('Quest entregue com sucesso. Considere escrever uma resenha sobre a obra para receber um bônus de 10% da recompensa total. Utilize o comando /guilda resenha.', ephemeral=True)
