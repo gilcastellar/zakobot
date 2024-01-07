@@ -3430,7 +3430,15 @@ class ResenhaModal(discord.ui.Modal):
         
         dbservice.update_zakoleta('user', int(bonus), '+' + str(bonus) + ' por escrever uma resenha para quest', self.user_id, 'add')
 
-        await interaction.response.send_message(f'Comentário/resenha enviada. A Guilda agradece! Você recebeu {str(bonus)} como bônus.', ephemeral=True)
+        await interaction.response.send_message(f'Comentário/resenha enviada. A Guilda agradece!', ephemeral=True)
+        
+        flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': self.user_id, 'item_name': self.real_name}).split('*')
+        
+        if dbservice.select('user', ['sexo'], '', {'id': self.user_id}) == 'm':
+            msg = f'A aventureira <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{self.item_name} ({type})**{flavor2}* criada por <@{str(self.sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente. Além de um bônus de {str(bonus)} pela resenha.'
+        else:    
+            msg = f'O aventureiro <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{self.item_name} ({type})**{flavor2}* criada por <@{str(self.sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente. Além de um bônus de {str(bonus)} pela resenha.'
+
           
 class ReviewBtn(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
     def __init__(self, ctx, user_id, sender_id, real_name, type, buyer_reward, sender_reward):
