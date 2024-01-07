@@ -4048,6 +4048,8 @@ async def aux_command(ctx):
                 
                 msg_id = message.id
                 
+                print(msg_id)
+                
                 # dbservice.update('quests', ['id_msg'], [str(msg_id)], {'item_name': quest[1]})
                 
                 break
