@@ -3392,7 +3392,10 @@ class AcquiringBtn(discord.ui.View): # Create a class called MyView that subclas
             
             flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': self.user_id, 'item_name': self.real_name, 'item_type': self._type}).split('*')
             
-            msg = f"📋 O aventureiro <@{str(self.user_id)}> aceitou a quest *{flavor1} **{self.real_name} ({self._type})**{flavor2}* pela recompensa de ${str(self.value)}"
+            if dbservice.select('user', ['sexo'], '', {'id': self.user_id}) == 'm':
+                msg = f"📋 A aventureira <@{str(self.user_id)}> aceitou a quest *{flavor1} **{self.real_name} ({self._type})**{flavor2}* pela recompensa de ${str(self.value)}"
+            else:
+                msg = f"📋 O aventureiro <@{str(self.user_id)}> aceitou a quest *{flavor1} **{self.real_name} ({self._type})**{flavor2}* pela recompensa de ${str(self.value)}"
             
             await generate_guild_log(msg)
 
@@ -3728,7 +3731,6 @@ async def inventario_command(
       
     if user == None:
         
-        
         text += '**$' + str(grana) + '**\n\n'
         if dbservice.select('user', ['quest_cancel_due_date'], '', {'id': user_id}) != None:
             due_date = int(dbservice.select('user', ['quest_cancel_due_date'], '', {'id': user_id})) - 10800
@@ -3765,8 +3767,6 @@ async def inventario_command(
     if len(data) < 1:
         await ctx.response.send_message(text + 'Você não tem nenhuma quest aceita.', ephemeral=True)
         return
-
-    # await gerar_inventario(msg, 1, 0, user_id)
     
     page = 1
     last_page = 0
@@ -3803,7 +3803,11 @@ async def inventario_command(
         for i in obra:
             print(i)
         
-        time_passed = int(obra[6]) - int(obra[4])
+        if obra[6] != None:
+            time_passed = int(obra[6]) - int(obra[4])
+        else:
+            time_passed = 0
+            
         print('time_passed')
         print(time_passed)
         
