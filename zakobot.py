@@ -4061,11 +4061,24 @@ async def formar_grupo_command(
 
     leader = dbservice.select('user', ['name'], '', {'id': ctx.author.id})    
 
-    msg = f'Um grupo de aventureiros foi formado para cuidar da quest *{flavor1}**{quest}**{flavor2}*. Seu líder é {leader} e os membros são '
+    msg = f'Um grupo de aventureiros foi formado para cuidar da quest *{flavor1}**{quest}**{flavor2}*. Seus membros são {leader}'
+    
+    idx = 1
+    
+    print(_possible)
+
+    for member in _possible:
+        if member == None:
+            _possible.remove(member)
+            
+    print(_possible)
     
     for member in _possible:
-        if member != None:
-            msg += f'{member},'
+        if idx == len(_possible):
+            msg += f'e {member}'
+        else:
+            idx += 1
+            msg += f', {member}'
         
     time_passed = int(datetime.datetime.now().timestamp()) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': quest_name}))
     print('time elapsed: ' + str(time_passed))
