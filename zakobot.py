@@ -4044,15 +4044,9 @@ async def aux_command(ctx):
                 
                 message = await send_message2(text, channel_id)
                 
-                print(message)
-                
                 msg_id = message.id
                 
-                print(msg_id)
-                
-                # dbservice.update('quests', ['id_msg'], [str(msg_id)], {'item_name': quest[1]})
-                
-                break
+                dbservice.update('quests', ['id_msg'], [str(msg_id)], {'item_name': quest[1]})
         
         
         # await send_message2('ok', 1077070205987082281)
