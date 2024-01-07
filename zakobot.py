@@ -3401,7 +3401,7 @@ class AcquiringBtn(discord.ui.View): # Create a class called MyView that subclas
 
 # Resenha modal
 class ResenhaModal(discord.ui.Modal):
-    def __init__(self, user_id, item_name, buyer_reward, sender_reward, type, *args, **kwargs) -> None:
+    def __init__(self, user_id, sender_id, item_name, buyer_reward, sender_reward, type, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.user_id = user_id
         self.item_name = item_name
@@ -3427,6 +3427,12 @@ class ResenhaModal(discord.ui.Modal):
             dbservice.insert('quests_reviews', ['id_user', 'item_name', 'review'], [self.user_id, self.item_name, review])
         else:
             dbservice.insert('quests_reviews', ['id_user', 'item_name', 'review', 'score'], [self.user_id, self.item_name, review, score])
+           
+        user_name = dbservice.select('user', ['name'], '', {'id': self.user_id})    
+        sender_name = dbservice.select('user', ['name'], '', {'id': self.sender_id})    
+
+        text = f''
+        await send_message2(text, 1193562729198407701)
             
         bonus = ceil(int(self.buyer_reward) * 0.05)
         
@@ -3459,7 +3465,7 @@ class ReviewBtn(discord.ui.View): # Create a class called MyView that subclasses
 
     @discord.ui.button(label="Deixar comentário ou resenha", row=0, style=discord.ButtonStyle.primary, emoji="📝") # Create a button with the label "😎 Click me!" with color Blurple
     async def first_button_callback(self, button, interaction):
-        modal = ResenhaModal(self.user_id, self.real_name, self.buyer_reward, self.sender_reward, self.type, title="Escrever resenha")
+        modal = ResenhaModal(self.user_id, self.sender_id, self.real_name, self.buyer_reward, self.sender_reward, self.type, title="Escrever resenha")
         await interaction.response.send_modal(modal)
         
     @discord.ui.button(label="Entregar a quest sem bônus", row=0, style=discord.ButtonStyle.primary, emoji="💰") # Create a button with the label "😎 Click me!" with color Blurple
