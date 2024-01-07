@@ -4022,11 +4022,13 @@ async def aux_command(ctx):
         
         data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'sender', 'is_available', 'buyer', 'value', 'flavor_text', 'date_inserted', 'date_bought'], '')
         
-        text = f'# **QUESTS DISPONÍVEIS**\n\n\n'
+        await send_message2(f'# **QUESTS DISPONÍVEIS**\n\n\n', channel_id) 
         
         for quest in data:
             
             if quest[4] == 'true':
+                
+                text = ''
                 
                 flavor1, flavor2 = quest[7].split('*')
         
@@ -4042,7 +4044,7 @@ async def aux_command(ctx):
                 
                 msg_id = await send_message2(text, channel_id)
                 
-                # dbservice.update('quests', ['id_msg'], [str(msg_id)], {'item_name': quest[1]})
+                dbservice.update('quests', ['id_msg'], [str(msg_id)], {'item_name': quest[1]})
 
             else:
                 continue
