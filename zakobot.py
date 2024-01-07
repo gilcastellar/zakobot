@@ -3643,11 +3643,15 @@ async def guilda_entregar_quest_command(
         dbservice.update_zakoleta('user', buyer_reward, '+' + str(buyer_reward) + ' zakoletas por completar uma quest.', user, 'add')
         
         await ctx.response.send_message('Quest entregue com sucesso. Considere deixar um comentário ou até mesmo uma resenha sobre a obra. Você receberá um bônus de 5% da recompensa.', ephemeral=True, view=ReviewBtn(ctx, user, sender_id, real_name, type, buyer_reward, sender_reward))
-
-        
-        # await ctx.response.send_message('Quest entregue com sucesso. Considere escrever uma resenha sobre a obra para receber um bônus de 10% da recompensa total. Utilize o comando /guilda resenha.', ephemeral=True)
             
     else:
+        
+        possible_group = dbservice.select('quests', ['buyer'], '', {'id_anilist': anilist_id})
+        
+        if ',' in possible_group:
+            group = possible_group.split(',')
+            if user == group[0]:
+                
 
         await ctx.response.send_message('Você não é o dono dessa quest ou ela não existe.', ephemeral=True)
 
@@ -4024,10 +4028,17 @@ async def formar_grupo_command(
     
     group_size = 1
     
+    quest_name, tipo = quest.split('(')
+    
+    tipo = tipo.strip(')')
+    
     for member in _possible:
         if member != None:
             group_size += 1
             member_id = dbservice.select('user', ['id'], '', {'name': member})
+            if str(member_id) == dbservice.select('quests', ['sender'], '', {'item_name': quest_name}):
+                await ctx.response.send_message(f'O aventureiro {member} é o dono da quest e portanto não pode participar.', ephemeral=True)
+                return
             buyer_slots = dbservice.select('quests', ['buyer'], '', {'buyer': member_id})
             if buyer_slots == str(member_id):
                 buyer_slots = 1
@@ -4051,9 +4062,7 @@ async def formar_grupo_command(
     
     await ctx.response.send_message('Grupo criado com sucesso!', ephemeral=True)
     
-    quest_name, tipo = quest.split('(')
     
-    tipo = tipo.strip(')')
     
     print("TESTETETE:")
     print(dbservice.select('quests', ['flavor_text'], '', {'item_name': quest_name}))
@@ -4097,7 +4106,7 @@ async def formar_grupo_command(
     
     sender_reward = ceil(reward/2)
         
-    msg = msg.rstrip(',') + f'. Cada aventureiro receberá ${str(buyer_reward)} e o criador receberá ${str(sender_reward)} ao terminar a quest, que deverá ser entregue pelo líder {leader}.'
+    msg = msg.rstrip(',') + f'. Cada aventureiro receberá ${str(buyer_reward)} e o criador receberá ${str(sender_reward)} na finalização da quest, que deverá ser entregue pelo líder {leader}.'
     
     print(msg)
 
