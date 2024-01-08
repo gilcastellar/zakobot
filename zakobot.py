@@ -3402,7 +3402,7 @@ class AcquiringBtn(discord.ui.View): # Create a class called MyView that subclas
 
 # Resenha modal
 class ResenhaModal(discord.ui.Modal):
-    def __init__(self, user_id, sender_id, item_name, buyer_reward, sender_reward, type, *args, **kwargs) -> None:
+    def __init__(self, user_id, sender_id, item_name, buyer_reward, sender_reward, type, url, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.user_id = user_id
         self.sender_id = sender_id
@@ -3434,7 +3434,7 @@ class ResenhaModal(discord.ui.Modal):
         user_name = dbservice.select('user', ['name'], '', {'id': self.user_id})    
         sender_name = dbservice.select('user', ['name'], '', {'id': self.sender_id})    
 
-        text = f'Resenha de **{self.item_name}**\nQuest criada por: {sender_name}\nResenha por: {user_name}\n\n{review}'
+        text = f'Resenha de **{self.item_name}**\nLink: <{self.url}>\nQuest criada por: {sender_name}\nResenha por: {user_name}\n\n{review}'
         if score.isnumeric() == True:
             text += f'\n\nNota: {str(score)}/10'
             
@@ -3454,12 +3454,15 @@ class ResenhaModal(discord.ui.Modal):
         else:    
             msg = f'O aventureiro <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{self.item_name} ({self.type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente. Além de um bônus de {str(bonus)} pela resenha para o aventureiro.'
         
+        dbservice.update_zakoleta('user', self.sender_reward, '+' + str(self.sender_reward) + ' zakoletas porque alguém finalizou sua quest.', self.sender_id, 'add')
+        dbservice.update_zakoleta('user', self.buyer_reward, '+' + str(self.buyer_reward) + ' zakoletas por completar uma quest.', self.user_id, 'add')
+        
         dbservice.delete('quests', {'buyer': self.user_id, 'item_name': self.item_name})
 
         await generate_guild_log(msg)         
 
 class ReviewBtn(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
-    def __init__(self, ctx, user_id, sender_id, real_name, type, buyer_reward, sender_reward):
+    def __init__(self, ctx, user_id, sender_id, real_name, type, buyer_reward, sender_reward, url):
         super().__init__()
         self.ctx = ctx
         self.user_id = user_id
@@ -3468,17 +3471,21 @@ class ReviewBtn(discord.ui.View): # Create a class called MyView that subclasses
         self.type = type
         self.buyer_reward = buyer_reward
         self.sender_reward = sender_reward
+        self.url = url
 
     @discord.ui.button(label="Deixar comentário ou resenha", row=0, style=discord.ButtonStyle.primary, emoji="📝") # Create a button with the label "😎 Click me!" with color Blurple
     async def first_button_callback(self, button, interaction):
         url = dbservice.select('quests', ['item_url'], '', {'item_name': self.real_name})
-        modal = ResenhaModal(self.user_id, self.sender_id, self.real_name, self.buyer_reward, self.sender_reward, self.type, url, title="Escrever resenha")
+        modal = ResenhaModal(self.user_id, self.sender_id, self.real_name, self.buyer_reward, self.sender_reward, self.type, elf.url, title="Escrever resenha")
         await interaction.response.send_modal(modal)
         
     @discord.ui.button(label="Entregar a quest sem bônus", row=0, style=discord.ButtonStyle.primary, emoji="💰") # Create a button with the label "😎 Click me!" with color Blurple
     async def second_button_callback(self, button, interaction):
         obra = dbservice.select('quests', ['item_name'], '', {'buyer': self.user_id, 'item_name': self.real_name})
         flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': self.user_id, 'item_name': self.real_name}).split('*')
+        
+        dbservice.update_zakoleta('user', self.sender_reward, '+' + str(self.sender_reward) + ' zakoletas porque alguém finalizou sua quest.', self.sender_id, 'add')
+        dbservice.update_zakoleta('user', self.buyer_reward, '+' + str(self.buyer_reward) + ' zakoletas por completar uma quest.', self.user_id, 'add')
         
         dbservice.delete('quests', {'buyer': self.user_id, 'item_name': self.real_name})
         
@@ -3653,11 +3660,8 @@ async def guilda_entregar_quest_command(
         print('rewards: ')
         print(buyer_reward)
         print(sender_reward)
-            
-        dbservice.update_zakoleta('user', sender_reward, '+' + str(sender_reward) + ' zakoletas porque alguém finalizou sua quest.', sender_id, 'add')
-        dbservice.update_zakoleta('user', buyer_reward, '+' + str(buyer_reward) + ' zakoletas por completar uma quest.', user, 'add')
         
-        await ctx.response.send_message('Quest entregue com sucesso. Considere deixar um comentário ou até mesmo uma resenha sobre a obra. Você receberá um bônus de 5% da recompensa.', ephemeral=True, view=ReviewBtn(ctx, user, sender_id, real_name, type, buyer_reward, sender_reward))
+        await ctx.response.send_message('Quest entregue com sucesso. Considere deixar um comentário ou até mesmo uma resenha sobre a obra. Você receberá um bônus de 5% da recompensa.', ephemeral=True, view=ReviewBtn(ctx, user, sender_id, real_name, type, buyer_reward, sender_reward, url))
             
     else:
         
