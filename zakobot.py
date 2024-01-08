@@ -3481,9 +3481,9 @@ class ReviewBtn(discord.ui.View): # Create a class called MyView that subclasses
         dbservice.delete('quests', {'buyer': self.user_id, 'item_name': self.real_name})
         
         if dbservice.select('user', ['sexo'], '', {'id': self.user_id}) == 'm':
-            msg = f'A aventureira <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{obra} ({type})**{flavor2}* criada por <@{str(self.sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente.'
+            msg = f'A aventureira <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{obra} ({self.type})**{flavor2}* criada por <@{str(self.sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente.'
         else:    
-            msg = f'O aventureiro <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{obra} ({type})**{flavor2}* criada por <@{str(self.sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente.'
+            msg = f'O aventureiro <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{obra} ({self.type})**{flavor2}* criada por <@{str(self.sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente.'
 
         await generate_guild_log(msg)
         
