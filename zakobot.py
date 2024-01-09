@@ -3407,7 +3407,8 @@ async def pay_quest(quest, type, user_id, sender_id, buyer_reward, sender_reward
     
     exists = dbservice.check_existence('quests', {'item_name': quest, 'item_type': type})
     
-    if exists == 0:
+    if exists == 1:
+
         dbservice.update_zakoleta('user', sender_reward, '+' + str(sender_reward) + ' zakoletas porque alguém finalizou sua quest.', sender_id, 'add')
         dbservice.update_zakoleta('user', buyer_reward, '+' + str(buyer_reward) + ' zakoletas por completar uma quest.', user_id, 'add')
         
