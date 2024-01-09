@@ -3496,7 +3496,7 @@ class ReviewBtn(discord.ui.View): # Create a class called MyView that subclasses
         obra = dbservice.select('quests', ['item_name'], '', {'buyer': self.user_id, 'item_name': self.real_name})
         flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': self.user_id, 'item_name': self.real_name}).split('*')
         
-        await pay_quest(self.item_name, self.type, self.user_id, self.sender_id, self.buyer_reward, self.sender_reward)
+        await pay_quest(self.real_name, self.type, self.user_id, self.sender_id, self.buyer_reward, self.sender_reward)
         
         dbservice.delete('quests', {'buyer': self.user_id, 'item_name': self.real_name})
         
