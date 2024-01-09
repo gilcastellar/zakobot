@@ -3485,7 +3485,7 @@ class ReviewBtn(discord.ui.View): # Create a class called MyView that subclasses
     @discord.ui.button(label="Deixar comentário ou resenha", row=0, style=discord.ButtonStyle.primary, emoji="📝") # Create a button with the label "😎 Click me!" with color Blurple
     async def first_button_callback(self, button, interaction):
         url = dbservice.select('quests', ['item_url'], '', {'item_name': self.real_name})
-        modal = ResenhaModal(self.user_id, self.sender_id, self.real_name, self.buyer_reward, self.sender_reward, self.type, elf.url, title="Escrever resenha")
+        modal = ResenhaModal(self.user_id, self.sender_id, self.real_name, self.buyer_reward, self.sender_reward, self.type, self.url, title="Escrever resenha")
         await interaction.response.send_modal(modal)
         
     @discord.ui.button(label="Entregar a quest sem bônus", row=0, style=discord.ButtonStyle.primary, emoji="💰") # Create a button with the label "😎 Click me!" with color Blurple
