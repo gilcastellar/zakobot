@@ -3227,7 +3227,7 @@ class SellingBtn(discord.ui.View): # Create a class called MyView that subclasse
         
         flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'id_anilist': self.anilist_id}).split('*')
         
-        msg = f'A quest *{flavor1}**{self.title} ({self.type})**{flavor2}* acabou de ser criada, está valendo ${str(self.reward)} e já está disponível no quadro!'
+        msg = f'✍️ A quest *{flavor1}**{self.title} ({self.type})**{flavor2}* acabou de ser criada, está valendo ${str(self.reward)} e já está disponível no quadro!'
     
         await generate_guild_log(msg)
 
@@ -3397,9 +3397,9 @@ class AcquiringBtn(discord.ui.View): # Create a class called MyView that subclas
             flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': self.user_id, 'item_name': self.real_name, 'item_type': self._type}).split('*')
             
             if dbservice.select('user', ['sexo'], '', {'id': self.user_id}) == 'm':
-                msg = f"📋 A aventureira <@{str(self.user_id)}> aceitou a quest *{flavor1}**{self.real_name} ({self._type})**{flavor2}* pela recompensa de ${str(self.value)}"
+                msg = f"🫡 A aventureira <@{str(self.user_id)}> aceitou a quest *{flavor1}**{self.real_name} ({self._type})**{flavor2}* pela recompensa de ${str(self.value)}"
             else:
-                msg = f"📋 O aventureiro <@{str(self.user_id)}> aceitou a quest *{flavor1}**{self.real_name} ({self._type})**{flavor2}* pela recompensa de ${str(self.value)}"
+                msg = f"🫡 O aventureiro <@{str(self.user_id)}> aceitou a quest *{flavor1}**{self.real_name} ({self._type})**{flavor2}* pela recompensa de ${str(self.value)}"
             
             await generate_guild_log(msg)
 
@@ -3464,9 +3464,9 @@ class ResenhaModal(discord.ui.Modal):
         sender_id = dbservice.select('quests', ['sender'], '', {'buyer': self.user_id, 'item_name': self.item_name})
         
         if dbservice.select('user', ['sexo'], '', {'id': self.user_id}) == 'm':
-            msg = f'A aventureira <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{self.item_name} ({self.type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente. Além de um bônus de {str(bonus)} pela resenha para o aventureiro.'
+            msg = f'💪 A aventureira <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{self.item_name} ({self.type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente. Além de um bônus de {str(bonus)} pela resenha para o aventureiro.'
         else:    
-            msg = f'O aventureiro <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{self.item_name} ({self.type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente. Além de um bônus de {str(bonus)} pela resenha para o aventureiro.'
+            msg = f'💪 O aventureiro <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{self.item_name} ({self.type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente. Além de um bônus de {str(bonus)} pela resenha para o aventureiro.'
         
         await pay_quest(self.item_name, self.type, self.user_id, self.sender_id, self.buyer_reward, self.sender_reward)
         
@@ -4004,7 +4004,6 @@ async def generate_guild_log(msg):
     
     await send_message2(msg, 1193144846945353749, True)
     
-
 async def get_user_created_quests(ctx: discord.AutocompleteContext):
 
     user_name = dbservice.select('user', ['name'], '', {'id': ctx.interaction.user.id})
@@ -4059,7 +4058,7 @@ async def cancelar_quest_command(
         
         flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'sender': user, 'id_anilist': anilist_id}).split('*')
         
-        msg = f'A quest *{flavor1}**{real_name} ({_type})**{flavor2}* foi deletada pelo criador.'
+        msg = f'❌ A quest *{flavor1}**{real_name} ({_type})**{flavor2}* foi deletada pelo criador.'
         
         await generate_guild_log(msg)
     
