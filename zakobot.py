@@ -4186,6 +4186,7 @@ async def cancelar_quest_command(
 # to do
 
 # criar canal que mantém o quadro sempre exposto e atualizado ao vivo
+# sistema de log por threshold atingido na recompensa das quests
 # pensar no sistema de upvote e downvote do nico
 # pensar em sistema de raid
 # pensar em sistema de party
