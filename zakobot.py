@@ -3655,7 +3655,7 @@ async def guilda_entregar_quest_command(
             
         sender_id = dbservice.select('quests', ['sender'], '', {'id_anilist': anilist_id})
 
-        time_passed = int(datetime.datetime.now().timestamp()) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': real_name, 'item_type': _type}))
+        time_passed = int(dbservice.select('quests', ['date_bought'], '', {'id_anilist': anilist_id})) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': real_name, 'item_type': _type}))
         print('time elapsed: ' + str(time_passed))
         
         days = floor(time_passed / 86400)
