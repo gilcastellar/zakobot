@@ -3603,7 +3603,7 @@ async def get_user_received_quests(ctx: discord.AutocompleteContext):
 @guilda.command(name='abandonar_quest', description='Este comando permite que você abandone uma quest')
 async def guilda_abandonar_quest_command(
     ctx: discord.ApplicationContext,
-    quest: discord.Option(str, name='quest', autocomkplete=get_user_received_quests, description='Insira o link do anilist da obra')
+    quest: discord.Option(str, name='quest', autocomplete=get_user_received_quests)
 ):
     user_id = str(ctx.author.id)
     
