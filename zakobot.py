@@ -3673,7 +3673,7 @@ async def guilda_entregar_quest_command(
         print(buyer_reward)
         print(sender_reward)
         
-        await ctx.response.send_message('Quest entregue com sucesso. Considere deixar um comentário ou até mesmo uma resenha sobre a obra. Você receberá um bônus de 5% da recompensa.', ephemeral=True, view=ReviewBtn(ctx, user, sender_id, real_name, type, buyer_reward, sender_reward, url))
+        await ctx.response.send_message('Quest entregue com sucesso. Considere deixar um comentário ou até mesmo uma resenha sobre a obra. Você receberá um bônus de 5% da recompensa. É importante realizar um mínimo de esforço.', ephemeral=True, view=ReviewBtn(ctx, user, sender_id, real_name, type, buyer_reward, sender_reward, url))
             
     else:
         
