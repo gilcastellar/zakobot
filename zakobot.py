@@ -166,7 +166,7 @@ class CollectionPagination(discord.ui.View): # Create a class called MyView that
 async def on_ready():
     print(f'{get_timestamp()}: Started')
     
-    check_quests.start()
+    # check_quests.start()
 
     check_time.start()
 
