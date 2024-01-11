@@ -3677,15 +3677,17 @@ async def guilda_entregar_quest_command(
             
     else:
         
-        possible_group = dbservice.select('quests', ['buyer'], '', {'id_anilist': anilist_id})
+        possible_group = dbservice.select('quests', ['party'], '', {'id_anilist': anilist_id})
         
         if ',' in possible_group:
             group = possible_group.split(',')
             if user == group[0]:
             
                 sender_id = dbservice.select('quests', ['sender'], '', {'id_anilist': anilist_id})
+                
+                date_bought = dbservice.select('quests', ['date_bought'], '', {'id_anilist': anilist_id})
 
-                time_passed = int(datetime.datetime.now().timestamp()) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': real_name, 'item_type': _type}))
+                time_passed = int(date_bought) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': real_name, 'item_type': _type}))
                 print('time elapsed: ' + str(time_passed))
         
                 days = floor(time_passed / 86400)
@@ -3699,11 +3701,6 @@ async def guilda_entregar_quest_command(
     
                 sender_reward = ceil(reward/2)
                 
-                # dbservice.update_zakoleta('user', sender_reward, '+' + str(sender_reward) + ' zakoletas porque alguém finalizou sua quest.', sender_id, 'add')
-                
-                # for member in group:
-                #     dbservice.update_zakoleta('user', buyer_reward, '+' + str(buyer_reward) + ' zakoletas por completar uma quest.', member, 'add')
-                    
                 obra = dbservice.select('quests', ['item_name'], '', {'item_name': real_name, 'item_type': _type})
                 flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'item_name': real_name, 'item_type': _type}).split('*')
         
@@ -3723,10 +3720,10 @@ async def guilda_entregar_quest_command(
                         
                 msg += f' completaram e entregaram a quest *{flavor1}**{real_name} ({_type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(buyer_reward)} por aventureiro e ${str(sender_reward)} para o criador..'
             
-                # await generate_guild_log(msg)
+                await generate_guild_log(msg)
                 print(msg)
 
-                await ctx.response.send_message('Quest entregue com sucesso. a sobre a obra. Quests em grupo não tem a opção de resenha, mas você pode enviá-la no privado.', ephemeral=True)
+                await ctx.response.send_message('Quest entregue com sucesso. Quests em grupo não tem a opção de resenha, mas você pode enviá-la no privado do kaiser para que ela seja adicionada ao canal de resenhas.', ephemeral=True)
                 
 
         await ctx.response.send_message('Você não é o dono dessa quest ou ela não existe.', ephemeral=True)
