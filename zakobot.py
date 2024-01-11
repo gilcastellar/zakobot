@@ -4083,51 +4083,24 @@ async def cancelar_quest_command(
 #     membro3: discord.Option(str, autocomplete=get_members_names2, name='terceiro_membro', required=False),
 #     membro4: discord.Option(str, autocomplete=get_members_names2, name='quarto_membro', required=False)
 # ):
-#     buyer_slots = dbservice.select('quests', ['buyer'], '', {'buyer': ctx.author.id})
-    
-#     if buyer_slots == str(ctx.author.id):
-#         buyer_slots = 1
-        
-#     else:
-#         buyer_slots = len(buyer_slots)
-    
-#     print('slots: ' + str(buyer_slots))
-
-#     if buyer_slots >= int(dbservice.select('user', ['quest_buying_slots'], '', {'id': ctx.author.id})):    
-#         await ctx.response.send_message('Você não tem espaço para aceitar novas quests.', ephemeral=True)
-#         return
-
-#     grupo = f'{str(ctx.author.id)}'
-    
 #     _possible = [membro1, membro2, membro3, membro4]
     
-#     group_size = 1
-    
-#     quest_name, tipo = quest.split('(')
-    
-#     tipo = tipo.strip(')')
+#     _group = [str(ctx.author.id)]
     
 #     for member in _possible:
 #         if member != None:
-#             group_size += 1
-#             member_id = dbservice.select('user', ['id'], '', {'name': member})
-#             if str(member_id) == dbservice.select('quests', ['sender'], '', {'item_name': quest_name, 'item_type': tipo}):
-#                 await ctx.response.send_message(f'Um ou mais aventureiros do grupo não podem participar da quest.', ephemeral=True)
-#                 return
-#             buyer_slots = dbservice.select('quests', ['buyer'], '', {'buyer': member_id})
-#             if buyer_slots == str(member_id):
-#                 buyer_slots = 1
-        
-#             else:
-#                 buyer_slots = len(buyer_slots)
-    
-#             print('slots: ' + str(buyer_slots))
+#             _group.append(member)
 
-#             if buyer_slots >= int(dbservice.select('user', ['quest_buying_slots'], '', {'id': member_id})):
-#                 await ctx.response.send_message(f'Um ou mais aventureiros do grupo não podem participar da quest.', ephemeral=True)
-#                 return
-            
-#             grupo += f',{str(member_id)}'
+#     taken_quests = dbservice.select('quests', ['party'], '', {'is_available': 'false'})
+    
+#     if not isinstance(taken_quests, list):
+#         taken_quests = [taken_quests]
+    
+#     for party in taken_quests:
+#         members = party.split(',')
+#         if bool(set(members).intersection(_group)) == True:
+#              await ctx.response.send_message(f'Um ou mais aventureiros do grupo não podem participar da quest.', ephemeral=True)
+#              return
     
 #     dbservice.update('quests', ['buyer', 'is_available', 'date_bought'], [str(ctx.author.id), 'false', int(datetime.datetime.now().timestamp())], {'item_name': quest_name, 'item_type': tipo})
     
@@ -4162,7 +4135,6 @@ async def cancelar_quest_command(
 #             elif idx == 4:
 #                 dbservice.update('quests', ['buyer4'], [str(member_id)], {'item_name': quest_name, 'item_type': tipo})
     
-
 #     await ctx.response.send_message('Grupo criado com sucesso!', ephemeral=True)
         
 #     time_passed = int(datetime.datetime.now().timestamp()) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': quest_name, 'item_type': tipo}))
@@ -4207,39 +4179,19 @@ async def cancelar_quest_command(
 async def aux_command(ctx):
 
     if ctx.author.id in admins:
-        
-        # channel_id = 1193569004204331052
-        
-        # data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'sender', 'is_available', 'buyer', 'value', 'flavor_text', 'date_inserted', 'date_bought'], '')
-        
-        # # await send_message2(f'# **QUESTS DISPONÍVEIS**\n\n\n', channel_id) 
-        
-        # for quest in data:
+        a = ['98410347597139968', '125944165958680576']
+        b = ['273325876530380800', '489941777776902154']
+        c = ['125944165958680576', '689791313121378306']
+
+        if bool(set(a).intersection(b)) == True:
+            print('coincidência encontrada')
+        else:
+            print('nenhuma coincidência encontrada')
             
-        #     if quest[4] == 'true':
-                
-        #         text = ''
-                
-        #         flavor1, flavor2 = quest[7].split('*')
-        
-        #         time_passed = int(datetime.datetime.now().timestamp()) - int(quest[8])
-        #         print('time elapsed: ' + str(time_passed))
-        
-        #         days = floor(time_passed / 86400)
-        #         print('days: ' + str(days))
-        
-        #         reward = calculate_quest_reward(quest[6], days)
-                
-        #         text += f'*{flavor1}**{quest[1]}**{flavor2}*\n<{quest[0]}>\nTipo: {quest[2]}\nRecompensa: ${str(reward)}\n­ ­'
-                
-        #         message = await send_message2(text, channel_id)
-                
-        #         msg_id = message.id
-                
-        #         dbservice.update('quests', ['id_msg'], [str(msg_id)], {'item_name': quest[1]})
-        
-        
-        # await send_message2('ok', 1077070205987082281)
+        if bool(set(a).intersection(c)) == True:
+            print('coincidência encontrada')
+        else:
+            print('nenhuma coincidência encontrada')
 
         print(get_timestamp() + ': Done')
 
