@@ -4147,27 +4147,31 @@ async def formar_grupo_command(
     
     await generate_guild_log(msg)
     
-@tasks.loop(seconds=60)
-async def check_quests():
+# THRESHOLD:
+#
+# NEEDS TO SAVE PREVIOUSLY THRESHOLD SO IT WON'T SPAM THE LOG
+
+# @tasks.loop(seconds=60)
+# async def check_quests():
     
-    thresholds = [10, 25, 50, 75, 100, 250, 500, 750, 1000, 1500, 2000, 3000, 4000, 5000, 10000, 25000, 50000]
+#     thresholds = [10, 25, 50, 75, 100, 250, 500, 750, 1000, 1500, 2000, 3000, 4000, 5000, 10000, 25000, 50000]
     
-    quests = dbservice.select('quests', ['id_anilist', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], '', {'is_available': 'true'})
+#     quests = dbservice.select('quests', ['id_anilist', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], '', {'is_available': 'true'})
     
-    for quest in quests:
-        time_passed = int(datetime.datetime.now().timestamp()) - int(quest[4])
-        days = floor(time_passed / 86400)
-        reward = calculate_quest_reward(quest[3], days)
+#     for quest in quests:
+#         time_passed = int(datetime.datetime.now().timestamp()) - int(quest[4])
+#         days = floor(time_passed / 86400)
+#         reward = calculate_quest_reward(quest[3], days)
         
-        flavor1, flavor2 = quest[5].split('*')
+#         flavor1, flavor2 = quest[5].split('*')
         
-        last_threshold = 0
+#         last_threshold = 0
         
-        for threshold in thresholds:
-            if reward >= threshold:
-                last_threshold = threshold
-            else:
-                msg = f'📈 A quest *{flavor1}**{quest[1]} ({quest[2]})**{flavor2}* valorizou e ultrapassou o valor de ${str(last_threshold)}, chegando a ${str(reward)}.'
+#         for threshold in thresholds:
+#             if reward >= threshold:
+#                 last_threshold = threshold
+#             else:
+#                 msg = f'📈 A quest *{flavor1}**{quest[1]} ({quest[2]})**{flavor2}* valorizou e ultrapassou o valor de ${str(last_threshold)}, chegando a ${str(reward)}.'
         
 
 # to do
