@@ -4043,11 +4043,11 @@ async def inventario_command(
         print('party')
         print(quest)
         if quest[0] != None:
-            members = str(quest[0])
+            members = quest[0]
             print('party')
             print(members)
             print(str(quest[1]))
-            if user_id in members:
+            if str(user_id) in members:
                 quest_data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'date_bought'], '', {'id_anilist': str(quest[1])})
                 break
           
