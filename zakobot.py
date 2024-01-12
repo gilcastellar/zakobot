@@ -4197,7 +4197,7 @@ async def formar_grupo_command(
     quest_name, type = quest.split(' (')
     tipo = type.strip(')')
     
-    party_text = ''
+    party_text = f'{str(ctx.author.id)}'
     for member in group:
         member_id = dbservice.select('user', ['id'], '', {'name': member})
         if member_id == dbservice.select('quests', ['sender'], '', {'item_name': quest_name, 'item_type': tipo}):
