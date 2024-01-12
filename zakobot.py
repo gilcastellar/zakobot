@@ -3705,7 +3705,7 @@ async def guilda_abandonar_quest_command(
                         idx += 1
                         msg += f', {member_name}'
         
-                msg += f'morreram tentando terminar a quest *{flavor1}**{obra} ({type})**{flavor2}* e a mesma foi devolvida ao quadro. Essa quest não conta para o limite de criação do criador.'
+                msg += f' morreram tentando terminar a quest *{flavor1}**{obra} ({type})**{flavor2}* e a mesma foi devolvida ao quadro. Essa quest não conta para o limite de criação do criador.'
                 await generate_guild_log(msg)
             
                 await ctx.response.send_message('Quest abandonada com sucesso.', ephemeral=True)
