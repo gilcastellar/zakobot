@@ -4059,20 +4059,23 @@ async def inventario_command(
     print('quest_data')
     print(quest_data)
         
-    if quest_data[6] != None:
-        time_passed = int(quest_data[6]) - int(quest_data[4])
+    if quest_data != None:
+        if quest_data[6] != None:
+            time_passed = int(quest_data[6]) - int(quest_data[4])
             
-    print('time_passed')
-    print(time_passed)
+        print('time_passed')
+        print(time_passed)
         
-    days = floor(time_passed / 86400)
-    print('days')
-    print(days)
+        days = floor(time_passed / 86400)
+        print('days')
+        print(days)
         
-    value = calculate_quest_reward(quest_data[3], days)
+        value = calculate_quest_reward(quest_data[3], days)
         
-    flavor1, flavor2 = quest_data[5].split('*')
-    text += f'\n\n*{flavor1}**{quest_data[1]}**{flavor2}\nTipo: {quest_data[2]}\nRecompensa: ${str(value)}\n\n'
+        flavor1, flavor2 = quest_data[5].split('*')
+        text += f'\n\n*{flavor1}**{quest_data[1]}**{flavor2}\nTipo: {quest_data[2]}\nRecompensa: ${str(value)}\n\n'
+    else:
+        text += f'\n\nNenhuma quest em party.'
     
     await ctx.response.send_message(text, ephemeral=True)
 
