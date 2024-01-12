@@ -3730,6 +3730,10 @@ async def guilda_entregar_quest_command(
         
         if ',' in possible_group[0]:
             group = possible_group[0].split(',')
+            print('user')
+            print(user)
+            print('group[0]')
+            print(group[0])
             if user == group[0]:
             
                 sender_id = dbservice.select('quests', ['sender'], '', {'id_anilist': anilist_id})
