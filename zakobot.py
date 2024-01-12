@@ -4162,7 +4162,7 @@ async def formar_grupo_command(
     
     idx = 1
     
-    for member in group[1,]:
+    for member in group:
         if member == leader:
             pass
         if idx == len(group):
