@@ -3335,6 +3335,37 @@ async def guilda_criar_quest_command(
             
                 reward = ceil(((100 * duration_factor) - 100) * size_factor)
 
+                type_factor = 0.004
+                
+                duration_factor = 1 + (total_duration * type_factor)
+                
+                hours = floor(total_duration / 60)
+
+                size_factor = 1
+
+                if hours >= 2:
+                    size_factor += 2 * 0.055
+                if hours >= 10:
+                    size_factor += 8 * 0.04
+                if hours >= 20:
+                    size_factor += 10 * 0.027
+                if hours >= 40:
+                    size_factor += 20 * 0.015
+                if hours >= 80:
+                    size_factor += (hours - 40) * 0.005
+
+                # size_factor = 1 + ((hours - 1) * 0.05)
+
+                # size_factor = 1 + ((hours - 1)/20)
+
+                print('size factor')
+
+                print(str(size_factor))
+            
+                # reward = math.ceil(((100 * duration_factor) - 100) * size_factor)
+
+                reward = ceil((duration_factor * size_factor) * 100) - 100
+
                 date = datetime.datetime.now(ZoneInfo('America/Sao_Paulo'))
                 
                 timestamp = int(datetime.datetime.now().timestamp())
