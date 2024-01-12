@@ -4136,10 +4136,11 @@ async def formar_grupo_command(
     for party in taken_quests:
         print('party')
         print(party)
-        members = party.split(',')
-        if bool(set(members).intersection(group)) == True:
-             await ctx.response.send_message(f'Um ou mais aventureiros do grupo não podem participar da quest.', ephemeral=True)
-             return
+        if party[0] != None:
+            members = party.split(',')
+            if bool(set(members).intersection(group)) == True:
+                 await ctx.response.send_message(f'Um ou mais aventureiros do grupo não podem participar da quest.', ephemeral=True)
+                 return
         
     quest_name, type = quest.split(' (')
     tipo = type.strip(')')
