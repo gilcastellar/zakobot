@@ -3692,7 +3692,7 @@ async def guilda_abandonar_quest_command(
                 print(dbservice.select('quests', ['flavor_text'], '', {'id_anilist': anilist_id}))
                 flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'id_anilist': anilist_id}).split('*')
                 
-                # dbservice.update('quests', ['party', 'is_available', 'abandoned'], ['', 'true', 'true'], {'id_anilist': anilist_id})
+                dbservice.update('quests', ['party', 'is_available', 'abandoned'], ['', 'true', 'true'], {'id_anilist': anilist_id})
                 
                 msg = f'💀 Os aventureiros '
                 
