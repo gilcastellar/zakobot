@@ -3725,6 +3725,8 @@ async def guilda_entregar_quest_command(
     else:
         
         possible_group = dbservice.select('quests', ['party'], '', {'id_anilist': anilist_id})
+        print('possible_group')
+        print(possible_group)
         
         if ',' in possible_group[0]:
             group = possible_group[0].split(',')
