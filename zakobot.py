@@ -3250,8 +3250,12 @@ async def guilda_criar_quest_command(
         seller_slots = len(seller_slots)
     
     print('slots: ' + str(seller_slots))
+    
+    # max_seller_slots = int(dbservice.select('user', ['quest_selling_slots'], '', {'id': sender}))
 
-    if seller_slots >= int(dbservice.select('user', ['quest_selling_slots'], '', {'id': sender})):
+    max_seller_slots = 3
+
+    if seller_slots >= max_seller_slots:
 
         print(dbservice.select('user', ['quest_selling_slots'], '', {'id': sender}))
         
@@ -3474,7 +3478,8 @@ class ResenhaModal(discord.ui.Modal):
         
         dbservice.delete('quests', {'buyer': self.user_id, 'item_name': self.item_name})
 
-        await generate_guild_log(msg)         
+        if str(self.user_id) != str(334509476428251137):
+            await generate_guild_log(msg)         
 
 class ReviewBtn(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
     def __init__(self, ctx, user_id, sender_id, real_name, type, buyer_reward, sender_reward, url):
@@ -3508,7 +3513,8 @@ class ReviewBtn(discord.ui.View): # Create a class called MyView that subclasses
         else:    
             msg = f'💪 O aventureiro <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{obra} ({self.type})**{flavor2}* criada por <@{str(self.sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente.'
 
-        await generate_guild_log(msg)
+        if str(self.user_id) != str(334509476428251137):
+            await generate_guild_log(msg)   
         
 
 @guilda.command(name='aceitar_quest', description='Este comando permite aceitar quests disponíveis no quadro')
@@ -3929,7 +3935,7 @@ async def inventario_command(
             
             text += '<' + quest[0] + '>\nTipo: ' + quest[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
             
-        text += '\n**Quests Aceitas: **' + str(buyer_slots) + '/' + str(buyer_total_slots)
+        text += '\n**Quests Aceitas **\n\nSolo: ' + str(buyer_slots) + '/' + str(buyer_total_slots)
         text += '\n\n'
         
     print('length of data')
