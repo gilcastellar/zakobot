@@ -4000,7 +4000,7 @@ async def inventario_command(
 
     last_page = ceil(len(data) / batch)
 
-    for quest_dataobra in data[batch*(page-1):batch*page]:
+    for obra in data[batch*(page-1):batch*page]:
 
         print(indice)
 
