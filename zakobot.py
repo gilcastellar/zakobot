@@ -4122,7 +4122,7 @@ async def formar_grupo_command(
 
     leader = dbservice.select('user', ['name'], '', {'id': ctx.author.id})    
     
-    group = [leader]
+    group = []
     
     for member in _possible:
         if member != None:
@@ -4158,7 +4158,7 @@ async def formar_grupo_command(
     
     flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'item_name': quest_name, 'item_type': tipo}).split('*')
 
-    msg = f'Um grupo de aventureiros foi formado para cuidar da quest *{flavor1}**{quest}**{flavor2}*. Seus membros são '
+    msg = f'Um grupo de aventureiros foi formado para cuidar da quest *{flavor1}**{quest}**{flavor2}*. Seus membros são {leader}'
     
     idx = 1
     
