@@ -3687,10 +3687,10 @@ async def guilda_abandonar_quest_command(
             group = possible_group.split(',')
             if user_id == group[0]:
                 
-                obra = dbservice.select('quests', ['item_name'], '', {'item_name': real_name, 'item_type': _type})
+                obra = dbservice.select('quests', ['item_name'], '', {'id_anilist': anilist_id})
                 print('test')
-                print(dbservice.select('quests', ['flavor_text'], '', {'item_name': real_name, 'item_type': _type}))
-                flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'item_name': real_name, 'item_type': _type}).split('*')
+                print(dbservice.select('quests', ['flavor_text'], '', {'id_anilist': anilist_id}))
+                flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'id_anilist': anilist_id}).split('*')
                 
                 # dbservice.update('quests', ['party', 'is_available', 'abandoned'], ['', 'true', 'true'], {'id_anilist': anilist_id})
                 
