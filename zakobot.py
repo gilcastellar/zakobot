@@ -4047,9 +4047,9 @@ async def inventario_command(
             # print('party')
             # print(party)
             # members = party.split(',')
-            print('members')
-            print(members)
-            if user_id in members:
+            # print('members')
+            # print(members)
+            if user_id in party:
                 quest_data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'date_bought'], '', {'party': party})
                 break
           
