@@ -4043,13 +4043,13 @@ async def inventario_command(
         print('party')
         print(party)
         if party[0] != None:
-            party = from_list_of_tuples_to_list(party)
+            members = from_list_of_tuples_to_list(party)
             print('party')
             print(party)
             # members = party.split(',')
             # print('members')
             # print(members)
-            if user_id in party:
+            if user_id in members:
                 quest_data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'date_bought'], '', {'party': party})
                 break
           
