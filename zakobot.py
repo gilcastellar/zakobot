@@ -3325,6 +3325,12 @@ async def guilda_criar_quest_command(
                 
                 print(title)
 
+                if '(' in title:
+                    title.replace('(', '')
+                if ')' in title:
+                    title.replace(')', '')
+                    
+
                 duration_factor = 1 + (total_duration * type_factor)
                 
                 hours = floor(total_duration / 60)
