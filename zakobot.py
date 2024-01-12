@@ -3728,8 +3728,8 @@ async def guilda_entregar_quest_command(
         print('possible_group')
         print(possible_group)
         
-        if ',' in possible_group[0]:
-            group = possible_group[0].split(',')
+        if ',' in possible_group:
+            group = possible_group.split(',')
             print('user')
             print(user)
             print('group[0]')
