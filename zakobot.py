@@ -4073,7 +4073,7 @@ async def inventario_command(
         value = calculate_quest_reward(quest_data[3], days)
         
         flavor1, flavor2 = quest_data[5].split('*')
-        text += f'\n\n*{flavor1}**{quest_data[1]}**{flavor2}*\nTipo: {quest_data[2].upper}\nRecompensa: ${str(value)}\n\n'
+        text += f'\n\n*{flavor1}**{quest_data[1]}**{flavor2}*\nTipo: {quest_data[2].upper()}\nRecompensa: ${str(value)}\n\n'
     else:
         text += f'\n\nNenhuma quest em party.'
     
