@@ -4043,7 +4043,7 @@ async def inventario_command(
         print('party')
         print(quest)
         if quest[0] != None:
-            members = from_list_of_tuples_to_list(quest[0])
+            members = quest[0]
             print('party')
             print(members)
             print(str(quest[1]))
