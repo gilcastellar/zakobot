@@ -4045,7 +4045,7 @@ async def inventario_command(
         if party[0] != None:
             members = from_list_of_tuples_to_list(party)
             print('party')
-            print(party[0])
+            print(str(party[0]))
             # members = party.split(',')
             # print('members')
             # print(members)
