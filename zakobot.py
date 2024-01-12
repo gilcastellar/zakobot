@@ -3670,9 +3670,9 @@ async def guilda_abandonar_quest_command(
         # dbservice.update('quests', ['buyer', 'is_available', 'abandoned'], ['', 'true', 'true'], {'buyer': user_id, 'id_anilist': anilist_id})
         
         if dbservice.select('user', ['sexo'], '', {'id': user_id}) == 'm':    
-            msg = f'💀 A aventureira <@{str(user_id)}> morreu tentanto terminar a quest *{flavor1}**{obra} ({type})**{flavor2}* e a mesma foi devolvida ao quadro. Essa quest não conta para o limite de criação do criador.'
+            msg = f'💀 A aventureira <@{str(user_id)}> morreu tentando terminar a quest *{flavor1}**{obra} ({type})**{flavor2}* e a mesma foi devolvida ao quadro. Essa quest não conta para o limite de criação do criador.'
         else:
-            msg = f'💀 O aventureiro <@{str(user_id)}> morreu tentanto terminar a quest *{flavor1}**{obra} ({type})**{flavor2}* e a mesma foi devolvida ao quadro. Essa quest não conta para o limite de criação do criador.'
+            msg = f'💀 O aventureiro <@{str(user_id)}> morreu tentando terminar a quest *{flavor1}**{obra} ({type})**{flavor2}* e a mesma foi devolvida ao quadro. Essa quest não conta para o limite de criação do criador.'
         await generate_guild_log(msg)
             
         await ctx.response.send_message('Quest abandonada com sucesso.', ephemeral=True)
@@ -3686,34 +3686,26 @@ async def guilda_abandonar_quest_command(
         if ',' in possible_group:
             group = possible_group.split(',')
             if user_id == group[0]:
-            
-                sender_id = dbservice.select('quests', ['sender'], '', {'id_anilist': anilist_id})
-                
-                date_bought = dbservice.select('quests', ['date_bought'], '', {'id_anilist': anilist_id})
-
-                time_passed = int(date_bought) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': real_name, 'item_type': _type}))
-                print('time elapsed: ' + str(time_passed))
-        
-                days = floor(time_passed / 86400)
-                print('days: ' + str(days))
-    
-                base_value = dbservice.select('quests', ['value'], '', {'item_name': real_name, 'item_type': _type})
-        
-                reward = calculate_quest_reward(base_value, days)
-    
-                buyer_reward = floor(reward/len(group))
-    
-                sender_reward = floor(reward/2)
                 
                 obra = dbservice.select('quests', ['item_name'], '', {'item_name': real_name, 'item_type': _type})
                 flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'item_name': real_name, 'item_type': _type}).split('*')
                 
-                dbservice.update('quests', ['party', 'is_available', 'abandoned'], ['', 'true', 'true'], {'id_anilist': anilist_id})
+                # dbservice.update('quests', ['party', 'is_available', 'abandoned'], ['', 'true', 'true'], {'id_anilist': anilist_id})
+                
+                msg = f'💀 Os aventureiros '
+                
+                for member in group:
+                    member_name = dbservice.select('user', ['name'], '', {'id': member})
+                    if idx == 1:
+                        idx += 1
+                        msg += f'{member_name}'
+                    elif idx == len(group):
+                        msg += f' e {member_name}'
+                    else:
+                        idx += 1
+                        msg += f', {member_name}'
         
-                if dbservice.select('user', ['sexo'], '', {'id': user_id}) == 'm':    
-                    msg = f'💀 A aventureira <@{str(user_id)}> morreu tentanto terminar a quest *{flavor1}**{obra} ({type})**{flavor2}* e a mesma foi devolvida ao quadro. Essa quest não conta para o limite de criação do criador.'
-                else:
-                    msg = f'💀 O aventureiro <@{str(user_id)}> morreu tentanto terminar a quest *{flavor1}**{obra} ({type})**{flavor2}* e a mesma foi devolvida ao quadro. Essa quest não conta para o limite de criação do criador.'
+                msg += f'morreram tentando terminar a quest *{flavor1}**{obra} ({type})**{flavor2}* e a mesma foi devolvida ao quadro. Essa quest não conta para o limite de criação do criador.'
                 await generate_guild_log(msg)
             
                 await ctx.response.send_message('Quest abandonada com sucesso.', ephemeral=True)
