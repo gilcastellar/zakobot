@@ -3696,6 +3696,8 @@ async def guilda_abandonar_quest_command(
                 
                 msg = f'💀 Os aventureiros '
                 
+                idx = 1
+                
                 for member in group:
                     member_name = dbservice.select('user', ['name'], '', {'id': member})
                     if idx == 1:
