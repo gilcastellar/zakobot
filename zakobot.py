@@ -4203,19 +4203,17 @@ async def formar_grupo_command(
 async def aux_command(ctx):
 
     if ctx.author.id in admins:
-        a = ['98410347597139968', '125944165958680576']
-        b = ['273325876530380800', '489941777776902154']
-        c = ['125944165958680576', '689791313121378306']
-
-        if bool(set(a).intersection(b)) == True:
-            print('coincidência encontrada')
-        else:
-            print('nenhuma coincidência encontrada')
+        type_factor = 0.004
+        total_duration = 5025
+        duration_factor = 1 + (total_duration * type_factor)
+                
+        hours = floor(total_duration / 60)
+                
+        size_factor = 1 + ((hours - 1)/20)
+        print('size factor')
+        print(str(size_factor))
             
-        if bool(set(a).intersection(c)) == True:
-            print('coincidência encontrada')
-        else:
-            print('nenhuma coincidência encontrada')
+        reward = ceil(((100 * duration_factor) - 100) * size_factor)
 
         print(get_timestamp() + ': Done')
 
