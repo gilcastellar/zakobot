@@ -4119,8 +4119,10 @@ async def formar_grupo_command(
     membro4: discord.Option(str, autocomplete=get_members_names2, name='quarto_membro', required=False)
 ):
     _possible = [membro1, membro2, membro3, membro4]
+
+    leader = dbservice.select('user', ['name'], '', {'id': ctx.author.id})    
     
-    group = [str(ctx.author.id)]
+    group = [leader]
     
     for member in _possible:
         if member != None:
@@ -4147,15 +4149,14 @@ async def formar_grupo_command(
     
     party_text = ''
     for member in group:
-        party_text += str(member) + ','
+        member_name = dbservice.select('users', ['id'], '', {'name': member})
+        party_text += str(member_name) + ','
         
     party_text = party_text.rstrip(',')
     
     dbservice.update('quests', ['party', 'is_available', 'date_bought'], [party_text, 'false', int(datetime.datetime.now().timestamp())], {'item_name': quest_name, 'item_type': tipo})
     
     flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'item_name': quest_name, 'item_type': tipo}).split('*')
-
-    leader = dbservice.select('user', ['name'], '', {'id': ctx.author.id})    
 
     msg = f'Um grupo de aventureiros foi formado para cuidar da quest *{flavor1}**{quest}**{flavor2}*. Seus membros são {leader}'
     
