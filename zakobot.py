@@ -4158,14 +4158,15 @@ async def formar_grupo_command(
     
     flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'item_name': quest_name, 'item_type': tipo}).split('*')
 
-    msg = f'Um grupo de aventureiros foi formado para cuidar da quest *{flavor1}**{quest}**{flavor2}*. Seus membros são {leader}'
+    msg = f'Um grupo de aventureiros foi formado para cuidar da quest *{flavor1}**{quest}**{flavor2}*. Seus membros são '
     
     idx = 1
     
-    for member in group:
+    for member in group[1,]:
+        if member == leader:
+            pass
         if idx == len(group):
             msg += f' e {member}'
-    
         else:
             idx += 1
             msg += f', {member}'
