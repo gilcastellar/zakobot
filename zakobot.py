@@ -4000,7 +4000,7 @@ async def inventario_command(
 
     last_page = ceil(len(data) / batch)
 
-    for obra in data[batch*(page-1):batch*page]:
+    for quest_dataobra in data[batch*(page-1):batch*page]:
 
         print(indice)
 
@@ -4029,6 +4029,48 @@ async def inventario_command(
         text += flavor1 + '**' + obra[1] + '**' + flavor2 + '\n'
             
         text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
+
+    taken_quests = dbservice.select('quests', ['party'], '', {'is_available': 'false'})
+    print('taken_quests')
+    print(taken_quests)
+    
+    if not isinstance(taken_quests, list):
+        taken_quests = [taken_quests]
+    
+    quest_data = None
+    
+    for party in taken_quests:
+        print('party')
+        print(party)
+        if party[0] != None:
+            members = party.split(',')
+            print('members')
+            print(members)
+            if user_id in members:
+                quest_data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'date_bought'], '', {'party': party})
+                break
+          
+    if quest_data != None:
+        text += f'Party: 1/1'
+    else:
+        text += f'Party: 0/1'
+        
+    if quest_data[6] != None:
+        time_passed = int(quest_data[6]) - int(quest_data[4])
+    else:
+        time_passed = int(quest_data[6]) - int(quest_data[4])
+            
+    print('time_passed')
+    print(time_passed)
+        
+    days = floor(time_passed / 86400)
+    print('days')
+    print(days)
+        
+    value = calculate_quest_reward(quest_data[3], days)
+        
+    flavor1, flavor2 = quest_data[5].split('*')
+    text += f'\n\n*{flavor1}**{quest_data[1]}**{flavor2}\nTipo: {quest_data[2]}\nRecompensa: ${str(value)}\n\n'
     
     await ctx.response.send_message(text, ephemeral=True)
 
