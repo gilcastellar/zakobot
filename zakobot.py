@@ -4030,7 +4030,7 @@ async def inventario_command(
             
         text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
 
-    taken_quests = dbservice.select('quests', ['party'], '', {'is_available': 'false'})
+    taken_quests = dbservice.select('quests', ['party', 'id_anilist'], '', {'is_available': 'false'})
     print('taken_quests')
     print(taken_quests)
     
@@ -4045,12 +4045,12 @@ async def inventario_command(
         if party[0] != None:
             members = from_list_of_tuples_to_list(party)
             print('party')
-            print(str(party[0]))
+            print(str(party[1]))
             # members = party.split(',')
             # print('members')
             # print(members)
             if user_id in members:
-                quest_data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'date_bought'], '', {'party': str(party[0])})
+                quest_data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'date_bought'], '', {'id_anilist': str(party[1])})
                 break
           
     if quest_data != None:
