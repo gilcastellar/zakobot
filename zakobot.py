@@ -3759,7 +3759,9 @@ async def guilda_entregar_quest_command(
                     
                 for member in group:
                     member_name = dbservice.select('user', ['name'], '', {'id': member})
-                    if idx == len(group):
+                    if idx == 1:
+                        msg += f'{member_name}'
+                    elif idx == len(group):
                         msg += f' e {member_name}'
                     else:
                         idx += 1
