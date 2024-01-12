@@ -4048,7 +4048,7 @@ async def inventario_command(
             print(members)
             print(str(quest[1]))
             if str(user_id) in members:
-                quest_data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'date_bought'], '', {'id_anilist': str(quest[1])})
+                quest_data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'date_bought', 'party'], '', {'id_anilist': str(quest[1])})
                 break
           
     if quest_data != None:
@@ -4071,6 +4071,7 @@ async def inventario_command(
         print(days)
         
         value = calculate_quest_reward(quest_data[3], days)
+        value = floor(value/len(quest_data[7]))
         
         flavor1, flavor2 = quest_data[5].split('*')
         text += f'\n\n*{flavor1}**{quest_data[1]}**{flavor2}*\nTipo: {quest_data[2].capitalize()}\nRecompensa: ${str(value)}\n\n'
