@@ -3714,7 +3714,7 @@ async def guilda_entregar_quest_command(
     
         buyer_reward = reward
     
-        sender_reward = ceil(reward/2)
+        sender_reward = floor(reward/2)
             
         print('rewards: ')
         print(buyer_reward)
@@ -3746,7 +3746,7 @@ async def guilda_entregar_quest_command(
     
                 buyer_reward = floor(reward/len(group))
     
-                sender_reward = ceil(reward/2)
+                sender_reward = floor(reward/2)
                 
                 obra = dbservice.select('quests', ['item_name'], '', {'item_name': real_name, 'item_type': _type})
                 flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'item_name': real_name, 'item_type': _type}).split('*')
@@ -3758,6 +3758,7 @@ async def guilda_entregar_quest_command(
                 idx = 1
                     
                 for member in group:
+                    dbservice.update_zakoleta('user', buyer_reward, '+' + str(buyer_reward) + ' zakoletas por completar uma quest.', member, 'add')
                     member_name = dbservice.select('user', ['name'], '', {'id': member})
                     if idx == 1:
                         msg += f'{member_name}'
@@ -3767,8 +3768,10 @@ async def guilda_entregar_quest_command(
                         idx += 1
                         msg += f', {member_name}'
                         
+                dbservice.update_zakoleta('user', sender_reward, '+' + str(sender_reward) + ' zakoletas porque alguém finalizou sua quest.', sender_id, 'add')
+                       
                 msg += f' completaram e entregaram a quest *{flavor1}**{real_name} ({_type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(buyer_reward)} por aventureiro e ${str(sender_reward)} para o criador..'
-            
+                
                 await generate_guild_log(msg)
                 print(msg)
 
