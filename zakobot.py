@@ -4050,7 +4050,7 @@ async def inventario_command(
             # print('members')
             # print(members)
             if user_id in members:
-                quest_data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'date_bought'], '', {'party': party[0]})
+                quest_data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'date_bought'], '', {'party': str(party[0]))
                 break
           
     if quest_data != None:
