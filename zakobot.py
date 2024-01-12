@@ -4149,7 +4149,7 @@ async def formar_grupo_command(
     
     party_text = ''
     for member in group:
-        member_name = dbservice.select('users', ['id'], '', {'name': member})
+        member_name = dbservice.select('user', ['id'], '', {'name': member})
         party_text += str(member_name) + ','
         
     party_text = party_text.rstrip(',')
