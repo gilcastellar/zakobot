@@ -4202,6 +4202,7 @@ async def formar_grupo_command(
         member_id = dbservice.select('user', ['id'], '', {'name': member})
         if member_id == dbservice.select('quests', ['sender'], '', {'item_name': quest_name, 'item_type': tipo}):
             await ctx.response.send_message(f'Um ou mais aventureiros do grupo não podem participar da quest.', ephemeral=True)
+            return
             
         party_text += str(member_id) + ','
         
