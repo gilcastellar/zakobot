@@ -4058,7 +4058,8 @@ async def inventario_command(
     else:
         text += f'Party: 0/1'
         
-    time_passed = int(quest_data[6]) - int(quest_data[4])
+    if quest_data[6] != None:
+        time_passed = int(quest_data[6]) - int(quest_data[4])
             
     print('time_passed')
     print(time_passed)
