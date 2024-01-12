@@ -4040,10 +4040,10 @@ async def inventario_command(
     quest_data = None
     
     for party in taken_quests:
-        party = from_list_of_tuples_to_list(party)
         print('party')
         print(party)
         if party[0] != None:
+            party = from_list_of_tuples_to_list(party)
             members = party.split(',')
             print('members')
             print(members)
