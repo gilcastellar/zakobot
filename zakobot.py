@@ -4072,8 +4072,8 @@ async def inventario_command(
         
         value = calculate_quest_reward(quest_data[3], days)
         print('quest_data[7]')
-        print(quest_data[7])
-        value = floor(value/len(quest_data[7]))
+        _party = quest_data[7].split(',')
+        value = floor(value/len(_party))
         
         flavor1, flavor2 = quest_data[5].split('*')
         text += f'\n\n*{flavor1}**{quest_data[1]}**{flavor2}*\nTipo: {quest_data[2].capitalize()}\nRecompensa: ${str(value)}\n\n'
