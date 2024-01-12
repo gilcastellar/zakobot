@@ -3767,6 +3767,7 @@ async def guilda_entregar_quest_command(
                     dbservice.update_zakoleta('user', buyer_reward, '+' + str(buyer_reward) + ' zakoletas por completar uma quest.', member, 'add')
                     member_name = dbservice.select('user', ['name'], '', {'id': member})
                     if idx == 1:
+                        idx += 1
                         msg += f'{member_name}'
                     elif idx == len(group):
                         msg += f' e {member_name}'
