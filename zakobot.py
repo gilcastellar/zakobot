@@ -3270,7 +3270,7 @@ async def guilda_criar_quest_command(
         
             exists = dbservice.check_existence('quests', {'id_anilist': str(anilist_id), 'is_available': str('true')})
 
-            if exists == 0:
+            if exists == 0:     
             
                 if type == 'anime':
 
@@ -4127,11 +4127,15 @@ async def formar_grupo_command(
             group.append(member)
 
     taken_quests = dbservice.select('quests', ['party'], '', {'is_available': 'false'})
+    print('taken_quests')
+    print(taken_quests)
     
     if not isinstance(taken_quests, list):
         taken_quests = [taken_quests]
     
     for party in taken_quests:
+        print('party')
+        print(party)
         members = party.split(',')
         if bool(set(members).intersection(group)) == True:
              await ctx.response.send_message(f'Um ou mais aventureiros do grupo não podem participar da quest.', ephemeral=True)
