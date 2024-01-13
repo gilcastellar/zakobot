@@ -3803,7 +3803,7 @@ async def guilda_entregar_quest_command(
                 print('len(group)')
                 print(len(group))
     
-                buyer_reward = floor(reward/len(group))
+                buyer_reward = floor(reward/(len(group) + 1))
     
                 sender_reward = floor(reward/2)
                 
@@ -4316,7 +4316,7 @@ async def formar_grupo_command(
     print('len(group)')
     print(len(group))
     
-    buyer_reward = floor(reward/len(group))
+    buyer_reward = floor(reward/(len(group) + 1))
     
     sender_reward = ceil(reward/2)
         
