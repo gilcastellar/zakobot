@@ -3799,6 +3799,9 @@ async def guilda_entregar_quest_command(
                 base_value = dbservice.select('quests', ['value'], '', {'item_name': real_name, 'item_type': _type})
         
                 reward = calculate_quest_reward(base_value, days)
+
+                print('len(group)')
+                print(len(group))
     
                 buyer_reward = floor(reward/len(group))
     
