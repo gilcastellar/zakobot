@@ -4310,6 +4310,9 @@ async def formar_grupo_command(
         
     reward = calculate_quest_reward(base_value, days)
     
+    print('group')
+    print(group)
+    
     print('len(group)')
     print(len(group))
     
