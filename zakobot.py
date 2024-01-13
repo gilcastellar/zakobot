@@ -3303,6 +3303,8 @@ async def guilda_criar_quest_command(
                     response = anilist.query_manga_id(anilist_id)
 
                     media_obj = response.json()
+                    status = media_obj['data']['Media']['status']
+                    print(status)
                     chapters = media_obj['data']['Media']['chapters']
                     volumes = media_obj['data']['Media']['volumes']
                     duration = 45
