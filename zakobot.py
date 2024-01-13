@@ -271,16 +271,16 @@ async def on_message(message):
 
             await send_message2(result, 1151990929864007680)
 
-@tasks.loop(minutes=1)
-async def check_time():
+# @tasks.loop(minutes=1)
+# async def check_time():
 
-    realtime = get_realtime()
+#     realtime = get_realtime()
 
-    if realtime.hour == 4 and realtime.minute in range(54,58):
-        await clean_dailies()
+#     if realtime.hour == 4 and realtime.minute in range(54,58):
+#         await clean_dailies()
         
-    if realtime.hour == 5:
-        await dailies()
+#     if realtime.hour == 5:
+#         await dailies()
 
 # Send message
 async def send_message(ctx, text, channel_id=''):
