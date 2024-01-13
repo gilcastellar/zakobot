@@ -3311,6 +3311,9 @@ async def guilda_criar_quest_command(
                         if chapters == 1:
                             duration = 20
                             volumes = 1
+                        elif chapters != None:
+                            duration = 5
+                            volumes = chapters
                         else:
                             await ctx.response.send_message('Você provavelmente tentou inserir uma obra que não contém o número de episódios/volumes ou está em lançamento no Anilist.', ephemeral=True)
                             return
