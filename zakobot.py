@@ -3764,7 +3764,7 @@ async def guilda_entregar_quest_command(
     
         buyer_reward = reward
     
-        sender_reward = floor(reward/2)
+        sender_reward = ceil(reward/2)
             
         print('rewards: ')
         print(buyer_reward)
@@ -4146,7 +4146,7 @@ async def inventario_command(
         value = calculate_quest_reward(quest_data[3], days)
         print('quest_data[7]')
         _party = quest_data[7].split(',')
-        value = floor(value/len(_party))
+        value = ceil(value/len(_party))
         
         flavor1, flavor2 = quest_data[5].split('*')
         text += f'\n\n*{flavor1}**{quest_data[1]}**{flavor2}*\nTipo: {quest_data[2].capitalize()}\nRecompensa: ${str(value)}\n\n'
