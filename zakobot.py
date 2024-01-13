@@ -3268,7 +3268,7 @@ async def guilda_criar_quest_command(
         
             type, anilist_id = get_type_and_id_from_anilist_link(insertion)
         
-            exists = dbservice.check_existence('quests', {'id_anilist': str(anilist_id), 'is_available': str('true')})
+            exists = dbservice.check_existence('quests', {'id_anilist': str(anilist_id)})
 
             if exists == 0:     
             
@@ -4365,17 +4365,10 @@ async def formar_grupo_command(
 async def aux_command(ctx):
 
     if ctx.author.id in admins:
-        type_factor = 0.004
-        total_duration = 5025
-        duration_factor = 1 + (total_duration * type_factor)
+        
+        date = datetime.datetime.now(ZoneInfo('America/Sao_Paulo'))
                 
-        hours = floor(total_duration / 60)
-                
-        size_factor = 1 + ((hours - 1)/20)
-        print('size factor')
-        print(str(size_factor))
-            
-        reward = ceil(((100 * duration_factor) - 100) * size_factor)
+        timestamp = int(datetime.datetime.now().timestamp())
 
         print(get_timestamp() + ': Done')
 
