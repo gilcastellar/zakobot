@@ -4310,6 +4310,9 @@ async def formar_grupo_command(
         
     reward = calculate_quest_reward(base_value, days)
     
+    print('len(group)')
+    print(len(group))
+    
     buyer_reward = floor(reward/len(group))
     
     sender_reward = ceil(reward/2)
