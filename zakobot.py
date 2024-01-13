@@ -3803,9 +3803,9 @@ async def guilda_entregar_quest_command(
                 print('len(group)')
                 print(len(group))
     
-                buyer_reward = floor(reward/(len(group) + 1))
+                buyer_reward = ceil(reward/(len(group) + 1))
     
-                sender_reward = floor(reward/2)
+                sender_reward = ceil(reward/2)
                 
                 obra = dbservice.select('quests', ['item_name'], '', {'item_name': real_name, 'item_type': _type})
                 flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'item_name': real_name, 'item_type': _type}).split('*')
@@ -4316,7 +4316,7 @@ async def formar_grupo_command(
     print('len(group)')
     print(len(group))
     
-    buyer_reward = floor(reward/(len(group) + 1))
+    buyer_reward = ceil(reward/(len(group) + 1))
     
     sender_reward = ceil(reward/2)
         
