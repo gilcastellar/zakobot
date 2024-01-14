@@ -3343,7 +3343,7 @@ async def guilda_criar_quest_command(
                 
                 hours = floor(total_duration / 60)
                 
-                size_factor = 1 + ((hours - 1)/20)
+                size_factor = 1 + ((hours - 1) / 20)
                 print('size factor')
                 print(str(size_factor))
             
@@ -3681,7 +3681,7 @@ async def guilda_abandonar_quest_command(
         obra = dbservice.select('quests', ['item_name'], '', {'buyer': user_id, 'id_anilist': anilist_id})
         print(dbservice.select('quests', ['flavor_text'], '', {'buyer': user_id, 'id_anilist': anilist_id}))
         flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': user_id, 'id_anilist': anilist_id}).split('*')
-        # dbservice.update('quests', ['buyer', 'is_available', 'abandoned'], ['', 'true', 'true'], {'buyer': user_id, 'id_anilist': anilist_id})
+        dbservice.update('quests', ['buyer', 'is_available', 'abandoned'], ['', 'true', 'true'], {'buyer': user_id, 'id_anilist': anilist_id})
         
         if dbservice.select('user', ['sexo'], '', {'id': user_id}) == 'm':    
             msg = f'💀 A aventureira <@{str(user_id)}> morreu tentando terminar a quest *{flavor1}**{obra} ({type})**{flavor2}* e a mesma foi devolvida ao quadro. Essa quest não conta para o limite de criação do criador.'
@@ -3810,7 +3810,7 @@ async def guilda_entregar_quest_command(
                 obra = dbservice.select('quests', ['item_name'], '', {'item_name': real_name, 'item_type': _type})
                 flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'item_name': real_name, 'item_type': _type}).split('*')
         
-                # dbservice.delete('quests', {'item_name': real_name, 'item_type': _type})
+                dbservice.delete('quests', {'item_name': real_name, 'item_type': _type})
         
                 msg = f'Os aventureiros ' 
                 
@@ -4353,6 +4353,8 @@ async def formar_grupo_command(
 
 # to do
 
+# criar delay pra entrega de quests
+# corrigir bug do quadro q envolve nome da party
 # criar canal que mantém o quadro sempre exposto e atualizado ao vivo
 # sistema de log por threshold atingido na recompensa das quests
 # pensar no sistema de upvote e downvote do nico
