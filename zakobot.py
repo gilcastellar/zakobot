@@ -4373,8 +4373,8 @@ async def calculate_delivery_time(date_bought, quest_name, quest_type):
        delivery_date = date_bought + (total_duration * 60)
         
         
-    for i in range(floor((total_duration/300) - 1)):
-        delivery_date += 1440 * 60
+    # for i in range(floor((total_duration/300) - 1)):
+    #     delivery_date += 1440 * 60
     
     return delivery_date
 
