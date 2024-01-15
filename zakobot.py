@@ -4371,10 +4371,6 @@ async def calculate_delivery_time(date_bought, quest_name, quest_type):
         delivery_date = date_bought + (total_duration * 180)
     else:
        delivery_date = date_bought + (total_duration * 60)
-        
-        
-    # for i in range(floor((total_duration/300) - 1)):
-    #     delivery_date += 1440 * 60
     
     return delivery_date
 
@@ -4408,7 +4404,7 @@ async def aux_command(ctx):
                 
         timestamp = int(datetime.datetime.now().timestamp())
         
-        delivery_date = await calculate_delivery_time(timestamp, 'Popolocrois Monogatari', 'anime')
+        delivery_date = await calculate_delivery_time(timestamp, 'Maison Ikkoku', 'anime')
         
         print('timestamp')
         print(str(timestamp))
