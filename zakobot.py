@@ -3756,6 +3756,7 @@ async def guilda_entregar_quest_command(
         real_date = datetime.datetime.utcfromtimestamp(delivery_date).strftime('%d-%m-%Y %H:%M:%S')
         
         if datetime.datetime.now().timestamp() < delivery_date:
+            await send_message2(f'{ctx.author.name} tentou entregar a quest de {real_name} ({_type}) antes do prazo que é {real_date}.')
             await ctx.response.send_message(f'Você precisa aguardar até {real_date} para entregar esta quest.', ephemeral=True)
             return
             
