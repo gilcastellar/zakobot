@@ -4406,7 +4406,12 @@ async def aux_command(ctx):
                 
         timestamp = int(datetime.datetime.now().timestamp())
         
-        await calculate_delivery_time(timestamp, 'Popolocrois Monogatari', 'anime')
+        delivery_date = await calculate_delivery_time(timestamp, 'Popolocrois Monogatari', 'anime')
+        
+        print('timestamp')
+        print(str(timestamp))
+        print('delivery_date')
+        print(delivery_date)
 
         print(get_timestamp() + ': Done')
 
