@@ -3442,9 +3442,9 @@ class AcquiringBtn(discord.ui.View): # Create a class called MyView that subclas
             
             timestamp = int(datetime.datetime.now().timestamp())
             
-            # await calculate_delivery_time(timestamp, self.real_name, self._type)
+            delivery_date = await calculate_delivery_time(timestamp, self.real_name, self._type)
             
-            dbservice.update('quests', ['date_bought'], [int(timestamp)], {'item_name': self.real_name, 'item_type': self._type})
+            dbservice.update('quests', ['date_bought', 'delivery_date'], [int(timestamp), int(delivery_date)], {'item_name': self.real_name, 'item_type': self._type})
             
             flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': self.user_id, 'item_name': self.real_name, 'item_type': self._type}).split('*')
             
@@ -3750,6 +3750,14 @@ async def guilda_entregar_quest_command(
     exists = dbservice.check_existence('quests', {'buyer': user, 'id_anilist': anilist_id})
         
     if exists == 1:
+        
+        delivery_date = int(dbservice.select('quests', ['delivery_date'], '', {'id_anilist': anilist_id}))
+
+        real_date = datetime.datetime.utcfromtimestamp(delivery_date).strftime('%d-%m-%Y %H:%M:%S')
+        
+        if datetime.datetime.now().timestamp() < delivery_date:
+            await ctx.response.send_message(f'Você precisa aguardar até {real_date} para entregar esta quest.', ephemeral=True)
+            return
             
         sender_id = dbservice.select('quests', ['sender'], '', {'id_anilist': anilist_id})
 
