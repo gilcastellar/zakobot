@@ -3752,13 +3752,15 @@ async def guilda_entregar_quest_command(
     if exists == 1:
         
         delivery_date = int(dbservice.select('quests', ['delivery_date'], '', {'id_anilist': anilist_id}))
-
-        real_date = datetime.datetime.utcfromtimestamp(delivery_date).strftime('%d-%m-%Y %H:%M:%S')
         
-        if datetime.datetime.now().timestamp() < delivery_date:
-            await send_message2(f'{ctx.author.name} tentou entregar a quest de {real_name} ({_type}) antes do prazo que é {real_date}.',1059305106580975617)
-            await ctx.response.send_message(f'Você precisa aguardar até {real_date} para entregar esta quest.', ephemeral=True)
-            return
+        if delivery_date != None:
+
+            real_date = datetime.datetime.utcfromtimestamp(delivery_date).strftime('%d-%m-%Y %H:%M:%S')
+        
+            if datetime.datetime.now().timestamp() < delivery_date:
+                await send_message2(f'{ctx.author.name} tentou entregar a quest de {real_name} ({_type}) antes do prazo que é {real_date}.',1059305106580975617)
+                await ctx.response.send_message(f'Você precisa aguardar até {real_date} para entregar esta quest.', ephemeral=True)
+                return
             
         sender_id = dbservice.select('quests', ['sender'], '', {'id_anilist': anilist_id})
 
