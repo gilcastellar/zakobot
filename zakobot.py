@@ -4368,7 +4368,7 @@ async def calculate_delivery_time(date_bought, quest_name, quest_type):
         
     
     if total_duration >= 360:
-        delivery_date = date_bought + (total_duration * 240)
+        delivery_date = date_bought + (total_duration * 200)
     else:
        delivery_date = date_bought + (total_duration * 60)
         
