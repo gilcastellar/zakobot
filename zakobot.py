@@ -3751,7 +3751,7 @@ async def guilda_entregar_quest_command(
         
     if exists == 1:
         
-        delivery_date = int(dbservice.select('quests', ['delivery_date'], '', {'id_anilist': anilist_id}))
+        delivery_date = dbservice.select('quests', ['delivery_date'], '', {'id_anilist': anilist_id})
         
         if delivery_date != None:
 
