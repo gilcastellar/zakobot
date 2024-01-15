@@ -3442,7 +3442,7 @@ class AcquiringBtn(discord.ui.View): # Create a class called MyView that subclas
             
             timestamp = int(datetime.datetime.now().timestamp())
             
-            await calculate_delivery_time(timestamp, self.real_name, self._type)
+            # await calculate_delivery_time(timestamp, self.real_name, self._type)
             
             dbservice.update('quests', ['date_bought'], [int(timestamp)], {'item_name': self.real_name, 'item_type': self._type})
             
