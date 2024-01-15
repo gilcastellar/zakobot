@@ -3441,7 +3441,8 @@ class AcquiringBtn(discord.ui.View): # Create a class called MyView that subclas
             await interaction.response.send_message("Quest aceita com sucesso.", ephemeral=True) # Send a message when the button is clicked
             
             timestamp = int(datetime.datetime.now().timestamp())
-            # date = 
+            
+            await calculate_delivery_time(timestamp, self.real_name, self._type)
             
             dbservice.update('quests', ['date_bought'], [int(timestamp)], {'item_name': self.real_name, 'item_type': self._type})
             
@@ -4323,33 +4324,57 @@ async def formar_grupo_command(
     msg = msg.rstrip(',') + f'. Cada aventureiro receberá ${str(buyer_reward)} e o criador receberá ${str(sender_reward)} na finalização da quest, que deverá ser entregue pelo líder {leader}.'
     
     await generate_guild_log(msg)
-    
-# THRESHOLD:
-#
-# NEEDS TO SAVE PREVIOUSLY THRESHOLD SO IT WON'T SPAM THE LOG
 
-# @tasks.loop(seconds=60)
-# async def check_quests():
+async def calculate_delivery_time(date_bought, quest_name, quest_type):
+    anilist_id = dbservice.select('quests', ['id_anilist'], '', {'item_name': quest_name, 'item_type': quest_type})
     
-#     thresholds = [10, 25, 50, 75, 100, 250, 500, 750, 1000, 1500, 2000, 3000, 4000, 5000, 10000, 25000, 50000]
+    if quest_type == 'anime':
+
+        response = anilist.query_anime_id(anilist_id)
+                
+        media_obj = response.json()
+                
+        duration = media_obj['data']['Media']['duration']
+
+        episodes = media_obj['data']['Media']['episodes']
+        print(duration)
+        print(episodes)
+                    
+        total_duration = duration * episodes
+                
+    else:
+
+        response = anilist.query_manga_id(anilist_id)
+
+        media_obj = response.json()
+        status = media_obj['data']['Media']['status']
+        print(status)
+        chapters = media_obj['data']['Media']['chapters']
+        volumes = media_obj['data']['Media']['volumes']
+        duration = 45
+                    
+        if volumes == None:
+            if chapters == 1:
+                duration = 20
+                volumes = 1
+            elif chapters != None:
+                duration = 5
+                volumes = chapters
+                        
+        elif volumes == 1 and chapters == 1:
+            duration = 20
+                    
+        total_duration = volumes * duration
+        
+    delivery_date = date_bought + (total_duration * 60)
     
-#     quests = dbservice.select('quests', ['id_anilist', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], '', {'is_available': 'true'})
+    if total_duration > 300:
+        delivery_date += 720 * 60
+        
+    for i in range(floor(total_duration/300)):
+        delivery_date += 1440 * 60
     
-#     for quest in quests:
-#         time_passed = int(datetime.datetime.now().timestamp()) - int(quest[4])
-#         days = floor(time_passed / 86400)
-#         reward = calculate_quest_reward(quest[3], days)
-        
-#         flavor1, flavor2 = quest[5].split('*')
-        
-#         last_threshold = 0
-        
-#         for threshold in thresholds:
-#             if reward >= threshold:
-#                 last_threshold = threshold
-#             else:
-#                 msg = f'📈 A quest *{flavor1}**{quest[1]} ({quest[2]})**{flavor2}* valorizou e ultrapassou o valor de ${str(last_threshold)}, chegando a ${str(reward)}.'
-        
+    return delivery_date
 
 # to do
 
@@ -4380,6 +4405,8 @@ async def aux_command(ctx):
         date = datetime.datetime.now(ZoneInfo('America/Sao_Paulo'))
                 
         timestamp = int(datetime.datetime.now().timestamp())
+        
+        await calculate_delivery_time(timestamp, 'Popolocrois Monogatari', 'anime')
 
         print(get_timestamp() + ': Done')
 
