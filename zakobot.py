@@ -3307,21 +3307,21 @@ async def guilda_criar_quest_command(
                     print(status)
                     chapters = media_obj['data']['Media']['chapters']
                     volumes = media_obj['data']['Media']['volumes']
-                    duration = 45
+                    duration = 40
                     
                     if volumes == None:
                         if chapters == 1:
                             duration = 20
                             volumes = 1
                         elif chapters != None:
-                            duration = 5
+                            duration = 4
                             volumes = chapters
                         else:
                             await ctx.response.send_message('Você provavelmente tentou inserir uma obra que não contém o número de episódios/volumes ou está em lançamento no Anilist.', ephemeral=True)
                             return
                         
                     elif volumes == 1 and chapters == 1:
-                        duration = 20
+                        duration = 15
                     
                     total_duration = volumes * duration
                     type_factor = 0.004
