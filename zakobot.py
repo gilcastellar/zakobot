@@ -3435,16 +3435,14 @@ class AcquiringBtn(discord.ui.View): # Create a class called MyView that subclas
         if is_available == 'false':
             await interaction.response.send_message("A quest já foi pega por outra pessoa.", ephemeral=True) # Send a message when the button is clicked
         else:
-            dbservice.update('quests', ['buyer'], [self.user_id], {'item_name': self.real_name, 'item_type': self._type})
-            dbservice.update('quests', ['is_available'], ['false'], {'item_name': self.real_name, 'item_type': self._type})
-            
-            await interaction.response.send_message("Quest aceita com sucesso.", ephemeral=True) # Send a message when the button is clicked
             
             timestamp = int(datetime.datetime.now().timestamp())
             
             delivery_date = await calculate_delivery_time(timestamp, self.real_name, self._type)
             
-            dbservice.update('quests', ['date_bought', 'delivery_date'], [int(timestamp), int(delivery_date)], {'item_name': self.real_name, 'item_type': self._type})
+            dbservice.update('quests', ['date_bought', 'delivery_date', 'buyer', 'is_available'], [int(timestamp), int(delivery_date), self.user_id, 'false'], {'item_name': self.real_name, 'item_type': self._type})
+            
+            await interaction.response.send_message("Quest aceita com sucesso.", ephemeral=True) # Send a message when the button is clicked
             
             flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': self.user_id, 'item_name': self.real_name, 'item_type': self._type}).split('*')
             
@@ -4390,6 +4388,7 @@ async def calculate_delivery_time(date_bought, quest_name, quest_type):
 
 # to do
 
+# criar nomes aleatórios pra parties
 # criar delay pra entrega de quests
 # corrigir bug do quadro q envolve nome da party
 # criar canal que mantém o quadro sempre exposto e atualizado ao vivo
