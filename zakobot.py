@@ -3634,6 +3634,11 @@ async def get_user_received_quests(ctx: discord.AutocompleteContext):
     user_name = dbservice.select('user', ['name'], '', {'id': ctx.interaction.user.id})
     
     quests_options = dbservice.select('quests', ['item_name', 'item_type'], '', {'buyer': str(ctx.interaction.user.id)})
+
+    if not isinstance(quests_options, list):
+        quests_options = [quests_options]
+        print('test:')
+        print(quests_options)
     
     taken_quests = dbservice.select('quests', ['party', 'item_name', 'item_type'], '', {'is_available': 'false'})
     
@@ -3644,11 +3649,6 @@ async def get_user_received_quests(ctx: discord.AutocompleteContext):
                 quests_options.append(dbservice.select('quests', ['item_name', 'item_type'], '', {'item_name': quest[1], 'item_type': quest[2]}))
     
     print(quests_options)
-
-    if not isinstance(quests_options, list):
-        quests_options = [quests_options]
-        print('test:')
-        print(quests_options)
 
     names = []
 
