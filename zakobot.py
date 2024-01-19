@@ -3813,7 +3813,7 @@ async def guilda_entregar_quest_command(
                 print('len(group)')
                 print(len(group))
     
-                buyer_reward = ceil(reward/(len(group))
+                buyer_reward = ceil(reward/(len(group)))
     
                 sender_reward = ceil(reward/2)
                 
