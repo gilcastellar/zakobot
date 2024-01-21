@@ -4388,6 +4388,7 @@ async def calculate_delivery_time(date_bought, quest_name, quest_type):
 
 # to do
 
+# permitir guilda quadro apenas no bot spam
 # criar nomes aleatórios pra parties
 # criar delay pra entrega de quests
 # corrigir bug do quadro q envolve nome da party
