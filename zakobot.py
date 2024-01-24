@@ -4077,7 +4077,7 @@ async def inventario_command(
             
             text += '<' + quest[0] + '>\nTipo: ' + quest[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
             
-            if quest[6] != None:
+            if quest[6] == None:
                 grupo_text = ''
                 grupo = quest[7].split(',')
                 for membro in grupo:
