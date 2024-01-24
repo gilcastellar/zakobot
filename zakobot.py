@@ -4051,7 +4051,7 @@ async def inventario_command(
         
             # text += flavor1 + '**' + quest[1] + '**' + flavor2 + '\n'
 
-            text += f'**{quest[1]}**\n'
+            text += f'{quest[1]}\n'
             
             text += '<' + quest[0] + '>\nTipo: ' + quest[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
             
@@ -4077,7 +4077,7 @@ async def inventario_command(
         
             # text += flavor1 + '**' + quest[1] + '**' + flavor2 + '\n'
 
-            text += f'**{quest[1]}**\n'
+            text += f'{quest[1]}\n'
             
             text += '<' + quest[0] + '>\nTipo: ' + quest[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n'
             
@@ -4154,7 +4154,7 @@ async def inventario_command(
         
         # text += flavor1 + '**' + obra[1] + '**' + flavor2 + '\n'
         
-        text += f'**{quest[1]}**\n'
+        text += f'{quest[1]}\n'
             
         text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
 
@@ -4205,7 +4205,7 @@ async def inventario_command(
         
         flavor1, flavor2 = quest_data[5].split('*')
         # text += f'\n\n*{flavor1}**{quest_data[1]}**{flavor2}*\n'
-        text += f'\n\n***{quest_data[1]}**\n'
+        text += f'\n\n{quest_data[1]}\n'
         text += 'Tipo: {quest_data[2].capitalize()}\nRecompensa: ${str(value)}\n\n'
     else:
         text += f'\n\nNenhuma quest em party.'
