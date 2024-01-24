@@ -4204,7 +4204,9 @@ async def inventario_command(
         value = ceil(value/len(_party))
         
         flavor1, flavor2 = quest_data[5].split('*')
-        text += f'\n\n*{flavor1}**{quest_data[1]}**{flavor2}*\nTipo: {quest_data[2].capitalize()}\nRecompensa: ${str(value)}\n\n'
+        # text += f'\n\n*{flavor1}**{quest_data[1]}**{flavor2}*\n'
+        text += f'\n\n***{quest_data[1]}**\n'
+        text += 'Tipo: {quest_data[2].capitalize()}\nRecompensa: ${str(value)}\n\n'
     else:
         text += f'\n\nNenhuma quest em party.'
     
