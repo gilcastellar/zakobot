@@ -4062,13 +4062,12 @@ async def inventario_command(
             sold_quests = [sold_quests]
             
         for quest in sold_quests:
+            print(quest[1])
+            print(quest[6])
+            print(quest[7])
             time_passed = int(quest[8]) - int(quest[4])
-            print('time_passed')
-            print(time_passed)
         
             days = floor(time_passed / 86400)
-            print('days')
-            print(days)
         
             value = calculate_quest_reward(quest[3], days)
         
