@@ -3855,51 +3855,55 @@ async def classificados_command(
     ctx: discord.ApplicationContext,
     type: discord.Option(str, choices=['Anime', 'Manga'], name='tipo', required=False),
     disponibilidade: discord.Option(str, choices=['Quests aceitas'], name='disponibilidade', required=False)
-):
-    if disponibilidade != 'Quests aceitas':
+):  
+    correct_channel = 1064371570186928139
+    if ctx.channel_id == correct_channel:
+        if disponibilidade != 'Quests aceitas':
         
-        if type == 'Anime':
-            data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], ' ORDER BY date_inserted', {'is_available':'true', 'item_type':'anime'})
+            if type == 'Anime':
+                data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], ' ORDER BY date_inserted', {'is_available':'true', 'item_type':'anime'})
     
-        elif type == 'Manga':
-            data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], ' ORDER BY date_inserted', {'is_available':'true', 'item_type':'manga'})
+            elif type == 'Manga':
+                data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], ' ORDER BY date_inserted', {'is_available':'true', 'item_type':'manga'})
     
-        else:
-            data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], ' ORDER BY date_inserted', {'is_available':'true'})
+            else:
+                data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text'], ' ORDER BY date_inserted', {'is_available':'true'})
 
-    else:
-        if type == 'Anime':
-            data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'buyer'], ' ORDER BY date_inserted', {'is_available':'false', 'item_type':'anime'})
-    
-        elif type == 'Manga':
-            data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'buyer'], ' ORDER BY date_inserted', {'is_available':'false', 'item_type':'manga'})
-    
         else:
-            data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'buyer'], ' ORDER BY date_inserted', {'is_available':'false'})
+            if type == 'Anime':
+                data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'buyer'], ' ORDER BY date_inserted', {'is_available':'false', 'item_type':'anime'})
+    
+            elif type == 'Manga':
+                data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'buyer'], ' ORDER BY date_inserted', {'is_available':'false', 'item_type':'manga'})
+    
+            else:
+                data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'buyer'], ' ORDER BY date_inserted', {'is_available':'false'})
 
         
-    text = 'QUESTS \n\n'
+        text = 'QUESTS \n\n'
     
     
-    print('chegou aqui 1')
-    print(data)
-    if len(data) < 1:
-        await ctx.response.send_message(text + 'Não existem quests disponíveis.', ephemeral=True)
-        return
-    print('chegou aqui 2')
-    if not isinstance(data, list):
-        data = [data]
-        print('test:')
+        print('chegou aqui 1')
         print(data)
+        if len(data) < 1:
+            await ctx.response.send_message(text + 'Não existem quests disponíveis.', ephemeral=True)
+            return
+        print('chegou aqui 2')
+        if not isinstance(data, list):
+            data = [data]
+            print('test:')
+            print(data)
     
-    # await ctx.respond(f'**QUESTS**')
+        # await ctx.respond(f'**QUESTS**')
     
-    msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
-    await ctx.response.send_message('OK', ephemeral=True)
+        msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
+        await ctx.response.send_message('OK', ephemeral=True)
 
-    print('chegou aqui 3')
+        print('chegou aqui 3')
 
-    await gerar_quest_board(msg, 1, 0, data)
+        await gerar_quest_board(msg, 1, 0, data)
+    else:
+        ctx.response.send_message(f'Canal errado. O comando de quadro só pode ser usado no canal <#{str(correct_channel)}>', ephemeral=True)
                 
 async def gerar_quest_board(msg, page, last_page, data):
     
