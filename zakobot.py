@@ -4049,7 +4049,9 @@ async def inventario_command(
         
             flavor1, flavor2 = quest[5].split('*')
         
-            text += flavor1 + '**' + quest[1] + '**' + flavor2 + '\n'
+            # text += flavor1 + '**' + quest[1] + '**' + flavor2 + '\n'
+
+            text += f'**{quest[1]}**\n'
             
             text += '<' + quest[0] + '>\nTipo: ' + quest[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
             
@@ -4073,7 +4075,9 @@ async def inventario_command(
         
             flavor1, flavor2 = quest[5].split('*')
         
-            text += flavor1 + '**' + quest[1] + '**' + flavor2 + '\n'
+            # text += flavor1 + '**' + quest[1] + '**' + flavor2 + '\n'
+
+            text += f'**{quest[1]}**\n'
             
             text += '<' + quest[0] + '>\nTipo: ' + quest[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n'
             
@@ -4105,7 +4109,6 @@ async def inventario_command(
     print(data)
     print(len(data))
         
-    
     if not isinstance(data, list):
         data = [data]
         print('test:')
@@ -4149,7 +4152,9 @@ async def inventario_command(
         
         flavor1, flavor2 = obra[5].split('*')
         
-        text += flavor1 + '**' + obra[1] + '**' + flavor2 + '\n'
+        # text += flavor1 + '**' + obra[1] + '**' + flavor2 + '\n'
+        
+        text += f'**{quest[1]}**\n'
             
         text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
 
