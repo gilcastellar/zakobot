@@ -4075,7 +4075,7 @@ async def inventario_command(
         
             text += flavor1 + '**' + quest[1] + '**' + flavor2 + '\n'
             
-            text += '<' + quest[0] + '>\nTipo: ' + quest[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
+            text += '<' + quest[0] + '>\nTipo: ' + quest[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n'
             
             if quest[6] == None:
                 grupo_text = ''
@@ -4083,11 +4083,11 @@ async def inventario_command(
                 for membro in grupo:
                     grupo_text += dbservice.select('user', ['name'], '', {'id': membro}) + ', '
                 grupo_text = grupo_text.rstrip(',')
-                text += f'Grupo: {grupo_text}'
+                text += f'Grupo: {grupo_text}\n\n'
                 
             else:
                 aventureiro = dbservice.select('user', ['name'], '', {'id': quest[6]})
-                text += f'Aventureiro: {aventureiro}'
+                text += f'Aventureiro: {aventureiro}\n\n'
             
         text += '\n**Quests Aceitas **\n\nSolo: ' + str(buyer_slots) + '/' + str(buyer_total_slots)
         text += '\n\n'
