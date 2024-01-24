@@ -3903,7 +3903,7 @@ async def classificados_command(
 
         await gerar_quest_board(msg, 1, 0, data)
     else:
-        ctx.response.send_message(f'Canal errado. O comando de quadro só pode ser usado no canal <#{str(correct_channel)}>', ephemeral=True)
+        ctx.response.send_message(f'Canal errado. O comando de quadro só pode ser usado no canal <#{str(correct_channel)}>.', ephemeral=True)
                 
 async def gerar_quest_board(msg, page, last_page, data):
     
@@ -4052,6 +4052,41 @@ async def inventario_command(
             text += flavor1 + '**' + quest[1] + '**' + flavor2 + '\n'
             
             text += '<' + quest[0] + '>\nTipo: ' + quest[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
+            
+        text += '**Quests vendidas: **' + str(seller_slots) + '/' + str(seller_total_slots) + ' \n\n'
+        sold_quests = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'buyer', 'party', 'date_bought'], '', {'sender': user_id, 'is_available': 'false'})
+        
+        if not isinstance(sold_quests, list):
+            sold_quests = [sold_quests]
+            
+        for quest in sold_quests:
+            time_passed = int(quest[8]) - int(quest[4])
+            print('time_passed')
+            print(time_passed)
+        
+            days = floor(time_passed / 86400)
+            print('days')
+            print(days)
+        
+            value = calculate_quest_reward(quest[3], days)
+        
+            flavor1, flavor2 = quest[5].split('*')
+        
+            text += flavor1 + '**' + quest[1] + '**' + flavor2 + '\n'
+            
+            text += '<' + quest[0] + '>\nTipo: ' + quest[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
+            
+            if quest[6] != None:
+                grupo_text = ''
+                grupo = quest[7].split(',')
+                for membro in grupo:
+                    grupo_text += dbservice.select('user', ['name'], '', {'id': membro}) + ', '
+                grupo_text = grupo_text.rstrip(',')
+                text += f'Grupo: {grupo_text}'
+                
+            else:
+                aventureiro = dbservice.select('user', ['name'], '', {'id': quest[6]})
+                text += f'Aventureiro: {aventureiro}'
             
         text += '\n**Quests Aceitas **\n\nSolo: ' + str(buyer_slots) + '/' + str(buyer_total_slots)
         text += '\n\n'
@@ -4392,9 +4427,7 @@ async def calculate_delivery_time(date_bought, quest_name, quest_type):
 
 # to do
 
-# permitir guilda quadro apenas no bot spam
 # criar nomes aleatórios pra parties
-# criar delay pra entrega de quests
 # corrigir bug do quadro q envolve nome da party
 # criar canal que mantém o quadro sempre exposto e atualizado ao vivo
 # sistema de log por threshold atingido na recompensa das quests
