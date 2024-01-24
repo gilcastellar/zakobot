@@ -4089,7 +4089,7 @@ async def inventario_command(
                 aventureiro = dbservice.select('user', ['name'], '', {'id': quest[6]})
                 text += f'Aventureiro: {aventureiro}\n\n'
             
-        text += '\n**Quests Aceitas **\n\nSolo: ' + str(buyer_slots) + '/' + str(buyer_total_slots)
+        text += '\n**Quests Aceitas: **\n\nSolo: ' + str(buyer_slots) + '/' + str(buyer_total_slots)
         text += '\n\n'
         
     print('length of data')
