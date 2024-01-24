@@ -3903,7 +3903,7 @@ async def classificados_command(
 
         await gerar_quest_board(msg, 1, 0, data)
     else:
-        ctx.response.send_message(f'Canal errado. O comando de quadro só pode ser usado no canal <#{str(correct_channel)}>.', ephemeral=True)
+        await ctx.response.send_message(f'Canal errado. O comando de quadro só pode ser usado no canal <#{str(correct_channel)}>.', ephemeral=True)
                 
 async def gerar_quest_board(msg, page, last_page, data):
     
