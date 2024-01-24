@@ -4053,7 +4053,7 @@ async def inventario_command(
             
             text += '<' + quest[0] + '>\nTipo: ' + quest[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
             
-        text += '**Quests vendidas: **' + str(seller_slots) + '/' + str(seller_total_slots) + ' \n\n'
+        text += '**Quests vendidas: **\n\n'
         sold_quests = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'buyer', 'party', 'date_bought'], '', {'sender': user_id, 'is_available': 'false'})
         
         print(sold_quests)
