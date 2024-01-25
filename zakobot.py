@@ -4154,7 +4154,7 @@ async def inventario_command(
         
         # text += flavor1 + '**' + obra[1] + '**' + flavor2 + '\n'
         
-        text += f'{quest[1]}\n'
+        text += f'{obra[1]}\n'
             
         text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
 
