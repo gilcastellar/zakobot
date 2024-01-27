@@ -4447,9 +4447,10 @@ async def sugerir_command(
     user_id = ctx.author.id
     
     check = dbservice.select('user', ['withheld_z'], '', {'id': user_id})
-    if int(check) > 0:
-        await ctx.response.send_message('Você já sugeriu um personagem para esse banner.', ephemeral=True)
-        return
+    if check != None:
+        if int(check) > 0:
+            await ctx.response.send_message('Você já sugeriu um personagem para esse banner.', ephemeral=True)
+            return
             
     wallet = dbservice.select('user', ['zakoleta'], '', {'id': str(user_id)})
     if value > wallet:
