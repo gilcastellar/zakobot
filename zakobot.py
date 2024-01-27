@@ -4480,7 +4480,20 @@ async def calculate_delivery_time(date_bought, quest_name, quest_type):
 #     await ctx.response.send_message('Sugestão feita com sucesso.', ephemeral=True)
             
             
-
+# GACHA PROJECT
+#
+# TO-DOs:
+#
+# --- create table for all characters that are in the gacha
+#
+# --- automate:
+# ------ clean up of user table: withheld_z, chosen_chara
+# ------ clean up of entire candidate table
+# ------ removal or recovery of the zakoleta depending on the results
+# 
+# --- adapt the entire previously made roll system (or at least recycle the roll process)
+#
+# --- 
 
 # to do
 
