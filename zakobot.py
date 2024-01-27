@@ -4464,7 +4464,7 @@ async def sugerir_command(
             
     response = anilist.query_single_character(chara_id)
     chara_obj = response.json()
-    chara_name = chara_obj['Page']['characters'][0]['name']['native']
+    chara_name = chara_obj['data']['Page']['characters'][0]['name']['native']
             
     exists = dbservice.check_existence('candidate', {'id': chara_id})
     if exists == 0:
