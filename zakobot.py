@@ -4433,6 +4433,52 @@ async def calculate_delivery_time(date_bought, quest_name, quest_type):
     
     return delivery_date
 
+gacha = bot.create_group('gacha', 'Comandos do álbum')
+
+@gacha.command(name='sugerir')
+async def sugerir_command(
+    ctx: discord.ApplicationContext,
+    link: discord.Option(str, name='link', description='Insira o link do anilist do personagem'),
+    value: discord.Option(int, name='Valor', description='Valor em zakoletas que deseja abrir mão para que o personagem entre no banner', min_value=1)
+):
+    if 'character' not in link:
+        await ctx.response.send_message('Você não inseriu um link de personagem do Anilist válido.', ephemeral=True)
+        return
+    user_id = ctx.author.id
+    
+    check = dbservice.select('user', ['withheld_z'], '', {'id': user_id})
+    if int(check) > 0:
+        await ctx.response.send_message('Você já sugeriu um personagem para esse banner.', ephemeral=True)
+        return
+            
+    wallet = dbservice.select('user', ['zakoleta'], '', {'id': str(user_id)})
+    if value > wallet:
+        await ctx.response.send_message('Você não tem zakoletas o suficiente para realizar essa ação.', ephemeral=True)
+        return
+    
+    if 'https://' in link:
+        link = link.replace('https://','')
+    link_parts = link.split('/')
+    chara_id = link_parts[2]
+            
+    response = anilist.query_single_character(chara_id)
+    chara_obj = response.json()
+    chara_name = chara_obj['Page']['characters'][0]['name']['native']
+            
+    exists = dbservice.check_existence('candidate', {'id': chara_id})
+    if exists == 0:
+        dbservice.insert('candidate', ['id', 'name', 'url'], [chara_id, chara_name, link])
+    else:
+        value_now = dbservice.select('candidate', ['value'], '', {'id': chara_id})
+        new_value = value_now + value
+        dbservice.update('candidate', ['value'], [new_value], {'id': chara_id})
+                
+    new_wallet = wallet - value
+    dbservice.update('user', ['zakoleta', 'withheld_z', 'chosen_chara'], [new_wallet, value, chara_id], {'id': user_id})
+            
+            
+
+
 # to do
 
 # criar nomes aleatórios pra parties

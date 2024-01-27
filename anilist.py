@@ -379,7 +379,7 @@ def give_score(anime, score, user, token):
     
     print(data)
     
-def query_single_character(page):
+def query_single_character(id):
 
     query = '''query ($id: Int, $page: Int) {
                   Page(page: $page, perPage: 1) {
@@ -393,7 +393,7 @@ def query_single_character(page):
                     characters(id: $id, sort: FAVOURITES_DESC) {
                       id
                       name {
-                        userPreferred
+                        native
                       }
                       favourites
                       gender
@@ -418,7 +418,7 @@ def query_single_character(page):
 
     # Define our query variables and values that will be used in the query request
     variables = {
-        "page": page
+        "id": id
     }
 
     url = 'https://graphql.anilist.co'
