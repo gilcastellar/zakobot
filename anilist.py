@@ -393,7 +393,7 @@ def query_single_character(id):
                     characters(id: $id, sort: FAVOURITES_DESC) {
                       id
                       name {
-                        native
+                        full
                       }
                       favourites
                       gender
