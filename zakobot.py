@@ -18,7 +18,7 @@ from lib2to3.pgen2 import grammar
 from pydoc import describe
 from random import choice,choices, shuffle, randint
 import random
-from re import T, U, X
+from re import A, T, U, X
 from xml.dom.expatbuilder import theDOMImplementation
 
 import discord
@@ -4476,6 +4476,8 @@ async def sugerir_command(
                 
     new_wallet = wallet - value
     dbservice.update('user', ['zakoleta', 'withheld_z', 'chosen_chara'], [new_wallet, value, chara_id], {'id': user_id})
+
+    await ctx.response.send_message('Sugestão feita com sucesso.', ephemeral=True)
             
             
 
