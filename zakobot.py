@@ -4439,7 +4439,7 @@ gacha = bot.create_group('gacha', 'Comandos do álbum')
 async def sugerir_command(
     ctx: discord.ApplicationContext,
     link: discord.Option(str, name='link', description='Insira o link do anilist do personagem'),
-    value: discord.Option(int, name='Valor', description='Valor em zakoletas que deseja abrir mão para que o personagem entre no banner', min_value=1)
+    value: discord.Option(int, name='valor', description='Valor em zakoletas que deseja abrir mão para que o personagem entre no banner', min_value=1)
 ):
     if 'character' not in link:
         await ctx.response.send_message('Você não inseriu um link de personagem do Anilist válido.', ephemeral=True)
