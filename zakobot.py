@@ -4468,7 +4468,7 @@ async def sugerir_command(
             
     exists = dbservice.check_existence('candidate', {'id': chara_id})
     if exists == 0:
-        dbservice.insert('candidate', ['id', 'name', 'url'], [chara_id, chara_name, link])
+        dbservice.insert('candidate', ['id', 'name', 'url', 'value'], [chara_id, chara_name, link, value])
     else:
         value_now = dbservice.select('candidate', ['value'], '', {'id': chara_id})
         new_value = value_now + value
