@@ -271,16 +271,16 @@ async def on_message(message):
 
             await send_message2(result, 1151990929864007680)
 
-# @tasks.loop(minutes=1)
-# async def check_time():
+@tasks.loop(minutes=1)
+async def check_time():
 
-#     realtime = get_realtime()
+    realtime = get_realtime()
 
-#     if realtime.hour == 4 and realtime.minute in range(54,58):
-#         await clean_dailies()
+    if realtime.hour == 4 and realtime.minute in range(54,58):
+        await clean_dailies()
         
-#     if realtime.hour == 5:
-#         await dailies()
+    if realtime.hour == 5:
+        await dailies()
 
 # Send message
 async def send_message(ctx, text, channel_id=''):
@@ -4433,58 +4433,62 @@ async def calculate_delivery_time(date_bought, quest_name, quest_type):
     
     return delivery_date
 
-# gacha = bot.create_group('gacha', 'Comandos do álbum')
+gacha = bot.create_group('gacha', 'Comandos do álbum')
 
-# @gacha.command(name='sugerir')
-# async def sugerir_command(
-#     ctx: discord.ApplicationContext,
-#     link: discord.Option(str, name='link', description='Insira o link do anilist do personagem'),
-#     value: discord.Option(int, name='valor', description='Valor em zakoletas que deseja abrir mão para que o personagem entre no banner', min_value=1)
-# ):
-#     if 'character' not in link:
-#         await ctx.response.send_message('Você não inseriu um link de personagem do Anilist válido.', ephemeral=True)
-#         return
-#     user_id = ctx.author.id
+@gacha.command(name='sugerir')
+async def sugerir_command(
+    ctx: discord.ApplicationContext,
+    link: discord.Option(str, name='link', description='Insira o link do anilist do personagem'),
+    value: discord.Option(int, name='valor', description='Valor em zakoletas que deseja abrir mão para que o personagem entre no banner', min_value=1)
+):
+    if 'character' not in link:
+        await ctx.response.send_message('Você não inseriu um link de personagem do Anilist válido.', ephemeral=True)
+        return
+    user_id = ctx.author.id
     
-#     check = dbservice.select('user', ['withheld_z'], '', {'id': user_id})
-#     if check != None:
-#         if int(check) > 0:
-#             await ctx.response.send_message('Você já sugeriu um personagem para esse banner.', ephemeral=True)
-#             return
+    check = dbservice.select('user', ['withheld_z'], '', {'id': user_id})
+    if check != None:
+        if int(check) > 0:
+            await ctx.response.send_message('Você já sugeriu um personagem para esse banner.', ephemeral=True)
+            return
             
-#     wallet = dbservice.select('user', ['zakoleta'], '', {'id': str(user_id)})
-#     if value > wallet:
-#         await ctx.response.send_message('Você não tem zakoletas o suficiente para realizar essa ação.', ephemeral=True)
-#         return
+    wallet = dbservice.select('user', ['zakoleta'], '', {'id': str(user_id)})
+    if value > wallet:
+        await ctx.response.send_message('Você não tem zakoletas o suficiente para realizar essa ação.', ephemeral=True)
+        return
     
-#     if 'https://' in link:
-#         link = link.replace('https://','')
-#     link_parts = link.split('/')
-#     chara_id = link_parts[2]
+    if 'https://' in link:
+        link = link.replace('https://','')
+    link_parts = link.split('/')
+    chara_id = link_parts[2]
             
-#     response = anilist.query_single_character(chara_id)
-#     chara_obj = response.json()
-#     chara_name = chara_obj['data']['Page']['characters'][0]['name']['full']
+    response = anilist.query_single_character(chara_id)
+    chara_obj = response.json()
+    chara_name = chara_obj['data']['Page']['characters'][0]['name']['full']
             
-#     exists = dbservice.check_existence('candidate', {'id': chara_id})
-#     if exists == 0:
-#         dbservice.insert('candidate', ['id', 'name', 'url', 'value'], [chara_id, chara_name, link, value])
-#     else:
-#         value_now = dbservice.select('candidate', ['value'], '', {'id': chara_id})
-#         new_value = value_now + value
-#         dbservice.update('candidate', ['value'], [new_value], {'id': chara_id})
+    exists = dbservice.check_existence('gacha_candidate', {'id': chara_id})
+    if exists == 0:
+        dbservice.insert('gacha_candidate', ['id', 'name', 'url', 'value'], [chara_id, chara_name, link, value])
+    else:
+        value_now = dbservice.select('candidate', ['value'], '', {'id': chara_id})
+        new_value = value_now + value
+        dbservice.update('gacha_candidate', ['value'], [new_value], {'id': chara_id})
                 
-#     new_wallet = wallet - value
-#     dbservice.update('user', ['zakoleta', 'withheld_z', 'chosen_chara'], [new_wallet, value, chara_id], {'id': user_id})
+    new_wallet = wallet - value
+    dbservice.update('user', ['zakoleta', 'withheld_z', 'chosen_chara'], [new_wallet, value, chara_id], {'id': user_id})
 
-#     await ctx.response.send_message('Sugestão feita com sucesso.', ephemeral=True)
+    await ctx.response.send_message('Sugestão feita com sucesso.', ephemeral=True)
             
+# @gacha.command(name='rodar')
+
+async def gerar_banner():
+    ...
             
 # GACHA PROJECT
 #
 # TO-DOs:
 #
-# --- create table for all characters that are in the gacha
+# ✅ --- create table for all characters that are in the gacha 
 #
 # --- automate:
 # ------ clean up of user table: withheld_z, chosen_chara
@@ -4523,7 +4527,7 @@ async def aux_command(ctx):
         
         date = datetime.datetime.now(ZoneInfo('America/Sao_Paulo'))
                 
-        timestamp = int(datetime.datetime.now().timestamp())
+        timestamp = int(datetime.datetime.now(ZoneInfo('America/Sao_Paulo')).timestamp())
         
         delivery_date = await calculate_delivery_time(timestamp, 'Maison Ikkoku', 'anime')
         
