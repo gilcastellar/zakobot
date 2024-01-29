@@ -4518,9 +4518,9 @@ async def generate_banner():
         print(user_and_value)
 
         if not isinstance(user_and_value, list):
-            quests_options = [quests_options]
+            user_and_value = [user_and_value]
             print('test:')
-            print(quests_options)
+            print(user_and_value)
 
         for user in user_and_value:
             wallet = user[2]
