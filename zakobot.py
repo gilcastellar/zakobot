@@ -14,7 +14,6 @@
 
 from faulthandler import dump_traceback
 from html.entities import name2codepoint
-from lib2to3.pgen2 import grammar
 from pydoc import describe
 from random import choice,choices, shuffle, randint
 import random
@@ -273,14 +272,19 @@ async def on_message(message):
 
 @tasks.loop(minutes=1)
 async def check_time():
+    timestamp = int(datetime.datetime.now(ZoneInfo('America/Sao_Paulo')).timestamp())
+    
+    next_banner_time = int(dbservice.select('values_chart', ['value_value'], '', {'value_name': 'next_banner_time'}))
+    if timestamp >= next_banner_time:
+        await generate_banner()
+        next_banner_time += 604800
+        dbservice.update('values_chart', ['value_value'], [next_banner_time], {'value_name': 'next_banner_time'})
 
-    realtime = get_realtime()
-
-    if realtime.hour == 4 and realtime.minute in range(54,58):
-        await clean_dailies()
+    # if realtime.hour == 4 and realtime.minute in range(54,58):
+    #     await clean_dailies()
         
-    if realtime.hour == 5:
-        await dailies()
+    # if realtime.hour == 5:
+    #     await dailies()
 
 # Send message
 async def send_message(ctx, text, channel_id=''):
@@ -4481,8 +4485,8 @@ async def sugerir_command(
             
 # @gacha.command(name='rodar')
 
-async def gerar_banner():
-    ...
+async def generate_banner():
+    
             
 # GACHA PROJECT
 #
