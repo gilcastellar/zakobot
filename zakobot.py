@@ -4485,22 +4485,22 @@ async def sugerir_command(
             
 # @gacha.command(name='rodar')
 
-# async def generate_banner():
-#     winner_chara_list = dbservice.select('gacha_candidate', ['id', 'url', 'name', 'img', 'value'], 'order by value ASC limit 3')
-#     # winner_chara_list = from_list_of_tuples_to_list(winner_chara_list)
-#     print(winner_chara_list)
+async def generate_banner():
+    winner_chara_list = dbservice.select('gacha_candidate', ['id', 'url', 'name', 'img', 'value'], 'order by value ASC limit 3')
+    # winner_chara_list = from_list_of_tuples_to_list(winner_chara_list)
+    print(winner_chara_list)
     
-#     await send_message2(f'Os personagens do banner da semana são...', 1065847698214887496)
+    await send_message2(f'Os personagens do banner da semana são...', 1192848901326262424)
 
-#     time.sleep(3)
+    time.sleep(3)
     
-#     for chara in winner_chara_list:
-#         url = chara[1]
-#         name = chara[2]
-#         img = chara[3]
-#         value = chara[4]
-#         await send_message2(f'{name} com doações no valor total de {str(value)}!\n\n{img}', 1065847698214887496)
-#         time.sleep(1)
+    for chara in winner_chara_list:
+        url = chara[1]
+        name = chara[2]
+        img = chara[3]
+        value = chara[4]
+        await send_message2(f'{name} com doações no valor total de {str(value)} zakoletas!\n\n{img}', 1192848901326262424)
+        time.sleep(2)
     
             
 # GACHA PROJECT
