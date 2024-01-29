@@ -4515,14 +4515,14 @@ async def generate_banner():
         dbservice.insert('gacha_chara', ['id', 'url', 'name', 'img'], [id, url, name, img])
         
         users = dbservice.select('user', ['id'], '')
-        print(user_and_value)
+        print(users)
 
-        if not isinstance(user_and_value, list):
-            user_and_value = [user_and_value]
+        if not isinstance(users, list):
+            users = [users]
             print('test:')
-            print(user_and_value)
+            print(users)
 
-        for user in user_and_value:
+        for user in users:
             chosen_chara = dbservice.select('user', ['chosen_chara'], '', {'id': user})
             if str(chosen_chara) == str(id):
                 wallet = user[2]
