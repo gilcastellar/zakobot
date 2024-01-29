@@ -4560,7 +4560,7 @@ async def aux_command(ctx):
     
         await send_message2(f'Os personagens do banner da semana são...', 1065847698214887496)
 
-        await time.sleep(3)
+        time.sleep(3)
     
         for chara in winner_chara_list:
             url = chara[1]
@@ -4568,7 +4568,7 @@ async def aux_command(ctx):
             img = chara[3]
             value = chara[4]
             await send_message2(f'{name} com doações no valor total de {str(value)}!\n\n{img}', 1065847698214887496)
-            await time.sleep(1)
+            time.sleep(1)
         
 
         print(get_timestamp() + ': Done')
