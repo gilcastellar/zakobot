@@ -4437,76 +4437,77 @@ async def calculate_delivery_time(date_bought, quest_name, quest_type):
     
     return delivery_date
 
-# gacha = bot.create_group('gacha', 'Comandos do álbum')
+gacha = bot.create_group('gacha', 'Comandos do álbum')
 
-# @gacha.command(name='sugerir')
-# async def sugerir_command(
-#     ctx: discord.ApplicationContext,
-#     link: discord.Option(str, name='link', description='Insira o link do anilist do personagem'),
-#     value: discord.Option(int, name='valor', description='Valor em zakoletas que deseja abrir mão para que o personagem entre no banner', min_value=1)
-# ):
-#     if 'character' not in link:
-#         await ctx.response.send_message('Você não inseriu um link de personagem do Anilist válido.', ephemeral=True)
-#         return
-#     user_id = ctx.author.id
+@gacha.command(name='sugerir')
+async def sugerir_command(
+    ctx: discord.ApplicationContext,
+    link: discord.Option(str, name='link', description='Insira o link do anilist do personagem'),
+    value: discord.Option(int, name='valor', description='Valor em zakoletas que deseja abrir mão para que o personagem entre no banner', min_value=1)
+):
+    if 'character' not in link:
+        await ctx.response.send_message('Você não inseriu um link de personagem do Anilist válido.', ephemeral=True)
+        return
+    user_id = ctx.author.id
     
-#     check = dbservice.select('user', ['withheld_z'], '', {'id': user_id})
-#     if check != None:
-#         if int(check) > 0:
-#             await ctx.response.send_message('Você já sugeriu um personagem para esse banner.', ephemeral=True)
-#             return
+    check = dbservice.select('user', ['withheld_z'], '', {'id': user_id})
+    if check != None:
+        if int(check) > 0:
+            await ctx.response.send_message('Você já sugeriu um personagem para esse banner.', ephemeral=True)
+            return
             
-#     wallet = dbservice.select('user', ['zakoleta'], '', {'id': str(user_id)})
-#     if value > wallet:
-#         await ctx.response.send_message('Você não tem zakoletas o suficiente para realizar essa ação.', ephemeral=True)
-#         return
+    wallet = dbservice.select('user', ['zakoleta'], '', {'id': str(user_id)})
+    if value > wallet:
+        await ctx.response.send_message('Você não tem zakoletas o suficiente para realizar essa ação.', ephemeral=True)
+        return
 
-#     if 'https://' in link:
-#         link = link.replace('https://','')
-#     link_parts = link.split('/')
-#     chara_id = link_parts[2]
+    if 'https://' in link:
+        link = link.replace('https://','')
+    link_parts = link.split('/')
+    chara_id = link_parts[2]
     
-#     exists = dbservice.check_existence('gacha_chara', {'url': link})
-#     if exists == 1:
-#         await ctx.response.send_message('Este personagem já está disponível no gacha.', ephemeral=True)
-#         return
+    exists = dbservice.check_existence('gacha_chara', {'url': link})
+    if exists == 1:
+        await ctx.response.send_message('Este personagem já está disponível no gacha.', ephemeral=True)
+        return
             
-#     response = anilist.query_single_character(chara_id)
-#     chara_obj = response.json()
-#     chara_name = chara_obj['data']['Page']['characters'][0]['name']['full']
+    response = anilist.query_single_character(chara_id)
+    chara_obj = response.json()
+    chara_name = chara_obj['data']['Page']['characters'][0]['name']['full']
+    image = chara_obj['data']['Page']['characters'][0]['image']['large']
             
-#     exists = dbservice.check_existence('gacha_candidate', {'id': chara_id})
-#     if exists == 0:
-#         dbservice.insert('gacha_candidate', ['id', 'name', 'url', 'value'], [chara_id, chara_name, link, value])
-#     else:
-#         value_now = dbservice.select('candidate', ['value'], '', {'id': chara_id})
-#         new_value = value_now + value
-#         dbservice.update('gacha_candidate', ['value'], [new_value], {'id': chara_id})
+    exists = dbservice.check_existence('gacha_candidate', {'id': chara_id})
+    if exists == 0:
+        dbservice.insert('gacha_candidate', ['id', 'name', 'url', 'value'], [chara_id, chara_name, link, value])
+    else:
+        value_now = dbservice.select('candidate', ['value'], '', {'id': chara_id})
+        new_value = value_now + value
+        dbservice.update('gacha_candidate', ['value'], [new_value], {'id': chara_id})
                 
-#     new_wallet = wallet - value
-#     dbservice.update('user', ['zakoleta', 'withheld_z', 'chosen_chara'], [new_wallet, value, chara_id], {'id': user_id})
+    new_wallet = wallet - value
+    dbservice.update('user', ['zakoleta', 'withheld_z', 'chosen_chara'], [new_wallet, value, chara_id], {'id': user_id})
 
-#     await ctx.response.send_message('Sugestão feita com sucesso.', ephemeral=True)
+    await ctx.response.send_message('Sugestão feita com sucesso.', ephemeral=True)
             
-# # @gacha.command(name='rodar')
+# @gacha.command(name='rodar')
 
-# async def generate_banner():
-#     winner_chara_list = dbservice.select('gacha_candidate', ['id', 'url', 'name', 'img', 'value'], 'order by value ASC limit 3')
-#     # winner_chara_list = from_list_of_tuples_to_list(winner_chara_list)
-#     print(winner_chara_list)
+async def generate_banner():
+    winner_chara_list = dbservice.select('gacha_candidate', ['id', 'url', 'name', 'img', 'value'], 'order by value ASC limit 3')
+    print(winner_chara_list)
     
-#     await send_message2(f'Os personagens do banner da semana são...', 1192848901326262424)
+    await send_message2(f'Os personagens do banner da semana são...', 1192848901326262424)
 
-#     time.sleep(3)
+    time.sleep(3)
     
-#     for chara in winner_chara_list:
-#         url = chara[1]
-#         name = chara[2]
-#         img = chara[3]
-#         value = chara[4]
-#         await send_message2(f'{img}\n{name} com doações no valor total de {str(value)} zakoletas!\n', 1192848901326262424)
-#         time.sleep(2)
-#         dbservice.insert
+    for chara in winner_chara_list:
+        id = chara[0]
+        url = chara[1]
+        name = chara[2]
+        img = chara[3]
+        value = chara[4]
+        await send_message2(f'{img}\n{name} com doações no valor total de {str(value)} zakoletas!\n', 1192848901326262424)
+        time.sleep(2)
+        dbservice.insert('gacha_chara', [])
     
             
 # GACHA PROJECT
