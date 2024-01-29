@@ -4491,7 +4491,7 @@ async def sugerir_command(
 # @gacha.command(name='rodar')
 
 async def generate_banner():
-    winner_chara_list = dbservice.select('gacha_candidate', ['id', 'url', 'name', 'img', 'value'], 'order by value ASC limit 3')
+    winner_chara_list = dbservice.select('gacha_candidate', ['id', 'url', 'name', 'img', 'value'], 'order by value DESC limit 3')
     print(winner_chara_list)
     
     # channel = 1192848901326262424
@@ -4527,8 +4527,7 @@ async def generate_banner():
             new_wallet = int(wallet) - int(user[1])
             dbservice.update('user', ['zakoleta'], [new_wallet], {'id':user[0]})
     
-        
-    dbservice.update('user', ['chosen_chara', 'withheld_z'], ['', 0])
+    dbservice.update('user', ['chosen_chara', 'withheld_z'], ['', 0], {'id_guild': '1059298932825538661'})
     
             
 # GACHA PROJECT
