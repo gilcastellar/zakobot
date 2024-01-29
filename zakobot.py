@@ -4507,6 +4507,7 @@ async def generate_banner():
         name = chara[2]
         img = chara[3]
         value = chara[4]
+        print(name)
         await send_message2(f'Com o valor total de {str(value)} zakoletas...', channel)
         time.sleep(3)
         await send_message2(f'{img}\n{name}!\n\n\n\n\n­ ­', channel)
