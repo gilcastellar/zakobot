@@ -4492,7 +4492,7 @@ async def sugerir_command(
     
 #     await send_message2(f'Os personagens do banner da semana são...', 1065847698214887496)
 
-#     await time.sleep(3)
+#     time.sleep(3)
     
 #     for chara in winner_chara_list:
 #         url = chara[1]
@@ -4500,7 +4500,7 @@ async def sugerir_command(
 #         img = chara[3]
 #         value = chara[4]
 #         await send_message2(f'{name} com doações no valor total de {str(value)}!\n\n{img}', 1065847698214887496)
-#         await time.sleep(1)
+#         time.sleep(1)
     
             
 # GACHA PROJECT
