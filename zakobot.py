@@ -4524,7 +4524,8 @@ async def generate_banner():
 
         for user in users:
             chosen_chara = dbservice.select('user', ['chosen_chara'], '', {'id': user})
-            withheld = int(dbservice.select('user', ['withheld_z'], '', {'id': user}))
+            withheld = dbservice.select('user', ['withheld_z'], '', {'id': user})
+            print(str(withheld))
             if str(chosen_chara) == str(id):
                 wallet = user[2]
                 new_wallet = int(wallet) - int(user[1])
