@@ -4461,6 +4461,11 @@ async def sugerir_command(
         await ctx.response.send_message('Você não tem zakoletas o suficiente para realizar essa ação.', ephemeral=True)
         return
     
+    exists = dbservice.check_existence('gacha_chara', {'url': link})
+    if exists == 1:
+        await ctx.response.send_message('Este personagem já está disponível no gacha.', ephemeral=True)
+        return
+
     if 'https://' in link:
         link = link.replace('https://','')
     link_parts = link.split('/')
@@ -4501,6 +4506,7 @@ async def generate_banner():
         value = chara[4]
         await send_message2(f'{name} com doações no valor total de {str(value)} zakoletas!\n\n{img}', 1192848901326262424)
         time.sleep(2)
+        dbservice.insert
     
             
 # GACHA PROJECT
