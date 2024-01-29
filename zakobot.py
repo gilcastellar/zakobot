@@ -4576,7 +4576,7 @@ async def aux_command(ctx):
         print('delivery_date')
         print(delivery_date)
         
-        await generate_banner
+        await generate_banner()
 
         print(get_timestamp() + ': Done')
 
