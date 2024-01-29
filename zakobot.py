@@ -4491,7 +4491,7 @@ async def sugerir_command(
 # @gacha.command(name='rodar')
 
 async def generate_banner():
-    winner_chara_list = dbservice.select('gacha_candidate', ['id', 'url', 'name', 'img', 'value'], 'order by value ASC limit 8')
+    winner_chara_list = dbservice.select('gacha_candidate', ['id', 'url', 'name', 'img', 'value'], 'order by value ASC limit 3')
     print(winner_chara_list)
     
     # channel = 1192848901326262424
