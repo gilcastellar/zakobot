@@ -4519,7 +4519,7 @@ async def generate_banner():
 
         for user in user_and_value:
             wallet = user[2]
-            new_wallet = wallet - user[1]
+            new_wallet = int(wallet) - int(user[1])
             dbservice.update('user', ['zakoleta'], [new_wallet], {'id':user[0]})
     
         
