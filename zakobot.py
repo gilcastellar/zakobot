@@ -4517,6 +4517,11 @@ async def generate_banner():
         user_and_value = dbservice.select('user', ['chosen_chara', 'withheld_z', 'zakoleta'], '', {'chosen_chara': str(id)})
         print(user_and_value)
 
+        if not isinstance(user_and_value, list):
+            quests_options = [quests_options]
+            print('test:')
+            print(quests_options)
+
         for user in user_and_value:
             wallet = user[2]
             new_wallet = int(wallet) - int(user[1])
