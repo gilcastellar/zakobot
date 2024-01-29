@@ -4451,10 +4451,9 @@ async def sugerir_command(
     user_id = ctx.author.id
     
     check = dbservice.select('user', ['withheld_z'], '', {'id': user_id})
-    if check != None:
-        if int(check) > 0:
-            await ctx.response.send_message('Você já sugeriu um personagem para esse banner.', ephemeral=True)
-            return
+    if int(check) > 0:
+        await ctx.response.send_message('Você já sugeriu um personagem para esse banner.', ephemeral=True)
+        return
             
     wallet = dbservice.select('user', ['zakoleta'], '', {'id': str(user_id)})
     if value > wallet:
@@ -4495,7 +4494,9 @@ async def generate_banner():
     winner_chara_list = dbservice.select('gacha_candidate', ['id', 'url', 'name', 'img', 'value'], 'order by value ASC limit 3')
     print(winner_chara_list)
     
-    await send_message2(f'Os personagens do banner da semana são...', 1192848901326262424)
+    channel = 1192848901326262424
+    
+    await send_message2(f'Os personagens do banner da semana são...', channel)
 
     time.sleep(3)
     
@@ -4505,9 +4506,13 @@ async def generate_banner():
         name = chara[2]
         img = chara[3]
         value = chara[4]
-        await send_message2(f'{img}\n{name} com doações no valor total de {str(value)} zakoletas!\n', 1192848901326262424)
-        time.sleep(2)
-        dbservice.insert('gacha_chara', [])
+        await send_message2(f'Com o valor total de {str(value)} zakoletas...', channel)
+        time.sleep(3)
+        await send_message2(f'{img}\n{name}!\n\n\n\n\n­ ­', channel)
+        time.sleep(5)
+        dbservice.insert('gacha_chara', ['id', 'url', 'name', 'img'], [id, url, name, img])
+        
+    dbservice.update('user', ['chosen_chara', 'withheld_z'], ['', 0])
     
             
 # GACHA PROJECT
