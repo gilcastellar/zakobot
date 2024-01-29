@@ -4514,7 +4514,7 @@ async def generate_banner():
         time.sleep(5)
         dbservice.insert('gacha_chara', ['id', 'url', 'name', 'img'], [id, url, name, img])
         
-        user_and_value = dbservice.select('user', ['chosen_chara', 'withheld_z', 'zakoleta'], '', {'chosen_chara': str(id)})
+        users = dbservice.select('user', ['id'], '')
         print(user_and_value)
 
         if not isinstance(user_and_value, list):
@@ -4523,9 +4523,11 @@ async def generate_banner():
             print(user_and_value)
 
         for user in user_and_value:
-            wallet = user[2]
-            new_wallet = int(wallet) - int(user[1])
-            dbservice.update('user', ['zakoleta'], [new_wallet], {'id':user[0]})
+            chosen_chara = dbservice.select('user', ['chosen_chara'], '', {'id': user})
+            if str(chosen_chara) == str(id):
+                wallet = user[2]
+                new_wallet = int(wallet) - int(user[1])
+                dbservice.update('user', ['zakoleta'], [new_wallet], {'id':user})
     
     dbservice.update('user', ['chosen_chara', 'withheld_z'], ['', 0], {'id_guild': '1059298932825538661'})
     
