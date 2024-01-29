@@ -4545,7 +4545,10 @@ async def aux_command(ctx):
         
         
         winner_chara_list = dbservice.select('gacha_candidate', ['name'], 'order by value DESC limit 3')
-        print(winner_chara_list)
+        for chara in winner_chara_list:
+            name = chara[0]
+            print(name)
+        
 
         print(get_timestamp() + ': Done')
 
