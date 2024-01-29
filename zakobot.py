@@ -4491,7 +4491,7 @@ async def sugerir_command(
 # @gacha.command(name='rodar')
 
 async def generate_banner():
-    winner_chara_list = dbservice.select('gacha_candidate', ['id', 'url', 'name', 'img', 'value'], 'order by value ASC limit 3')
+    winner_chara_list = dbservice.select('gacha_candidate', ['id', 'url', 'name', 'img', 'value'], 'order by value ASC limit 8')
     print(winner_chara_list)
     
     channel = 1192848901326262424
@@ -4511,6 +4511,15 @@ async def generate_banner():
         await send_message2(f'{img}\n{name}!\n\n\n\n\n­ ­', channel)
         time.sleep(5)
         dbservice.insert('gacha_chara', ['id', 'url', 'name', 'img'], [id, url, name, img])
+        
+        user_and_value = dbservice.select('user', ['chosen_chara', 'withheld_z', 'zakoleta'], '', {'chosen_chara': str(id)})
+        print(user_and_value)
+
+        for user in user_and_value:
+            wallet = user[2]
+            new_wallet = wallet - user[1]
+            dbservice.update('user', ['zakoleta'], [new_wallet], {'id':user[0]})
+    
         
     dbservice.update('user', ['chosen_chara', 'withheld_z'], ['', 0])
     
@@ -4567,21 +4576,7 @@ async def aux_command(ctx):
         print('delivery_date')
         print(delivery_date)
         
-        winner_chara_list = dbservice.select('gacha_candidate', ['id', 'url', 'name', 'img', 'value'], 'order by value ASC limit 3')
-        print(winner_chara_list)
-    
-        await send_message2(f'Os personagens do banner da semana são...', 1065847698214887496)
-
-        time.sleep(3)
-    
-        for chara in winner_chara_list:
-            url = chara[1]
-            name = chara[2]
-            img = chara[3]
-            value = chara[4]
-            await send_message2(f'{name} com doações no valor total de {str(value)}!\n\n{img}', 1065847698214887496)
-            time.sleep(1)
-        
+        await generate_banner
 
         print(get_timestamp() + ': Done')
 
