@@ -4460,16 +4460,16 @@ async def sugerir_command(
     if value > wallet:
         await ctx.response.send_message('Você não tem zakoletas o suficiente para realizar essa ação.', ephemeral=True)
         return
-    
-    exists = dbservice.check_existence('gacha_chara', {'url': link})
-    if exists == 1:
-        await ctx.response.send_message('Este personagem já está disponível no gacha.', ephemeral=True)
-        return
 
     if 'https://' in link:
         link = link.replace('https://','')
     link_parts = link.split('/')
     chara_id = link_parts[2]
+    
+    exists = dbservice.check_existence('gacha_chara', {'url': link})
+    if exists == 1:
+        await ctx.response.send_message('Este personagem já está disponível no gacha.', ephemeral=True)
+        return
             
     response = anilist.query_single_character(chara_id)
     chara_obj = response.json()
