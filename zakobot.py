@@ -4486,6 +4486,9 @@ async def sugerir_command(
 # @gacha.command(name='rodar')
 
 async def generate_banner():
+    # winner_chara_list = dbservice.select('gacha_candidate', ['name'], 'order by value DESC limit 3')
+    # print(winner_chara_list)
+    ...
     
             
 # GACHA PROJECT
@@ -4539,6 +4542,10 @@ async def aux_command(ctx):
         print(str(timestamp))
         print('delivery_date')
         print(delivery_date)
+        
+        
+        winner_chara_list = dbservice.select('gacha_candidate', ['name'], 'order by value DESC limit 3')
+        print(winner_chara_list)
 
         print(get_timestamp() + ': Done')
 
