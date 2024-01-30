@@ -4303,7 +4303,7 @@ async def sugerir_command(
     await ctx.response.send_message('Sugestão feita com sucesso.', ephemeral=True)
 
 async def generate_banner():
-    winner_chara_list = dbservice.select('gacha_candidate', ['id_chara', 'url', 'name', 'img', 'value'], 'order by value DESC, id ASC limit 3')
+    winner_chara_list = dbservice.select('gacha_candidate', ['id_chara', 'url', 'name', 'img', 'value'], 'order by value DESC, id ASC limit 8')
     print(winner_chara_list)
     
     # channel = 1192848901326262424
