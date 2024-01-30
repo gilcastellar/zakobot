@@ -2245,395 +2245,395 @@ async def make_rolls():
 
 ofertas = bot.create_group('ofertas', 'Comandos de ofertas')
 
-@ofertas.command(name='iniciar')
-async def iniciar_command(
-    ctx: discord.ApplicationContext,
-    target: discord.Option(str, autocomplete=get_members_names2, name='membro')
-):
+# @ofertas.command(name='iniciar')
+# async def iniciar_command(
+#     ctx: discord.ApplicationContext,
+#     target: discord.Option(str, autocomplete=get_members_names2, name='membro')
+# ):
 
-    if ctx.channel.id == rolls_channel:
+#     if ctx.channel.id == rolls_channel:
     
-        from_id = ctx.author.id
-        to_id = dbservice.select('user', ['id'], '', {'name': target})
+#         from_id = ctx.author.id
+#         to_id = dbservice.select('user', ['id'], '', {'name': target})
     
-        id = dbservice.insert('chara_ofertas', ['from_id', 'to_id'], [from_id, to_id])
+#         id = dbservice.insert('chara_ofertas', ['from_id', 'to_id'], [from_id, to_id])
 
-        await ctx.respond(f'Uma janela de troca com {target} foi aberta. O ID dessa oferta é {str(id)}. Utilize o "/ofertas finalizar" e insira esse ID para realizar uma oferta.')
+#         await ctx.respond(f'Uma janela de troca com {target} foi aberta. O ID dessa oferta é {str(id)}. Utilize o "/ofertas finalizar" e insira esse ID para realizar uma oferta.')
 
-@ofertas.command(name='finalizar')
-async def finalizar_oferta_command(
-    ctx: discord.ApplicationContext,
-    id: discord.Option(int, name='id'),
-    own_chara: discord.Option(str, autocomplete=get_collection, name='seu_chara'),
-    own_quantity: discord.Option(int, min_value=1, name='sua_quantidade'),
-    target_chara: discord.Option(str, autocomplete=get_chara, name='chara_dele'),
-    target_quantity: discord.Option(int, min_value=1, name='quantidade_dele')
-):
+# @ofertas.command(name='finalizar')
+# async def finalizar_oferta_command(
+#     ctx: discord.ApplicationContext,
+#     id: discord.Option(int, name='id'),
+#     own_chara: discord.Option(str, autocomplete=get_collection, name='seu_chara'),
+#     own_quantity: discord.Option(int, min_value=1, name='sua_quantidade'),
+#     target_chara: discord.Option(str, autocomplete=get_chara, name='chara_dele'),
+#     target_quantity: discord.Option(int, min_value=1, name='quantidade_dele')
+# ):
 
-    exists = dbservice.check_existence('chara_ofertas', {'id': id})
+#     exists = dbservice.check_existence('chara_ofertas', {'id': id})
 
-    if exists == 1:
+#     if exists == 1:
 
-        own_chara, own_title, own_chara_id = own_chara.split('(')
-        own_chara = own_chara.rstrip(' ')
-        own_chara_id = own_chara_id.rstrip(')')
+#         own_chara, own_title, own_chara_id = own_chara.split('(')
+#         own_chara = own_chara.rstrip(' ')
+#         own_chara_id = own_chara_id.rstrip(')')
 
-        target_chara, target_title, target_chara_id = target_chara.split('(')
-        target_chara = target_chara.rstrip(' ')
-        target_chara_id = target_chara_id.rstrip(')')
+#         target_chara, target_title, target_chara_id = target_chara.split('(')
+#         target_chara = target_chara.rstrip(' ')
+#         target_chara_id = target_chara_id.rstrip(')')
 
-        own_id = str(ctx.author.id)
-        target_id = dbservice.select('chara_ofertas', ['to_id'], '', {'id':id})
+#         own_id = str(ctx.author.id)
+#         target_id = dbservice.select('chara_ofertas', ['to_id'], '', {'id':id})
 
-        max_own = dbservice.select('user_has_chara', ['quantity'], '', {'user_id': own_id, 'chara_id': own_chara_id})
-        max_target = dbservice.select('user_has_chara', ['quantity'], '', {'user_id': target_id, 'chara_id': target_chara_id})
+#         max_own = dbservice.select('user_has_chara', ['quantity'], '', {'user_id': own_id, 'chara_id': own_chara_id})
+#         max_target = dbservice.select('user_has_chara', ['quantity'], '', {'user_id': target_id, 'chara_id': target_chara_id})
     
-        print('max chara values:')
-        print(max_own)
-        print(max_target)
+#         print('max chara values:')
+#         print(max_own)
+#         print(max_target)
 
-        if type(max_own) != int:
-            max_own = from_list_of_tuples_to_list(max_own)
+#         if type(max_own) != int:
+#             max_own = from_list_of_tuples_to_list(max_own)
 
-        if type(max_target) != int:
-            max_target = from_list_of_tuples_to_list(max_target)
+#         if type(max_target) != int:
+#             max_target = from_list_of_tuples_to_list(max_target)
 
-        if max_own == None:
-            max_own = 1
+#         if max_own == None:
+#             max_own = 1
 
-        if max_target == None:
-            max_target = 1
+#         if max_target == None:
+#             max_target = 1
 
-        print('max chara values:')
-        print(max_own)
-        print(max_target)
+#         print('max chara values:')
+#         print(max_own)
+#         print(max_target)
 
-        if own_quantity > max_own and target_quantity > max_target:
-            await ctx.respond('Você está tentando negociar mais cópias de personagem do que você e o outro usuário têm disponíveis.')
+#         if own_quantity > max_own and target_quantity > max_target:
+#             await ctx.respond('Você está tentando negociar mais cópias de personagem do que você e o outro usuário têm disponíveis.')
     
-        elif own_quantity > max_own:
-            await ctx.respond('Você está entando oferecer mais cópias de personagem do que tem disponível.')
+#         elif own_quantity > max_own:
+#             await ctx.respond('Você está entando oferecer mais cópias de personagem do que tem disponível.')
 
-        elif target_quantity > max_target:
-            await ctx.respond('O outro usuário não possui cópias suficientes do personagem selecionado.')
+#         elif target_quantity > max_target:
+#             await ctx.respond('O outro usuário não possui cópias suficientes do personagem selecionado.')
         
-        else:
+#         else:
 
-            user_id = dbservice.select('chara_ofertas', ['to_id'], '', {'id': id})
+#             user_id = dbservice.select('chara_ofertas', ['to_id'], '', {'id': id})
 
-            columns = ['offering', 'offer_quantity', 'receiving', 'receive_quantity']
-            values = [own_chara_id, own_quantity, target_chara_id, target_quantity]
+#             columns = ['offering', 'offer_quantity', 'receiving', 'receive_quantity']
+#             values = [own_chara_id, own_quantity, target_chara_id, target_quantity]
 
-            dbservice.update('chara_ofertas', columns, values, {'id': id})
+#             dbservice.update('chara_ofertas', columns, values, {'id': id})
 
-            #await ctx.respond(f'Oferta realizada. O usuário <@' + str(user_id) + '> foi notificado. Não foi?')
-            await ctx.respond(f'Oferta realizada.')
+#             #await ctx.respond(f'Oferta realizada. O usuário <@' + str(user_id) + '> foi notificado. Não foi?')
+#             await ctx.respond(f'Oferta realizada.')
 
-    else:
+#     else:
 
-        await ctx.respond(f'A oferta de ID {str(id)} não existe. Por favor corrija ou crie uma oferta utilizando /ofertas iniciar.')
+#         await ctx.respond(f'A oferta de ID {str(id)} não existe. Por favor corrija ou crie uma oferta utilizando /ofertas iniciar.')
 
-@bot.slash_command(name='pesquisar_chara')
-async def pesquisar_chara_command(
-    ctx: discord.ApplicationContext,
-    target: discord.Option(str, autocomplete=get_chara, name='chara')
-):
-    await ctx.respond('Buscando o personagem...')
+# @bot.slash_command(name='pesquisar_chara')
+# async def pesquisar_chara_command(
+#     ctx: discord.ApplicationContext,
+#     target: discord.Option(str, autocomplete=get_chara, name='chara')
+# ):
+#     await ctx.respond('Buscando o personagem...')
 
-    result = dbservice.select('user_has_chara', ['user_id', 'quantity'], ' ORDER BY quantity DESC', {'chara_name': target})
+#     result = dbservice.select('user_has_chara', ['user_id', 'quantity'], ' ORDER BY quantity DESC', {'chara_name': target})
 
-    print(result)
+#     print(result)
 
-    header = '**' + target + '**\n'
-    body = header + '```Usuário:            Cópias:\n\n'
+#     header = '**' + target + '**\n'
+#     body = header + '```Usuário:            Cópias:\n\n'
     
-    if type(result) == tuple:
-        result = [result]
+#     if type(result) == tuple:
+#         result = [result]
 
-    for user in result:
-        text = ''
+#     for user in result:
+#         text = ''
 
-        user_name = dbservice.select('user', ['name'], '', {'id': user[0]})
+#         user_name = dbservice.select('user', ['name'], '', {'id': user[0]})
         
-        quantity = user[1]
+#         quantity = user[1]
 
-        if quantity == None:
-            quantity = 1
+#         if quantity == None:
+#             quantity = 1
 
-        text += user_name
+#         text += user_name
 
-        while len(text) != 20:
-            text += ' '
+#         while len(text) != 20:
+#             text += ' '
 
-        text += str(quantity) + '\n'
+#         text += str(quantity) + '\n'
 
-        body += text
+#         body += text
         
-    body += '```'
+#     body += '```'
 
-    await send_message2(body, rolls_channel)
+#     await send_message2(body, rolls_channel)
     
-async def ofertas_enviadas_command(message):
+# async def ofertas_enviadas_command(message):
 
-    offers = dbservice.select('chara_ofertas', [], 'ORDER BY id ASC', {'from_id': message.author.id})
+#     offers = dbservice.select('chara_ofertas', [], 'ORDER BY id ASC', {'from_id': message.author.id})
 
-    print(offers)
+#     print(offers)
 
-    if type(offers) == tuple:
-        offers = [offers]
+#     if type(offers) == tuple:
+#         offers = [offers]
 
-    if offers != []:
+#     if offers != []:
 
-        text = '**Ofertas enviadas:**\n```'
-        #text += 'Ofereci para       Personagem  #       Quero receber  # \n\n'
+#         text = '**Ofertas enviadas:**\n```'
+#         #text += 'Ofereci para       Personagem  #       Quero receber  # \n\n'
 
-        for offer in offers:
+#         for offer in offers:
 
-            to_id = offer[2]
+#             to_id = offer[2]
 
-            user_name = dbservice.select('user', ['name'], '', {'id': to_id})
+#             user_name = dbservice.select('user', ['name'], '', {'id': to_id})
 
-            my_chara_id = offer[3]
+#             my_chara_id = offer[3]
                 
-            my_quantity = offer[4]
+#             my_quantity = offer[4]
 
-            my_chara_info = dbservice.select('chara', ['name', 'media_title'], '', {'chara_id': my_chara_id})
+#             my_chara_info = dbservice.select('chara', ['name', 'media_title'], '', {'chara_id': my_chara_id})
 
-            their_chara_id = offer[5]
+#             their_chara_id = offer[5]
             
-            their_quantity = offer[6]
+#             their_quantity = offer[6]
             
-            their_chara_info = dbservice.select('chara', ['name', 'media_title'], '', {'chara_id': their_chara_id})
+#             their_chara_info = dbservice.select('chara', ['name', 'media_title'], '', {'chara_id': their_chara_id})
 
-            print(their_quantity)
-            print(type(their_quantity))
-            print(str(their_quantity))
+#             print(their_quantity)
+#             print(type(their_quantity))
+#             print(str(their_quantity))
 
-            text += f'Oferta ID {str(offer[0])} para {user_name}\n'
-            text += f'Meu:     {str(my_quantity)}x - {my_chara_info[0]} ({my_chara_info[1]})\n'
-            text += f'Dele(a): {str(their_quantity)}x - {their_chara_info[0]} ({their_chara_info[1]})\n\n'
+#             text += f'Oferta ID {str(offer[0])} para {user_name}\n'
+#             text += f'Meu:     {str(my_quantity)}x - {my_chara_info[0]} ({my_chara_info[1]})\n'
+#             text += f'Dele(a): {str(their_quantity)}x - {their_chara_info[0]} ({their_chara_info[1]})\n\n'
             
-        text += '```'
+#         text += '```'
 
-        await send_message2(text, rolls_channel)
+#         await send_message2(text, rolls_channel)
 
-async def ofertas_recebidas_command(message):
+# async def ofertas_recebidas_command(message):
 
-    offers = dbservice.select('chara_ofertas', [], 'ORDER BY id ASC', {'to_id': message.author.id})
+#     offers = dbservice.select('chara_ofertas', [], 'ORDER BY id ASC', {'to_id': message.author.id})
     
-    print(offers)
+#     print(offers)
 
-    if type(offers) == tuple:
-        offers = [offers]
+#     if type(offers) == tuple:
+#         offers = [offers]
 
-    if offers != []:
+#     if offers != []:
 
-        text = '**Ofertas recebidas:**\n```'
+#         text = '**Ofertas recebidas:**\n```'
 
-        for offer in offers:
+#         for offer in offers:
 
-            from_id = offer[1]
+#             from_id = offer[1]
 
-            user_name = dbservice.select('user', ['name'], '', {'id': from_id})
+#             user_name = dbservice.select('user', ['name'], '', {'id': from_id})
 
-            their_chara_id = offer[3]
+#             their_chara_id = offer[3]
                 
-            their_quantity = offer[4]
+#             their_quantity = offer[4]
             
-            their_chara_info = dbservice.select('chara', ['name', 'media_title'], '', {'chara_id': their_chara_id})
+#             their_chara_info = dbservice.select('chara', ['name', 'media_title'], '', {'chara_id': their_chara_id})
 
-            my_chara_id = offer[5]
+#             my_chara_id = offer[5]
             
-            my_quantity = offer[6]
+#             my_quantity = offer[6]
 
-            my_chara_info = dbservice.select('chara', ['name', 'media_title'], '', {'chara_id': my_chara_id})
+#             my_chara_info = dbservice.select('chara', ['name', 'media_title'], '', {'chara_id': my_chara_id})
 
-            text += f'Oferta ID {str(offer[0])} de {user_name}\n'
-            text += f'Meu:     {str(my_quantity)}x - {my_chara_info[0]} ({my_chara_info[1]})\n'
-            text += f'Dele(a): {str(their_quantity)}x - {their_chara_info[0]} ({their_chara_info[1]})\n\n'
+#             text += f'Oferta ID {str(offer[0])} de {user_name}\n'
+#             text += f'Meu:     {str(my_quantity)}x - {my_chara_info[0]} ({my_chara_info[1]})\n'
+#             text += f'Dele(a): {str(their_quantity)}x - {their_chara_info[0]} ({their_chara_info[1]})\n\n'
         
-        text += '```'
+#         text += '```'
 
-        await send_message2(text, rolls_channel)
+#         await send_message2(text, rolls_channel)
 
-@ofertas.command(name='responder')
-async def responder_oferta_command(
-    ctx: discord.ApplicationContext,
-    id: discord.Option(int, name='id'),
-    decision: discord.Option(str, choices=['Aceitar','Recusar'])
-):
-    print(decision)
+# @ofertas.command(name='responder')
+# async def responder_oferta_command(
+#     ctx: discord.ApplicationContext,
+#     id: discord.Option(int, name='id'),
+#     decision: discord.Option(str, choices=['Aceitar','Recusar'])
+# ):
+#     print(decision)
 
-    trade = dbservice.select('chara_ofertas', [], '', {'id': id})
+#     trade = dbservice.select('chara_ofertas', [], '', {'id': id})
     
-    if str(ctx.author.id) == trade[2]:
+#     if str(ctx.author.id) == trade[2]:
 
-        match decision:
+#         match decision:
         
-            case 'Aceitar':
+#             case 'Aceitar':
 
-                await make_trade(trade)
+#                 await make_trade(trade)
 
-                dbservice.delete('chara_ofertas', {'id': id})
+#                 dbservice.delete('chara_ofertas', {'id': id})
 
-                await ctx.respond(f'Oferta de ID {str(id)} aceita.')
+#                 await ctx.respond(f'Oferta de ID {str(id)} aceita.')
 
-            case 'Recusar':
+#             case 'Recusar':
 
-                dbservice.delete('chara_ofertas', {'id': id})
+#                 dbservice.delete('chara_ofertas', {'id': id})
 
-                await ctx.respond(f'Oferta de ID {str(id)} recusada.')
+#                 await ctx.respond(f'Oferta de ID {str(id)} recusada.')
 
-    else:
+#     else:
 
-        await ctx.respond('Você não pode aceitar ou recusar essa oferta pois ela não é direcionada par você.')
+#         await ctx.respond('Você não pode aceitar ou recusar essa oferta pois ela não é direcionada par você.')
 
-async def make_trade(trade):
+# async def make_trade(trade):
 
-    user1 = trade[1]
-    user2 = trade[2]
+#     user1 = trade[1]
+#     user2 = trade[2]
 
-    user1_chara_name = trade[3]
-    user2_chara_name = trade[5]
+#     user1_chara_name = trade[3]
+#     user2_chara_name = trade[5]
     
-    user1_chara_id = dbservice.select('chara', ['chara_id'], '', {'name': user1_chara_name})
-    user2_chara_id = dbservice.select('chara', ['chara_id'], '', {'name': user2_chara_name})
+#     user1_chara_id = dbservice.select('chara', ['chara_id'], '', {'name': user1_chara_name})
+#     user2_chara_id = dbservice.select('chara', ['chara_id'], '', {'name': user2_chara_name})
 
-    user1_chara_quantity = trade[4]
-    user2_chara_quantity = trade[6]
+#     user1_chara_quantity = trade[4]
+#     user2_chara_quantity = trade[6]
 
-    # USER 1
+#     # USER 1
 
-    exists = dbservice.check_existence('user_has_chara', {'user_id': user1, 'chara_id': user2_chara_id})
+#     exists = dbservice.check_existence('user_has_chara', {'user_id': user1, 'chara_id': user2_chara_id})
 
-    if exists == 0:
+#     if exists == 0:
 
-        columns = ['user_id', 'chara_id', 'position', 'chara_name', 'quantity']
-        val = [user1, user2_chara_id, 9999, user2_chara_name, user2_chara_quantity]
+#         columns = ['user_id', 'chara_id', 'position', 'chara_name', 'quantity']
+#         val = [user1, user2_chara_id, 9999, user2_chara_name, user2_chara_quantity]
 
-        dbservice.insert('user_has_chara', columns, val)
+#         dbservice.insert('user_has_chara', columns, val)
 
-    else:
+#     else:
 
-        original_quantity = dbservice.select('user_has_chara', ['quantity'], '', {'user_id': user1, 'chara_id': user2_chara_id})
+#         original_quantity = dbservice.select('user_has_chara', ['quantity'], '', {'user_id': user1, 'chara_id': user2_chara_id})
 
-        new_quantity = user2_chara_quantity + original_quantity
+#         new_quantity = user2_chara_quantity + original_quantity
 
-        columns = ['quantity']
-        val = [new_quantity]
-        where = {'user_id': user1, 'chara_id': user2_chara_id}
+#         columns = ['quantity']
+#         val = [new_quantity]
+#         where = {'user_id': user1, 'chara_id': user2_chara_id}
 
-        dbservice.update('user_has_chara', columns, val, where)
+#         dbservice.update('user_has_chara', columns, val, where)
         
-    # USER 2
+#     # USER 2
 
-    exists = dbservice.check_existence('user_has_chara', {'user_id': user2, 'chara_id': user1_chara_id})
+#     exists = dbservice.check_existence('user_has_chara', {'user_id': user2, 'chara_id': user1_chara_id})
 
-    if exists == 0:
+#     if exists == 0:
 
-        columns = ['user_id', 'chara_id', 'position', 'chara_name', 'quantity']
-        val = [user2, user1_chara_id, 9999, user1_chara_name, user1_chara_quantity]
+#         columns = ['user_id', 'chara_id', 'position', 'chara_name', 'quantity']
+#         val = [user2, user1_chara_id, 9999, user1_chara_name, user1_chara_quantity]
 
-        dbservice.insert('user_has_chara', columns, val)
+#         dbservice.insert('user_has_chara', columns, val)
 
-    else:
+#     else:
 
-        original_quantity = dbservice.select('user_has_chara', ['quantity'], '', {'user_id': user2, 'chara_id': user1_chara_id})
+#         original_quantity = dbservice.select('user_has_chara', ['quantity'], '', {'user_id': user2, 'chara_id': user1_chara_id})
 
-        new_quantity = user1_chara_quantity + original_quantity
+#         new_quantity = user1_chara_quantity + original_quantity
 
-        columns = ['quantity']
-        val = [new_quantity]
-        where = {'user_id': user2, 'chara_id': user1_chara_id}
+#         columns = ['quantity']
+#         val = [new_quantity]
+#         where = {'user_id': user2, 'chara_id': user1_chara_id}
 
-        dbservice.update('user_has_chara', columns, val, where)
+#         dbservice.update('user_has_chara', columns, val, where)
 
-    # deducting quantities
+#     # deducting quantities
     
-    user1_total = dbservice.select('user_has_chara', ['quantity'], '', {'user_id': user1, 'chara_id': user1_chara_id})
-    user2_total = dbservice.select('user_has_chara', ['quantity'], '', {'user_id': user2, 'chara_id': user2_chara_id})
+#     user1_total = dbservice.select('user_has_chara', ['quantity'], '', {'user_id': user1, 'chara_id': user1_chara_id})
+#     user2_total = dbservice.select('user_has_chara', ['quantity'], '', {'user_id': user2, 'chara_id': user2_chara_id})
 
-    if user1_chara_quantity == user1_total:
+#     if user1_chara_quantity == user1_total:
 
-        dbservice.delete('user_has_chara', {'user_id': user1, 'chara_id': user1_chara_id})
+#         dbservice.delete('user_has_chara', {'user_id': user1, 'chara_id': user1_chara_id})
 
-    else:
+#     else:
 
-        columns = ['quantity']
-        val = user1_total - user1_chara_quantity
-        where = {'user_id': user1, 'chara_id': user1_chara_id}
+#         columns = ['quantity']
+#         val = user1_total - user1_chara_quantity
+#         where = {'user_id': user1, 'chara_id': user1_chara_id}
 
-        dbservice.update('user_has_chara', columns, val, where)
+#         dbservice.update('user_has_chara', columns, val, where)
 
-    if user2_chara_quantity == user2_total:
+#     if user2_chara_quantity == user2_total:
 
-        dbservice.delete('user_has_chara', {'user_id': user2, 'chara_id': user2_chara_id})
+#         dbservice.delete('user_has_chara', {'user_id': user2, 'chara_id': user2_chara_id})
 
-    else:
+#     else:
 
-        columns = ['quantity']
-        val = user2_total - user2_chara_quantity
-        where = {'user_id': user2, 'chara_id': user2_chara_id}
+#         columns = ['quantity']
+#         val = user2_total - user2_chara_quantity
+#         where = {'user_id': user2, 'chara_id': user2_chara_id}
 
-        dbservice.update('user_has_chara', columns, val, where)
+#         dbservice.update('user_has_chara', columns, val, where)
 
-@ofertas.command(name='cancelar')
-async def cancelar_oferta_command(
-    ctx: discord.ApplicationContext,
-    id: discord.Option(int, name='id')
-):
+# @ofertas.command(name='cancelar')
+# async def cancelar_oferta_command(
+#     ctx: discord.ApplicationContext,
+#     id: discord.Option(int, name='id')
+# ):
 
-    trade = dbservice.select('chara_ofertas', [], '', {'id': id})
+#     trade = dbservice.select('chara_ofertas', [], '', {'id': id})
     
-    if str(ctx.author.id) == trade[1]:
+#     if str(ctx.author.id) == trade[1]:
 
-        dbservice.delete('chara_ofertas', {'id': id})
+#         dbservice.delete('chara_ofertas', {'id': id})
 
-        await ctx.respond(f'Oferta de ID {str(id)} cancelada.')
+#         await ctx.respond(f'Oferta de ID {str(id)} cancelada.')
 
-corrigir = bot.create_group('corrigir', 'Comandos para correções diversas')
-@corrigir.command(name='personagem')
-async def corrigir_personagem_command(
-    ctx: discord.ApplicationContext,
-    chara: discord.Option(str, autocomplete=get_chara, name='personagem'),
-    correct_media: discord.Option(str, name='midia_correta', description='apenas o link da obra no anilist')
-):
-    await ctx.respond('Obrigado pela correção!')
+# corrigir = bot.create_group('corrigir', 'Comandos para correções diversas')
+# @corrigir.command(name='personagem')
+# async def corrigir_personagem_command(
+#     ctx: discord.ApplicationContext,
+#     chara: discord.Option(str, autocomplete=get_chara, name='personagem'),
+#     correct_media: discord.Option(str, name='midia_correta', description='apenas o link da obra no anilist')
+# ):
+#     await ctx.respond('Obrigado pela correção!')
 
-    # adicionar zakoleta
+#     # adicionar zakoleta
 
-    reward = dbservice.select('values_chart', ['value_value'], '', {'value_name': 'chara_correction'})
+#     reward = dbservice.select('values_chart', ['value_value'], '', {'value_name': 'chara_correction'})
 
-    add_zakoleta(ctx.author.id, reward, f'+{str(reward)} Zakoleta por corrigir a mídia de um personagem', 'add')
+#     add_zakoleta(ctx.author.id, reward, f'+{str(reward)} Zakoleta por corrigir a mídia de um personagem', 'add')
 
-    # realizar a correção
-    type, id = get_type_and_id_from_anilist_link(correct_media)
+#     # realizar a correção
+#     type, id = get_type_and_id_from_anilist_link(correct_media)
 
-    if type == 'ANIME':
+#     if type == 'ANIME':
 
-        result = anilist.query_anime_id(id)
+#         result = anilist.query_anime_id(id)
 
-    else:
+#     else:
 
-        result = anilist.query_manga_id(id)
+#         result = anilist.query_manga_id(id)
 
-    result = result.json()
+#     result = result.json()
 
-    print(result)
+#     print(result)
 
-    media_title = result['data']['Media']['title']['romaji']
+#     media_title = result['data']['Media']['title']['romaji']
 
-    chara, old_title, chara_id = chara.split('(')
-    chara = chara.rstrip(' ')
-    chara_id = chara_id.rstrip(')')
+#     chara, old_title, chara_id = chara.split('(')
+#     chara = chara.rstrip(' ')
+#     chara_id = chara_id.rstrip(')')
 
-    column = ['media_title']
+#     column = ['media_title']
 
-    value = [media_title]
+#     value = [media_title]
 
-    where = {'chara_id': chara_id}
+#     where = {'chara_id': chara_id}
 
-    dbservice.update('chara', column, value, where)
+#     dbservice.update('chara', column, value, where)
 
 @tasks.loop(seconds=60)
 async def check_activities():
