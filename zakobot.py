@@ -4523,11 +4523,9 @@ async def generate_banner():
             print(users)
 
         for user in users:
-            print(user)
             chosen_chara = dbservice.select('user', ['chosen_chara'], '', {'id': user[0]})
             withheld = dbservice.select('user', ['withheld_z'], '', {'id': user[0]})
             wallet = dbservice.select('user', ['zakoleta'], '', {'id': user[0]})
-            print(str(withheld))
             if str(chosen_chara) == str(id):
                 new_wallet = int(wallet) - int(withheld)
                 dbservice.update_zakoleta('user', withheld, f'-{withheld} zakoletas por sugestão passada de personagem no gacha', user[0], 'sub')
