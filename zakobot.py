@@ -4475,13 +4475,13 @@ async def sugerir_command(
     chara_name = chara_obj['data']['Page']['characters'][0]['name']['full']
     image = chara_obj['data']['Page']['characters'][0]['image']['large']
             
-    exists = dbservice.check_existence('gacha_candidate', {'id': chara_id})
+    exists = dbservice.check_existence('gacha_candidate', {'id_chara': chara_id})
     if exists == 0:
-        dbservice.insert('gacha_candidate', ['id', 'name', 'url', 'value'], [chara_id, chara_name, link, value])
+        dbservice.insert('gacha_candidate', ['id_chara', 'name', 'url', 'value'], [chara_id, chara_name, link, value])
     else:
-        value_now = dbservice.select('candidate', ['value'], '', {'id': chara_id})
+        value_now = dbservice.select('candidate', ['value'], '', {'id_chara': chara_id})
         new_value = value_now + value
-        dbservice.update('gacha_candidate', ['value'], [new_value], {'id': chara_id})
+        dbservice.update('gacha_candidate', ['value'], [new_value], {'id_chara': chara_id})
                 
     new_wallet = wallet - value
     dbservice.update('user', ['withheld_z', 'chosen_chara'], [value, chara_id], {'id': user_id})
@@ -4491,7 +4491,7 @@ async def sugerir_command(
 # @gacha.command(name='rodar')
 
 async def generate_banner():
-    winner_chara_list = dbservice.select('gacha_candidate', ['id', 'url', 'name', 'img', 'value'], 'order by value DESC limit 3')
+    winner_chara_list = dbservice.select('gacha_candidate', ['id_chara', 'url', 'name', 'img', 'value'], 'order by value DESC limit 3')
     print(winner_chara_list)
     
     # channel = 1192848901326262424
@@ -4512,7 +4512,7 @@ async def generate_banner():
         time.sleep(3)
         await send_message2(f'{img}\n{name}!\n\n\n\n\n­ ­', channel)
         time.sleep(5)
-        dbservice.insert('gacha_chara', ['id', 'url', 'name', 'img'], [id, url, name, img])
+        dbservice.insert('gacha_chara', ['id_chara', 'url', 'name', 'img'], [id, url, name, img])
         
         users = dbservice.select('user', ['id'], '')
         if not isinstance(users, list):
