@@ -4536,9 +4536,9 @@ async def generate_banner():
 # ✅ --- create table for all characters that are in the gacha 
 #
 # --- automate:
-# ------ clean up of user table: withheld_z, chosen_chara
-# ------ clean up of entire candidate table
-# ------ removal or recovery of the zakoleta depending on the results
+# ✅ ------ clean up of user table: withheld_z, chosen_chara
+# ✅ ------ clean up of entire candidate table
+# ✅ ------ removal or recovery of the zakoleta depending on the results
 # 
 # --- adapt the entire previously made roll system (or at least recycle the roll process)
 #
