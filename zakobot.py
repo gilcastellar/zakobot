@@ -48,7 +48,7 @@ admins = [906937520254758973,628466603486478336,1050904689685831760,984103475971
 
 test = 'eita'
 key = False
-rolls_channel = 1107765031245988060
+rolls_channel = 1065847698214887496
 
 # Edit profile modal
 class EditarPerfilModal(discord.ui.Modal):
@@ -219,56 +219,19 @@ async def on_message(message):
                     send_message2('Você não tem Zakoleta o suficiente para realizar esse roll.')
 
                 else:
-                    ...
-                    #add_zakoleta(str(message.author.id), total_cost, f' -{str(total_cost)} por rodar {str(rolls)} vezes.', 'sub')
+                    dbservice.update_zakoleta('user', total_cost, f' -{str(total_cost)} por rodar {str(rolls)} vezes.', str(message.author.id), 'sub')
                     
                 user_name = dbservice.select('user', ['name'], '', {'id': message.author.id})
 
                 roll_id = dbservice.insert('rolls', ['user', 'quantity'], [user_name, rolls])
             
-        case ';enviadas':
+        # case ';enviadas':
 
-            await ofertas_enviadas_command(message)
+        #     await ofertas_enviadas_command(message)
 
-        case ';recebidas':
+        # case ';recebidas':
 
-            await ofertas_recebidas_command(message)
-
-    rag_commands = ['classe', 'stat', 'skill']
-
-    classe1 = ['super aprendiz', 'espadachim', 'gatuno', 'mago', 'noviço', 'mercador', 'arqueiro', 'taekwon', 'justiceiro', 'ninja']
-
-    stats = ['força', 'agilidade', 'vitalidade', 'inteligencia', 'destreza', 'sorte']
-
-    if command in rag_commands:
-
-        if message.channel.id == 1151990929864007680:
-
-            if command == 'classe':
-
-                result = choice(classe1)
-
-                print(random.randint(1,7))
-
-            elif command == 'stat':
-
-                result = choice(stats)
-
-                print(random.randint(1,7))
-
-            elif command == 'skill':
-
-                rag_col = random.randint(1,7)
-
-                rag_fil = random.randint(1,8)
-
-                result = 'coluna ' + str(rag_col) + ' e fileira ' + str(rag_fil)
-
-                print(rag_col)
-                print(rag_fil)
-                print(result)
-
-            await send_message2(result, 1151990929864007680)
+        #     await ofertas_recebidas_command(message)
 
 @tasks.loop(minutes=1)
 async def check_time():
@@ -2207,194 +2170,45 @@ async def update_list(id, format):
 
     return 0
 
+async def try_roll(number):
+    chance = dbservice.select('values_chart')
+    if number <= chance:
+        return dbservice.select('gacha_chara', ['id', 'url', 'name', 'img'], ' ORDER BY RAND() LIMIT 1')
+    else:
+        return 'fail'
+
 async def roll_chara(user_name, user_id):
-
-    #chara = database.selectall('SELECT chara_id, name, gender, chara_url, image_url, media_id, media_url, media_title FROM chara ORDER BY RAND() LIMIT 1')
-
-    chara = dbservice.select('chara', ['chara_id', 'favourites', 'name', 'gender', 'chara_url', 'image_url', 'media_id', 'media_url', 'media_title'], ' ORDER BY RAND() LIMIT 1')
+    await send_message2(f'...', rolls_channel)
+    await asyncio.sleep(1)
+    roll = 'repeat'
     
-    print(chara)
-        
-    #chara = chara[0]
+    while roll == 'repeat':
+        roll = await try_roll(random.randint(1,100))
+        if roll != 'fail':
+            chara = roll
+            print(chara)
     
-    chara_id = chara[0]
-    favs = chara[1]
-    name = chara[2]
-    gender = chara[3]
-    chara_url = chara[4]
-    image_url = chara[5]
-    media_id = chara[6]
-    media_title = '[' + chara[8] + '](' + chara[7] + ')'
-    
-    #exists = database.check_if_exists_two(str(chara[0]), str(user_id), 'chara_id', 'user_id', 'user_has_chara')
+            chara_id = chara[0]
+            chara_url = chara[1]
+            name = chara[2]
+            image_url = chara[3]
 
-    exists = dbservice.check_existence('user_has_chara', {'chara_id': str(chara[0]), 'user_id': str(user_id)})
+            exists = dbservice.check_existence('user_has_chara', {'chara_id': str(chara_id), 'user_id': str(user_id)})
 
-    if exists == 0:
-
-        #sql = 'INSERT INTO user_has_chara (user_id, chara_id, chara_name, position) VALUES (%s,%s,%s,%s)'
-        #val = (user_id, chara_id, name, 9999)
-
-        #database.insert(sql, val)
-
-        dbservice.insert('user_has_chara', ['user_id', 'chara_id', 'chara_name', 'position', 'quantity'], (user_id, chara_id, name, 9999, 1))
-
-        flair = '*new*'
-
-    else:
-
-        flair = ''
-
-        quantity = dbservice.select('user_has_chara', ['quantity'], '', {'chara_id': str(chara[0]), 'user_id': str(user_id)})
-
-        if quantity == None:
-            quantity = 1
-
-        dbservice.update('user_has_chara', ['quantity'], [quantity+1], {'chara_id': str(chara[0]), 'user_id': str(user_id)})
-
-    embed = discord.Embed(title=name, url=chara_url)
-    if flair != '':
-        embed.add_field(name='', value=flair, inline=False)
-    embed.add_field(name='', value=media_title)
-    embed.set_image(url=image_url)
-    embed.set_footer(text='Roll feito por ' + user_name)
-
-    if favs in range(8000,100000):
-        delay = 3
-
-    elif favs in range(1000,8000):
-        delay = 2
-
-    elif favs in range(200,1000):
-        delay = 1
-
-    else:
-        delay = 0.5
-
-    if delay >= 1:
-
-        text = '# '
-
-        await asyncio.sleep(1)
-
-        for i in range(delay):
-            text += '!'
-
-        await send_message2(text, 1065847698214887496)
-
-        await asyncio.sleep(delay)
-    
-    else:
-
-        await asyncio.sleep(1)
-
-    await send_embed2(embed, 1065847698214887496)
-    
-@bot.slash_command(name='editar_coleção')
-async def editar_coleção_command(
-    ctx: discord.ApplicationContext,
-    chara: discord.Option(str, autocomplete=get_collection, name='personagem'),
-    position: discord.Option(int, name='posição', description="posição desejada")
-):
-    user_id = ctx.interaction.user.id
-
-    #database.update('UPDATE user_has_chara SET position=' + str(position) + ' WHERE chara_name="' + chara + '" AND user_id="' + str(user_id) + '"')
-
-    dbservice.update('user_has_chara', ['position'], [position], {'chara_name': chara, 'user_id': user_id})
-
-    await ctx.respond('Posição atualizada')
-
-
-@bot.slash_command(name='coleção')
-async def coleção(
-    ctx: discord.ApplicationContext,
-    target: discord.Option(str, autocomplete=get_members_names2, required=False)
-):
-
-    if ctx.channel.id == rolls_channel:
-
-        if target != None:
-
-            await ctx.respond(f'Coleção de {target}')
-
-            user_id = int(dbservice.select('user', ['id'], '', {'name': target}))
-
+            if exists == 0:
+                dbservice.insert('user_has_chara', ['user_id', 'chara_id', 'chara_name'], (user_id, chara_id, name))
+                await send_message2(f'{image_url}\n\nParabéns! **{user_name}** acaba de conquistar **[{name}](<{chara_url}>)**!', rolls_channel)
+                break
+            else:
+                roll = 'repeat'
+         
         else:
+            await send_message2(f'Não foi dessa vez!', rolls_channel)
+            break
 
-            await ctx.respond('Sua coleção:')
-
-            user_id = ctx.author.id
-
-        #characters = database.selectall('SELECT chara_id FROM user_has_chara WHERE user_id="' + str(ctx.author.id) + '" ORDER BY position', True)
-        
-        msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
-
-        await generate_collection(msg, user_id, 1, 0)
-
-async def generate_collection(msg, user_id, page, last_page):
-
-    characters = dbservice.select('user_has_chara', ['chara_id'], ' ORDER BY position', {'user_id': str(user_id)})
+    await asyncio.sleep(1)
     
-    print(characters)
 
-    #characters = from_list_of_tuples_to_list(characters)
-
-    batch = 10
-
-    indice = (page * batch) - (batch - 1)
-
-    text = '```Personagem                                                                                        #     Pos.\n\n'
-
-    print('page')
-    print(page)
-
-    print('indice:')
-    print(indice)
-
-    last_page = ceil(len(characters) / batch)
-
-    for chara in characters[batch*(page-1):batch*page]:
-
-        print(indice)
-
-        print('chara')
-        print(chara)
-
-        chara = chara[0]
-        
-        #chara_info = database.selectall('SELECT name, chara_url FROM chara WHERE chara_id=' + str(chara))[0]
-
-        chara_info = dbservice.select('chara', ['name', 'media_title'], '', {'chara_id': str(chara)})
-
-        print(chara_info)
-
-        copies = dbservice.select('user_has_chara', ['quantity'], '', {'chara_id': str(chara), 'user_id': str(user_id)})
-
-        position = dbservice.select('user_has_chara', ['position'], '', {'chara_id': str(chara), 'user_id': str(user_id)})
-          
-        chara_text = f'{str(chara_info[0])} ({chara_info[1]}) '
-
-        while len(chara_text) < 95: 
-            chara_text += '-'
-
-        copies_text = ' ' + (' ' * (3 - len(str(copies)))) + str(copies)
-
-        while len(copies_text) < 9:
-            copies_text += ' '
-
-        position_text = str(position)
-
-        while len(position_text) < 10:
-            position_text += ' '
-
-        text += chara_text + copies_text + position_text + '\n'
-        indice += 1
-
-    text += '```'
-    
-    if page <= last_page:
-
-        await msg.edit(text, view=CollectionPagination(msg, user_id, page, last_page))
     
 @tasks.loop(seconds=1)
 async def make_rolls():
@@ -4487,8 +4301,6 @@ async def sugerir_command(
     dbservice.update('user', ['withheld_z', 'chosen_chara'], [value, chara_id], {'id': user_id})
 
     await ctx.response.send_message('Sugestão feita com sucesso.', ephemeral=True)
-            
-# @gacha.command(name='rodar')
 
 async def generate_banner():
     winner_chara_list = dbservice.select('gacha_candidate', ['id_chara', 'url', 'name', 'img', 'value'], 'order by value DESC, id ASC limit 3')
@@ -4499,7 +4311,7 @@ async def generate_banner():
     
     await send_message2(f'Os personagens do banner da semana são...', channel)
 
-    time.sleep(3)
+    await asyncio.sleep(3)
     
     for chara in winner_chara_list:
         id = chara[0]
@@ -4509,9 +4321,9 @@ async def generate_banner():
         value = chara[4]
         print(name)
         await send_message2(f'Com o valor total de {str(value)} zakoletas...', channel)
-        time.sleep(3)
-        await send_message2(f'{img}\n{name}!\n\n\n\n\n­ ­', channel)
-        time.sleep(5)
+        await asyncio.sleep(3)
+        await send_message2(f'{img}\n\n\n\n\n{name}!­­', channel)
+        await asyncio.sleep(5)
         dbservice.insert('gacha_chara', ['id_chara', 'url', 'name', 'img'], [id, url, name, img])
         
         users = dbservice.select('user', ['id'], '')
@@ -4527,7 +4339,99 @@ async def generate_banner():
                 dbservice.update_zakoleta('user', withheld, f'-{withheld} zakoletas por sugestão passada de personagem no gacha', user[0], 'sub')
     
     dbservice.update('user', ['chosen_chara', 'withheld_z'], ['', 0], {'id_guild': 1059298932825538661})
+
+# @gacha.slash_command(name='editar_álbum')
+# async def edit_album_command(
+#     ctx: discord.ApplicationContext,
+#     chara: discord.Option(str, autocomplete=get_collection, name='personagem'),
+#     position: discord.Option(int, name='posição', description="posição desejada")
+# ):
+#     user_id = ctx.interaction.user.id
+
+#     #database.update('UPDATE user_has_chara SET position=' + str(position) + ' WHERE chara_name="' + chara + '" AND user_id="' + str(user_id) + '"')
+
+#     dbservice.update('user_has_chara', ['position'], [position], {'chara_name': chara, 'user_id': user_id})
+
+#     await ctx.respond('Posição atualizada')
+
+# @gacha.slash_command(name='álbum')
+# async def album_command(
+#     ctx: discord.ApplicationContext,
+#     target: discord.Option(str, autocomplete=get_members_names2, required=False)
+# ):
+#     if ctx.channel.id == rolls_channel:
+
+#         if target != None:
+
+#             await ctx.respond(f'Álbum de {target}')
+
+#             user_id = int(dbservice.select('user', ['id'], '', {'name': target}))
+
+#         else:
+
+#             await ctx.respond('Seu álbum:')
+
+#             user_id = ctx.author.id
+
+#         #characters = database.selectall('SELECT chara_id FROM user_has_chara WHERE user_id="' + str(ctx.author.id) + '" ORDER BY position', True)
+        
+#         msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
+
+#         await generate_collection(msg, user_id, 1, 0)
+
+# async def generate_collection(msg, user_id, page, last_page):
+
+#     # characters = dbservice.select('user_has_chara', ['chara_id'], ' ORDER BY position', {'user_id': str(user_id)})
     
+#     characters = dbservice.select('user_has_chara', ['chara_id'], '', {'user_id': str(user_id)})
+    
+#     print(characters)
+
+#     #characters = from_list_of_tuples_to_list(characters)
+
+#     batch = 25
+
+#     indice = (page * batch) - (batch - 1)
+
+#     text = '**Personagem**                                                                                        \n\n'
+
+#     print('page')
+#     print(page)
+
+#     print('indice:')
+#     print(indice)
+
+#     last_page = ceil(len(characters) / batch)
+
+#     for chara in characters[batch*(page-1):batch*page]:
+
+#         print(indice)
+
+#         print('chara')
+#         print(chara)
+
+#         chara = chara[0]
+        
+#         #chara_info = database.selectall('SELECT name, chara_url FROM chara WHERE chara_id=' + str(chara))[0]
+
+#         chara_info = dbservice.select('gacha_chara', ['name', 'url', 'img'], '', {'id': str(chara)})
+#         name = chara_info[0]
+#         url = chara_info[1]
+#         img = chara_info[2]
+
+#         print(chara_info)
+
+#         # copies = dbservice.select('user_has_chara', ['quantity'], '', {'chara_id': str(chara), 'user_id': str(user_id)})
+
+#         position = dbservice.select('user_has_chara', ['position'], '', {'chara_id': str(chara), 'user_id': str(user_id)})
+          
+#         chara_text = f'[{name}]({url})\n'
+        
+#         text += chara_text
+    
+#     if page <= last_page:
+
+#         await msg.edit(text, view=CollectionPagination(msg, user_id, page, last_page))
             
 # GACHA PROJECT
 #
