@@ -3829,7 +3829,7 @@ async def inventario_command(
     else:
         buyer_slots = len(buyer_slots)
         
-    seller_total_slots = dbservice.select('user', ['quest_selling_slots'], '', {'id': user_id})
+    seller_total_slots = str(dbservice.select('values_chart', ['value_value'], '', {'value_name': 'quest_max_creation'}))
     buyer_total_slots = dbservice.select('user', ['quest_buying_slots'], '', {'id': user_id})
     
     data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'date_bought'], '', {'buyer': str(user_id)})
