@@ -3071,7 +3071,7 @@ async def guilda_criar_quest_command(
     
     # max_seller_slots = int(dbservice.select('user', ['quest_selling_slots'], '', {'id': sender}))
 
-    max_seller_slots = 3
+    max_seller_slots = int(dbservice.select('values_chart', ['value_value'], '', {'value_name': 'quest_max_creation'}))
 
     if seller_slots >= max_seller_slots:
 
