@@ -2171,7 +2171,7 @@ async def update_list(id, format):
     return 0
 
 async def try_roll(number):
-    chance = dbservice.select('values_chart')
+    chance = dbservice.select('values_chart', ['value_value'], '', {'value_name': 'gacha_chance'})
     if number <= chance:
         return dbservice.select('gacha_chara', ['id', 'url', 'name', 'img'], ' ORDER BY RAND() LIMIT 1')
     else:
