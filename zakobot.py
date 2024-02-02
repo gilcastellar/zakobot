@@ -4306,8 +4306,8 @@ async def generate_banner():
     winner_chara_list = dbservice.select('gacha_candidate', ['id_chara', 'url', 'name', 'img', 'value'], 'order by value DESC, id ASC limit 8')
     print(winner_chara_list)
     
-    # channel = 1192848901326262424
-    channel = 1065847698214887496
+    channel = 1202291522628747404 
+    # channel = 1065847698214887496
     
     await send_message2(f'Os personagens do banner da semana são...', channel)
 
