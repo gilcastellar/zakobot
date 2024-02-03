@@ -2176,7 +2176,6 @@ async def try_roll(number, user_id):
     if number <= chance:
         while exists == 1:
             chara = list(dbservice.select('gacha_chara', ['id', 'url', 'name', 'img'], ' ORDER BY RAND() LIMIT 1'))
-            print(chara)
             exists = dbservice.check_existence('user_has_chara', {'user_id': user_id, 'chara_id': chara[0]})
             
         return chara
