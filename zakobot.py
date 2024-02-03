@@ -2170,10 +2170,12 @@ async def update_list(id, format):
 
     return 0
 
-async def try_roll(number):
+async def try_roll(number, user_id):
     chance = dbservice.select('values_chart', ['value_value'], '', {'value_name': 'gacha_chance'})
     if number <= chance:
-        return dbservice.select('gacha_chara', ['id', 'url', 'name', 'img'], ' ORDER BY RAND() LIMIT 1')
+        chara = dbservice.select('gacha_chara', ['id', 'url', 'name', 'img'], ' ORDER BY RAND() LIMIT 1')
+        
+        exists = dbservice.check_existence('user_has_chara', {'user_id': user_id, 'chara_id': chara[0]})
     else:
         return 'fail'
 
@@ -2185,9 +2187,9 @@ async def roll_chara(user_name, user_id):
     
     while roll == 'repeat':
         if exists == 1:
-            roll = await(try_roll(1))
+            roll = await(try_roll(1), user_id)
         if exists == 0:
-            roll = await try_roll(random.randint(1,100))
+            roll = await try_roll(random.randint(1,100), user_id)
         if roll not in ['fail', 'repeat']:
             chara = roll
             print(chara)
