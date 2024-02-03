@@ -4327,7 +4327,7 @@ async def generate_banner():
         await asyncio.sleep(3)
         await send_message2(f'{img}\n\n\n\n\n{name}!­­', channel)
         await asyncio.sleep(5)
-        dbservice.insert('gacha_chara', ['id_chara', 'url', 'name', 'img'], [id, url, name, img])
+        dbservice.insert('gacha_chara', ['id', 'url', 'name', 'img'], [id, url, name, img])
         
         users = dbservice.select('user', ['id'], '')
         if not isinstance(users, list):
