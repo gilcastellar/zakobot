@@ -48,7 +48,7 @@ admins = [906937520254758973,628466603486478336,1050904689685831760,984103475971
 
 test = 'eita'
 key = False
-rolls_channel = 1065847698214887496
+rolls_channel = 1201978395395891301
 
 # Edit profile modal
 class EditarPerfilModal(discord.ui.Modal):
