@@ -2183,7 +2183,10 @@ async def roll_chara(user_name, user_id):
     roll = 'repeat'
     
     while roll == 'repeat':
-        roll = await try_roll(random.randint(1,100))
+        if roll != 'success':
+            roll = await try_roll(random.randint(1,100))
+        else:
+            roll = await(try_roll(1))
         if roll not in ['fail', 'repeat']:
             chara = roll
             print(chara)
@@ -2200,7 +2203,7 @@ async def roll_chara(user_name, user_id):
                 await send_message2(f'{image_url}\n\nParabéns! **{user_name}** acaba de conquistar **[{name}](<{chara_url}>)**!', rolls_channel)
                 break
             else:
-                roll = 'repeat'
+                roll = 'success'
          
         else:
             await send_message2(f'Não foi dessa vez!', rolls_channel)
