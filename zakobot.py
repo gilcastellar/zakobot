@@ -2200,7 +2200,7 @@ async def roll_chara(user_name, user_id):
 
             if exists == 0:
                 dbservice.insert('user_has_chara', ['user_id', 'chara_id', 'chara_name'], (user_id, chara_id, name))
-                await send_message2(f'{image_url}\n\nParabéns! **{user_name}** acaba de conquistar **[{name}](<{chara_url}>)**!', rolls_channel)
+                await send_message2(f'{image_url}\n\nParabéns! **{user_name}** acaba de conquistar **[{name}](<https://{chara_url}>)**!', rolls_channel)
                 break
             else:
                 roll = 'success'
@@ -2230,7 +2230,7 @@ async def make_rolls():
         user_id = dbservice.select('user', ['id'], '', {'name': name})
         rolls = roll_info[1]
 
-        text = f'Trazendo {str(rolls)} rolls para {name}'
+        text = f'Trazendo {str(rolls)} roladas para {name}'
 
         print(text)
         await send_message2(text, rolls_channel)
