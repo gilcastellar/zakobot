@@ -2184,7 +2184,7 @@ async def roll_chara(user_name, user_id):
     
     while roll == 'repeat':
         roll = await try_roll(random.randint(1,100))
-        if roll != 'fail':
+        if roll not in ['fail', 'repeat']:
             chara = roll
             print(chara)
     
