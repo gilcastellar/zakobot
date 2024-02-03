@@ -2179,7 +2179,7 @@ async def try_roll(number):
 
 async def roll_chara(user_name, user_id):
     await send_message2(f'...', rolls_channel)
-    await asyncio.sleep(1)
+    await asyncio.sleep(2)
     roll = 'repeat'
     
     while roll == 'repeat':
