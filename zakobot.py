@@ -2181,12 +2181,13 @@ async def roll_chara(user_name, user_id):
     await send_message2(f'...', rolls_channel)
     await asyncio.sleep(2)
     roll = 'repeat'
+    exists = 0
     
     while roll == 'repeat':
-        if roll != 'success':
-            roll = await try_roll(random.randint(1,100))
-        else:
+        if exists == 1:
             roll = await(try_roll(1))
+        if exists == 0:
+            roll = await try_roll(random.randint(1,100))
         if roll not in ['fail', 'repeat']:
             chara = roll
             print(chara)
@@ -2202,8 +2203,7 @@ async def roll_chara(user_name, user_id):
                 dbservice.insert('user_has_chara', ['user_id', 'chara_id', 'chara_name'], (user_id, chara_id, name))
                 await send_message2(f'{image_url}\n\nParabéns! **{user_name}** acaba de conquistar **[{name}](<https://{chara_url}>)**!', rolls_channel)
                 break
-            else:
-                roll = 'success'
+                
          
         else:
             await send_message2(f'Não foi dessa vez!', rolls_channel)
