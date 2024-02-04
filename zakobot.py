@@ -4311,7 +4311,9 @@ async def sugerir_command(
     await ctx.response.send_message('Sugestão feita com sucesso.', ephemeral=True)
 
 async def generate_banner():
-    winner_chara_list = dbservice.select('gacha_candidate', ['id_chara', 'url', 'name', 'img', 'value'], 'order by value DESC, id ASC limit 8')
+    candidates = dbservice.select('gacha_candidate', ['id_chara'], '')
+    # if len(candidates >)
+    winner_chara_list = dbservice.select('gacha_candidate', ['id_chara', 'url', 'name', 'img', 'value'], 'order by value DESC, id ASC limit 3')
     print(winner_chara_list)
     
     channel = 1202291522628747404 
@@ -4333,6 +4335,7 @@ async def generate_banner():
         await send_message2(f'{img}\n\n\n\n\n{name}!­­', channel)
         await asyncio.sleep(5)
         dbservice.insert('gacha_chara', ['id', 'url', 'name', 'img'], [id, url, name, img])
+        dbservice.delete('chara_candidate', {'id_chara': id})
         
         users = dbservice.select('user', ['id'], '')
         if not isinstance(users, list):
@@ -4346,7 +4349,8 @@ async def generate_banner():
             if str(chosen_chara) == str(id):
                 dbservice.update_zakoleta('user', withheld, f'-{withheld} zakoletas por sugestão passada de personagem no gacha', user[0], 'sub')
     
-    dbservice.update('user', ['chosen_chara', 'withheld_z'], ['', 0], {'id_guild': 1059298932825538661})
+    dbservice.update('user', ['chosen_chara', 'withheld_z'], ['', 0], {'id_guild': '1059298932825538661'})
+    
 
 # @gacha.slash_command(name='editar_álbum')
 # async def edit_album_command(
