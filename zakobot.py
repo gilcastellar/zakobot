@@ -2175,7 +2175,15 @@ async def try_roll(number, user_id):
     chance = dbservice.select('values_chart', ['value_value'], '', {'value_name': 'gacha_chance'})
     if number <= chance:
         while exists == 1:
-            chara = list(dbservice.select('gacha_chara', ['id', 'url', 'name', 'img'], ' ORDER BY RAND() LIMIT 1'))
+            is_banner = random.choice([0,1])
+            if is_banner == 1:
+                print('personagem DO BANNER')
+                chara = list(dbservice.select('gacha_chara', ['id', 'url', 'name', 'img'], ' ORDER BY RAND() LIMIT 1', {'status': 'new'}))
+                await send_message2('Lá vem um personagem do banner...', rolls_channel)
+                await asyncio.sleep(1)
+            else:
+                print('personagem ANTIGO')
+                chara = list(dbservice.select('gacha_chara', ['id', 'url', 'name', 'img'], ' ORDER BY RAND() LIMIT 1', {'status': 'old'})))
             exists = dbservice.check_existence('user_has_chara', {'user_id': user_id, 'chara_id': chara[0]})
             
         return chara
@@ -2183,6 +2191,9 @@ async def try_roll(number, user_id):
         return 'fail'
 
 async def roll_chara(user_name, user_id):
+    
+    flavors = ['Faltou vontade!', "Não foi dessa vez!", 'kkkkkkkkkkkkkkkkkkkkkkkkkk', 'Teeeente oooutra veeeez 🎶']
+
     await send_message2(f'...', rolls_channel)
     await asyncio.sleep(2)
     roll = 'repeat'
@@ -2211,7 +2222,7 @@ async def roll_chara(user_name, user_id):
                 
          
         else:
-            await send_message2(f'Não foi dessa vez!', rolls_channel)
+            await send_message2(random.choice[flavors], rolls_channel)
             break
 
     await asyncio.sleep(1)
@@ -4334,7 +4345,8 @@ async def generate_banner():
         await asyncio.sleep(3)
         await send_message2(f'{img}\n\n\n\n\n{name}!­­', channel)
         await asyncio.sleep(5)
-        dbservice.insert('gacha_chara', ['id', 'url', 'name', 'img'], [id, url, name, img])
+        await asyncio.sleep(5)
+        dbservice.insert('gacha_chara', ['id', 'url', 'name', 'img', 'status'], [id, url, name, img, 'new'])
         dbservice.delete('chara_candidate', {'id_chara': id})
         
         users = dbservice.select('user', ['id'], '')
