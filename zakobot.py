@@ -4335,6 +4335,7 @@ async def generate_banner():
     # channel = 1065847698214887496
     
     await send_message2(f'Os personagens do banner da semana são...', channel)
+    dbservice.update('gacha_chara', ['status'], ['old'], {'status': 'new'})
 
     await asyncio.sleep(3)
     
