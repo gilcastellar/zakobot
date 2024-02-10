@@ -4367,7 +4367,7 @@ async def generate_banner():
             if str(chosen_chara) == str(id):
                 dbservice.update_zakoleta('user', withheld, f'-{withheld} zakoletas por sugestão passada de personagem no gacha', user[0], 'sub')
     
-    dbservice.update('user', ['chosen_chara', 'withheld_z'], ['', 0], {'id_guild': '1059298932825538661'})
+    dbservice.update('user', ['chosen_chara', 'withheld_z'], ['', 0])
     
 
 # @gacha.slash_command(name='editar_álbum')
