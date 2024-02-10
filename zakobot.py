@@ -4348,7 +4348,7 @@ async def generate_banner():
         print(name)
         await send_message2(f'Com o valor total de {str(value)} zakoletas...', channel)
         await asyncio.sleep(3)
-        await send_message2(f'[a]({img})\n\n\n\n\n{name}!­­', channel)
+        await send_message2(f' ­ \n\n\n\n\n[{name}]({img})!­­', channel)
         await asyncio.sleep(5)
         await asyncio.sleep(5)
         dbservice.insert('gacha_chara', ['id', 'url', 'name', 'img', 'status'], [id, url, name, img, 'new'])
