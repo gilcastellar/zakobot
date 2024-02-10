@@ -3756,7 +3756,7 @@ async def gerar_quest_board(msg, page, last_page, data):
         print('test:')
         print(data)
 
-    batch = 8
+    batch = 7
 
     indice = (page * batch) - (batch - 1)
 
