@@ -2183,7 +2183,7 @@ async def try_roll(number, user_id):
                 await asyncio.sleep(1)
             else:
                 print('personagem ANTIGO')
-                chara = list(dbservice.select('gacha_chara', ['id', 'url', 'name', 'img'], ' ORDER BY RAND() LIMIT 1', {'status': 'old'})))
+                chara = list(dbservice.select('gacha_chara', ['id', 'url', 'name', 'img'], ' ORDER BY RAND() LIMIT 1', {'status': 'old'}))
             exists = dbservice.check_existence('user_has_chara', {'user_id': user_id, 'chara_id': chara[0]})
             
         return chara
