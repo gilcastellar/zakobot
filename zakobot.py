@@ -2222,7 +2222,7 @@ async def roll_chara(user_name, user_id):
                 
          
         else:
-            await send_message2(random.choice[flavors], rolls_channel)
+            await send_message2(random.choice(flavors), rolls_channel)
             break
 
     await asyncio.sleep(1)
