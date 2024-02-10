@@ -2245,8 +2245,12 @@ async def make_rolls():
         name = roll_info[0]
         user_id = dbservice.select('user', ['id'], '', {'name': name})
         rolls = roll_info[1]
-
-        text = f'Trazendo {str(rolls)} roladas para {name}'
+        
+        if rolls == 1:
+            roladas = 'rolada'
+        else:
+            roladas = 'roladas'
+        text = f'Trazendo {str(rolls)} {roladas} para {name}'
 
         print(text)
         await send_message2(text, rolls_channel)
