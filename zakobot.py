@@ -4352,7 +4352,7 @@ async def generate_banner():
         await asyncio.sleep(5)
         await asyncio.sleep(5)
         dbservice.insert('gacha_chara', ['id', 'url', 'name', 'img', 'status'], [id, url, name, img, 'new'])
-        dbservice.delete('chara_candidate', {'id_chara': id})
+        dbservice.delete('gacha_candidate', {'id_chara': id})
         
         users = dbservice.select('user', ['id'], '')
         if not isinstance(users, list):
