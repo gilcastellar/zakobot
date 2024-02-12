@@ -247,9 +247,9 @@ async def check_time():
         next_banner_time += 604800
         dbservice.update('values_chart', ['value_value'], [next_banner_time], {'value_name': 'next_banner_time'})
 
-    date = datetime.datetime.fromtimestamp(timestamp)
+    date = datetime.datetime.datetime.fromtimestamp(timestamp)
     
-    date = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+    date = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
     hour = date.hour
     print(hour)
 
@@ -4532,9 +4532,9 @@ async def aux_command(ctx):
                 
         timestamp = int(datetime.datetime.now(ZoneInfo('America/Sao_Paulo')).timestamp())
         
-        date = datetime.datetime.fromtimestamp(timestamp)
+        date = datetime.datetime.datetime.fromtimestamp(timestamp)
     
-        date = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+        date = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
         hour = date.hour
         print(hour)
 
