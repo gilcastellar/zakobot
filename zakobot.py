@@ -249,7 +249,6 @@ async def check_time():
 
     date = datetime.datetime.fromtimestamp(timestamp)
     hour = date.hour - 3
-    print(hour)
     
     bonus_hours = [9,12,15,18,21]
 
