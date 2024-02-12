@@ -173,6 +173,8 @@ async def on_ready():
 
     make_rolls.start()
 
+    select_guild_random_bonus.start()
+
 @bot.event
 async def on_message(message):
     if message.author == bot.user:
@@ -238,10 +240,17 @@ async def check_time():
     timestamp = int(datetime.datetime.now(ZoneInfo('America/Sao_Paulo')).timestamp())
     
     next_banner_time = int(dbservice.select('values_chart', ['value_value'], '', {'value_name': 'next_banner_time'}))
+    next_quest_bonus_time = int(dbservice.select('values_chart', ['value_value'], '', {'value_name': 'next_banner_time'})) 
+
     if timestamp >= next_banner_time:
         await generate_banner()
         next_banner_time += 604800
         dbservice.update('values_chart', ['value_value'], [next_banner_time], {'value_name': 'next_banner_time'})
+
+    if timestamp >= next_quest_bonus_time:
+        await generate_quest_bonus()
+        next_quest_bonus_time += 43200
+        dbservice.update('values_chart', ['value_value'], [next_quest_bonus_time], {'value_name': 'guild_bonus_time'})
 
     # if realtime.hour == 4 and realtime.minute in range(54,58):
     #     await clean_dailies()
@@ -2227,8 +2236,6 @@ async def roll_chara(user_name, user_id):
             break
 
     await asyncio.sleep(1)
-    
-
     
 @tasks.loop(seconds=1)
 async def make_rolls():
@@ -4275,6 +4282,12 @@ async def calculate_delivery_time(date_bought, quest_name, quest_type):
     
     return delivery_date
 
+async def generate_quest_bonus():
+    quests = list(dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value'], ' ORDER BY RAND() LIMIT 3', {'is_available': 'true'}))
+    
+    for quest in quests:
+        ...
+        
 gacha = bot.create_group('gacha', 'Comandos do álbum')
 
 @gacha.command(name='sugerir')
