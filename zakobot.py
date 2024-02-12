@@ -3467,44 +3467,30 @@ async def guilda_aceitar_quest_command(
             await ctx.response.send_message('Para formalizar a aquisição da quest, clique no botão abaixo.', ephemeral=True, view=AcquiringBtn(value, user_id, sender_id, real_name, _type))
 
 def calculate_quest_reward(base_value, days_passed):
-    
     value = base_value
-
     factor = 1.03
 
     for day in range(int(days_passed)):
         value = ceil(value * factor)
-
     return value 
 
 async def get_user_received_quests(ctx: discord.AutocompleteContext):
-
     user_name = dbservice.select('user', ['name'], '', {'id': ctx.interaction.user.id})
-    
     quests_options = dbservice.select('quests', ['item_name', 'item_type'], '', {'buyer': str(ctx.interaction.user.id)})
 
     if not isinstance(quests_options, list):
         quests_options = [quests_options]
-        print('test:')
-        print(quests_options)
     
     taken_quests = dbservice.select('quests', ['party', 'item_name', 'item_type'], '', {'is_available': 'false'})
-    
     for quest in taken_quests:
         if quest[0] != None:
             members = quest[0].split(',')
             if str(ctx.interaction.user.id) in members:
                 quests_options.append(dbservice.select('quests', ['item_name', 'item_type'], '', {'item_name': quest[1], 'item_type': quest[2]}))
-    
-    print(quests_options)
 
     names = []
-
     for name in quests_options:
-        
         names.append(name[0] + ' (' + name[1] + ')')
-            
-    print(names)
 
     return [name for name in names if ctx.value.lower() in name.lower()]
 
@@ -3541,16 +3527,12 @@ async def guilda_abandonar_quest_command(
     else:
         
         possible_group = dbservice.select('quests', ['party'], '', {'id_anilist': anilist_id})
-        print('possible_group')
-        print(possible_group)
         
         if ',' in possible_group:
             group = possible_group.split(',')
             if user_id == group[0]:
                 
                 obra = dbservice.select('quests', ['item_name'], '', {'id_anilist': anilist_id})
-                print('test')
-                print(dbservice.select('quests', ['flavor_text'], '', {'id_anilist': anilist_id}))
                 flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'id_anilist': anilist_id}).split('*')
                 
                 dbservice.update('quests', ['party', 'is_available', 'abandoned'], ['', 'true', 'true'], {'id_anilist': anilist_id})
@@ -3582,25 +3564,17 @@ async def guilda_entregar_quest_command(
     ctx: discord.ApplicationContext,
     quest: discord.Option(str, autocomplete=get_user_received_quests, name='quest')
 ):
-    
     user = str(ctx.author.id)
-    
     real_name, _type = quest.split(' (')
-    
     _type = _type.strip(')')
-
     url = dbservice.select('quests', ['item_url'], '', {'item_name': real_name})
-        
     type, anilist_id = get_type_and_id_from_anilist_link(url)
-        
+    
     exists = dbservice.check_existence('quests', {'buyer': user, 'id_anilist': anilist_id})
-        
     if exists == 1:
-        
         delivery_date = dbservice.select('quests', ['delivery_date'], '', {'id_anilist': anilist_id})
         
         if delivery_date != None:
-
             real_date = datetime.datetime.utcfromtimestamp(delivery_date).strftime('%d-%m-%Y %H:%M:%S')
         
             if datetime.datetime.now().timestamp() < delivery_date:
@@ -3611,10 +3585,8 @@ async def guilda_entregar_quest_command(
         sender_id = dbservice.select('quests', ['sender'], '', {'id_anilist': anilist_id})
 
         time_passed = int(dbservice.select('quests', ['date_bought'], '', {'id_anilist': anilist_id})) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': real_name, 'item_type': _type}))
-        print('time elapsed: ' + str(time_passed))
         
         days = floor(time_passed / 86400)
-        print('days: ' + str(days))
     
         base_value = dbservice.select('quests', ['value'], '', {'item_name': real_name, 'item_type': _type})
         
@@ -3623,25 +3595,15 @@ async def guilda_entregar_quest_command(
         buyer_reward = reward
     
         sender_reward = ceil(reward/2)
-            
-        print('rewards: ')
-        print(buyer_reward)
-        print(sender_reward)
         
         await ctx.response.send_message('Quest entregue com sucesso. Considere deixar um comentário ou até mesmo uma resenha sobre a obra. Você receberá um bônus de 5% da recompensa. É importante realizar um mínimo de esforço.', ephemeral=True, view=ReviewBtn(ctx, user, sender_id, real_name, type, buyer_reward, sender_reward, url))
             
     else:
         
         possible_group = dbservice.select('quests', ['party'], '', {'id_anilist': anilist_id})
-        print('possible_group')
-        print(possible_group)
         
         if ',' in possible_group:
             group = possible_group.split(',')
-            print('user')
-            print(user)
-            print('group[0]')
-            print(group[0])
             if user == group[0]:
             
                 sender_id = dbservice.select('quests', ['sender'], '', {'id_anilist': anilist_id})
@@ -3649,17 +3611,12 @@ async def guilda_entregar_quest_command(
                 date_bought = dbservice.select('quests', ['date_bought'], '', {'id_anilist': anilist_id})
 
                 time_passed = int(date_bought) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': real_name, 'item_type': _type}))
-                print('time elapsed: ' + str(time_passed))
-        
+                
                 days = floor(time_passed / 86400)
-                print('days: ' + str(days))
-    
+                
                 base_value = dbservice.select('quests', ['value'], '', {'item_name': real_name, 'item_type': _type})
         
                 reward = calculate_quest_reward(base_value, days)
-
-                print('len(group)')
-                print(len(group))
     
                 buyer_reward = ceil(reward/(len(group)))
     
@@ -3691,7 +3648,6 @@ async def guilda_entregar_quest_command(
                 msg += f' completaram e entregaram a quest *{flavor1}**{real_name} ({_type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(buyer_reward)} por aventureiro e ${str(sender_reward)} para o criador..'
                 
                 await generate_guild_log(msg)
-                print(msg)
 
                 await ctx.response.send_message('Quest entregue com sucesso. Quests em grupo não tem a opção de resenha, mas você pode enviá-la no privado do kaiser para que ela seja adicionada ao canal de resenhas.', ephemeral=True)
                 
@@ -3740,7 +3696,6 @@ async def classificados_command(
     
         msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
         await ctx.response.send_message('OK', ephemeral=True)
-        print('chegou aqui 3')
 
         await gerar_quest_board(msg, 1, 0, data)
     else:
@@ -3852,12 +3807,8 @@ async def inventario_command(
             
         for quest in selling_quests:
             time_passed = int(datetime.datetime.now().timestamp()) - int(quest[4])
-            print('time_passed')
-            print(time_passed)
         
             days = floor(time_passed / 86400)
-            print('days')
-            print(days)
         
             value = calculate_quest_reward(quest[3], days)
         
@@ -3872,15 +3823,10 @@ async def inventario_command(
         text += '**Quests vendidas: **\n\n'
         sold_quests = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'buyer', 'party', 'date_bought'], '', {'sender': user_id, 'is_available': 'false'})
         
-        print(sold_quests)
-
         if not isinstance(sold_quests, list):
             sold_quests = [sold_quests]
             
         for quest in sold_quests:
-            print(quest[1])
-            print(quest[6])
-            print(quest[7])
             time_passed = int(quest[8]) - int(quest[4])
         
             days = floor(time_passed / 86400)
@@ -3910,57 +3856,30 @@ async def inventario_command(
         text += '\n**Quests Aceitas: **\n\nSolo: ' + str(buyer_slots) + '/' + str(buyer_total_slots)
         text += '\n\n'
         
-    print('length of data')
-    print(len(data))
     if len(data) < 1:
         await ctx.response.send_message(text + 'Você não tem nenhuma quest aceita.', ephemeral=True)
         return
     
     page = 1
     last_page = 0
-
-    print('data info:')
-    print(data)
-    print(len(data))
         
     if not isinstance(data, list):
         data = [data]
-        print('test:')
-        print(data)
 
     batch = 10
 
     indice = (page * batch) - (batch - 1)
 
-    print('page')
-    print(page)
-
-    print('indice:')
-    print(indice)
-
     last_page = ceil(len(data) / batch)
 
     for obra in data[batch*(page-1):batch*page]:
-
-        print(indice)
-
-        print('obra')
-        print(obra)
-
-        for i in obra:
-            print(i)
         
         if obra[6] != None:
             time_passed = int(obra[6]) - int(obra[4])
         else:
             time_passed = int(obra[6]) - int(obra[4])
-            
-        print('time_passed')
-        print(time_passed)
         
         days = floor(time_passed / 86400)
-        print('days')
-        print(days)
         
         value = calculate_quest_reward(obra[3], days)
         
@@ -3973,8 +3892,6 @@ async def inventario_command(
         text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n\n'
 
     taken_quests = dbservice.select('quests', ['party', 'id_anilist'], '', {'is_available': 'false'})
-    print('taken_quests')
-    print(taken_quests)
     
     if not isinstance(taken_quests, list):
         taken_quests = [taken_quests]
@@ -3982,13 +3899,8 @@ async def inventario_command(
     quest_data = None
     
     for quest in taken_quests:
-        print('party')
-        print(quest)
         if quest[0] != None:
             members = quest[0]
-            print('party')
-            print(members)
-            print(str(quest[1]))
             if str(user_id) in members:
                 quest_data = dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value', 'date_inserted', 'flavor_text', 'date_bought', 'party'], '', {'id_anilist': str(quest[1])})
                 break
@@ -3998,22 +3910,13 @@ async def inventario_command(
     else:
         text += f'Party: 0/1'
         
-    print('quest_data')
-    print(quest_data)
-        
     if quest_data != None:
         if quest_data[6] != None:
             time_passed = int(quest_data[6]) - int(quest_data[4])
-            
-        print('time_passed')
-        print(time_passed)
         
         days = floor(time_passed / 86400)
-        print('days')
-        print(days)
         
         value = calculate_quest_reward(quest_data[3], days)
-        print('quest_data[7]')
         _party = quest_data[7].split(',')
         value = ceil(value/len(_party))
         
@@ -4039,20 +3942,14 @@ async def get_user_created_quests(ctx: discord.AutocompleteContext):
     
     quests_options = dbservice.select('quests', ['item_name', 'item_type'], '', {'sender': str(ctx.interaction.user.id), 'is_available': 'true'})
     
-    print(quests_options)
-
     if not isinstance(quests_options, list):
         quests_options = [quests_options]
-        print('test:')
-        print(quests_options)
 
     names = []
 
     for name in quests_options:
         
         names.append(name[0] + ' (' + name[1] + ')')
-            
-    print(names)
 
     return [name for name in names if ctx.value.lower() in name.lower()]
 
