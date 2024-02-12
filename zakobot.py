@@ -249,7 +249,7 @@ async def check_time():
 
     date = datetime.datetime.fromtimestamp(timestamp)
     
-    date = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+    # date = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
     hour = date.hour
     print(hour)
 
