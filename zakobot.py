@@ -130,7 +130,7 @@ class QuestBoardPagination(discord.ui.View): # Create a class called MyView that
             self.page -= 1
         await gerar_quest_board(self.msg, self.page, self.last_page, self.data)
         # await interaction.response.send_message('')
-        interaction.response.is_done()
+        await interaction.response.defer()
 
     @discord.ui.button(label=">>", row=0, style=discord.ButtonStyle.primary)
     async def second_button_callback(self, button, interaction):
@@ -138,7 +138,7 @@ class QuestBoardPagination(discord.ui.View): # Create a class called MyView that
             self.page += 1
         await gerar_quest_board(self.msg, self.page, self.last_page, self.data)
         # await interaction.response.send_message('')
-        interaction.response.is_done()
+        await interaction.response.defer()
         
 class CollectionPagination(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
     def __init__(self, msg, user_id, page, last_page):
