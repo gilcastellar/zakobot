@@ -248,15 +248,13 @@ async def check_time():
         dbservice.update('values_chart', ['value_value'], [next_banner_time], {'value_name': 'next_banner_time'})
 
     date = datetime.datetime.fromtimestamp(timestamp)
-    
-    # date = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
     hour = date.hour - 3
     print(hour)
+    
+    bonus_hours = [9,12,15,18,21]
 
-    if timestamp >= next_quest_bonus_time:
-        max_repeats = 4
+    if hour in bonus_hours and date.minute == 0:
         await generate_quest_bonus()
-        dbservice.update('values_chart', ['value_value'], [next_quest_bonus_time], {'value_name': 'guild_bonus_time'})
 
     # if realtime.hour == 4 and realtime.minute in range(54,58):
     #     await clean_dailies()
@@ -4289,14 +4287,19 @@ async def calculate_delivery_time(date_bought, quest_name, quest_type):
     return delivery_date
 
 async def generate_quest_bonus():
-    quests = list(dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'date_inserted', 'value'], ' ORDER BY RAND() LIMIT 1', {'is_available': 'true'}))
+    quest = list(dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'date_inserted', 'value', 'flavor_text'], ' ORDER BY RAND() LIMIT 1', {'is_available': 'true'}))
     
-    for quest in quests:
-        time_passed = int(datetime.datetime.now().timestamp()) - int(quest[3])
-        days = floor(time_passed / 86400)
-        value = calculate_quest_reward(int(quest[4]), days)
-        new_value = value * 1.25
-        
+    time_passed = int(datetime.datetime.now().timestamp()) - int(quest[3])
+    days = floor(time_passed / 86400)
+    value = calculate_quest_reward(int(quest[4]), days)
+    new_value = value * 1.3
+    
+    flavor1, flavor2 = quest[5].split('*')
+    
+    dbservice.update('quests', ['is_bonus'], ['false'], {'is_bonus': 'true'})
+    dbservice.update('quests', ['is_bonus'], ['true'], {'item_url': quest[0]})
+    
+    await send_message2(f'A quest *{flavor1}**[{quest[1]} ({quest[2]})]({quest[0]})**{flavor2}* foi aleatoriamente sorteada e está valendo 30% a mais pelas próximas 3h, totalizando o valor de {str(new_value)}', 1065847698214887496)
         
         
 gacha = bot.create_group('gacha', 'Comandos do álbum')
