@@ -250,7 +250,7 @@ async def check_time():
     date = datetime.datetime.fromtimestamp(timestamp)
     
     # date = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
-    hour = date.hour
+    hour = date.hour - 3
     print(hour)
 
     if timestamp >= next_quest_bonus_time:
