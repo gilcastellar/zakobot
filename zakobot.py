@@ -3468,16 +3468,12 @@ async def guilda_aceitar_quest_command(
 
 def calculate_quest_reward(base_value, days_passed):
     
-    print('days_passed')
-    print(days_passed)
-    
     value = base_value
 
     factor = 1.03
 
     for day in range(int(days_passed)):
         value = ceil(value * factor)
-        print(value)
 
     return value 
 
@@ -3734,23 +3730,16 @@ async def classificados_command(
         
         text = 'QUESTS \n\n'
     
-    
-        print('chegou aqui 1')
-        print(data)
         if len(data) < 1:
             await ctx.response.send_message(text + 'Não existem quests disponíveis.', ephemeral=True)
             return
-        print('chegou aqui 2')
         if not isinstance(data, list):
             data = [data]
-            print('test:')
-            print(data)
     
         # await ctx.respond(f'**QUESTS**')
     
         msg = await create_placeholder_message(ctx, ctx.interaction.channel.id)
         await ctx.response.send_message('OK', ephemeral=True)
-
         print('chegou aqui 3')
 
         await gerar_quest_board(msg, 1, 0, data)
@@ -3759,13 +3748,8 @@ async def classificados_command(
                 
 async def gerar_quest_board(msg, page, last_page, data):
     
-    print(data)
-    print(len(data))
-    
     if not isinstance(data, list):
         data = [data]
-        print('test:')
-        print(data)
 
     batch = 7
 
@@ -3773,31 +3757,13 @@ async def gerar_quest_board(msg, page, last_page, data):
 
     text = '# **QUESTS**\n\n'
 
-    print('page')
-    print(page)
-
-    print('indice:')
-    print(indice)
-
     last_page = ceil(len(data) / batch)
 
     for obra in data[batch*(page-1):batch*page]:
-
-        print(indice)
-
-        print('obra')
-        print(obra)
-
-        for i in obra:
-            print(i)
-        
-        print(obra[4])
         
         time_passed = int(datetime.datetime.now().timestamp()) - int(obra[4])
-        print('time elapsed: ' + str(time_passed))
         
         days = floor(time_passed / 86400)
-        print('days: ' + str(days))
         
         value = calculate_quest_reward(obra[3], days)
         
@@ -3807,10 +3773,6 @@ async def gerar_quest_board(msg, page, last_page, data):
             
         text += '<' + obra[0] + '>\nTipo: ' + obra[2].capitalize() + ' \nRecompensa: $' + str(value) + '\n'
         
-        print('len of obra')
-        print(str(len(obra)))
-        
-
         if len(obra) == 7:
             aventureiro = dbservice.select('user', ['name'], '', {'id': obra[6]})
             if dbservice.select('user', ['sexo'], '', {'id': obra[6]}) == 'm':
