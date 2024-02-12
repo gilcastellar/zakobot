@@ -4291,7 +4291,7 @@ async def generate_quest_bonus():
     time_passed = int(datetime.datetime.now().timestamp()) - int(quest[3])
     days = floor(time_passed / 86400)
     value = calculate_quest_reward(int(quest[4]), days)
-    new_value = int(value * 1.3)
+    new_value = ceil(value * 1.3)
     
     flavor1, flavor2 = quest[5].split('*')
     
