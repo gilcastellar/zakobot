@@ -129,14 +129,14 @@ class QuestBoardPagination(discord.ui.View): # Create a class called MyView that
         if self.page > 1:
             self.page -= 1
         await gerar_quest_board(self.msg, self.page, self.last_page, self.data)
-        await interaction.response.send_message('')
+        # await interaction.response.send_message('')
 
     @discord.ui.button(label=">>", row=0, style=discord.ButtonStyle.primary)
     async def second_button_callback(self, button, interaction):
         if self.page < self.last_page:
             self.page += 1
         await gerar_quest_board(self.msg, self.page, self.last_page, self.data)
-        await interaction.response.send_message('')
+        # await interaction.response.send_message('')
         
 class CollectionPagination(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
     def __init__(self, msg, user_id, page, last_page):
@@ -3965,19 +3965,10 @@ async def cancelar_quest_command(
     _type = _type.strip(')')
     
     anilist_id = dbservice.select('quests', ['id_anilist'], '', {'sender': user, 'item_name': real_name})
-    
-    print('anilist_id')
-    print(anilist_id)
 
     ts = int(datetime.datetime.now().timestamp() + 259200)
     
     due_date = dbservice.select('user', ['quest_cancel_due_date'], '', {'id': user})
-    
-    print('due date')
-    print(str(due_date))
-    
-    print('now')
-    print(ts)
     
     if due_date == None or datetime.datetime.now().timestamp() >= due_date:
         data_cd = datetime.datetime.utcfromtimestamp(ts).strftime('%d-%m-%Y %H:%M:%S')
@@ -4020,15 +4011,11 @@ async def formar_grupo_command(
             group.append(member)
 
     taken_quests = dbservice.select('quests', ['party'], '', {'is_available': 'false'})
-    print('taken_quests')
-    print(taken_quests)
     
     if not isinstance(taken_quests, list):
         taken_quests = [taken_quests]
     
     for party in taken_quests:
-        print('party')
-        print(party)
         if party[0] != None:
             members = party[0].split(',')
             if bool(set(members).intersection(group)) == True:
@@ -4069,20 +4056,12 @@ async def formar_grupo_command(
     await ctx.response.send_message('Grupo criado com sucesso!', ephemeral=True)
         
     time_passed = int(datetime.datetime.now().timestamp()) - int(dbservice.select('quests', ['date_inserted'], '', {'item_name': quest_name, 'item_type': tipo}))
-    print('time elapsed: ' + str(time_passed))
         
     days = floor(time_passed / 86400)
-    print('days: ' + str(days))
     
     base_value = dbservice.select('quests', ['value'], '', {'item_name': quest_name, 'item_type': tipo})
         
     reward = calculate_quest_reward(base_value, days)
-    
-    print('group')
-    print(group)
-    
-    print('len(group)')
-    print(len(group))
     
     buyer_reward = ceil(reward/(len(group) + 1))
     
@@ -4104,8 +4083,6 @@ async def calculate_delivery_time(date_bought, quest_name, quest_type):
         duration = media_obj['data']['Media']['duration']
 
         episodes = media_obj['data']['Media']['episodes']
-        print(duration)
-        print(episodes)
                     
         total_duration = duration * episodes
                 
@@ -4115,7 +4092,6 @@ async def calculate_delivery_time(date_bought, quest_name, quest_type):
 
         media_obj = response.json()
         status = media_obj['data']['Media']['status']
-        print(status)
         chapters = media_obj['data']['Media']['chapters']
         volumes = media_obj['data']['Media']['volumes']
         duration = 45
