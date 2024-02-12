@@ -247,9 +247,15 @@ async def check_time():
         next_banner_time += 604800
         dbservice.update('values_chart', ['value_value'], [next_banner_time], {'value_name': 'next_banner_time'})
 
+    date = datetime.datetime.fromtimestamp(timestamp)
+    
+    date = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+    hour = date.hour
+    print(hour)
+
     if timestamp >= next_quest_bonus_time:
+        max_repeats = 4
         await generate_quest_bonus()
-        next_quest_bonus_time += 43200
         dbservice.update('values_chart', ['value_value'], [next_quest_bonus_time], {'value_name': 'guild_bonus_time'})
 
     # if realtime.hour == 4 and realtime.minute in range(54,58):
@@ -4283,10 +4289,15 @@ async def calculate_delivery_time(date_bought, quest_name, quest_type):
     return delivery_date
 
 async def generate_quest_bonus():
-    quests = list(dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'value'], ' ORDER BY RAND() LIMIT 3', {'is_available': 'true'}))
+    quests = list(dbservice.select('quests', ['item_url', 'item_name', 'item_type', 'date_inserted', 'value'], ' ORDER BY RAND() LIMIT 1', {'is_available': 'true'}))
     
     for quest in quests:
-        ...
+        time_passed = int(datetime.datetime.now().timestamp()) - int(quest[3])
+        days = floor(time_passed / 86400)
+        value = calculate_quest_reward(int(quest[4]), days)
+        new_value = value * 1.25
+        
+        
         
 gacha = bot.create_group('gacha', 'Comandos do álbum')
 
@@ -4521,16 +4532,11 @@ async def aux_command(ctx):
                 
         timestamp = int(datetime.datetime.now(ZoneInfo('America/Sao_Paulo')).timestamp())
         
-        delivery_date = await calculate_delivery_time(timestamp, 'Maison Ikkoku', 'anime')
-        
-        print('timestamp')
-        print(str(timestamp))
-        print('delivery_date')
-        print(delivery_date)
-        
-        print(str(5-10))
-
-
+        date = datetime.datetime.fromtimestamp(timestamp)
+    
+        date = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+        hour = date.hour
+        print(hour)
 
         print(get_timestamp() + ': Done')
 
