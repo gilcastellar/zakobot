@@ -3175,13 +3175,13 @@ async def guilda_criar_quest_command(
                 title = media_obj['data']['Media']['title']['romaji']
 
                 if '(' in title:
-                    title.replace('(', '')
-                if ')' in title:
-                    title.replace(')', '')
+                    title = title.replace('(', '')
+                if ')' in title
+                    title = title.replace(')', '')
                 if "'" in title:
-                    title.replace("'", '')
-                if '"' in title:
-                    title.replace('"', '')
+                    title = title.replace("'", '')
+                if '"' in title
+                    title = title.replace('"', '')
                     
                 duration_factor = 1 + (total_duration * type_factor)
                 
