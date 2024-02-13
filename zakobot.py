@@ -175,7 +175,7 @@ async def on_ready():
 
     make_rolls.start()
 
-    select_guild_random_bonus.start()
+    # select_guild_random_bonus.start()
 
 @bot.event
 async def on_message(message):
@@ -255,6 +255,7 @@ async def check_time():
     bonus_hours = [9,12,15,18,21]
 
     if hour in bonus_hours and date.minute == 0:
+        print('ESOCLHENDO QUEST PARA RECEBER O BONUS ALEATÓRIO')
         await generate_quest_bonus()
 
     # if realtime.hour == 4 and realtime.minute in range(54,58):
@@ -3103,15 +3104,11 @@ async def guilda_criar_quest_command(
     else:
         seller_slots = len(seller_slots)
     
-    print('slots: ' + str(seller_slots))
-    
     # max_seller_slots = int(dbservice.select('user', ['quest_selling_slots'], '', {'id': sender}))
 
     max_seller_slots = int(dbservice.select('values_chart', ['value_value'], '', {'value_name': 'quest_max_creation'}))
 
     if seller_slots >= max_seller_slots:
-
-        print(dbservice.select('user', ['quest_selling_slots'], '', {'id': sender}))
         
         # await send_message(ctx, 'Você não tem espaço para vender uma nova obra.')
         await ctx.response.send_message('Você não tem espaço para criar uma nova quest.', ephemeral=True)
@@ -3135,8 +3132,6 @@ async def guilda_criar_quest_command(
                     duration = media_obj['data']['Media']['duration']
 
                     episodes = media_obj['data']['Media']['episodes']
-                    print(duration)
-                    print(episodes)
 
                     if duration == None:
                         await ctx.response.send_message('Você provavelmente tentou inserir uma obra sem a informação de duração no Anilist.', ephemeral=True)
@@ -3149,8 +3144,6 @@ async def guilda_criar_quest_command(
                     else:
                         total_duration = duration * episodes
                         type_factor = 0.004
-
-                        print(total_duration)
                 
                 else:
 
@@ -3158,7 +3151,6 @@ async def guilda_criar_quest_command(
 
                     media_obj = response.json()
                     status = media_obj['data']['Media']['status']
-                    print(status)
                     chapters = media_obj['data']['Media']['chapters']
                     volumes = media_obj['data']['Media']['volumes']
                     duration = 36
@@ -3181,8 +3173,6 @@ async def guilda_criar_quest_command(
                     type_factor = 0.004
 
                 title = media_obj['data']['Media']['title']['romaji']
-                
-                print(title)
 
                 if '(' in title:
                     title.replace('(', '')
@@ -3198,8 +3188,6 @@ async def guilda_criar_quest_command(
                 hours = floor(total_duration / 60)
                 
                 size_factor = 1 + ((hours - 1) / 20)
-                print('size factor')
-                print(str(size_factor))
             
                 reward = ceil(((100 * duration_factor) - 100) * size_factor)
 
@@ -3225,10 +3213,6 @@ async def guilda_criar_quest_command(
                 # size_factor = 1 + ((hours - 1) * 0.05)
 
                 # size_factor = 1 + ((hours - 1)/20)
-
-                print('size factor')
-
-                print(str(size_factor))
             
                 # reward = math.ceil(((100 * duration_factor) - 100) * size_factor)
 
@@ -3239,7 +3223,6 @@ async def guilda_criar_quest_command(
                 timestamp = int(datetime.datetime.now().timestamp())
 
                 flavor = random.choice(dbservice.select('quest_flavors', ['flavor'], ''))[0]
-                print(flavor)
             
                 await ctx.response.send_message('A quest ' + title + ' terá uma recompensa de $' + str(reward) + '. Para formalizar a criação da quest, clique no botão abaixo.', ephemeral=True, view=SellingBtn(anilist_id, insertion, type, reward, sender, title, timestamp, flavor))
 
@@ -3253,12 +3236,8 @@ async def get_quests_options(ctx: discord.AutocompleteContext):
     
     quests_options = dbservice.select('quests', ['item_name', 'value', 'is_available', 'item_type'], '')
 
-    print(quests_options)
-
     if not isinstance(quests_options, list):
         quests_options = [quests_options]
-        print('test:')
-        print(quests_options)
 
     names = []
 
@@ -3267,8 +3246,6 @@ async def get_quests_options(ctx: discord.AutocompleteContext):
         if name[2] == 'true':
 
             names.append(name[0] + ' (' + name[3] + ')')
-            
-    print(names)
 
     return [name for name in names if ctx.value.lower() in name.lower()]
 
@@ -3284,7 +3261,6 @@ class AcquiringBtn(discord.ui.View): # Create a class called MyView that subclas
     @discord.ui.button(label="Aceitar", style=discord.ButtonStyle.primary, emoji="🤝") # Create a button with the label "😎 Click me!" with color Blurple
     async def button_callback(self, button, interaction):
         is_available = dbservice.select('quests', ['is_available'], '', {'item_name':self.real_name, 'item_type': self._type})
-        print(self._type)
         
         if is_available == 'false':
             await interaction.response.send_message("A quest já foi pega por outra pessoa.", ephemeral=True) # Send a message when the button is clicked
@@ -3339,10 +3315,6 @@ class ResenhaModal(discord.ui.Modal):
         review = self.children[0].value
         
         score = self.children[1].value
-        
-        print(review)
-        print('score:')
-        print(str(score))
         
         if score.isnumeric() == False:
             dbservice.insert('quests_reviews', ['id_user', 'item_name', 'review'], [self.user_id, self.item_name, review])
@@ -3427,9 +3399,6 @@ async def guilda_aceitar_quest_command(
     
     _type = _type.strip(')')
 
-    print(real_name)
-    print(_type)
-
     sender_id = dbservice.select('quests', ['sender'], '', {'item_name': real_name, 'item_type': _type})
     
     if user_id == int(sender_id):
@@ -3444,8 +3413,6 @@ async def guilda_aceitar_quest_command(
     
         days = floor(time_passed / 86400)
 
-        print('days: ' + str(days))
-
         buyer_slots = dbservice.select('quests', ['buyer'], '', {'buyer': user_id})
 
         if buyer_slots == str(user_id):
@@ -3453,12 +3420,8 @@ async def guilda_aceitar_quest_command(
         
         else:
             buyer_slots = len(buyer_slots)
-    
-        print('slots: ' + str(buyer_slots))
 
         if buyer_slots >= int(dbservice.select('user', ['quest_buying_slots'], '', {'id': user_id})):
-
-            print(dbservice.select('user', ['quest_buying_slots'], '', {'id': user_id}))
         
             await ctx.response.send_message('Você não tem espaço para aceitar uma nova quest.', ephemeral=True)
     
@@ -3514,7 +3477,6 @@ async def guilda_abandonar_quest_command(
     if exists == 1:
             
         obra = dbservice.select('quests', ['item_name'], '', {'buyer': user_id, 'id_anilist': anilist_id})
-        print(dbservice.select('quests', ['flavor_text'], '', {'buyer': user_id, 'id_anilist': anilist_id}))
         flavor1, flavor2 = dbservice.select('quests', ['flavor_text'], '', {'buyer': user_id, 'id_anilist': anilist_id}).split('*')
         dbservice.update('quests', ['buyer', 'is_available', 'abandoned'], ['', 'true', 'true'], {'buyer': user_id, 'id_anilist': anilist_id})
         
