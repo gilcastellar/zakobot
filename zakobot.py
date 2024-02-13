@@ -3348,8 +3348,7 @@ class ResenhaModal(discord.ui.Modal):
         
         dbservice.delete('quests', {'buyer': self.user_id, 'item_name': self.item_name})
 
-        if str(self.user_id) != str(334509476428251137):
-            await generate_guild_log(msg)         
+        await generate_guild_log(msg)         
 
 class ReviewBtn(discord.ui.View): # Create a class called MyView that subclasses discord.ui.View
     def __init__(self, ctx, user_id, sender_id, real_name, type, buyer_reward, sender_reward, url):
