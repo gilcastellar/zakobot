@@ -3330,9 +3330,9 @@ class ResenhaModal(discord.ui.Modal):
             
         await send_message2(text, 1193562729198407701)
             
-        bonus = ceil(int(self.buyer_reward) * 0.05)
+        # bonus = ceil(int(self.buyer_reward) * 0.05)
         
-        dbservice.update_zakoleta('user', int(bonus), '+' + str(bonus) + ' por escrever uma resenha para quest', self.user_id, 'add')
+        # dbservice.update_zakoleta('user', int(bonus), '+' + str(bonus) + ' por escrever uma resenha para quest', self.user_id, 'add')
 
         await interaction.response.send_message(f'Comentário/resenha enviada. A Guilda agradece!', ephemeral=True)
         
@@ -3559,7 +3559,7 @@ async def guilda_entregar_quest_command(
     
         sender_reward = ceil(reward/2)
         
-        await ctx.response.send_message('Quest entregue com sucesso. Considere deixar um comentário ou até mesmo uma resenha sobre a obra. Você receberá um bônus de 5% da recompensa. É importante realizar um mínimo de esforço.', ephemeral=True, view=ReviewBtn(ctx, user, sender_id, real_name, type, buyer_reward, sender_reward, url))
+        await ctx.response.send_message('Quest entregue com sucesso. Considere deixar um comentário ou até mesmo uma resenha sobre a obra.', ephemeral=True, view=ReviewBtn(ctx, user, sender_id, real_name, type, buyer_reward, sender_reward, url))
             
     else:
         
