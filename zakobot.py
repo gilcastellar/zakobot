@@ -3340,9 +3340,9 @@ class ResenhaModal(discord.ui.Modal):
         sender_id = dbservice.select('quests', ['sender'], '', {'buyer': self.user_id, 'item_name': self.item_name})
         
         if dbservice.select('user', ['sexo'], '', {'id': self.user_id}) == 'm':
-            msg = f'💪 A aventureira <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{self.item_name} ({self.type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente. Além de um bônus de {str(bonus)} pela resenha para o aventureiro.'
+            msg = f'💪 A aventureira <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{self.item_name} ({self.type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente.'
         else:    
-            msg = f'💪 O aventureiro <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{self.item_name} ({self.type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente. Além de um bônus de {str(bonus)} pela resenha para o aventureiro.'
+            msg = f'💪 O aventureiro <@{str(self.user_id)}> completou e entregou a quest *{flavor1}**{self.item_name} ({self.type})**{flavor2}* criada por <@{str(sender_id)}>! A recompensa distribuída foi de ${str(self.buyer_reward)} e ${str(self.sender_reward)} respectivamente.'
         
         await pay_quest(self.item_name, self.type, self.user_id, self.sender_id, self.buyer_reward, self.sender_reward)
         
