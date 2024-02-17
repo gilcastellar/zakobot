@@ -4177,7 +4177,6 @@ async def generate_banner():
         await asyncio.sleep(5)
         await asyncio.sleep(5)
         dbservice.insert('gacha_chara', ['id', 'url', 'name', 'img', 'status'], [id, url, name, img, 'new'])
-        dbservice.delete('gacha_candidate', {'id_chara': id})
         
         users = dbservice.select('user', ['id'], '')
         if not isinstance(users, list):
@@ -4190,8 +4189,11 @@ async def generate_banner():
             withheld = dbservice.select('user', ['withheld_z'], '', {'id': user[0]})
             if str(chosen_chara) == str(id):
                 dbservice.update_zakoleta('user', withheld, f'-{withheld} zakoletas por sugestão passada de personagem no gacha', user[0], 'sub')
+                dbservice.update('user', ['chosen_chara', 'withheld_z'], ['', 0], {'id': user[0]})
     
-    dbservice.update('user', ['chosen_chara', 'withheld_z'], ['', 0])
+    for chara in candidates:
+        id = chara[0]
+        dbservice.delete('gacha_candidate', {'id_chara': id})
     
 
 # @gacha.slash_command(name='editar_álbum')
