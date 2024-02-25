@@ -220,14 +220,14 @@ async def on_message(message):
 
                 if wallet < total_cost:
                     
-                    send_message2('Você não tem Zakoleta o suficiente para realizar esse roll.', rolls_channel)
+                    await send_message2('Você não tem Zakoleta o suficiente para realizar esse roll.', rolls_channel)
 
                 else:
                     dbservice.update_zakoleta('user', total_cost, f' -{str(total_cost)} por rodar {str(rolls)} vezes.', str(message.author.id), 'sub')
                     
-                user_name = dbservice.select('user', ['name'], '', {'id': message.author.id})
+                    user_name = dbservice.select('user', ['name'], '', {'id': message.author.id})
 
-                roll_id = dbservice.insert('rolls', ['user', 'quantity'], [user_name, rolls])
+                    roll_id = dbservice.insert('rolls', ['user', 'quantity'], [user_name, rolls])
             
         # case ';enviadas':
 
