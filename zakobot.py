@@ -220,7 +220,7 @@ async def on_message(message):
 
                 if wallet < total_cost:
                     
-                    send_message2('Você não tem Zakoleta o suficiente para realizar esse roll.')
+                    send_message2('Você não tem Zakoleta o suficiente para realizar esse roll.', rolls_channel)
 
                 else:
                     dbservice.update_zakoleta('user', total_cost, f' -{str(total_cost)} por rodar {str(rolls)} vezes.', str(message.author.id), 'sub')
