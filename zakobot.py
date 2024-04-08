@@ -4159,41 +4159,41 @@ async def generate_banner():
     channel = 1202291522628747404 
     # channel = 1065847698214887496
     
-    await send_message2(f'Os personagens do banner da semana são...', channel)
-    dbservice.update('gacha_chara', ['status'], ['old'], {'status': 'new'})
+    # await send_message2(f'Os personagens do banner da semana são...', channel)
+    # dbservice.update('gacha_chara', ['status'], ['old'], {'status': 'new'})
 
-    await asyncio.sleep(3)
+    # await asyncio.sleep(3)
     
-    for chara in winner_chara_list:
-        id = chara[0]
-        url = chara[1]
-        name = chara[2]
-        img = chara[3]
-        value = chara[4]
-        print(name)
-        await send_message2(f'\n\nCom o valor total de {str(value)} zakoletas...', channel)
-        await asyncio.sleep(3)
-        await send_message2(f'[{name}]({img})!­­\n https://{url}', channel)
-        await asyncio.sleep(5)
-        await asyncio.sleep(5)
-        dbservice.insert('gacha_chara', ['id', 'url', 'name', 'img', 'status'], [id, url, name, img, 'new'])
+    # for chara in winner_chara_list:
+    #     id = chara[0]
+    #     url = chara[1]
+    #     name = chara[2]
+    #     img = chara[3]
+    #     value = chara[4]
+    #     print(name)
+    #     await send_message2(f'\n\nCom o valor total de {str(value)} zakoletas...', channel)
+    #     await asyncio.sleep(3)
+    #     await send_message2(f'[{name}]({img})!­­\n https://{url}', channel)
+    #     await asyncio.sleep(5)
+    #     await asyncio.sleep(5)
+    #     dbservice.insert('gacha_chara', ['id', 'url', 'name', 'img', 'status'], [id, url, name, img, 'new'])
         
-        users = dbservice.select('user', ['id'], '')
-        if not isinstance(users, list):
-            users = [users]
-            print('test:')
-            print(users)
+    #     users = dbservice.select('user', ['id'], '')
+    #     if not isinstance(users, list):
+    #         users = [users]
+    #         print('test:')
+    #         print(users)
 
-        for user in users:
-            chosen_chara = dbservice.select('user', ['chosen_chara'], '', {'id': user[0]})
-            withheld = dbservice.select('user', ['withheld_z'], '', {'id': user[0]})
-            if str(chosen_chara) == str(id):
-                dbservice.update_zakoleta('user', withheld, f'-{withheld} zakoletas por sugestão passada de personagem no gacha', user[0], 'sub')
-                dbservice.update('user', ['chosen_chara', 'withheld_z'], ['', 0], {'id': user[0]})
+    #     for user in users:
+    #         chosen_chara = dbservice.select('user', ['chosen_chara'], '', {'id': user[0]})
+    #         withheld = dbservice.select('user', ['withheld_z'], '', {'id': user[0]})
+    #         if str(chosen_chara) == str(id):
+    #             dbservice.update_zakoleta('user', withheld, f'-{withheld} zakoletas por sugestão passada de personagem no gacha', user[0], 'sub')
+    #             dbservice.update('user', ['chosen_chara', 'withheld_z'], ['', 0], {'id': user[0]})
     
-    for chara in candidates:
-        id = chara[0]
-        dbservice.delete('gacha_candidate', {'id_chara': id})
+    # for chara in candidates:
+    #     id = chara[0]
+    #     dbservice.delete('gacha_candidate', {'id_chara': id})
     
 
 # @gacha.slash_command(name='editar_álbum')
